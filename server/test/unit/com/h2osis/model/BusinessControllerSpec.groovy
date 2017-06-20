@@ -1,6 +1,6 @@
 package com.h2osis.model
 
-
+import com.h2osis.model.rest.BusinessController
 import grails.test.mixin.*
 import spock.lang.*
 

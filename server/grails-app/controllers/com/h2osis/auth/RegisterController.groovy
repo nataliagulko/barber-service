@@ -7,8 +7,6 @@ import com.h2osis.utils.BarberSMSService
 import com.h2osis.utils.BarberSecurityService
 import grails.converters.JSON
 
-import static org.springframework.http.HttpStatus.OK
-
 class RegisterController {
 
     BarberSecurityService barberSecurityService

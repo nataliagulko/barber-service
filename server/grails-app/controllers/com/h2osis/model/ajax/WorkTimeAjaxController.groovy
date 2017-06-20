@@ -1,14 +1,15 @@
-package com.h2osis.model
+package com.h2osis.model.ajax
 
 import com.h2osis.auth.Role
 import com.h2osis.auth.User
 import com.h2osis.constant.AuthKeys
+import com.h2osis.model.WorkTime
 import com.h2osis.utils.SearchService
 import com.h2osis.utils.SlotsService
 import grails.converters.JSON
 import org.joda.time.LocalDate
 
-class WorkTimeRestController {
+class WorkTimeAjaxController {
 
     SearchService searchService
     def springSecurityService

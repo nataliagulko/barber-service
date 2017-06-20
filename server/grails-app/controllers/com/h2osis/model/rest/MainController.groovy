@@ -1,4 +1,4 @@
-package com.h2osis.model
+package com.h2osis.model.rest
 
 class MainController {
 

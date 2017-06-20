@@ -1,4 +1,4 @@
-package com.h2osis.model
+package com.h2osis.model.ajax
 
 import com.h2osis.auth.Role
 import com.h2osis.auth.User
@@ -8,7 +8,7 @@ import com.h2osis.model.Service
 import com.h2osis.utils.SearchService
 import grails.converters.JSON
 
-class BusinessRestController {
+class BusinessAjaxController {
 
     SearchService searchService
     def springSecurityService

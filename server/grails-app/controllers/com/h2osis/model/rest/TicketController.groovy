@@ -1,6 +1,8 @@
-package com.h2osis.model
+package com.h2osis.model.rest
 
 import com.h2osis.constant.TicketType
+import com.h2osis.model.Service
+import com.h2osis.model.Ticket
 import grails.transaction.Transactional
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat

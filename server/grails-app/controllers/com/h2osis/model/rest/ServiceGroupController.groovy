@@ -1,6 +1,7 @@
-package com.h2osis.model
+package com.h2osis.model.rest
 
-
+import com.h2osis.model.ServiceGroup
+import com.h2osis.model.ServiceToGroup
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional

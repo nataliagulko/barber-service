@@ -1,9 +1,12 @@
-package com.h2osis.model
+package com.h2osis.model.ajax
 
+import com.h2osis.model.Service
+import com.h2osis.model.ServiceGroup
+import com.h2osis.model.ServiceToGroup
 import grails.converters.JSON
 import grails.transaction.Transactional
 
-class ServiceGroupRestController {
+class ServiceGroupAjaxController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 

@@ -1,15 +1,19 @@
-package com.h2osis.model
+package com.h2osis.model.ajax
 
 import com.h2osis.auth.Role
 import com.h2osis.auth.User
 import com.h2osis.auth.UserRole
 import com.h2osis.constant.AuthKeys
+import com.h2osis.model.Business
+import com.h2osis.model.Holiday
+import com.h2osis.model.UserBlockFact
+import com.h2osis.model.WorkTime
 import com.h2osis.utils.BarberSecurityService
 import com.h2osis.utils.SearchService
 import grails.converters.JSON
 import grails.transaction.Transactional
 
-class UserRestController {
+class UserAjaxController {
 
     SearchService searchService
     def springSecurityService

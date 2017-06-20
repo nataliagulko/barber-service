@@ -1,10 +1,12 @@
-package com.h2osis.model
+package com.h2osis.model.ajax
 
 import com.h2osis.auth.Role
 import com.h2osis.auth.User
 import com.h2osis.constant.AuthKeys
 import com.h2osis.constant.TicketStatus
 import com.h2osis.constant.TicketType
+import com.h2osis.model.Service
+import com.h2osis.model.Ticket
 import com.h2osis.sm.TicketSMService
 import com.h2osis.utils.SearchService
 import com.h2osis.utils.SlotsService
@@ -15,7 +17,7 @@ import org.joda.time.format.DateTimeFormat
 
 import javax.sql.rowset.spi.TransactionalWriter
 
-class TicketRestController {
+class TicketAjaxController {
 
     SearchService searchService
     SlotsService slotsService

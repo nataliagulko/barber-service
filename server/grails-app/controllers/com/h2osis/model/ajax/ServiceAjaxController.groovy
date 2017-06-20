@@ -1,13 +1,14 @@
-package com.h2osis.model
+package com.h2osis.model.ajax
 
 import com.h2osis.auth.Role
 import com.h2osis.auth.User
 import com.h2osis.constant.AuthKeys
+import com.h2osis.model.Service
 import com.h2osis.utils.SearchService
 import grails.converters.JSON
 import org.codehaus.groovy.grails.web.json.JSONArray
 
-class ServiceRestController {
+class ServiceAjaxController {
 
     def springSecurityService
     SearchService searchService

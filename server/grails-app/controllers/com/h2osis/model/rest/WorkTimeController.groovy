@@ -1,6 +1,6 @@
-package com.h2osis.model
+package com.h2osis.model.rest
 
-
+import com.h2osis.model.WorkTime
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional

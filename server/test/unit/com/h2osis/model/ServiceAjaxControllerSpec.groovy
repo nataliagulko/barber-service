@@ -1,13 +1,14 @@
 package com.h2osis.model
 
+import com.h2osis.model.ajax.ServiceAjaxController
 import grails.test.mixin.TestFor
 import spock.lang.Specification
 
 /**
  * See the API for {@link grails.test.mixin.web.ControllerUnitTestMixin} for usage instructions
  */
-@TestFor(ServiceRestController)
-class ServiceRestControllerSpec extends Specification {
+@TestFor(ServiceAjaxController)
+class ServiceAjaxControllerSpec extends Specification {
 
     def setup() {
     }
