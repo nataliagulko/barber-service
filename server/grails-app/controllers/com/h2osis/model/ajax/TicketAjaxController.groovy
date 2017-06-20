@@ -7,6 +7,7 @@ import com.h2osis.constant.TicketStatus
 import com.h2osis.constant.TicketType
 import com.h2osis.model.Service
 import com.h2osis.model.Ticket
+import com.h2osis.model.TicketsService
 import com.h2osis.sm.TicketSMService
 import com.h2osis.utils.SearchService
 import com.h2osis.utils.SlotsService
@@ -21,6 +22,7 @@ class TicketAjaxController {
     SlotsService slotsService
     def springSecurityService
     TicketSMService ticketSMService
+    TicketsService ticketsService
     static allowedMethods = [choose: ['POST', 'GET']]
 
 
@@ -67,40 +69,12 @@ class TicketAjaxController {
                 }
             }
 
-            User client = user
-//            User master = User.findByUsername("master")
-            User master = User.get(params.master)
-            Set<Long> servIds = new HashSet<>()
-            params.services.split(',').each {
-                servIds.add(Long.parseLong(it))
-            }
-            List<Service> services = Service.findAllByIdInList(servIds)
-            if (!services) {
+            Ticket ticket = ticketsService.createTicket(user, params)
+            if (ticket) {
+                render(ticket as JSON)
+            } else {
                 render([msg: g.message(code: "service.create.params.null")] as JSON)
-                return
             }
-            Ticket ticket = new Ticket(date: params.date, comment: params.comment)
-            ticket.setUser(client)
-            ticket.setMaster(master)
-            ticket.setServices(services.toSet())
-            ticket.setStatus(TicketStatus.NEW)
-
-            DateTime date = DateTimeFormat.forPattern("dd.MM.yyyy").parseDateTime(params.date)
-            DateTime time = DateTimeFormat.shortTime().parseDateTime(params.time)
-
-            DateTime dateTime = date.withHourOfDay(time.getHourOfDay()).withMinuteOfHour(time.getMinuteOfHour())
-                    .withSecondOfMinute(time.getSecondOfMinute())
-
-            ticket.setTicketDate(dateTime.toDate())
-            ticket.setTime(params.time)
-            ticket.setType(TicketType.HEAD)
-            ticket.save(flush: true)
-            slotsService.syncFullDays(ticket, null, null)
-            Ticket.search().createIndexAndWait()
-
-            ticketSMService.ticketStatusUpdate(ticket.id, TicketStatus.NEW)
-
-            render(ticket as JSON)
         } else {
             render([msg: g.message(code: "service.create.params.null")] as JSON)
         }

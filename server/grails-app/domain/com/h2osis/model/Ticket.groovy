@@ -3,8 +3,12 @@ package com.h2osis.model
 import com.h2osis.auth.User
 import com.h2osis.constant.TicketType
 import com.h2osis.sm.SMObjectType
+import groovyx.gpars.GParsExecutorsPool
+import groovyx.gpars.GParsExecutorsPoolEnhancer
 import org.joda.time.DateTime
 import org.joda.time.LocalTime
+
+import java.util.concurrent.CopyOnWriteArrayList
 
 class Ticket {
 
@@ -59,7 +63,6 @@ class Ticket {
 
     def beforeInsert() {
         updateDate()
-        createSubTickets()
         updateFields()
     }
 
@@ -117,47 +120,69 @@ class Ticket {
         }
     }
 
+    def traversSubServices(LocalTime localTime, Collection<Service> allServices, CopyOnWriteArrayList<Ticket> result) {
+        GParsExecutorsPool.withPool {
+            allServices?.eachParallel { currentService ->
+                Ticket.withNewSession {
+                    if (currentService.class == Service.class) {
+                        Ticket subTicket = new Ticket()
+                        subTicket.setGuid(guid)
+                        subTicket.setUser(this.getUser())
+                        subTicket.setMaster(this.getMaster())
+                        subTicket.setTicketDate(this.getTicketDate())
+                        subTicket.setTime(localTime.toString("HH:mm"))
+                        localTime = localTime.plusMinutes(currentService.time.intValue())
+                        subTicket.setStatus(this.getStatus())
+                        subTicket.setComment(this.getComment())
+                        subTicket.addToServices(currentService)
+                        subTicket.setType(TicketType.SUB)
+                        result.addIfAbsent(subTicket)
+                    } else if (currentService.class == ServiceGroup.class) {
+                        Set<ServiceToGroup> serviceToGroupSet = ServiceToGroup.findAllByGroup(currentService)
+                        if (serviceToGroupSet) {
+                            serviceToGroupSet.each { subService ->
+                                if (subService.service.class == Service.class) {
+                                    Ticket subTicket = new Ticket()
+                                    subTicket.setGuid(guid)
+                                    subTicket.setUser(this.getUser())
+                                    subTicket.setMaster(this.getMaster())
+                                    subTicket.setTicketDate(this.getTicketDate())
+                                    subTicket.setTime(localTime.toString("HH:mm"))
+                                    localTime = localTime.plusMinutes(subService.service.time.intValue())
+                                    localTime = localTime.plusMinutes(subService.serviceTimeout.intValue())
+                                    subTicket.setStatus(this.getStatus())
+                                    subTicket.setComment(this.getComment())
+                                    subTicket.setType(TicketType.SUB)
+                                    subTicket.addToServices(subService.service)
+                                    result.addIfAbsent(subTicket)
+                                } else if (subService.service.class == ServiceGroup.class) {
+                                    traversSubServices(localTime, Collections.singletonList(subService), result)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
     def createSubTickets() {
         if (this.type && this.type.equals(TicketType.HEAD)) {
             String guid = UUID.randomUUID().toString()
             this.setGuid(guid)
             LocalTime localTime = new LocalTime(this.time)
 
-            this.services?.each {
-                if (it.class == Service.class) {
-                    Ticket subTicket = new Ticket()
-                    subTicket.setGuid(guid)
-                    subTicket.setUser(this.getUser())
-                    subTicket.setMaster(this.getMaster())
-                    subTicket.setTicketDate(this.getTicketDate())
-                    subTicket.setTime(localTime.toString("HH:mm"))
-                    localTime = localTime.plusMinutes(it.time.intValue())
-                    subTicket.setStatus(this.getStatus())
-                    subTicket.setComment(this.getComment())
-                    subTicket.addToServices(it)
-                    subTicket.setType(TicketType.SUB)
-                    subTicket.save()
-                } else if (it.class == ServiceGroup.class) {
-                    Set<ServiceToGroup> serviceToGroupSet = ServiceToGroup.findAllByGroup(it)
-                    if (serviceToGroupSet) {
-                        serviceToGroupSet.each { subService ->
-                            Ticket subTicket = new Ticket()
-                            subTicket.setGuid(guid)
-                            subTicket.setUser(this.getUser())
-                            subTicket.setMaster(this.getMaster())
-                            subTicket.setTicketDate(this.getTicketDate())
-                            subTicket.setTime(localTime.toString("HH:mm"))
-                            localTime = localTime.plusMinutes(subService.service.time.intValue())
-                            localTime = localTime.plusMinutes(subService.serviceTimeout.intValue())
-                            subTicket.setStatus(this.getStatus())
-                            subTicket.setComment(this.getComment())
-                            subTicket.setType(TicketType.SUB)
-                            subTicket.addToServices(subService.service)
-                            subTicket.save()
-                        }
-                    }
-                }
+            CopyOnWriteArrayList<Ticket> tickets = new CopyOnWriteArrayList<Service>()
+            List<Service> curServices = new ArrayList<Service>()
+            curServices.addAll(this.services)
+            GParsExecutorsPoolEnhancer.enhanceInstance(curServices)
+            traversSubServices(localTime, this.services, tickets)
+
+            tickets.each {
+                it.save()
             }
+
         }
     }
 
@@ -283,4 +308,5 @@ class Ticket {
         }
         return ticketList
     }
+
 }
