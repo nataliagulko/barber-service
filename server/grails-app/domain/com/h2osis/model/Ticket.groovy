@@ -278,7 +278,6 @@ class Ticket {
                 DateTime dt2 = new DateTime(Date.parse("dd.MM.yyyy", params.ticketDateTo)).withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59)
                 between('ticketDate', dt1.toDate(), dt2.toDate())
             }
-
             order('ticketDate')
             order('time')
         }

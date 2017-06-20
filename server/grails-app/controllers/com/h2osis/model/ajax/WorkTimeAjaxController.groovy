@@ -4,14 +4,12 @@ import com.h2osis.auth.Role
 import com.h2osis.auth.User
 import com.h2osis.constant.AuthKeys
 import com.h2osis.model.WorkTime
-import com.h2osis.utils.SearchService
 import com.h2osis.utils.SlotsService
 import grails.converters.JSON
 import org.joda.time.LocalDate
 
 class WorkTimeAjaxController {
 
-    SearchService searchService
     def springSecurityService
     SlotsService slotsService
     static allowedMethods = [choose: ['POST', 'GET']]
@@ -69,7 +67,7 @@ class WorkTimeAjaxController {
         if (params.time && params.date && params.id) {
             User master = User.get(params.id)
             List<Map<String, String>> response = slotsService.getSlots(master.id, params.getLong("time"),
-                    new LocalDate(params.getDate("date", "dd.MM.yyyy").time), params.currentId?Long.parseLong(params.currentId):null)
+                    new LocalDate(params.getDate("date", "dd.MM.yyyy").time), params.currentId ? Long.parseLong(params.currentId) : null)
             render(response as JSON)
         } else {
             render([msg: g.message(code: "slots.not.found")] as JSON)
@@ -80,7 +78,7 @@ class WorkTimeAjaxController {
         if (params.time && params.date && params.id) {
             User master = User.get(params.id)
             List<Map<String, String>> response = slotsService.getSlotsInvert(master.id, params.getLong("time"),
-                    new LocalDate(params.getDate("date", "dd.MM.yyyy").time), params.currentId?Long.parseLong(params.currentId):null)
+                    new LocalDate(params.getDate("date", "dd.MM.yyyy").time), params.currentId ? Long.parseLong(params.currentId) : null)
             render(response as JSON)
         } else {
             render([msg: g.message(code: "slots.not.found")] as JSON)

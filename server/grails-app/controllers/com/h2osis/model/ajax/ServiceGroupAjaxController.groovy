@@ -14,7 +14,7 @@ class ServiceGroupAjaxController {
         if (params.id) {
             ServiceGroup group = ServiceGroup.get(params.id)
             if (group) {
-                render(view: "/serviceGroup/subServices", model: [subservices: ServiceToGroup.findAllByGroup(group, [sort:'serviceOrder'])])
+                render(view: "/serviceGroup/subServices", model: [subservices: ServiceToGroup.findAllByGroup(group, [sort: 'serviceOrder'])])
             } else {
                 render([msg: g.message(code: "services.group.not.found")] as JSON)
             }
@@ -48,17 +48,13 @@ class ServiceGroupAjaxController {
         }
     }
 
-    def saveServiceGroup() {
-
-    }
-
     @Transactional
     def deleteSubService() {
         if (params.id && params.groupId) {
             Service service = Service.get(params.id)
             ServiceGroup group = ServiceGroup.get(params.groupId)
             if (service) {
-                ServiceToGroup serviceToGroup = ServiceToGroup.findByServiceAndGroup(service,group)
+                ServiceToGroup serviceToGroup = ServiceToGroup.findByServiceAndGroup(service, group)
                 if (serviceToGroup) {
                     serviceToGroup.delete(flush: true)
                 }

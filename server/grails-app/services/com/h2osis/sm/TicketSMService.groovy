@@ -22,7 +22,6 @@ class TicketSMService extends SMManagerService {
                     subTickets.each {
                         it.setStatus(ticket.status)
                         it.save(flush: true);
-                        //SMManagerService.transObject(SMObjectType.ticket, it.id, this.status, false)
                     }
                 }
             }

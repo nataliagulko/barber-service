@@ -15,8 +15,6 @@ import grails.transaction.Transactional
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 
-import javax.sql.rowset.spi.TransactionalWriter
-
 class TicketAjaxController {
 
     SearchService searchService
