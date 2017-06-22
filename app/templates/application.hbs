@@ -1,2 +1,9 @@
-<h1>Application welcome page</h1>
-{{outlet}}
+{{log session}}
+
+{{#if session.isAuthenticated}}
+	{{#link-to 'protected'}}Protected page{{/link-to}}
+	<button {{action 'invalidateSession'}} type="button">Logout</button>
+{{else}}
+	{{#link-to 'login'}}Login{{/link-to}}
+{{/if}}
+	{{outlet}}

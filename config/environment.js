@@ -27,7 +27,8 @@ module.exports = function(environment) {
         authorizer: 'authorizer:token',
     };
     ENV['ember-simple-auth-token'] = {
-        serverTokenEndpoint: 'http://localhost:8090/api/login'
+        tokenPropertyName: 'access_token',
+        serverTokenEndpoint: 'http://service4barbers-h2osis.rhcloud.com/api/login'
     };
 
     if (environment === 'development') {
