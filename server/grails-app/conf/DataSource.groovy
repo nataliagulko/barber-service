@@ -10,8 +10,7 @@ hibernate {
 //    cache.region.factory_class = 'org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory' // Hibernate 4
     singleSession = true // configure OSIV singleSession mode
     flush.mode = 'manual' // OSIV session flush mode outside of transactional context
-
-
+    hibernate.search.default.indexBase = '/var/lib/openshift/594b85c80c1e66674f00010f/app-root/data'
 }
 
 // environment specific settings
@@ -27,7 +26,7 @@ environments {
         hibernate {
             // hibernate search configuration:
             search.default.directory_provider = 'filesystem'
-            search.default.indexBase =  "/home/lucene"
+            search.default.indexBase =  '/var/lib/openshift/594b85c80c1e66674f00010f/app-root/data'
         }
 
 
@@ -35,9 +34,9 @@ environments {
             driverClassName = "com.mysql.jdbc.Driver"
             dialect = org.hibernate.dialect.MySQL5InnoDBDialect
             dbCreate = "update" // one of 'create', 'create-drop', 'update', 'validate', ''
-            url = "jdbc:mysql://localhost:3306/barber?useUnicode=true&characterEncoding=UTF-8"
-            username = "root"
-            password = "2Q5xnx"
+            url = "jdbc:mysql://127.5.148.2:3306/service4barbers?useUnicode=true&characterEncoding=UTF-8"
+            username = "adminr2dnCN1"
+            password = "uBTeEk-4FG8q"
             logSql = false
             properties {
                // See http://grails.org/doc/latest/guide/conf.html#dataSource for documentation

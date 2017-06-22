@@ -17,7 +17,7 @@ class TicketSMService extends SMManagerService {
                     throw new Exception("Wrong ticket state!")
                 }
                 transObject(SMObjectType.ticket, ticket.id, status)
-                List<Ticket> subTickets = ticket.subTickets
+                def subTickets = ticket.subTickets
                 if (subTickets) {
                     subTickets.each {
                         it.setStatus(ticket.status)

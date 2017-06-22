@@ -32,10 +32,10 @@ class TicketsService {
         ticket.setStatus(TicketStatus.NEW)
 
         DateTime date = DateTimeFormat.forPattern("dd.MM.yyyy").parseDateTime(params.date)
-        DateTime time = DateTimeFormat.shortTime().parseDateTime(params.time)
-
-        DateTime dateTime = date.withHourOfDay(time.getHourOfDay()).withMinuteOfHour(time.getMinuteOfHour())
-                .withSecondOfMinute(time.getSecondOfMinute())
+        String time = params.time
+        String[] splitTime = time.split(":")
+        DateTime dateTime = date.withHourOfDay(splitTime[0].toInteger()).withMinuteOfHour(splitTime[1].toInteger())
+                .withSecondOfMinute(0)
 
         ticket.setTicketDate(dateTime.toDate())
         ticket.setTime(params.time)
