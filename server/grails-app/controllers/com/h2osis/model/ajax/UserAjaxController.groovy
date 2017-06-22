@@ -69,68 +69,7 @@ class UserAjaxController {
         if (params.id) {
             User user = User.get(params.id)
             if (user) {
-                if (params.firstName) {
-                    user.setFirstname(params.firstName)
-                }
-                if (params.secondName) {
-                    user.setSecondname(params.secondName)
-                }
-                if (params.worktimes) {
-                    List<Long> workTimesIds = new ArrayList<Long>()
-                    params.worktimes.split(",").each {
-                        workTimesIds.add(Long.parseLong(it))
-                    }
-                    Set<WorkTime> workTimes = WorkTime.findAllByIdInList(workTimesIds)
-                    if (workTimes) {
-                        Set<WorkTime> oldWorkTimes = WorkTime.findAllByMaster(user)
-                        if (oldWorkTimes) {
-                            oldWorkTimes.each {
-                                it.setMaster(null)
-                                it.save(flush: true)
-                            }
-                        }
-                        workTimes.each {
-                            it.setMaster(user)
-                            it.save(flush: true)
-                        }
-                    }
-
-                }
-
-                if (params.holydays) {
-                    List<Long> holydaysIds = new ArrayList<Long>()
-                    params.holydays.split(",").each {
-                        holydaysIds.add(Long.parseLong(it))
-                    }
-                    Set<Holiday> holydays = Holiday.findAllByIdInList(holydaysIds)
-                    if (holydays) {
-                        Set<Holiday> oldholydays = Holiday.findAllByMaster(user)
-                        if (oldholydays) {
-                            oldholydays.each {
-                                it.setMaster(null)
-                                it.save(flush: true)
-                            }
-                        }
-                        holydays.each {
-                            it.setMaster(user)
-                            it.save(flush: true)
-                        }
-                    }
-                }
-
-                if (params.businessId) {
-                    Business business = Business.get(params.businessId)
-                    if (business) {
-                        Business.findAllByMasters([user])?.each {
-                            it.removeFromMasters(user)
-                        }
-                        business.addToMasters(user)
-                        business.save(flush: true)
-                    }
-                }
-                if (params.firstName || params.secondName) {
-                    user.save(flush: true)
-                }
+               usersService.saveUser(params, user)
                 render([code: 0] as JSON)
             } else {
                 render([msg: g.message(code: "user.get.user.not.found")] as JSON)
