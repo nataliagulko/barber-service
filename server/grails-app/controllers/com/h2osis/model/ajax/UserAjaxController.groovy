@@ -7,6 +7,7 @@ import com.h2osis.constant.AuthKeys
 import com.h2osis.model.Business
 import com.h2osis.model.Holiday
 import com.h2osis.model.UserBlockFact
+import com.h2osis.model.UsersService
 import com.h2osis.model.WorkTime
 import com.h2osis.utils.BarberSecurityService
 import com.h2osis.utils.SearchService
@@ -18,7 +19,21 @@ class UserAjaxController {
     SearchService searchService
     def springSecurityService
     BarberSecurityService barberSecurityService
+    UsersService usersService
     static allowedMethods = [choose: ['POST', 'GET']]
+
+    def create() {
+        if(params.phone && params.password){
+            def result = usersService.createUser(params)
+            if(!result) {
+                render([code: 0] as JSON)
+            } else {
+                render([msg: result] as JSON)
+            }
+        } else {
+            render([msg: g.message(code: "user.phone.and.pass.null")] as JSON)
+        }
+    }
 
     def get() {
         if (params.id) {
