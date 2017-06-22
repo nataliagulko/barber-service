@@ -6,7 +6,7 @@ module.exports = function(environment) {
         environment: environment,
         rootURL: '/',
         locationType: 'auto',
-        host: 'http://service4barbers-h2osis.rhcloud.com/api/login',
+        host: 'http://service4barbers-h2osis.rhcloud.com',
         EmberENV: {
             FEATURES: {
                 // Here you can enable experimental features on an ember canary build
@@ -29,7 +29,8 @@ module.exports = function(environment) {
     };
     ENV['ember-simple-auth-token'] = {
         tokenPropertyName: 'access_token',
-        serverTokenEndpoint: 'http://service4barbers-h2osis.rhcloud.com/api/login'
+        serverTokenEndpoint: ENV.host + '/api/login',
+        crossOriginWhitelist: [ENV.host],
     };
 
     if (environment === 'development') {
