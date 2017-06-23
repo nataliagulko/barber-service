@@ -15,7 +15,7 @@ class UsersService {
     def createUser(def params) {
 
         if (params.password == null || params.phone == null || params.phone == "") {
-            return messageSource.getMessage("user.phone.and.pass.null", Locale.default)
+            return messageSource.getMessage("user.phone.and.pass.null", null,  Locale.default)
         } else if (!User.findByPhone(params.phone)) {
             User user = new User(username: params.login,
                     password: params.password,
@@ -40,8 +40,9 @@ class UsersService {
                 new UserRole(user: user, role: role).save(flush: true);
             }
             User.search().createIndexAndWait()
+            return user
         } else {
-            return messageSource.getMessage("user.double.phone", Locale.default)
+            return messageSource.getMessage("user.double.phone", null, Locale.default)
         }
     }
 

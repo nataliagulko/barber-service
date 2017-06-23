@@ -25,8 +25,9 @@ class UserAjaxController {
     def create() {
         if(params.phone && params.password){
             def result = usersService.createUser(params)
-            if(!result) {
-                render([code: 0] as JSON)
+            if(result instanceof User) {
+                result.setPassword(null)
+                render([user: result] as JSON)
             } else {
                 render([msg: result] as JSON)
             }

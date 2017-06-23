@@ -136,7 +136,20 @@ grails.plugin.springsecurity.interceptUrlMap = [
         '/main/index'           : ["ROLE_ADMIN", "ROLE_USER"],
         '/main/'                : ["ROLE_ADMIN", "ROLE_USER"],
         '/user/**'              : ["ROLE_ADMIN", "ROLE_USER"],
-        '/userAjax/**'          : ["ROLE_ADMIN", "ROLE_USER"],
+        '/userAjax/get'         : ["ROLE_ADMIN", "ROLE_USER"],
+        '/userAjax/save'        : ["ROLE_ADMIN", "ROLE_USER"],
+        '/userAjax/find'        : ["ROLE_ADMIN", "ROLE_USER"],
+        '/userAjax/block'       : ["ROLE_ADMIN"],
+        '/userAjax/getWorktimes': ["ROLE_ADMIN", "ROLE_USER"],
+        '/userAjax/getHolidays' : ["ROLE_ADMIN", "ROLE_USER"],
+        '/userAjax/getHolidaysJson' : ["ROLE_ADMIN", "ROLE_USER"],
+        '/userAjax/saveWorkTime'    : ["ROLE_ADMIN"],
+        '/userAjax/saveHoliday' : ["ROLE_ADMIN"],
+        '/userAjax/deleteWorkTime'  : ["ROLE_ADMIN"],
+        '/userAjax/deleteHoliday'   : ["ROLE_ADMIN"],
+        '/userAjax/saveByPhone' : ["ROLE_ADMIN", "ROLE_USER"],
+        '/userAjax/blockUser'   : ["ROLE_ADMIN"],
+        '/userAjax/unBlockUser' : ["ROLE_ADMIN"],
         '/userAjax/create'      : ["permitAll"],
         '/serviceAjax/**'       : ["ROLE_ADMIN", "ROLE_USER"],
         '/ticketAjax/**'        : ["ROLE_ADMIN", "ROLE_USER"],
@@ -198,12 +211,18 @@ cors.headers = [
 ]
 
 grails.plugin.springsecurity.filterChain.chainMap = [
-        '/userAjax/create': 'anonymousAuthenticationFilter,restTokenValidationFilter,restExceptionTranslationFilter,filterInvocationInterceptor',
+        '/userAjax/create': 'anonymousAuthenticationFilter,restExceptionTranslationFilter,filterInvocationInterceptor',
         '/api/**': 'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-rememberMeAuthenticationFilter',  // Stateless chain
         '/**': 'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-rememberMeAuthenticationFilter',  // Stateless chain
        // '/**': 'JOINED_FILTERS,-restTokenValidationFilter,-restExceptionTranslationFilter'                                                                          // Traditional chain
 ]
-
+rest {
+    token {
+        validation {
+            enableAnonymousAccess = true
+        }
+    }
+}
 grails.plugin.springsecurity.rest.login.active=true
 grails.plugin.springsecurity.rest.login.failureStatusCode=401
 grails.plugin.springsecurity.rest.token.validation.active=true
