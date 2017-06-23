@@ -24,9 +24,10 @@ class BootStrap {
             new SMTransition(objectType: SMObjectType.ticket, stateFrom: TicketStatus.NEW, stateTo: TicketStatus.REJECTED).save(flush: true)
         }
 
-        if (Role.count() != 2) {
+        if (!Role.count()) {
             new Role(authority: AuthKeys.ADMIN, description: "admin").save(flush: true)
             new Role(authority: AuthKeys.USER, description: "user").save(flush: true)
+            new Role(authority: AuthKeys.ROOT, description: "root").save(flush: true)
         }
 
         if (Environment.current == Environment.PRODUCTION) {
@@ -84,6 +85,18 @@ class BootStrap {
                 DateTime date1 = DateTimeFormat.forPattern("yyyy-MM-dd").parseDateTime("2016-09-16")
                 new Holiday(master: User.findByUsername('nnogieva'), comment: "0",
                         dateFrom: date1.toDate(), dateTo: date1.withDayOfMonth(date.dayOfMonth + 14).toDate()).save(flush: true)
+
+                User root = new User(username: "root", password: "ijbjxzzi", email: "sokolovep@gmail.com", fio: "fio", phone: "+7(000)000-00-00").save(flush: true)
+                role = Role.findByAuthority(AuthKeys.ROOT)
+                new UserRole(user: root, role: role).save(flush: true)
+            }
+            if(!User.findByUsername("root")){
+                if(!Role.findByAuthority(AuthKeys.ROOT)){
+                    new Role(authority: AuthKeys.ROOT, description: "root").save(flush: true)
+                }
+                User root = new User(username: "root", password: "ijbjxzzi", email: "sokolovep@gmail.com", fio: "fio", phone: "+7(000)000-00-00").save(flush: true)
+                Role role = Role.findByAuthority(AuthKeys.ROOT)
+                new UserRole(user: root, role: role).save(flush: true)
             }
 
             if (!Business.count()) {
