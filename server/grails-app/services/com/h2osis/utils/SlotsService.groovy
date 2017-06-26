@@ -1,6 +1,7 @@
 package com.h2osis.utils
 
 import com.h2osis.auth.User
+import com.h2osis.constant.TicketStatus
 import com.h2osis.constant.TicketType
 import com.h2osis.model.*
 import grails.transaction.Transactional
@@ -37,7 +38,7 @@ class SlotsService {
 
     def getWorkTimeDate(Date date, Long time) {
         DateTime dt = new DateTime(date)
-        return dt.minusMinutes(time.intValue()).toDate()
+        return dt.minusMinutes(time.intValue()-1).toDate()
     }
 
     def isTicketInWorkTime(Ticket ticket, WorkTime workTime) {
@@ -117,11 +118,11 @@ class SlotsService {
         if (currId) {
             Ticket curTicket = Ticket.findById(currId)
             if (curTicket) {
-                ticketList = Ticket.findAllByMasterAndTypeAndTicketDateBetweenAndGuidNotEqual(ticketsMaster, TicketType.SUB, dt1, dt2, curTicket.guid, [sort: 'ticketDate'])
+                ticketList = Ticket.findAllByMasterAndTypeAndTicketDateBetweenAndGuidNotEqualAndStatusNotEqual(ticketsMaster, TicketType.SUB, dt1, dt2, curTicket.guid, TicketStatus.REJECTED, [sort: 'ticketDate'])
             }
         }
         if (!ticketList) {
-            ticketList = Ticket.findAllByMasterAndTypeAndTicketDateBetween(ticketsMaster, TicketType.SUB, dt1, dt2, [sort: 'ticketDate'])
+            ticketList = Ticket.findAllByMasterAndTypeAndTicketDateBetweenAndStatusNotEqual(ticketsMaster, TicketType.SUB, dt1, dt2, TicketStatus.REJECTED, [sort: 'ticketDate'])
         }
 
         List<Map<String, String>> response = new ArrayList<Map<String, String>>()
