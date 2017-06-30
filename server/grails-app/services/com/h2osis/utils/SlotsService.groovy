@@ -121,7 +121,7 @@ class SlotsService {
                 ticketList = Ticket.findAllByMasterAndTypeAndTicketDateBetweenAndGuidNotEqualAndStatusNotEqual(ticketsMaster, TicketType.SUB, dt1, dt2, curTicket.guid, TicketStatus.REJECTED, [sort: 'ticketDate'])
             }
         }
-        if (!ticketList) {
+        if (ticketList == null) {
             ticketList = Ticket.findAllByMasterAndTypeAndTicketDateBetweenAndStatusNotEqual(ticketsMaster, TicketType.SUB, dt1, dt2, TicketStatus.REJECTED, [sort: 'ticketDate'])
         }
 
