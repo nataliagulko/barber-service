@@ -81,7 +81,7 @@ class RegisterController {
         if (!user) {
             user = User.findByPhone(params.phone)
         }
-        String code = barberSecurityService.generator((('A'..'Z') + ('0'..'9')).join(), 6)
+        String code = barberSecurityService.generator((('0'..'9')).join(), 6)
         System.out.print("CODE for $user.phone: $code")
         String smsSendResult = barberSMSService.saveSendMsg(user, SMSMessages.passChangeMsg.concat(code))
         if (smsSendResult) {
