@@ -10,6 +10,7 @@ class User {
     String firstname
     String secondname
     String phone
+    String masterTZ
 
     String smsCentrLogin
     String smsCentrPass
@@ -38,6 +39,7 @@ class User {
 
         smsCentrLogin blank: true, nullable: true
         smsCentrPass blank: true, nullable: true
+        masterTZ blank: true, nullable: true
     }
 
     static search = {
@@ -86,6 +88,10 @@ class User {
         }else {
             return null
         }
+    }
+
+    def getMasterTZAct() {
+        return this.masterTZ?this.masterTZ:"Asia/Baghdad"
     }
 
 }
