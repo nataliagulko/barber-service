@@ -23,9 +23,9 @@ class UserAjaxController {
     static allowedMethods = [choose: ['POST', 'GET']]
 
     def create() {
-        if(params.phone && params.password){
+        if (params.phone && params.password) {
             def result = usersService.createUser(params)
-            if(result instanceof User) {
+            if (result instanceof User) {
                 result.setPassword(null)
                 render([user: result] as JSON)
             } else {
@@ -70,7 +70,7 @@ class UserAjaxController {
         if (params.id) {
             User user = User.get(params.id)
             if (user) {
-               usersService.saveUser(params, user)
+                usersService.saveUser(params, user)
                 render([code: 0] as JSON)
             } else {
                 render([msg: g.message(code: "user.get.user.not.found")] as JSON)
@@ -164,7 +164,6 @@ class UserAjaxController {
         if (params.id) {
             User user = User.get(params.id)
             if (user) {
-                user.setPassword(null)
                 Set<WorkTime> workTimes = WorkTime.findAllByMaster(user)
                 Set<Integer> workDays = new HashSet<Integer>()
                 workTimes?.each {
@@ -172,7 +171,15 @@ class UserAjaxController {
                 }
                 Set<Integer> nonWorkDays = workDays ? [0, 1, 2, 3, 4, 5, 6].minus(workDays) : [0, 1, 2, 3, 4, 5, 6]
                 nonWorkDays.each { it++ }
-                render([holidays: Holiday.findAllByMaster(user, [sort: 'dateFrom']), nonWorkDays: nonWorkDays] as JSON)
+
+                List<Holiday> holidays =
+                        Holiday.findAllByMasterAndCommentNotEqual(user, "maxTime", [sort: 'dateFrom'])?.plus(
+                                Holiday.findAllByMasterAndCommentAndMaxTimeLessThan(user, "maxTime", params.time ? params.time : slotsService.getDuration(1L),
+                                        [sort: 'dateFrom']))?.sort { a, b -> a.dateFrom <=> b.dateFrom }
+                holidays?.each {
+                    it.master.setPassword(null)
+                }
+                render([holidays: holidays, nonWorkDays: nonWorkDays] as JSON)
             } else {
                 render([msg: g.message(code: "user.get.user.not.found")] as JSON)
             }

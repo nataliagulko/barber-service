@@ -3,12 +3,10 @@ package com.h2osis.model
 import com.h2osis.auth.User
 import com.h2osis.constant.TicketType
 import com.h2osis.sm.SMObjectType
-import groovyx.gpars.GParsExecutorsPool
-import groovyx.gpars.GParsExecutorsPoolEnhancer
 import org.joda.time.DateTime
 import org.joda.time.LocalTime
 
-import java.util.concurrent.CopyOnWriteArrayList
+import java.time.LocalDate
 
 class Ticket {
 
@@ -63,6 +61,7 @@ class Ticket {
 
     def beforeInsert() {
         updateDate()
+        createSubTickets()
         updateFields()
     }
 
@@ -70,12 +69,31 @@ class Ticket {
         updateDate()
         updateFields()
         if (this.type && this.type.equals(TicketType.HEAD)) {
-            List<Ticket> subs = getSubTickets()
-            subs?.each {
-                it.setTicketDate(this.ticketDate)
-                it.save()
-            }
+            updateSubTicketsDate()
             slotsService.syncFullDays(this, this.getPersistentValue("ticketDate"), null)
+        }
+    }
+
+    def updateSubTicketsDate() {
+        List<Ticket> subs = this.getSubTickets()
+        DateTime currDate = new DateTime(this.ticketDate)
+        String time = this.time
+        subs?.each { subTicket ->
+            subTicket.setTicketDate(currDate.toDate())
+            Integer h = currDate.hourOfDay
+            Integer m = currDate.minuteOfHour
+            String currTime = (h < 10 ? "0".concat(h.toString()) : h.toString()).concat(":").concat(m < 10 ? "0".concat(m.toString()) : m.toString())
+            subTicket.setTime(currTime)
+            subTicket.save()
+            Integer timeDiff = slotsService.getTicketDurationAct(subTicket).intValue()
+            currDate = currDate.plusMinutes(timeDiff)
+        }
+    }
+
+    def updateStatuses(){
+        Ticket.findAllByGuid(this.guid)?.each {
+            it.setStatus(this.status)
+            it.save()
         }
     }
 
@@ -120,52 +138,9 @@ class Ticket {
         }
     }
 
-    def traversSubServices(LocalTime localTime, Collection<Service> allServices, CopyOnWriteArrayList<Ticket> result) {
-        GParsExecutorsPool.withPool {
-            allServices?.eachParallel { currentService ->
-                Ticket.withNewSession {
-                    if (currentService.class == Service.class) {
-                        Ticket subTicket = new Ticket()
-                        subTicket.setGuid(guid)
-                        subTicket.setUser(this.getUser())
-                        subTicket.setMaster(this.getMaster())
-                        subTicket.setTicketDate(this.getTicketDate())
-                        subTicket.setTime(localTime.toString("HH:mm"))
-                        localTime = localTime.plusMinutes(currentService.time.intValue())
-                        subTicket.setStatus(this.getStatus())
-                        subTicket.setComment(this.getComment())
-                        subTicket.addToServices(currentService)
-                        subTicket.setType(TicketType.SUB)
-                        result.addIfAbsent(subTicket)
-                    } else if (currentService.class == ServiceGroup.class) {
-                        Set<ServiceToGroup> serviceToGroupSet = ServiceToGroup.findAllByGroup(currentService)
-                        if (serviceToGroupSet) {
-                            serviceToGroupSet.each { subService ->
-                                if (subService.service.class == Service.class) {
-                                    Ticket subTicket = new Ticket()
-                                    subTicket.setGuid(guid)
-                                    subTicket.setUser(this.getUser())
-                                    subTicket.setMaster(this.getMaster())
-                                    subTicket.setTicketDate(this.getTicketDate())
-                                    subTicket.setTime(localTime.toString("HH:mm"))
-                                    localTime = localTime.plusMinutes(subService.service.time.intValue())
-                                    localTime = localTime.plusMinutes(subService.serviceTimeout.intValue())
-                                    subTicket.setStatus(this.getStatus())
-                                    subTicket.setComment(this.getComment())
-                                    subTicket.setType(TicketType.SUB)
-                                    subTicket.addToServices(subService.service)
-                                    result.addIfAbsent(subTicket)
-                                } else if (subService.service.class == ServiceGroup.class) {
-                                    traversSubServices(localTime, Collections.singletonList(subService), result)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+    def deleteSubTickets() {
+        Ticket.deleteAll(this.getSubTickets())
     }
-
 
     def createSubTickets() {
         if (this.type && this.type.equals(TicketType.HEAD)) {
@@ -173,16 +148,41 @@ class Ticket {
             this.setGuid(guid)
             LocalTime localTime = new LocalTime(this.time)
 
-            CopyOnWriteArrayList<Ticket> tickets = new CopyOnWriteArrayList<Service>()
-            List<Service> curServices = new ArrayList<Service>()
-            curServices.addAll(this.services)
-            GParsExecutorsPoolEnhancer.enhanceInstance(curServices)
-            traversSubServices(localTime, this.services, tickets)
-
-            tickets.each {
-                it.save()
+            this.services?.each {
+                if (it.class == Service.class) {
+                    Ticket subTicket = new Ticket()
+                    subTicket.setGuid(guid)
+                    subTicket.setUser(this.getUser())
+                    subTicket.setMaster(this.getMaster())
+                    subTicket.setTicketDate(this.getTicketDate())
+                    subTicket.setTime(localTime.toString("HH:mm"))
+                    localTime = localTime.plusMinutes(it.time.intValue())
+                    subTicket.setStatus(this.getStatus())
+                    subTicket.setComment(this.getComment())
+                    subTicket.addToServices(it)
+                    subTicket.setType(TicketType.SUB)
+                    subTicket.save()
+                } else if (it.class == ServiceGroup.class) {
+                    Set<ServiceToGroup> serviceToGroupSet = ServiceToGroup.findAllByGroup(it)
+                    if (serviceToGroupSet) {
+                        serviceToGroupSet.each { subService ->
+                            Ticket subTicket = new Ticket()
+                            subTicket.setGuid(guid)
+                            subTicket.setUser(this.getUser())
+                            subTicket.setMaster(this.getMaster())
+                            subTicket.setTicketDate(this.getTicketDate())
+                            subTicket.setTime(localTime.toString("HH:mm"))
+                            localTime = localTime.plusMinutes(subService.service.time.intValue())
+                            localTime = localTime.plusMinutes(subService.serviceTimeout.intValue())
+                            subTicket.setStatus(this.getStatus())
+                            subTicket.setComment(this.getComment())
+                            subTicket.setType(TicketType.SUB)
+                            subTicket.addToServices(subService.service)
+                            subTicket.save()
+                        }
+                    }
+                }
             }
-
         }
     }
 
@@ -303,10 +303,10 @@ class Ticket {
                 DateTime dt2 = new DateTime(Date.parse("dd.MM.yyyy", params.ticketDateTo)).withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59)
                 between('ticketDate', dt1.toDate(), dt2.toDate())
             }
+
             order('ticketDate')
             order('time')
         }
         return ticketList
     }
-
 }
