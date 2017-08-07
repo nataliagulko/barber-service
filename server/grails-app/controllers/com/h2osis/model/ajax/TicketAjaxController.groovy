@@ -381,4 +381,17 @@ class TicketAjaxController {
             render([msg: g.message(code: "ticket.shift.params.null")] as JSON)
         }
     }
+
+    def swapTickets() {
+        if (params.ticket1 && params.ticket2) {
+            def result = slotsService.swapTickets(params.getLong("ticket1"), params.getLong("ticket2"))
+            if (result) {
+                render([msg: result] as JSON)
+            } else {
+                render([code: "0"] as JSON)
+            }
+        } else {
+            render([msg: g.message(code: "ticket.swap.params.null")] as JSON)
+        }
+    }
 }

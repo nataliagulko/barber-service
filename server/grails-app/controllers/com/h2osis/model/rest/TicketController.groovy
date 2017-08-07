@@ -8,8 +8,6 @@ import com.h2osis.model.Service
 import com.h2osis.model.Ticket
 import grails.converters.JSON
 import grails.transaction.Transactional
-import org.joda.time.DateTime
-import org.joda.time.format.DateTimeFormat
 import org.joda.time.LocalDate
 
 import static org.springframework.http.HttpStatus.*
@@ -166,38 +164,6 @@ class TicketController {
             render(template: "list", model:[ticketList:ticketList])
         } else {
             render([msg: g.message(code: "ticket.fine.not.found")])
-        }
-    }
-
-    def shiftTickets() {
-        if (params.id && params.time) {
-            def principal = springSecurityService.principal
-            User user = User.get(principal.id)
-            if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
-                try {
-                    slotsService.shiftTickets(params.getLong("id"), user, params.getLong("time"))
-                    render([code: "1"] as JSON)
-                } catch (Exception e) {
-                    render([msg: e.toString()] as JSON)
-                }
-            } else {
-                render([msg: g.message(code: "ticket.shift.notmaster")] as JSON)
-            }
-        } else {
-            render([msg: g.message(code: "ticket.shift.params.null")] as JSON)
-        }
-    }
-
-    def swapTickets() {
-        if (params.ticket1 && params.ticket2) {
-            def result = slotsService.swapTickets(params.getLong("ticket1"), params.getLong("ticket2"))
-            if (result) {
-                render([msg: result] as JSON)
-            } else {
-                render([code: "0"] as JSON)
-            }
-        } else {
-            render([msg: g.message(code: "ticket.swap.params.null")] as JSON)
         }
     }
 }
