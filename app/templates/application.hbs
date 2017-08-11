@@ -1,7 +1,7 @@
 {{#if session.isAuthenticated}}
-	{{#link-to 'protected'}}Protected page{{/link-to}}
-	<button {{action 'invalidateSession'}} type="button">Logout</button>
+	{{outlet}}
 {{else}}
 	{{#link-to 'login'}}Login{{/link-to}}
-{{/if}}
 	{{outlet}}
+{{/if}}
+	
