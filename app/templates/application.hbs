@@ -1,3 +1,5 @@
+<i class="fa fa-pause"></i>
+
 {{#if session.isAuthenticated}}
 	{{#link-to 'protected'}}Protected page{{/link-to}}
 	<button {{action 'invalidateSession'}} type="button">Logout</button>

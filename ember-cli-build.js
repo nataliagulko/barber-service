@@ -9,7 +9,45 @@ module.exports = function(defaults) {
 
   // Use `app.import` to add additional libraries to the generated
   // output files.
-  //
+
+  // В порядке объявления по документации метроника
+  
+  // Plugins CSS
+  app.import("vendor/plugins/font-awesome/css/font-awesome.css");
+  app.import("vendor/plugins/simple-line-icons/simple-line-icons.css");
+  app.import("vendor/plugins/bootstrap/css/bootstrap.css");
+  app.import("vendor/plugins/bootstrap-switch/css/bootstrap-switch.css");
+  app.import("vendor/plugins/fullcalendar/fullcalendar.css");
+
+  // Plugins Fonts
+  // Font Awesome
+  app.import("vendor/plugins/font-awesome/fonts/fontawesome-webfont.eot");
+  app.import("vendor/plugins/font-awesome/fonts/fontawesome-webfont.svg");
+  app.import("vendor/plugins/font-awesome/fonts/fontawesome-webfont.ttf");
+  app.import("vendor/plugins/font-awesome/fonts/fontawesome-webfont.woff");
+  app.import("vendor/plugins/font-awesome/fonts/fontawesome-webfont.woff");
+  // Glyphicons
+  app.import("vendor/plugins/bootstrap/fonts/bootstrap/glyphicons-halflings-regular.eot");
+  app.import("vendor/plugins/bootstrap/fonts/bootstrap/glyphicons-halflings-regular.svg");
+  app.import("vendor/plugins/bootstrap/fonts/bootstrap/glyphicons-halflings-regular.ttf");
+  app.import("vendor/plugins/bootstrap/fonts/bootstrap/glyphicons-halflings-regular.woff");
+  app.import("vendor/plugins/bootstrap/fonts/bootstrap/glyphicons-halflings-regular.woff2");
+
+  // Plugins JS
+  app.import("vendor/plugins/jquery-ui/jquery-ui.min.js");
+  app.import("vendor/plugins/bootstrap/js/bootstrap.js");
+  app.import("vendor/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.js");
+  app.import("vendor/plugins/jquery-slimscroll/jquery.slimscroll.js");
+  app.import("vendor/plugins/jquery.blockui.min.js");
+  app.import("vendor/plugins/moment.min.js");
+  app.import("vendor/plugins/bootstrap-switch/js/bootstrap-switch.js");
+  app.import("vendor/plugins/fullcalendar/fullcalendar.js");
+
+  // Page JS
+  app.import("vendor/scripts/app.js");
+  app.import("vendor/scripts/layout/layout.js");
+  app.import("vendor/scripts/quick-sidebar.js");
+
   // If you need to use different assets in different
   // environments, specify an object as the first parameter. That
   // object's keys should be the environment name and the values
