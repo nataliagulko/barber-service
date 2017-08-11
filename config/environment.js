@@ -2,7 +2,7 @@
 
 module.exports = function(environment) {
     var ENV = {
-        modulePrefix: 'barber-service',
+        modulePrefix: 'barbers',
         environment: environment,
         rootURL: '/',
         locationType: 'auto',
