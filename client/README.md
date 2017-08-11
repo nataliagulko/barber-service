@@ -45,11 +45,13 @@ Make use of the many generators for code, try `ember help generate` for more det
 `git subtree push --prefix client heroku master`
 
 Если падает ошибка:
-```fatal: 'heroku' does not appear to be a git repository
+```
+fatal: 'heroku' does not appear to be a git repository
 fatal: Could not read from remote repository.
 
 Please make sure you have the correct access rights
-and the repository exists.```
+and the repository exists.
+```
 
 эапустить сначала 
 `heroku git:remote -a barber-service` затем `git subtree push --prefix client heroku master`
