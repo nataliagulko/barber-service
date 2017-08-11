@@ -39,9 +39,24 @@ Make use of the many generators for code, try `ember help generate` for more det
 * `ember build` (development)
 * `ember build --environment production` (production)
 
-### Deploying
+### Deploying to Heroku
 
-Specify what it takes to deploy your app.
+Запускать в корне каталога, не в client
+`git subtree push --prefix client heroku master`
+
+Если падает ошибка:
+```fatal: 'heroku' does not appear to be a git repository
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.```
+
+эапустить сначала 
+`heroku git:remote -a barber-service` затем `git subtree push --prefix client heroku master`
+
+## Service API
+
+[service4barbers](https://service4barbers-h2osis.rhcloud.com)
 
 ## Further Reading / Useful Links
 
@@ -50,3 +65,5 @@ Specify what it takes to deploy your app.
 * Development Browser Extensions
   * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
   * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
+
+* [heroku docs](https://devcenter.heroku.com/)
