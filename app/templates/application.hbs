@@ -1,7 +1,6 @@
 {{#if session.isAuthenticated}}
 	{{outlet}}
 {{else}}
-	{{#link-to 'login'}}Login{{/link-to}}
-	{{outlet}}
+	{{login-page}}
 {{/if}}
 	
