@@ -56,6 +56,16 @@ and the repository exists.
 эапустить сначала 
 `heroku git:remote -a barber-service` затем `git subtree push --prefix client heroku master`
 
+## SCSS Structure
+
+### vendor.css
+Весь код из файлов *.css папки vendor генерируется и минифицируется в vendor.css
+
+### app.scss
+Подключен плагин для работы с SASS `ember-cli-sass`, поэтому файл styles/app.scss автоматически генерируется в app.css.
+В папке styles файлы структурируются по адаптированным правилам Доксы. В папке metronic хранятся все scss файлы, относящиеся к теме Метроника.
+В папке barbers всё по Докса за исключением каталога "vendor". Такого каталога нет. Эмбер сам генерирует vendor-код по своим правилам и каталогам, поэтому здесь нет необходимости в этой папке. Всё остальное по тем же правилам, что и в Доксе.
+
 ## Service API
 
 [service4barbers](https://service4barbers-h2osis.rhcloud.com)

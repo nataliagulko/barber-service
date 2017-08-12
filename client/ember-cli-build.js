@@ -32,6 +32,12 @@ module.exports = function(defaults) {
   app.import("vendor/plugins/bootstrap/fonts/bootstrap/glyphicons-halflings-regular.ttf", { destDir: 'fonts' });
   app.import("vendor/plugins/bootstrap/fonts/bootstrap/glyphicons-halflings-regular.woff", { destDir: 'fonts' });
   app.import("vendor/plugins/bootstrap/fonts/bootstrap/glyphicons-halflings-regular.woff2", { destDir: 'fonts' });
+  // Simple Line Icons
+  app.import("vendor/plugins/simple-line-icons/fonts/Simple-Line-Icons.eot", { destDir: 'fonts' });
+  app.import("vendor/plugins/simple-line-icons/fonts/Simple-Line-Icons.dev.svg", { destDir: 'fonts' });
+  app.import("vendor/plugins/simple-line-icons/fonts/Simple-Line-Icons.ttf", { destDir: 'fonts' });
+  app.import("vendor/plugins/simple-line-icons/fonts/Simple-Line-Icons.woff", { destDir: 'fonts' });
+  app.import("vendor/plugins/simple-line-icons/fonts/Simple-Line-Icons.woff2", { destDir: 'fonts' });
 
   // Plugins JS
   app.import("vendor/plugins/jquery-ui/jquery-ui.min.js");
@@ -52,9 +58,6 @@ module.exports = function(defaults) {
   app.import("vendor/scripts/quick-sidebar.js");
 
   // Pages JS
-  // Login 4
-  app.import("vendor/pages/login/login-4.js");
-  app.import("vendor/pages/login/login-4.css");
 
   // If you need to use different assets in different
   // environments, specify an object as the first parameter. That
