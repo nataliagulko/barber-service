@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
 	classNames: "login",
-	
+
 	didInsertElement: function() {
 		$(".login").backstretch([
 			"/img/bg/1.jpg",
