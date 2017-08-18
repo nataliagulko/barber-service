@@ -13,19 +13,12 @@ module.exports = function(defaults) {
   // В порядке объявления по документации метроника
   
   // Plugins CSS
-  app.import("vendor/plugins/font-awesome/css/font-awesome.css");
   app.import("vendor/plugins/simple-line-icons/simple-line-icons.css");
   app.import("vendor/plugins/bootstrap/css/bootstrap.css");
   app.import("vendor/plugins/bootstrap-switch/css/bootstrap-switch.css");
   app.import("vendor/plugins/fullcalendar/fullcalendar.css");
 
   // Plugins Fonts
-  // Font Awesome
-  app.import("vendor/plugins/font-awesome/fonts/fontawesome-webfont.eot", { destDir: 'fonts' });
-  app.import("vendor/plugins/font-awesome/fonts/fontawesome-webfont.svg", { destDir: 'fonts' });
-  app.import("vendor/plugins/font-awesome/fonts/fontawesome-webfont.ttf", { destDir: 'fonts' });
-  app.import("vendor/plugins/font-awesome/fonts/fontawesome-webfont.woff", { destDir: 'fonts' });
-  app.import("vendor/plugins/font-awesome/fonts/fontawesome-webfont.woff", { destDir: 'fonts' });
   // Glyphicons
   app.import("vendor/plugins/bootstrap/fonts/bootstrap/glyphicons-halflings-regular.eot", { destDir: 'fonts' });
   app.import("vendor/plugins/bootstrap/fonts/bootstrap/glyphicons-halflings-regular.svg", { destDir: 'fonts' });
