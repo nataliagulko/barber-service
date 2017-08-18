@@ -19,12 +19,6 @@ module.exports = function(defaults) {
   app.import("vendor/plugins/fullcalendar/fullcalendar.css");
 
   // Plugins Fonts
-  // Glyphicons
-  app.import("vendor/plugins/bootstrap/fonts/bootstrap/glyphicons-halflings-regular.eot", { destDir: 'fonts' });
-  app.import("vendor/plugins/bootstrap/fonts/bootstrap/glyphicons-halflings-regular.svg", { destDir: 'fonts' });
-  app.import("vendor/plugins/bootstrap/fonts/bootstrap/glyphicons-halflings-regular.ttf", { destDir: 'fonts' });
-  app.import("vendor/plugins/bootstrap/fonts/bootstrap/glyphicons-halflings-regular.woff", { destDir: 'fonts' });
-  app.import("vendor/plugins/bootstrap/fonts/bootstrap/glyphicons-halflings-regular.woff2", { destDir: 'fonts' });
   // Simple Line Icons
   app.import("vendor/plugins/simple-line-icons/fonts/Simple-Line-Icons.eot", { destDir: 'fonts' });
   app.import("vendor/plugins/simple-line-icons/fonts/Simple-Line-Icons.dev.svg", { destDir: 'fonts' });
@@ -34,7 +28,6 @@ module.exports = function(defaults) {
 
   // Plugins JS
   app.import("vendor/plugins/jquery-ui/jquery-ui.min.js");
-  app.import("vendor/plugins/bootstrap/js/bootstrap.js");
   app.import("vendor/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.js");
   app.import("vendor/plugins/jquery-slimscroll/jquery.slimscroll.js");
   app.import("vendor/plugins/jquery.blockui.min.js");
