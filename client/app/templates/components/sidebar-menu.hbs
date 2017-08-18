@@ -1,5 +1,4 @@
 <!-- BEGIN SIDEBAR -->
-<div class="page-sidebar-wrapper">
     <!-- BEGIN SIDEBAR -->
     <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
     <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
@@ -21,11 +20,11 @@
             </li>
             <!-- END SIDEBAR TOGGLER BUTTON -->
             <li class="nav-item start ">
-                <a href="javascript:;" class="nav-link nav-toggle">
-                    <i class="icon-home"></i>
-                    <span class="title">Главная</span>
-                    <span class="arrow"></span>
-                </a>
+            {{#link-to 'index' class="nav-link nav-toggle"}}
+                <i class="icon-home"></i>
+                <span class="title">Главная</span>
+                <span class="arrow"></span>
+            {{/link-to}}
                 <ul class="sub-menu">
                     <li class="nav-item start ">
                         <a href="index.html" class="nav-link ">
@@ -53,11 +52,11 @@
                 <h3 class="uppercase">Features</h3>
             </li>
             <li class="nav-item  ">
-                <a href="javascript:;" class="nav-link nav-toggle">
+                {{#link-to 'ticket.index' class="nav-link nav-toggle"}}
                     <i class="icon-calendar"></i>
                     <span class="title">Записи</span>
                     <span class="arrow"></span>
-                </a>
+                {{/link-to}}
                 <ul class="sub-menu">
                     <li class="nav-item  ">
                         <a href="ui_metronic_grid.html" class="nav-link ">
@@ -99,5 +98,4 @@
         <!-- END SIDEBAR MENU -->
     </div>
     <!-- END SIDEBAR -->
-</div>
 <!-- END SIDEBAR -->
