@@ -13,25 +13,12 @@ module.exports = function(defaults) {
   // В порядке объявления по документации метроника
   
   // Plugins CSS
-  app.import("vendor/plugins/font-awesome/css/font-awesome.css");
   app.import("vendor/plugins/simple-line-icons/simple-line-icons.css");
   app.import("vendor/plugins/bootstrap/css/bootstrap.css");
   app.import("vendor/plugins/bootstrap-switch/css/bootstrap-switch.css");
   app.import("vendor/plugins/fullcalendar/fullcalendar.css");
 
   // Plugins Fonts
-  // Font Awesome
-  app.import("vendor/plugins/font-awesome/fonts/fontawesome-webfont.eot", { destDir: 'fonts' });
-  app.import("vendor/plugins/font-awesome/fonts/fontawesome-webfont.svg", { destDir: 'fonts' });
-  app.import("vendor/plugins/font-awesome/fonts/fontawesome-webfont.ttf", { destDir: 'fonts' });
-  app.import("vendor/plugins/font-awesome/fonts/fontawesome-webfont.woff", { destDir: 'fonts' });
-  app.import("vendor/plugins/font-awesome/fonts/fontawesome-webfont.woff", { destDir: 'fonts' });
-  // Glyphicons
-  app.import("vendor/plugins/bootstrap/fonts/bootstrap/glyphicons-halflings-regular.eot", { destDir: 'fonts' });
-  app.import("vendor/plugins/bootstrap/fonts/bootstrap/glyphicons-halflings-regular.svg", { destDir: 'fonts' });
-  app.import("vendor/plugins/bootstrap/fonts/bootstrap/glyphicons-halflings-regular.ttf", { destDir: 'fonts' });
-  app.import("vendor/plugins/bootstrap/fonts/bootstrap/glyphicons-halflings-regular.woff", { destDir: 'fonts' });
-  app.import("vendor/plugins/bootstrap/fonts/bootstrap/glyphicons-halflings-regular.woff2", { destDir: 'fonts' });
   // Simple Line Icons
   app.import("vendor/plugins/simple-line-icons/fonts/Simple-Line-Icons.eot", { destDir: 'fonts' });
   app.import("vendor/plugins/simple-line-icons/fonts/Simple-Line-Icons.dev.svg", { destDir: 'fonts' });
@@ -41,15 +28,10 @@ module.exports = function(defaults) {
 
   // Plugins JS
   app.import("vendor/plugins/jquery-ui/jquery-ui.min.js");
-  app.import("vendor/plugins/bootstrap/js/bootstrap.js");
   app.import("vendor/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.js");
   app.import("vendor/plugins/jquery-slimscroll/jquery.slimscroll.js");
   app.import("vendor/plugins/jquery.blockui.min.js");
-  app.import("vendor/plugins/moment.min.js");
   app.import("vendor/plugins/bootstrap-switch/js/bootstrap-switch.js");
-  app.import("vendor/plugins/fullcalendar/fullcalendar.js");
-  app.import("vendor/plugins/jquery-validation/js/jquery.validate.js");
-  app.import("vendor/plugins/jquery-validation/js/localization/messages_ru.js");
   app.import("vendor/plugins/backstretch/jquery.backstretch.js");
 
   // Layout JS
