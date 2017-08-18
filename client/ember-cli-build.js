@@ -31,9 +31,7 @@ module.exports = function(defaults) {
   app.import("vendor/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.js");
   app.import("vendor/plugins/jquery-slimscroll/jquery.slimscroll.js");
   app.import("vendor/plugins/jquery.blockui.min.js");
-  app.import("vendor/plugins/moment.min.js");
   app.import("vendor/plugins/bootstrap-switch/js/bootstrap-switch.js");
-  app.import("vendor/plugins/fullcalendar/fullcalendar.js");
   app.import("vendor/plugins/jquery-validation/js/jquery.validate.js");
   app.import("vendor/plugins/jquery-validation/js/localization/messages_ru.js");
   app.import("vendor/plugins/backstretch/jquery.backstretch.js");

@@ -1,6 +1,7 @@
 {
   "name": "barbers",
   "dependencies": {
-    "jquery-ui": "1.11.4"
+    "jquery-ui": "1.11.4",
+    "fullcalendar": "^3.4.0"
   }
 }
