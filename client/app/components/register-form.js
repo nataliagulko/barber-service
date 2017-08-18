@@ -18,7 +18,11 @@ export default Ember.Component.extend({
 				url: config.host + '/UserAjax/create',
 				data: params
 			}).then((response) => {
-				this.send('showLoginForm');
+				if (!response.msg) {
+					this.send('showLoginForm');
+				} else {
+					console.log(response.msg);
+				}
 			});
 		}
 	}
