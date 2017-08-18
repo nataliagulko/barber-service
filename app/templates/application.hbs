@@ -1,5 +1,6 @@
 {{#if session.isAuthenticated}}
 	{{page-header}}
+	{{sidebar-menu}}
 	{{outlet}}
 {{else}}
 	{{login-page}}
