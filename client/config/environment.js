@@ -33,6 +33,26 @@ module.exports = function(environment) {
         crossOriginWhitelist: [ENV.host],
     };
 
+    ENV['ember-toastr'] = {
+        toastrOptions: {
+            closeButton: true,
+            debug: false,
+            newestOnTop: true,
+            progressBar: false,
+            positionClass: 'toast-top-right',
+            preventDuplicates: true,
+            onclick: null,
+            showDuration: '5000',
+            hideDuration: '1000',
+            timeOut: '4000',
+            extendedTimeOut: '1000',
+            showEasing: 'swing',
+            hideEasing: 'linear',
+            showMethod: 'fadeIn',
+            hideMethod: 'fadeOut'
+        }
+    }
+
     if (environment === 'development') {
         // ENV.APP.LOG_RESOLVER = true;
         // ENV.APP.LOG_ACTIVE_GENERATION = true;
