@@ -5,6 +5,18 @@ export default Ember.Component.extend({
 	classNames: ["register-form"],
 	session: Ember.inject.service(),
 	toast: Ember.inject.service(),
+	validate: Ember.inject.service(),
+
+	didInsertElement: function() {
+		var validate = this.get('validate'),
+			rules = {
+				phone: 'required',
+				password: 'required',
+				rpassword: 'required',
+			};
+
+		validate.validateForm('.register-form form', rules);
+	},
 
 	actions: {
 		showLoginForm: function() {
