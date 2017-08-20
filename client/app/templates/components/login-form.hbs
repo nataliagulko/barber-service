@@ -8,7 +8,7 @@
         <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
         <label class="control-label visible-ie8 visible-ie9" for="identification">Username</label>
         <div class="input-icon">
-            <i class="fa fa-user"></i>
+            <i class="fa fa-mobile"></i>
             {{input-mask mask='+7(999)999-99-99' id='identification' name='identification' class="form-control placeholder-no-fix" placeholder='Username' autocomplete="off" type='tel' value=identification}}
         </div>
     </div>
@@ -21,7 +21,7 @@
     </div>
     <div class="form-actions">
         <label class="rememberme mt-checkbox mt-checkbox-outline">
-            <input type="checkbox" name="remember" value="1" /> Remember me
+            <input type="checkbox" name="remember" value="1" checked="checked" /> Remember me
             <span></span>
         </label>
         <button type="submit" class="btn green pull-right"> Login </button>
