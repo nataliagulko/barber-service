@@ -1,8 +1,16 @@
 {{#if session.isAuthenticated}}
-	{{page-header}}
+    {{page-header}}
+    <div class="clearfix"></div>
+<div class="page-container">
 	{{sidebar-menu}}
-	{{outlet}}
+    <div class="page-content-wrapper">
+        <div class="page-content">
+	       {{outlet}}
+       </div>
+    </div>
+</div>
+{{page-footer}}
 {{else}}
 	{{login-page}}
 {{/if}}
-	
+
