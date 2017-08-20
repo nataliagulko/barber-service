@@ -1,11 +1,11 @@
 <!-- BEGIN FORGOT PASSWORD FORM -->
-<form {{action 'forget' on='submit'}}>
+<form id="forget-form" {{action 'forget' on='submit'}}>
     <h3>Forget Password ?</h3>
     <p> Enter your phone below to reset your password. </p>
     <div class="form-group">
         <div class="input-icon">
             <i class="fa fa-mobile"></i>
-            {{input-mask mask='+7(999)999-99-99'class="form-control placeholder-no-fix" type="tel" autocomplete="off" placeholder="Phone" name="tel"}}
+            {{input-mask mask='+7(999)999-99-99'class="form-control placeholder-no-fix" type="tel" autocomplete="off" placeholder="Phone" name="phone"}}
         </div>
     </div>
     <div class="form-actions">

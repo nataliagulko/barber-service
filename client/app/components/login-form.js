@@ -1,8 +1,21 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-	classNames: ['login-form'],
+    classNames: ['login-form'],
     session: Ember.inject.service(),
+    validate: Ember.inject.service(),
+
+    didInsertElement: function() {
+        var validate = this.get('validate'),
+            options = {
+                rules: {
+                    identification: 'required',
+                    password: 'required'
+                }
+            };
+
+        validate.validateForm('#login-form', options);
+    },
 
     actions: {
         authenticate: function() {
@@ -13,13 +26,13 @@ export default Ember.Component.extend({
         },
 
         showRegisterForm: function() {
-        	$('#login-form').hide();
-        	$('.register-form').show();
+            $('#login-form').hide();
+            $('.register-form').show();
         },
 
         showForgetForm: function() {
-        	$('#login-form').hide();
-        	$('.forget-form').show();
+            $('#login-form').hide();
+            $('.forget-form').show();
         }
     }
 

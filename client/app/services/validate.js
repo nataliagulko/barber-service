@@ -14,11 +14,7 @@ export default Ember.Service.extend({
 		});
 	},
 
-	validateForm(form, rules) {
-		// при необходимости метод можно расширить
-
-		$(form).validate({
-			rules: rules
-		});
+	validateForm(form, options) {
+		$(form).validate(options);
 	}
 });
