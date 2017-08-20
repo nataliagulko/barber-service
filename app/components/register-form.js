@@ -9,13 +9,24 @@ export default Ember.Component.extend({
 
 	didInsertElement: function() {
 		var validate = this.get('validate'),
-			rules = {
-				phone: 'required',
-				password: 'required',
-				rpassword: 'required',
+			options = {
+				rules: {
+					phone: 'required',
+					password: {
+						required: true,
+						minlength: 6,
+						maxlength: 20
+					},
+					rpassword: {
+						required: true,
+						minlength: 6,
+						maxlength: 20,
+						equalTo: "#regiser-password"
+					}
+				}
 			};
 
-		validate.validateForm('.register-form form', rules);
+		validate.validateForm('.register-form form', options);
 	},
 
 	actions: {
