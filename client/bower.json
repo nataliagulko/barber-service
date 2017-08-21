@@ -1,7 +1,8 @@
 {
   "name": "barbers",
   "dependencies": {
-    "jquery-ui": "1.11.4",
-    "fullcalendar": "^3.4.0"
+    "fullcalendar": "^3.4.0",
+    "jquery-validation": "jquery.validate#^1.13.0",
+    "bootstrap-select": "^1.12.4"
   }
 }
