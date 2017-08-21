@@ -23,13 +23,17 @@ class UserAjaxController {
     static allowedMethods = [choose: ['POST', 'GET']]
 
     def create() {
-        if (params.phone && params.password) {
-            def result = usersService.createUser(params)
-            if (result instanceof User) {
-                result.setPassword(null)
-                render([user: result] as JSON)
-            } else {
-                render([msg: result] as JSON)
+        if (params.phone && params.password && params.rpassword) {
+            if(params.password.equals(params.rpassword)) {
+                def result = usersService.createUser(params)
+                if (result instanceof User) {
+                    result.setPassword(null)
+                    render([user: result] as JSON)
+                } else {
+                    render([msg: result] as JSON)
+                }
+            }else {
+                render([msg: g.message(code: "auth.reg.pass2.fail")] as JSON)
             }
         } else {
             render([msg: g.message(code: "user.phone.and.pass.null")] as JSON)
