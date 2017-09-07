@@ -17,14 +17,17 @@ class BarberSMSService {
     def saveSendMsg(User user, String msg) {
         def principal = springSecurityService.principal
         String authorities = springSecurityService?.authentication?.authorities?.toString()
-        List<Business> curOrgs =
-                Business.createCriteria().list() {
-                    isNotNull('smsCentrLogin')
-                    masters {
-                        eq('id', principal.id)
-                    }
-
+        List<Business> curOrgs = null
+        if(authorities
+                && (authorities.contains("ROLE_USER") || authorities.contains("ROLE_ADMIN"))) {
+            curOrgs = Business.createCriteria().list() {
+                isNotNull('smsCentrLogin')
+                masters {
+                    eq('id', principal.id)
                 }
+
+            }
+        }
 
         if (authorities
                 && (authorities.contains("ROLE_USER") || authorities.contains("ROLE_ADMIN"))
@@ -106,24 +109,29 @@ class BarberSMSService {
     }
 
     def sendTicketUpdateSMS(Ticket ticketInstance) {
-        String sms = "Ваша запись $ticketInstance.id изменена \n"
+        String ticketDate = ticketInstance.ticketDate.format('dd.MM.yyyy')
+        String sms = "Ваша запись на $ticketDate в $ticketInstance.time изменена. \n"
         if (ticketInstance.isDirty("status")) {
-            sms = sms.concat("Новый статус - ".concat(ticketInstance.statusText).concat("\n"))
+            sms = sms.concat("Новый статус: ".concat(Ticket.getStatusTextByCode(ticketInstance.status)).concat("\n"))
         }
         if(ticketInstance.isDirty("services")){
-            sms = sms.concat("Услуги: ").concat(StringUtils.join(ticketInstance.services.name, ", ")).concat("\n")
+            sms = sms.concat("Новые услуги: ").concat(StringUtils.join(ticketInstance.services.name, ", ")).concat("\n")
         }
         if(ticketInstance.isDirty("comment")){
-            sms = sms.concat("Комментарий: ").concat(ticketInstance.comment).concat("\n")
+            sms = sms.concat("Новый комментарий: ").concat(ticketInstance.comment).concat("\n")
         }
+        if(ticketInstance.isDirty("ticketDate") || ticketInstance.isDirty("time")) {
+            sms = sms.concat("Новые дата и время: ").concat(ticketInstance.ticketDate.format("dd.MM.yyyy"))
+                    .concat(" ").concat(ticketInstance.time).concat("\n")
+        }
+
         saveSendMsg(ticketInstance.user, sms)
     }
 
     def sendTicketCreateSMS(Ticket ticketInstance) {
-        String sms = "Вы записаны к мастеру: ".concat(ticketInstance.master.firstname.concat(" ").concat(ticketInstance.master.secondname).concat(" \n"))
-        sms = sms.concat("Время записи: ".concat(ticketInstance.ticketDate.format("yyyy-MM-dd"))).concat(" в ").concat(ticketInstance.time).concat("\n")
-        sms = sms.concat("Услуги: ").concat(StringUtils.join(ticketInstance.services.name, ", "))
-        sms = sms.concat("Идентификтор записи: ".concat(ticketInstance.id.toString()))
+        String sms = "Спасибо за запись!".concat("\n")
+        sms = sms.concat("Жду вас ".concat(ticketInstance.ticketDate.format("dd.MM.yyyy"))).concat(" в ").concat(ticketInstance.time).concat("\n")
+        sms = sms.concat("На услуги: ").concat(StringUtils.join(ticketInstance.services.name, ", "))
         saveSendMsg(ticketInstance.user, sms)
     }
 }

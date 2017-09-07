@@ -121,6 +121,8 @@ class SlotsService {
     def changeTimeZone(DateTime source, String timeZone) {
         DateTime response = new DateTime().toDateTime(DateTimeZone.forTimeZone(TimeZone.getTimeZone(timeZone)))
         response = response
+                .withYear(source.year)
+                .withMonthOfYear(source.monthOfYear)
                 .withDayOfMonth(source.dayOfMonth)
                 .withHourOfDay(source.hourOfDay)
                 .withMinuteOfHour(source.minuteOfHour)
