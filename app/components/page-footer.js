@@ -4,6 +4,6 @@ export default Ember.Component.extend({
     classNames: ['page-footer'],
 
     didInsertElement: function() {
-        Layout.fixContentHeight();
+        Layout.init();
     }
 });
