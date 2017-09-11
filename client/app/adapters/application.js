@@ -1,9 +1,10 @@
 import DS from 'ember-data';
 import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 import config from '../config/environment';
+import Ember from 'ember';
 
 export default DS.RESTAdapter.extend(DataAdapterMixin, {
-	namespace: 'api',
+	//namespace: 'api',
 	authorizer: 'authorizer:token',
 	host: config.host,
 	headers: {

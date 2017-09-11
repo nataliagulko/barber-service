@@ -10,7 +10,7 @@ export default DS.Model.extend({
 	guid: DS.attr(),
 	type: DS.attr(),
 	cost: DS.attr(),
-	duration: DS.attr()
+	duration: DS.attr(),
 	services: DS.hasMany('service'),
 	subTickets: DS.hasMany('ticket'),
 });
