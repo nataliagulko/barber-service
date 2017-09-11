@@ -10,5 +10,6 @@ export default DS.Model.extend({
 	enabled: DS.attr(),
 	accountExpired: DS.attr(),
 	accountLocked: DS.attr(),
-	passwordExpired: DS.attr()
+	passwordExpired: DS.attr(),
+	masters: DS.hasMany('user')
 });
