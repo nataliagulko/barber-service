@@ -7,5 +7,9 @@ export default DS.Model.extend({
 	phone: DS.attr(),
 	address: DS.attr(),
 	email: DS.attr(),
-	mode: DS.attr()
+	mode: DS.attr(),
+	smsCentrLogin: DS.attr(),
+	smsCentrPass: DS.attr(),
+	masters: DS.hasMany('user'),
+	clients: DS.hasMany('user'),
 });
