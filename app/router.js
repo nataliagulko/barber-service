@@ -11,6 +11,9 @@ Router.map(function() {
   this.route('ticket', function() {
     this.route('create');
   });
+  this.route('service', function() {
+    this.route('create');
+  });
 });
 
 export default Router;
