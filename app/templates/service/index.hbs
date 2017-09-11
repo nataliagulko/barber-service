@@ -1,2 +1,7 @@
 <h1>Услуги</h1>
+
+{{#each model as |service|}}
+	<p>{{service.name}}</p>
+{{/each}}
+
 {{outlet}}
