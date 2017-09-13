@@ -3,7 +3,7 @@ import config from 'barbers/config/environment';
 
 export default Ember.Component.extend({
 	classNames: ['forget-form'],
-	validateService: Ember.inject.service(),
+	validateService: Ember.inject.service("validate-service"),
 	isCodeSent: false,
 
 	didInsertElement: function() {
@@ -20,7 +20,7 @@ export default Ember.Component.extend({
 						required: true,
 						minlength: 6,
 						maxlength: 20,
-						equalTo: "[name=pass]"
+						equalTo: "#pass"
 					}
 				}
 			};
@@ -30,6 +30,7 @@ export default Ember.Component.extend({
 
 	actions: {
 		showLoginForm: function() {
+			$("#forget-form")[0].reset();
 			$('.forget-form').hide();
 			$('#login-form').show();
 		},
