@@ -1,7 +1,27 @@
 <h1>Услуги</h1>
 
-{{#each model as |service|}}
-	<p>{{service.name}}</p>
-{{/each}}
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<th>Название</th>
+			<th class="text-right">Стоимость</th>
+			<th class="text-right">Время</th>
+		</tr>
+	</thead>
+	<tbody>
+		{{#each model as |service|}}
+			<tr>
+				<td>
+					{{service.name}}
+					{{#if service.partOfList}}
+						<span class="label label-info">подуслуга</span>
+					{{/if}}
+				</td>
+				<td class="text-right">{{service.time}}&nbsp;₽</td>
+				<td class="text-right">{{service.cost}}&nbsp;мин.</td>
+			</tr>
+		{{/each}}
+	</tbody>
+</table>
 
 {{outlet}}
