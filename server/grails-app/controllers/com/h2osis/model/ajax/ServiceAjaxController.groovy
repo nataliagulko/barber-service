@@ -18,12 +18,14 @@ class ServiceAjaxController {
         if (params.id) {
             Service service = Service.get(params.id)
             if (service) {
-                render(service as JSON)
+                JSON.use('services') {
+                    render([data: service] as JSON)
+                }
             } else {
-                render([msg: g.message(code: "service.get.user.not.found")] as JSON)
+                render([erros: g.message(code: "service.get.user.not.found")] as JSON)
             }
         } else {
-            render([msg: g.message(code: "service.get.id.null")] as JSON)
+            render([erros: g.message(code: "service.get.id.null")] as JSON)
         }
     }
 
@@ -37,12 +39,14 @@ class ServiceAjaxController {
                         it.masters.id.contains(params.master)
                     }
                 }
-                render(serviceList as JSON)
+                JSON.use('services') {
+                    render([data: serviceList] as JSON)
+                }
             } else {
-                render([msg: g.message(code: "service.fine.not.found")] as JSON)
+                render([erros: g.message(code: "service.fine.not.found")] as JSON)
             }
         } else {
-            render([msg: g.message(code: "find.value.null")] as JSON)
+            render([erros: g.message(code: "find.value.null")] as JSON)
         }
     }
 
@@ -55,12 +59,14 @@ class ServiceAjaxController {
                 service.addToMasters(user)
                 service.save(flush: true)
                 Service.search().createIndexAndWait()
-                render(service as JSON)
+                JSON.use('services') {
+                    render([data: service] as JSON)
+                }
             } else {
-                render([msg: g.message(code: "service.create.params.null")] as JSON)
+                render([erros: g.message(code: "service.create.params.null")] as JSON)
             }
         } else {
-            render([msg: g.message(code: "service.create.not.admin")] as JSON)
+            render([erros: g.message(code: "service.create.not.admin")] as JSON)
         }
     }
 
@@ -92,16 +98,16 @@ class ServiceAjaxController {
                     }
                     service.save(flush: true)
                     Service.search().createIndexAndWait()
-                    render(service as JSON)
+                    render([data: service] as JSON)
                 } else {
-                    render([msg: g.message(code: "service.create.params.null")] as JSON)
+                    render([erros: g.message(code: "service.create.params.null")] as JSON)
                 }
 
             } else {
-                render([msg: g.message(code: "service.create.params.null")] as JSON)
+                render([erros: g.message(code: "service.create.params.null")] as JSON)
             }
         } else {
-            render([msg: g.message(code: "service.create.not.admin")] as JSON)
+            render([erros: g.message(code: "service.create.not.admin")] as JSON)
         }
     }
 
@@ -114,15 +120,15 @@ class ServiceAjaxController {
                 if (service) {
                     service.delete(flush: true)
                     Service.search().createIndexAndWait()
-                    render([code: 0] as JSON)
+                    render([data: 0] as JSON)
                 } else {
-                    render([msg: g.message(code: "service.get.user.not.found")] as JSON)
+                    render([erros: g.message(code: "service.get.user.not.found")] as JSON)
                 }
             } else {
-                render([msg: g.message(code: "service.get.id.null")] as JSON)
+                render([erros: g.message(code: "service.get.id.null")] as JSON)
             }
         } else {
-            render([msg: g.message(code: "service.delete.not.admin")] as JSON)
+            render([erros: g.message(code: "service.delete.not.admin")] as JSON)
         }
     }
 
@@ -167,9 +173,11 @@ class ServiceAjaxController {
                     (it.class == Service.class)
                 }
             }
-            render([result: serviceList] as JSON)
+            JSON.use('services') {
+                render([data: serviceList] as JSON)
+            }
         } else {
-            render([msg: g.message(code: "service.fine.not.found")] as JSON)
+            render([erros: g.message(code: "service.fine.not.found")] as JSON)
         }
     }
 

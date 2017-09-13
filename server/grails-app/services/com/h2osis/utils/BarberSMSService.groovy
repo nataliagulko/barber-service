@@ -38,7 +38,8 @@ class BarberSMSService {
             String phone = user.phone.replaceAll("\\+7", "8").replaceAll('\\(', '').replaceAll("\\)", "")
             try {
                 if (Environment.current == Environment.PRODUCTION) {
-                    sender.send_sms(phone, msg, 0, "", "", 0, "", "maxsms=3");
+                    //sender.send_sms(phone, msg, 0, "", "", 0, "", "maxsms=3");
+                    println phone.concat(" ").concat(msg)
                 } else {
                     println phone.concat(" ").concat(msg)
                 }
@@ -54,8 +55,9 @@ class BarberSMSService {
         String phone = user.phone.replaceAll("\\+7", "8").replaceAll('\\(', '').replaceAll("\\)", "")
         try {
             if (Environment.current == Environment.PRODUCTION) {
-                SMSSender customSender = new SMSSender(login, pass)
-                customSender.send_sms(phone, msg, 0, "", "", 0, "", "maxsms=3");
+                //SMSSender customSender = new SMSSender(login, pass)
+                //customSender.send_sms(phone, msg, 0, "", "", 0, "", "maxsms=3");
+                println phone.concat(" ").concat(msg)
             } else {
                 println phone.concat(" ").concat(msg)
             }
@@ -69,7 +71,8 @@ class BarberSMSService {
     def saveSendMsg(SMSSender customSender, User user, String msg) {
         String phone = user.phone.replaceAll("\\+7", "8").replaceAll('\\(', '').replaceAll("\\)", "")
         if (Environment.current == Environment.PRODUCTION) {
-            customSender.send_sms(phone, msg, 0, "", "", 0, "", "maxsms=3");
+            //customSender.send_sms(phone, msg, 0, "", "", 0, "", "maxsms=3");
+            println phone.concat(" ").concat(msg)
         } else {
             println phone.concat(" ").concat(msg)
         }
