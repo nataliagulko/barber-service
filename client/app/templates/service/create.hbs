@@ -1,1 +1,36 @@
-{{outlet}}
+<h1 class="page-title">Новая услуга</h1>
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="portlet light bordered">
+			<div class="portlet-body form">
+				<form>
+					<div class="form-body">
+						<div class="form-group">
+							<label>Название</label>
+							{{input name="name" class="form-control"}}
+						</div>
+						<div class="form-group">
+							<label>Стоимость</label>
+							{{input name="cost" class="form-control"}}
+						</div>
+						<div class="form-group">
+							<label>Продолжительность</label>
+							{{input name="time" class="form-control"}}
+						</div>
+						<div class="form-group">
+							<label class="mt-checkbox"> Подуслуга
+	                            <input value="1" name="partOfList" type="checkbox">
+	                            <span></span>
+	                        </label>
+						</div>
+					</div>
+					<div class="form-actions">
+						<button type="submit" class="btn btn-primary">Создать</button>
+						<button type="button" class="btn btn-default">Назад</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
