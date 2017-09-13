@@ -1,4 +1,4 @@
-package com.h2osis.model.rest
+package com.h2osis.model.ajax
 
 import com.h2osis.utils.ScriptsService
 import grails.converters.JSON

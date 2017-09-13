@@ -11,6 +11,9 @@ class Business {
     String address
     String email
     String mode
+
+    String smsCentrLogin
+    String smsCentrPass
     
     static hasMany = [masters: User, clients: User] // ссыль на мастеров и клиентов
 
@@ -25,6 +28,8 @@ class Business {
         masters nullable: true, minSize: 0
         clients nullable: true, minSize: 0
         mode nullable: true, maxSize: 255
+        smsCentrLogin blank: true, nullable: true
+        smsCentrPass blank: true, nullable: true
     }
 
     static search = {
