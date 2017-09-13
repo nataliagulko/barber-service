@@ -5,7 +5,7 @@ export default Ember.Component.extend({
 	classNames: ["register-form"],
 	session: Ember.inject.service(),
 	toast: Ember.inject.service(),
-	validateService: Ember.inject.service(),
+	validateService: Ember.inject.service("validate-service"),
 
 	didInsertElement: function() {
 		var validateService = this.get('validateService'),
