@@ -167,7 +167,7 @@ class ServiceAjaxController {
                     (it.class == Service.class)
                 }
             }
-            render(view: "/service/serviceList", model: [service: serviceList])
+            render([result: serviceList] as JSON)
         } else {
             render([msg: g.message(code: "service.fine.not.found")] as JSON)
         }
