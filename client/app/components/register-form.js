@@ -5,10 +5,10 @@ export default Ember.Component.extend({
 	classNames: ["register-form"],
 	session: Ember.inject.service(),
 	toast: Ember.inject.service(),
-	validate: Ember.inject.service(),
+	validateService: Ember.inject.service(),
 
 	didInsertElement: function() {
-		var validate = this.get('validate'),
+		var validateService = this.get('validateService'),
 			options = {
 				rules: {
 					phone: 'required',
@@ -26,7 +26,7 @@ export default Ember.Component.extend({
 				}
 			};
 
-		validate.validateForm('.register-form form', options);
+		validateService.validateForm('.register-form form', options);
 	},
 
 	actions: {
