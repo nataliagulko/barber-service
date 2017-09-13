@@ -8,26 +8,26 @@
 					<div class="form-body">
 						<div class="form-group">
 							<label>Название</label>
-							{{input name="name" class="form-control"}}
+							{{input name="name" class="form-control" value=model.name}}
 						</div>
 						<div class="form-group">
 							<label>Стоимость</label>
-							{{input name="cost" class="form-control"}}
+							{{input name="cost" class="form-control"  value=model.cost}}
 						</div>
 						<div class="form-group">
 							<label>Продолжительность</label>
-							{{input name="time" class="form-control"}}
+							{{input name="time" class="form-control"  value=model.time}}
 						</div>
 						<div class="form-group">
 							<label class="mt-checkbox"> Подуслуга
-	                            <input value="1" name="partOfList" type="checkbox">
+	                            <input name="partOfList" type="checkbox"  value={{model.partOfList}}>
 	                            <span></span>
 	                        </label>
 						</div>
 					</div>
 					<div class="form-actions">
-						<button type="submit" class="btn btn-primary">Создать</button>
-						<button type="button" class="btn btn-default">Назад</button>
+						<button type="submit" class="btn btn-primary" {{action 'save' model}}>Создать</button>
+						<button type="button" class="btn btn-default" >Назад</button>
 					</div>
 				</form>
 			</div>
