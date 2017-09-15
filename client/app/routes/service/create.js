@@ -6,9 +6,5 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 		return this.store.createRecord('service');
 	},
 
-	actions: {
-		save: function(service) {
-			service.save().then(() => this.transitionTo('service.index'));
-		}
-	}
+	actions: {}
 });
