@@ -1,8 +1,8 @@
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-	user: DS.attr(),
-	master: DS.attr(),
+	client: DS.belongsTo('client'),
+	master: DS.belongsTo('master'),
 	ticketDate: DS.attr(),
 	time: DS.attr(),
 	status: DS.attr(),

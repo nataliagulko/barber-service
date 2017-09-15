@@ -5,5 +5,5 @@ export default DS.Model.extend({
 	cost: DS.attr(),
 	time: DS.attr(),
 	partOfList: DS.attr(),
-	masters: DS.hasMany('user')
+	masters: DS.hasMany('master')
 });

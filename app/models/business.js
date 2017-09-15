@@ -10,6 +10,6 @@ export default DS.Model.extend({
 	mode: DS.attr(),
 	smsCentrLogin: DS.attr(),
 	smsCentrPass: DS.attr(),
-	masters: DS.hasMany('user'),
-	clients: DS.hasMany('user'),
+	masters: DS.hasMany('master'),
+	clients: DS.hasMany('client'),
 });
