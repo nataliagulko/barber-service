@@ -19,6 +19,7 @@ module.exports = function(defaults) {
   app.import("vendor/plugins/fullcalendar/fullcalendar.css");
   app.import("vendor/plugins/datatables/datatables.min.css");
   app.import("vendor/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css");
+  app.import("vendor/plugins/bootstrap-select/css/bootstrap-select.css");
 
   // Plugins Fonts
   // Simple Line Icons
@@ -37,6 +38,8 @@ module.exports = function(defaults) {
   app.import("vendor/plugins/backstretch/jquery.backstretch.js");
   app.import("vendor/plugins/datatables/datatables.min.js");
   app.import("vendor/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js");
+  app.import("vendor/plugins/bootstrap-select/js/bootstrap-select.js");
+  app.import("vendor/plugins/bootstrap-select/js/i18n/defaults-ru_RU.js");
 
   // Plugins' scripts
   app.import("vendor/scripts/app.js");
