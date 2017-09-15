@@ -3,10 +3,10 @@ import Ember from 'ember';
 export default Ember.Component.extend({
     classNames: ['login-form'],
     session: Ember.inject.service(),
-    validate: Ember.inject.service(),
+    validateService: Ember.inject.service("validate-service"),
 
     didInsertElement: function() {
-        var validate = this.get('validate'),
+        var validateService = this.get('validateService'),
             options = {
                 rules: {
                     identification: 'required',
@@ -14,7 +14,7 @@ export default Ember.Component.extend({
                 }
             };
 
-        validate.validateForm('#login-form', options);
+        validateService.validateForm('#login-form', options);
     },
 
     actions: {
