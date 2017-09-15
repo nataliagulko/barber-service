@@ -1,0 +1,29 @@
+<form id="service-form">
+	<div class="form-body">
+		<div class="form-group">
+			<label>Название</label>
+			{{input name="name" class="form-control" value=model.name}}
+		</div>
+		<div class="form-group">
+			<label>Стоимость</label>
+			{{input name="cost" class="form-control"  value=model.cost}}
+		</div>
+		<div class="form-group">
+			<label>Продолжительность</label>
+			{{input name="time" class="form-control"  value=model.time}}
+		</div>
+		<div class="form-group">
+			<label>Мастера</label>
+			{{input name="time" class="form-control"  value=model.masters}}
+		</div>
+		<div class="form-group">
+			<label class="mt-checkbox"> Подуслуга
+                <input name="partOfList" type="checkbox"  value={{model.partOfList}}>
+                <span></span>
+            </label>
+		</div>
+	</div>
+	<div class="form-actions">
+		<button type="submit" class="btn btn-success" {{action 'save' model}}>Создать</button>
+	</div>
+</form>

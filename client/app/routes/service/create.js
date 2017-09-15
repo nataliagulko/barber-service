@@ -8,8 +8,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
 	actions: {
 		save: function(service) {
-			console.log('save', service);
-			service.save().then(() => this.transitionTo('service'));
+			service.save().then(() => this.transitionTo('service.index'));
 		}
 	}
 });
