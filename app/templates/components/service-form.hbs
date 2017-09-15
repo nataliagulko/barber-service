@@ -2,28 +2,32 @@
 	<div class="form-body">
 		<div class="form-group">
 			<label>Название</label>
-			{{input name="name" class="form-control" value=model.name}}
+			{{input name="name" class="form-control" value=service.name}}
 		</div>
 		<div class="form-group">
 			<label>Стоимость</label>
-			{{input name="cost" class="form-control"  value=model.cost}}
+			{{input name="cost" class="form-control"  value=service.cost}}
 		</div>
 		<div class="form-group">
 			<label>Продолжительность</label>
-			{{input name="time" class="form-control"  value=model.time}}
+			{{input name="time" class="form-control"  value=service.time}}
 		</div>
 		<div class="form-group">
 			<label>Мастера</label>
-			{{input name="time" class="form-control"  value=model.masters}}
+			{{input name="time" class="form-control"  value=service.masters}}
 		</div>
 		<div class="form-group">
 			<label class="mt-checkbox"> Подуслуга
-                <input name="partOfList" type="checkbox"  value={{model.partOfList}}>
+                <input name="partOfList" type="checkbox"  value={{service.partOfList}}>
                 <span></span>
             </label>
 		</div>
+
+		{{#if service.id}}
+			{{input type=hidden name="id" class="form-control" value=service.id}}
+		{{/if}}
 	</div>
 	<div class="form-actions">
-		<button type="submit" class="btn btn-success" {{action 'save' model}}>Создать</button>
+		<button type="submit" class="btn btn-success" {{action 'saveService' service}}>Создать</button>
 	</div>
 </form>

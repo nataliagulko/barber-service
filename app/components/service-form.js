@@ -1,19 +1,25 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-	validate: Ember.inject.service(),
+	validateService: Ember.inject.service("validate-service"),
 
 	didInsertElement: function() {
-		var validate = this.get('validate'),
+		var validateService = this.get('validateService'),
 			options = {
 				rules: {
 					name: 'required',
 					cost: 'required',
 					time: 'required',
-					masters: 'required'
+					//masters: 'required'
 				}
 			};
 
-		validate.validateForm('#service-form', options);
+		validateService.validateForm('#service-form', options);
 	},
+
+	actions: {
+		saveService: function(service) {
+			service.save().then(() => this.transitionTo('service.index'));
+		}
+	}
 });
