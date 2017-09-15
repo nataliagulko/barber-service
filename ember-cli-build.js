@@ -17,6 +17,8 @@ module.exports = function(defaults) {
   app.import("vendor/plugins/bootstrap/css/bootstrap.css");
   app.import("vendor/plugins/bootstrap-switch/css/bootstrap-switch.css");
   app.import("vendor/plugins/fullcalendar/fullcalendar.css");
+  app.import("vendor/plugins/datatables/datatables.min.css");
+  app.import("vendor/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css");
 
   // Plugins Fonts
   // Simple Line Icons
@@ -33,11 +35,14 @@ module.exports = function(defaults) {
   app.import("vendor/plugins/jquery.blockui.min.js");
   app.import("vendor/plugins/bootstrap-switch/js/bootstrap-switch.js");
   app.import("vendor/plugins/backstretch/jquery.backstretch.js");
+  app.import("vendor/plugins/datatables/datatables.min.js");
+  app.import("vendor/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js");
 
-  // Layout JS
+  // Plugins' scripts
   app.import("vendor/scripts/app.js");
   app.import("vendor/scripts/layout/layout.js");
   app.import("vendor/scripts/quick-sidebar.js");
+  app.import("vendor/scripts/datatable.js");
 
   // Pages JS
 
