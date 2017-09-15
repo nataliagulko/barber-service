@@ -1,35 +1,20 @@
-<h1 class="page-title">Новая услуга</h1>
-
 <div class="row">
 	<div class="col-md-6">
 		<div class="portlet light bordered">
+			<div class="portlet-title">
+				<div class="caption font-dark">
+					<i class="icon-bag font-green-sharp "></i>
+			        <span class="caption-subject bold uppercase">Новая услуга</span>
+		        </div>
+		        <div class="actions">
+		        	{{#link-to "service.index" class="btn btn-default"}}
+						<i class="fa fa-arrow-left"></i>
+						Назад
+					{{/link-to}}
+		        </div>
+			</div>
 			<div class="portlet-body form">
-				<form>
-					<div class="form-body">
-						<div class="form-group">
-							<label>Название</label>
-							{{input name="name" class="form-control" value=model.name}}
-						</div>
-						<div class="form-group">
-							<label>Стоимость</label>
-							{{input name="cost" class="form-control"  value=model.cost}}
-						</div>
-						<div class="form-group">
-							<label>Продолжительность</label>
-							{{input name="time" class="form-control"  value=model.time}}
-						</div>
-						<div class="form-group">
-							<label class="mt-checkbox"> Подуслуга
-	                            <input name="partOfList" type="checkbox"  value={{model.partOfList}}>
-	                            <span></span>
-	                        </label>
-						</div>
-					</div>
-					<div class="form-actions">
-						<button type="submit" class="btn btn-primary" {{action 'save' model}}>Создать</button>
-						<button type="button" class="btn btn-default" >Назад</button>
-					</div>
-				</form>
+				{{service-form}}
 			</div>
 		</div>
 	</div>
