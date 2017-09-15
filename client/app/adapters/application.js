@@ -22,9 +22,29 @@ export default DS.RESTAdapter.extend(DataAdapterMixin, {
 		}
 
 		url = this.buildURL(type.modelName, null, null, 'findAll');
+		url = url + "Ajax/list";
 
-		return this.ajax(url + "Ajax/list", 'POST', {
+		return this.ajax(url, 'POST', {
 			data: query
 		});
 	},
+	createRecord: function(store, type, snapshot) {
+		let data = this.serialize(snapshot, { includeId: true }),
+			url = this.buildURL(type.modelName, null, null, 'createRecord');
+
+		url = url + 'Ajax/create';
+		return new Ember.RSVP.Promise(function(resolve, reject) {
+			Ember.$.ajax({
+				type: 'POST',
+				url: url,
+				dataType: 'json',
+				data: data
+			}).then(function(data) {
+				Ember.run(null, resolve, data);
+			}, function(jqXHR) {
+				jqXHR.then = null; // tame jQuery's ill mannered promises
+				Ember.run(null, reject, jqXHR);
+			});
+		});
+	}
 });
