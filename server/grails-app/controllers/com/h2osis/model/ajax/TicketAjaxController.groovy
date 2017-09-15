@@ -26,10 +26,13 @@ class TicketAjaxController {
 
 
     def get() {
-        if (params.id) {
-            Ticket ticket = Ticket.get(params.id)
+        def data = request.JSON.data
+        if (data.id) {
+            Ticket ticket = Ticket.get(data.id)
             if (ticket) {
-                render(ticket as JSON)
+                JSON.use('tickets') {
+                    render(ticket as JSON)
+                }
             } else {
                 render([msg: g.message(code: "ticket.get.user.not.found")] as JSON)
             }
@@ -39,7 +42,8 @@ class TicketAjaxController {
     }
 
     def find() {
-        if (params.value) {
+        def data = request.JSON.data
+        if (data.value) {
             String value = params.value
             List<Ticket> ticketList = searchService.ticketSearch(value)
             if (ticketList) {
@@ -55,14 +59,16 @@ class TicketAjaxController {
     }
 
     def create() {
-        if (params.master && params.services && params.date) {
+        def data = request.JSON.data
+        def attrs = data.attributes
+        if (data.type && data.type == "ticket" && attrs.master && attrs.services && attrs.date) {
             def principal = springSecurityService.principal
             User user = User.get(principal.id)
 
             if (!user.secondname && !user.firstname) {
-                if (params.firstname && params.secondname) {
-                    user.setFirstname(params.firstname)
-                    user.setSecondname(params.secondname)
+                if (attrs.firstname && attrs.secondname) {
+                    user.setFirstname(attrs.firstname)
+                    user.setSecondname(attrs.secondname)
                     user.save(flush: true)
                 } else {
                     render([errors: g.message(code: "ticket.fio.empty")] as JSON)
@@ -70,7 +76,7 @@ class TicketAjaxController {
                 }
             }
 
-            Ticket ticket = ticketsService.createTicket(user, params)
+            Ticket ticket = ticketsService.createTicket(user, attrs)
             if (ticket) {
                 JSON.use('tickets') {
                     render([data: ticket] as JSON)
@@ -88,23 +94,25 @@ class TicketAjaxController {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
         if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
-            if (params.id) {
-                Ticket ticket = Ticket.get(params.id)
+            def data = request.JSON.data
+            def attrs = data.attributes
+            if (data.id) {
+                Ticket ticket = Ticket.get(data.id)
                 if (ticket) {
                     Ticket.withTransaction {
                         try {
-                            if (params.status) {
-                                String status = params.status
+                            if (attrs.status) {
+                                String status = attrs.status
                                 //if ([TicketStatus.ACCEPTED, TicketStatus.COMPLETED, TicketStatus.REJECTED].contains(status)) {
                                 ticket.setStatus(status)
                                 //}
                             }
-                            if (params.comment) {
-                                ticket.setComment(params.comment)
+                            if (attrs.comment) {
+                                ticket.setComment(attrs.comment)
                             }
                             ticket.save(flush: true)
-                            if (params.status) {
-                                ticketSMService.ticketStatusUpdate(ticket.id, params.status)
+                            if (attrs.status) {
+                                ticketSMService.ticketStatusUpdate(ticket.id, attrs.status)
                             }
                             Ticket.search().createIndexAndWait()
 
@@ -126,10 +134,11 @@ class TicketAjaxController {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
         if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
-            if (params.id) {
-                Ticket ticket = Ticket.get(params.id)
+            def data = request.JSON.data
+            if (data.id) {
+                Ticket ticket = Ticket.get(data.id)
                 if (ticket) {
-                    render([transitions: ticket.ticketTransitions?.stateTo] as JSON)
+                    render([data: [transitions: ticket.ticketTransitions?.stateTo]] as JSON)
                 }
             } else {
                 render([erorrs: g.message(code: "ticket.create.params.null")] as JSON)
@@ -143,8 +152,9 @@ class TicketAjaxController {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
         if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
-            if (params.id) {
-                Ticket ticket = Ticket.get(params.id)
+            def data = request.JSON.data
+            if (data.id) {
+                Ticket ticket = Ticket.get(data.id)
                 if (ticket) {
                     ticket.delete(flush: true)
                     Ticket.search().createIndexAndWait()
@@ -161,52 +171,56 @@ class TicketAjaxController {
     }
 
     def list() {
-        List<Ticket> ticketList = Ticket.createCriteria().list(offset: params.offset) {
+        def data = request.JSON.data
+        def attrs = data.attributes
 
-            if (params.user) {
-                eq('user', User.get(params.user))
+
+        List<Ticket> ticketList = Ticket.createCriteria().list(offset: data.offset) {
+
+            if (attrs.user) {
+                eq('user', User.get(attrs.user))
             }
 
-            if (params.master) {
-                eq('master', User.get(params.user))
+            if (attrs.master) {
+                eq('master', User.get(attrs.user))
             }
 
-            if (params.service) {
-                eq('service', Service.get(params.user))
+            if (attrs.service) {
+                eq('service', Service.get(attrs.user))
             }
 
-            if (params.date) {
-                eq('ticketDate', params.getDate("date"))
+            if (attrs.date) {
+                eq('ticketDate', attrs.getDate("date"))
             }
 
-            if (params.dateFrom) {
-                ge('ticketDate', params.getDate("dateFrom"))
+            if (attrs.dateFrom) {
+                ge('ticketDate', attrs.getDate("dateFrom"))
             }
 
-            if (params.dateTo) {
-                le('ticketDate', params.getDate("dateTo"))
+            if (attrs.dateTo) {
+                le('ticketDate', attrs.getDate("dateTo"))
             }
 
-            if (params.onlyHead) {
+            if (attrs.onlyHead) {
                 eq('type', TicketType.HEAD)
             }
 
-            if (params.onlySub) {
+            if (attrs.onlySub) {
                 eq('type', TicketType.SUB)
             }
 
-            if (params.max) {
-                def max = params.getInt('max')
+            if (data.max) {
+                def max = Integer.parseInt(data.max)
                 maxResults(max)
             }
 
-            if (params.ticketDate) {
-                DateTime dt1 = new DateTime(Date.parse("dd.MM.yyyy", params.ticketDate)).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0)
+            if (attrs.ticketDate) {
+                DateTime dt1 = new DateTime(Date.parse("dd.MM.yyyy", attrs.ticketDate)).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0)
                 DateTime dt2 = dt1.withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59)
                 between('ticketDate', dt1.toDate(), dt2.toDate())
             }
-            if (params.ticketDatePeriod) {
-                List<String> dates = params.ticketDatePeriod.split('-')
+            if (attrs.ticketDatePeriod) {
+                List<String> dates = attrs.ticketDatePeriod.split('-')
                 if (dates.size() == 2) {
                     DateTime dt1 = new DateTime(Date.parse("dd.MM.yyyy", dates.get(0))).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0)
                     DateTime dt2 = new DateTime(Date.parse("dd.MM.yyyy", dates.get(1))).withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59)
@@ -214,9 +228,9 @@ class TicketAjaxController {
                 }
             }
 
-            if (params.ticketDateFrom && params.ticketDateTo) {
-                DateTime dt1 = new DateTime(Date.parse("dd.MM.yyyy", params.ticketDateFrom)).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0)
-                DateTime dt2 = new DateTime(Date.parse("dd.MM.yyyy", params.ticketDateTo)).withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59)
+            if (attrs.ticketDateFrom && attrs.ticketDateTo) {
+                DateTime dt1 = new DateTime(Date.parse("dd.MM.yyyy", attrs.ticketDateFrom)).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0)
+                DateTime dt2 = new DateTime(Date.parse("dd.MM.yyyy", attrs.ticketDateTo)).withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59)
                 between('ticketDate', dt1.toDate(), dt2.toDate())
             }
 
@@ -238,9 +252,11 @@ class TicketAjaxController {
     }
 
     def validateTicket() {
-        if (params.ids) {
+        def data = request.JSON.data
+        def attrs = data.attributes
+        if (data.ids) {
             List<Long> ids = new ArrayList<Long>()
-            params.ids.split(",").each { ids.add(Long.parseLong(it)) }
+            data.ids.split(",").each { ids.add(Long.parseLong(it)) }
             List<Ticket> ticketList = Ticket.findAllByIdInList(ids)
             Map<Long, Set<Long>> result = new HashMap<Long, Set<Long>>()
             ticketList.each { curTicket ->
@@ -257,13 +273,13 @@ class TicketAjaxController {
                 }
             }
             render result as JSON
-        } else if (params.time && params.ticketDate && params.master && params.services) {
+        } else if (attrs.time && attrs.ticketDate && attrs.master && attrs.services) {
 
             Map<Long, Set<Long>> result = new HashMap<Long, Set<Long>>()
             Ticket curTicket = new Ticket()
-            DateTime date = DateTimeFormat.forPattern("dd.MM.yyyy").parseDateTime(params.ticketDate)
+            DateTime date = DateTimeFormat.forPattern("dd.MM.yyyy").parseDateTime(attrs.ticketDate)
 
-            String time = params.time
+            String time = attrs.time
             String h = time.split(":")[0]
             String m = time.split(":")[1]
             if (h.startsWith("0")) {
@@ -276,9 +292,9 @@ class TicketAjaxController {
             DateTime dateTime = date.withHourOfDay(Integer.parseInt(h)).withMinuteOfHour(Integer.parseInt(m))
                     .withSecondOfMinute(0)
             curTicket.setTicketDate(dateTime.toDate())
-            curTicket.setTime(params.time)
-            curTicket.setMaster(User.get(params.master))
-            String services = params.services
+            curTicket.setTime(attrs.time)
+            curTicket.setMaster(User.get(attrs.master))
+            String services = attrs.services
             if (services) {
                 Set<Long> servicesIds = new HashSet<Long>()
                 services.split(",").each {
@@ -309,9 +325,11 @@ class TicketAjaxController {
     }
 
     def jodaValidateTicket() {
-        if (params.ids) {
+        def data = request.JSON.data
+        def attrs = data.attributes
+        if (data.ids) {
             List<Long> ids = new ArrayList<Long>()
-            params.ids.split(",").each { ids.add(Long.parseLong(it)) }
+            data.ids.split(",").each { ids.add(Long.parseLong(it)) }
             List<Ticket> ticketList = Ticket.findAllByIdInList(ids)
             Map<Long, Set<Long>> result = new HashMap<Long, Set<Long>>()
             ticketList.each { curTicket ->
@@ -326,18 +344,18 @@ class TicketAjaxController {
                 }
             }
             render result as JSON
-        } else if (params.time && params.ticketDate) {
+        } else if (attrs.time && attrs.ticketDate) {
 
             Map<Long, Set<Long>> result = new HashMap<Long, Set<Long>>()
             Ticket curTicket = new Ticket()
-            DateTime date = DateTimeFormat.forPattern("dd.MM.yyyy").parseDateTime(params.ticketDate)
-            DateTime time = DateTimeFormat.shortTime().parseDateTime(params.time)
+            DateTime date = DateTimeFormat.forPattern("dd.MM.yyyy").parseDateTime(attrs.ticketDate)
+            DateTime time = DateTimeFormat.shortTime().parseDateTime(attrs.time)
             DateTime dateTime = date.withHourOfDay(time.getHourOfDay()).withMinuteOfHour(time.getMinuteOfHour())
                     .withSecondOfMinute(time.getSecondOfMinute())
             curTicket.setTicketDate(dateTime.toDate())
-            curTicket.setTime(params.time)
-            curTicket.setMaster(User.get(params.master))
-            String services = params.services
+            curTicket.setTime(attrs.time)
+            curTicket.setMaster(User.get(attrs.master))
+            String services = attrs.services
             if (services) {
                 Set<Long> servicesIds = new HashSet<Long>()
                 services.split(",").each {
@@ -368,13 +386,14 @@ class TicketAjaxController {
     }
 
     def shiftTickets() {
-        if (params.id && params.time) {
+        def data = request.JSON.data
+        if (data.id && data.time) {
             def principal = springSecurityService.principal
             User user = User.get(principal.id)
             if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
                 try {
-                    slotsService.shiftTickets(params.getLong("id"), user, params.getLong("time"))
-                    render([data: "1"] as JSON)
+                    slotsService.shiftTickets(Long.parseLong(data.id), user,Long.parseLong(data.time))
+                    render([data: "0"] as JSON)
                 } catch (Exception e) {
                     render([erorrs: e.toString()] as JSON)
                 }
@@ -387,8 +406,9 @@ class TicketAjaxController {
     }
 
     def swapTickets() {
-        if (params.ticket1 && params.ticket2) {
-            def result = slotsService.swapTickets(params.getLong("ticket1"), params.getLong("ticket2"))
+        def data = request.JSON.data
+        if (data.ticket1 && data.ticket2) {
+            def result = slotsService.swapTickets(Long.parseLong(data.ticket1), Long.parseLong(data.ticket2))
             if (result) {
                 render([erorrs: result] as JSON)
             } else {
