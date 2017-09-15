@@ -4,6 +4,7 @@ import config from 'barbers/config/environment';
 export default Ember.Component.extend({
 	classNames: ['forget-form'],
 	validate: Ember.inject.service(),
+	toast: Ember.inject.service(),
 	isCodeSent: false,
 
 	didInsertElement: function() {
@@ -35,7 +36,10 @@ export default Ember.Component.extend({
 		},
 
 		sumbitCode: function() {
-			var params = $("#forget-form").serialize();
+			var params = $("#forget-form").serialize(),
+				toast = this.get('toast'),
+				options = {};
+				
 			this.set('isCodeSent', true);
 
 			$.post({
@@ -52,8 +56,9 @@ export default Ember.Component.extend({
 		},
 
 		checkCode: function() {
-			var params = $("#forget-form").serialize();
-			console.log(params);
+			var params = $("#forget-form").serialize(),
+				toast = this.get('toast'),
+				options = {};
 
 			$.post({
 				url: config.host + '/register/submitChangePassRequest',

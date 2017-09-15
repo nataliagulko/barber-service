@@ -1,32 +1,26 @@
-<h1 class="page-title">Услуги</h1>
-
- {{#link-to "service.create" class="btn btn-primary"}}
-	<span class="fa fa-plus"></span>
-	Добавить
-{{/link-to}}
-
-<table class="table table-hover">
-	<thead>
-		<tr>
-			<th>Название</th>
-			<th class="text-right">Стоимость</th>
-			<th class="text-right">Время</th>
-		</tr>
-	</thead>
-	<tbody>
-		{{#each model as |service|}}
-			<tr>
-				<td>
-					{{service.name}}
-					{{#if service.partOfList}}
-						<span class="label label-info">подуслуга</span>
-					{{/if}}
-				</td>
-				<td class="text-right">{{service.time}}&nbsp;₽</td>
-				<td class="text-right">{{service.cost}}&nbsp;мин.</td>
-			</tr>
-		{{/each}}
-	</tbody>
-</table>
-
-{{outlet}}
+<div class="portlet light bordered">
+	<div class="portlet-title">
+		<div class="caption font-dark">
+			<i class="icon-bag font-green-sharp"></i>
+	        <span class="caption-subject">Услуги</span>
+        </div>
+	</div>
+	<div class="portlet-body">
+		<div class="table-toolbar">
+			<div class="row">
+				<div class="col-md-6">
+					{{#link-to "service.create" class="btn btn-primary"}}
+						<span class="fa fa-plus"></span>
+						Добавить
+					{{/link-to}}
+				</div>
+				<div class="col-md-6"></div>			 
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				{{service-list list=model}}
+			</div>
+		</div>
+	</div>
+</div>
