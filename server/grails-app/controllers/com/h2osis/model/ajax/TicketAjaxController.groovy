@@ -43,12 +43,14 @@ class TicketAjaxController {
             String value = params.value
             List<Ticket> ticketList = searchService.ticketSearch(value)
             if (ticketList) {
-                render(ticketList as JSON)
+                JSON.use('tickets') {
+                    render([data:ticketList] as JSON)
+                }
             } else {
-                render([msg: g.message(code: "ticket.fine.not.found")] as JSON)
+                render([erorrs: g.message(code: "ticket.fine.not.found")] as JSON)
             }
         } else {
-            render([msg: g.message(code: "find.value.null")] as JSON)
+            render([erorrs: g.message(code: "find.value.null")] as JSON)
         }
     }
 
@@ -63,19 +65,21 @@ class TicketAjaxController {
                     user.setSecondname(params.secondname)
                     user.save(flush: true)
                 } else {
-                    render([msg: g.message(code: "ticket.fio.empty")] as JSON)
+                    render([errors: g.message(code: "ticket.fio.empty")] as JSON)
                     return
                 }
             }
 
             Ticket ticket = ticketsService.createTicket(user, params)
             if (ticket) {
-                render(ticket as JSON)
+                JSON.use('tickets') {
+                    render([data: ticket] as JSON)
+                }
             } else {
-                render([msg: g.message(code: "service.create.params.null")] as JSON)
+                render([errors: g.message(code: "service.create.params.null")] as JSON)
             }
         } else {
-            render([msg: g.message(code: "service.create.params.null")] as JSON)
+            render([errors: g.message(code: "service.create.params.null")] as JSON)
         }
     }
 
@@ -104,17 +108,17 @@ class TicketAjaxController {
                             }
                             Ticket.search().createIndexAndWait()
 
-                            render([code: 0] as JSON)
+                            render([errors: 0] as JSON)
                         } catch (Exception e) {
-                            render([msg: e.toString()] as JSON)
+                            render([erorrs: e.toString()] as JSON)
                         }
                     }
                 }
             } else {
-                render([msg: g.message(code: "ticket.create.params.null")] as JSON)
+                render([erorrs: g.message(code: "ticket.create.params.null")] as JSON)
             }
         } else {
-            render([msg: g.message(code: "ticket.edit.not.admin")] as JSON)
+            render([erorrs: g.message(code: "ticket.edit.not.admin")] as JSON)
         }
     }
 
@@ -128,10 +132,10 @@ class TicketAjaxController {
                     render([transitions: ticket.ticketTransitions?.stateTo] as JSON)
                 }
             } else {
-                render([msg: g.message(code: "ticket.create.params.null")] as JSON)
+                render([erorrs: g.message(code: "ticket.create.params.null")] as JSON)
             }
         } else {
-            render([msg: g.message(code: "ticket.edit.not.admin")] as JSON)
+            render([erorrs: g.message(code: "ticket.edit.not.admin")] as JSON)
         }
     }
 
@@ -144,15 +148,15 @@ class TicketAjaxController {
                 if (ticket) {
                     ticket.delete(flush: true)
                     Ticket.search().createIndexAndWait()
-                    render([code: 0] as JSON)
+                    render([erorrs: 0] as JSON)
                 } else {
-                    render([msg: g.message(code: "ticket.get.user.not.found")] as JSON)
+                    render([erorrs: g.message(code: "ticket.get.user.not.found")] as JSON)
                 }
             } else {
-                render([msg: g.message(code: "ticket.get.id.null")] as JSON)
+                render([erorrs: g.message(code: "ticket.get.id.null")] as JSON)
             }
         } else {
-            render([msg: g.message(code: "ticket.delete.not.admin")] as JSON)
+            render([erorrs: g.message(code: "ticket.delete.not.admin")] as JSON)
         }
     }
 
@@ -225,11 +229,11 @@ class TicketAjaxController {
                     ticket.master?.setPassword(null)
                     ticket.user?.setPassword(null)
             }
-            JSON.use('deep') {
-                render(ticketList as JSON)
+            JSON.use('tickets') {
+                render([data: ticketList] as JSON)
             }
         } else {
-            render([msg: g.message(code: "ticket.fine.not.found")] as JSON)
+            render([erorrs: g.message(code: "ticket.fine.not.found")] as JSON)
         }
     }
 
@@ -298,9 +302,9 @@ class TicketAjaxController {
             if (intersects) {
                 result.put(curTicket.ticketDate.time, intersects)
             }
-            render result as JSON
+            render([data: result] as JSON)
         } else {
-            render([msg: g.message(code: "ticket.validate.ids.null")] as JSON)
+            render([erorrs: g.message(code: "ticket.validate.ids.null")] as JSON)
         }
     }
 
@@ -357,9 +361,9 @@ class TicketAjaxController {
             if (intersects) {
                 result.put(curTicket.ticketDate.time, intersects)
             }
-            render result as JSON
+            render([data: result] as JSON)
         } else {
-            render([msg: g.message(code: "ticket.validate.ids.null")] as JSON)
+            render([erorrs: g.message(code: "ticket.validate.ids.null")] as JSON)
         }
     }
 
@@ -370,15 +374,15 @@ class TicketAjaxController {
             if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
                 try {
                     slotsService.shiftTickets(params.getLong("id"), user, params.getLong("time"))
-                    render([code: "1"] as JSON)
+                    render([data: "1"] as JSON)
                 } catch (Exception e) {
-                    render([msg: e.toString()] as JSON)
+                    render([erorrs: e.toString()] as JSON)
                 }
             } else {
-                render([msg: g.message(code: "ticket.shift.notmaster")] as JSON)
+                render([erorrs: g.message(code: "ticket.shift.notmaster")] as JSON)
             }
         } else {
-            render([msg: g.message(code: "ticket.shift.params.null")] as JSON)
+            render([erorrs: g.message(code: "ticket.shift.params.null")] as JSON)
         }
     }
 
@@ -386,12 +390,12 @@ class TicketAjaxController {
         if (params.ticket1 && params.ticket2) {
             def result = slotsService.swapTickets(params.getLong("ticket1"), params.getLong("ticket2"))
             if (result) {
-                render([msg: result] as JSON)
+                render([erorrs: result] as JSON)
             } else {
-                render([code: "0"] as JSON)
+                render([erorrs: "0"] as JSON)
             }
         } else {
-            render([msg: g.message(code: "ticket.swap.params.null")] as JSON)
+            render([erorrs: g.message(code: "ticket.swap.params.null")] as JSON)
         }
     }
 }

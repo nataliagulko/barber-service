@@ -13,6 +13,7 @@ import com.h2osis.sm.SMTransition
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import grails.util.Environment
+import grails.converters.JSON
 
 class BootStrap {
 
@@ -118,6 +119,123 @@ class BootStrap {
 
         User.search().createIndexAndWait()
         Business.search().createIndexAndWait()
+
+
+
+        //init json render
+        JSON.createNamedConfig('services') {
+            it.registerObjectMarshaller(Service) {
+                def returnArray = [:]
+                returnArray['id'] = it.id
+                returnArray['type'] = 'service'
+
+                def attrs = [:]
+                attrs['name'] = it.name
+                attrs['cost'] = it.cost
+                attrs['time'] = it.time
+                attrs['partOfList'] = it.partOfList
+
+                def relationships = [:]
+                def mastersDatails = [:]
+                mastersDatails['data'] = it.masters
+                relationships['masters'] = mastersDatails
+                returnArray['relationships'] = relationships
+
+                returnArray['attributes'] = attrs
+                return returnArray
+            }
+            it.registerObjectMarshaller(User) {
+                def returnArray = [:]
+                returnArray['id'] = it.id
+                returnArray['type'] = 'user'
+                returnArray['phone'] = it.phone
+                returnArray['firstname'] = it.firstname
+                returnArray['secondname'] = it.secondname
+                returnArray['username'] = it.username
+                returnArray['email'] = it.email
+                returnArray['masterTZ'] = it.masterTZ
+                return returnArray
+            }
+        }
+
+
+        JSON.createNamedConfig('tickets') {
+            it.registerObjectMarshaller(Ticket) {
+                def returnArray = [:]
+                returnArray['id'] = it.id
+                returnArray['type'] = 'ticket'
+
+                def attrs = [:]
+                attrs['ticketDate'] = it.ticketDate
+                attrs['time'] = it.time
+                attrs['status'] = it.status
+                attrs['comment'] = it.comment
+                attrs['guid'] = it.guid
+                attrs['type'] = it.type
+                attrs['cost'] = it.cost
+                attrs['duration'] = it.duration
+
+                def relationships = [:]
+
+                def userDetails = [:]
+                userDetails['data'] = it.user
+                relationships['user'] = userDetails
+
+                def masterDetails = [:]
+                masterDetails['data'] = it.master
+                relationships['master'] = mastersDatails
+
+                def servicesDetails = [:]
+                servicesDetails['data'] = it.services
+                relationships['services'] = servicesDetails
+
+                def subTicketsDetails = [:]
+                subTicketsDetails['data'] = it.subTickets
+                relationships['subTickets'] = subTicketsDetails
+
+
+
+                returnArray['relationships'] = relationships
+
+                returnArray['attributes'] = attrs
+                return returnArray
+            }
+            it.registerObjectMarshaller(User) {
+                def returnArray = [:]
+                returnArray['id'] = it.id
+                returnArray['type'] = 'user'
+                returnArray['phone'] = it.phone
+                returnArray['firstname'] = it.firstname
+                returnArray['secondname'] = it.secondname
+                returnArray['username'] = it.username
+                returnArray['email'] = it.email
+                returnArray['masterTZ'] = it.masterTZ
+                return returnArray
+            }
+
+            it.registerObjectMarshaller(Service) {
+
+                def returnArray = [:]
+                returnArray['id'] = it.id
+                returnArray['type'] = 'service'
+
+                def attrs = [:]
+                attrs['name'] = it.name
+                attrs['cost'] = it.cost
+                attrs['time'] = it.time
+                attrs['partOfList'] = it.partOfList
+
+                def relationships = [:]
+                def mastersDatails = [:]
+                mastersDatails['data'] = it.masters
+                relationships['masters'] = mastersDatails
+                returnArray['relationships'] = relationships
+
+                returnArray['attributes'] = attrs
+                return returnArray
+            }
+        }
+
     }
     def destroy = {
     }

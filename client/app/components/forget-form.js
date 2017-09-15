@@ -3,12 +3,12 @@ import config from 'barbers/config/environment';
 
 export default Ember.Component.extend({
 	classNames: ['forget-form'],
-	validate: Ember.inject.service(),
+	validateService: Ember.inject.service("validate-service"),
 	toast: Ember.inject.service(),
 	isCodeSent: false,
 
 	didInsertElement: function() {
-		var validate = this.get('validate'),
+		var validateService = this.get('validateService'),
 			options = {
 				rules: {
 					phone: 'required',
@@ -21,16 +21,17 @@ export default Ember.Component.extend({
 						required: true,
 						minlength: 6,
 						maxlength: 20,
-						equalTo: "[name=pass]"
+						equalTo: "#pass"
 					}
 				}
 			};
 
-		validate.validateForm('#forget-form', options);
+		validateService.validateForm('#forget-form', options);
 	},
 
 	actions: {
 		showLoginForm: function() {
+			$("#forget-form")[0].reset();
 			$('.forget-form').hide();
 			$('#login-form').show();
 		},
@@ -49,6 +50,7 @@ export default Ember.Component.extend({
 
 				if (!response.error) {
 					$("#requestId").val(response.id);
+					console.log(response.code);
 				} else {
 					toast.error(response.error, '', options);
 				}

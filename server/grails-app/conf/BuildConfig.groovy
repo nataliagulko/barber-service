@@ -62,11 +62,11 @@ grails.project.dependency.resolution = {
         build ":tomcat:7.0.55.3" // or ":tomcat:8.0.22"
 
         // plugins for the compile step
-        compile ":scaffolding:2.1.2"
+        //compile ":scaffolding:2.1.2"
         compile ':cache:1.1.8'
         // asset-pipeline 2.0+ requires Java 7, use version 1.9.x with Java 6
         //compile ":asset-pipeline:2.11.0"
-        compile ":asset-pipeline:2.11.0"
+        //compile ":asset-pipeline:2.11.0"
         //compile ":sass-asset-pipeline:2.11.0"
 
         compile ':spring-security-core:2.0-RC3'
@@ -79,12 +79,12 @@ grails.project.dependency.resolution = {
         // plugins needed at runtime but not for compilation
         runtime ":hibernate:3.6.10.18" // or ":hibernate:3.6.10.18" :hibernate4:4.3.10
         runtime ":database-migration:1.4.0"
-        runtime ":jquery:1.11.1"
+        //runtime ":jquery:1.11.1"
         runtime ":cors:1.3.0"
 
         compile "org.grails.plugins:hibernate-search:0.7"
         
-        runtime ":twitter-bootstrap:3.3.5"
+        //runtime ":twitter-bootstrap:3.3.5"
         
         //test ':karma-test-runner:0.2.3'
 
