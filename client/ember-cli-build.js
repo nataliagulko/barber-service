@@ -17,6 +17,9 @@ module.exports = function(defaults) {
   app.import("vendor/plugins/bootstrap/css/bootstrap.css");
   app.import("vendor/plugins/bootstrap-switch/css/bootstrap-switch.css");
   app.import("vendor/plugins/fullcalendar/fullcalendar.css");
+  app.import("bower_components/pickadate/lib/themes/classic.css");
+  app.import("bower_components/pickadate/lib/themes/classic.date.css");
+  app.import("bower_components/pickadate/lib/themes/classic.time.css");
 
   // Plugins Fonts
   // Simple Line Icons
@@ -33,6 +36,10 @@ module.exports = function(defaults) {
   app.import("vendor/plugins/jquery.blockui.min.js");
   app.import("vendor/plugins/bootstrap-switch/js/bootstrap-switch.js");
   app.import("vendor/plugins/backstretch/jquery.backstretch.js");
+  app.import("bower_components/pickadate/lib/picker.js");
+  app.import("bower_components/pickadate/lib/picker.date.js");
+  app.import("bower_components/pickadate/lib/picker.time.js");
+  app.import("bower_components/pickadate/lib/translations/ru_RU.js");
 
   // Layout JS
   app.import("vendor/scripts/app.js");
