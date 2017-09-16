@@ -179,7 +179,7 @@ class BootStrap {
 
                 def userDetails = [:]
                 userDetails['data'] = it.user
-                relationships['user'] = userDetails
+                relationships['client'] = userDetails
 
                 def masterDetails = [:]
                 masterDetails['data'] = it.master
@@ -203,7 +203,7 @@ class BootStrap {
             it.registerObjectMarshaller(User) {
                 def returnArray = [:]
                 returnArray['id'] = it.id
-                returnArray['type'] = 'user'
+                returnArray['type'] = 'client'
                 returnArray['phone'] = it.phone
                 returnArray['firstname'] = it.firstname
                 returnArray['secondname'] = it.secondname

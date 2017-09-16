@@ -14,7 +14,7 @@ import com.h2osis.utils.SearchService
 import grails.converters.JSON
 import grails.transaction.Transactional
 
-class UserAjaxController {
+class MasterAjaxController {
 
     SearchService searchService
     def springSecurityService
