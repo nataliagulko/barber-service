@@ -7,3 +7,9 @@ body {
 body>.ember-view {
 	height: 100%;
 }
+
+.datepicker,
+.timepicker {
+	visibility: hidden;
+	position: absolute;
+}
