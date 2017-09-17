@@ -18,7 +18,7 @@ export default Ember.Service.extend({
 	},
 
 	set(selector, func, params) {
-		var picker = $(selector).pickatime('picker')
+		var picker = $(selector).pickatime('picker');
 		picker.set(func, params);
 	}
 });
