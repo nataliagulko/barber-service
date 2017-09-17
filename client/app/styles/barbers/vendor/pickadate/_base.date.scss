@@ -1,19 +1,26 @@
-
 /* ==========================================================================
    $BASE-DATE-PICKER
    ========================================================================== */
 
+
 /**
  * The picker box.
  */
+
 .picker__box {
-    padding: 0 1em;
+    padding: 0;
 }
+
+
+
+
+
 
 
 /**
  * The header containing the month and year stuff.
  */
+
 .picker__header {
     text-align: center;
     position: relative;
@@ -21,86 +28,106 @@
 }
 
 
+
+
+
+
+
 /**
  * The month and year labels.
  */
+
 .picker__month,
 .picker__year {
-    font-weight: 500;
+    font-weight: normal;
     display: inline-block;
     margin-left: .25em;
     margin-right: .25em;
+    font-size: $year-font-size;
 }
+
 .picker__year {
     color: $year-weekday-label;
-    font-size: .8em;
-    font-style: italic;
+    font-size: $year-font-size;
+    font-style: normal;
 }
+
+
+
+
+
 
 
 /**
  * The month and year selectors.
  */
+
 .picker__select--month,
 .picker__select--year {
     border: 1px solid $border-select;
     height: 2em;
     padding: .5em; // For firefox
     margin-left: .25em;
-    margin-right: .25em;
-
-    // For `tiny` width screens, move it up a bit.
-    @media ( min-width: $breakpoint-width-tiny ) {
+    margin-right: .25em; // For `tiny` width screens, move it up a bit.
+    @media ( min-width: $breakpoint-width-tiny) {
         margin-top: -.5em;
     }
 }
+
 .picker__select--month {
     width: 35%;
 }
+
 .picker__select--year {
     width: 22.5%;
 }
+
 .picker__select--month:focus,
 .picker__select--year:focus {
     border-color: $blue;
 }
 
 
+
+
+
+
+
 /**
  * The month navigation buttons.
  */
+
 .picker__nav--prev,
 .picker__nav--next {
     position: absolute;
-    padding: .5em 1.25em;
+    padding: 5px;
     width: 1em;
     height: 1em;
     box-sizing: content-box;
-    top: -.25em;
+    top: -.25em; // For `tiny` width screens, move it up a bit.
+    border-radius: 4px;
 
-    // For `tiny` width screens, move it up a bit.
-    @media ( min-width: $breakpoint-width-tiny ) {
+    @media ( min-width: $breakpoint-width-tiny) {
         top: -.33em;
     }
 }
+
 .picker__nav--prev {
-    left: -1em;
-    padding-right: 1.25em;
-
-    // For `tiny` width screens, increase the padding a bit.
-    @media ( min-width: $breakpoint-width-tiny ) {
-        padding-right: 1.5em;
+    left: 0;
+    padding-right: 5px; // For `tiny` width screens, increase the padding a bit.
+    @media ( min-width: $breakpoint-width-tiny) {
+        padding-right: 5px;
     }
 }
+
 .picker__nav--next {
-    right: -1em;
-    padding-left: 1.25em;
-
-    // For `tiny` width screens, increase the padding a bit.
-    @media ( min-width: $breakpoint-width-tiny ) {
-        padding-left: 1.5em;
+    right: 0;
+    padding-left: 5px; // For `tiny` width screens, increase the padding a bit.
+    @media ( min-width: $breakpoint-width-tiny) {
+        padding-left: 5px;
     }
 }
+
 .picker__nav--prev:before,
 .picker__nav--next:before {
     content: " ";
@@ -112,6 +139,7 @@
     display: block;
     margin: 0 auto;
 }
+
 .picker__nav--next:before {
     border-right: 0;
     border-left: .75em solid $black;
@@ -137,9 +165,15 @@
 
 
 
+
+
+
+
+
 /**
  * The calendar table of dates
  */
+
 .picker__table {
     text-align: center;
     border-collapse: collapse;
@@ -148,10 +182,8 @@
     font-size: inherit;
     width: 100%;
     margin-top: .75em;
-    margin-bottom: .5em;
-
-    // For `small` screens, increase the spacing a tad.
-    @media ( min-height: $breakpoint-small ) {
+    margin-bottom: .5em; // For `small` screens, increase the spacing a tad.
+    @media ( min-height: $breakpoint-small) {
         margin-bottom: .75em;
     }
 }
@@ -163,37 +195,60 @@
 }
 
 
+
+
+
+
+
 /**
  * The weekday labels
  */
+
 .picker__weekday {
     width: 14.285714286%; // 100/7
-    font-size: .75em;
-    padding-bottom: .25em;
+    font-size: $year-font-size;
+    padding: $weekday-padding;
     color: $year-weekday-label;
-    font-weight: 500;
+    font-weight: normal;
+    width: $weekday-width;
+    height: $weekday-height;
+    line-height: $weekday-line-height;
 
     /* Increase the spacing a tad */
-    @media ( min-height: $breakpoint-small ) {
+    @media ( min-height: $breakpoint-small) {
         padding-bottom: .5em;
     }
 }
 
 
+
+
+
+
+
 /**
  * The days on the calendar
  */
+
 .picker__day {
-    padding: .3125em 0;
-    font-weight: 200;
-    border: 1px solid transparent;
+    padding: $weekday-padding;
+    font-weight: normal;
+    border-radius: 4px;
+    border: none;
+    font-size: $year-font-size;
+    width: $weekday-width;
+    height: $weekday-height;
+    line-height: $weekday-line-height;
 }
 
 // Today.
 .picker__day--today {
     position: relative;
+    background-color: $today-bg-color;
 }
+
 .picker__day--today:before {
+    display: none;
     content: " ";
     position: absolute;
     top: 2px;
@@ -224,6 +279,7 @@
 .picker__day--highlighted {
     @include picker-item-highlighted;
 }
+
 .picker__day--highlighted:hover,
 .picker--focused .picker__day--highlighted {
     @include picker-item-hovered;
@@ -250,9 +306,15 @@
 }
 
 
+
+
+
+
+
 /**
  * The footer containing the "today", "clear", and "close" buttons.
  */
+
 .picker__footer {
     text-align: center;
 }
@@ -261,21 +323,40 @@
 .picker__button--today,
 .picker__button--clear,
 .picker__button--close {
-    border: 1px solid $white;
+    border: 1px solid rgb(204, 204, 204);
     background: $white;
     font-size: .8em;
-    padding: .66em 0;
-    font-weight: bold;
-    width: 33%;
+    padding: 5px;
+    font-weight: normal;
+    width: 40%;
     display: inline-block;
     vertical-align: bottom;
+    border-radius: 4px;
 }
-.picker__button--today:hover,
-.picker__button--clear:hover,
+
+.picker__button--today {
+    &:focus,
+    &:hover {
+        color: #fff;
+        background-color: #666;
+        border-color: #666;
+    }
+}
+
+.picker__button--clear:hover {
+    &:focus,
+    &:hover {
+        color: #fff;
+        background-color: #e43a45;
+        border-color: #e43a45;
+    }
+}
+
 .picker__button--close:hover {
     @include picker-item-hovered;
-    border-bottom-color: $blue-hover;
+    border-bottom: 1px solid rgb(204, 204, 204);
 }
+
 .picker__button--today:focus,
 .picker__button--clear:focus,
 .picker__button--close:focus {
@@ -288,33 +369,7 @@
 .picker__button--today:before,
 .picker__button--clear:before,
 .picker__button--close:before {
-    position: relative;
-    display: inline-block;
-    height: 0;
-}
-.picker__button--today:before,
-.picker__button--clear:before {
-    content: " ";
-    margin-right: .45em;
-}
-.picker__button--today:before {
-    top: -.05em;
-    width: 0;
-    border-top: .66em solid $blue-tag;
-    border-left: .66em solid transparent;
-}
-.picker__button--clear:before {
-    top: -.25em;
-    width: .66em;
-    border-top: 3px solid $clear-red;
-}
-.picker__button--close:before {
-    content: "\D7"; // ×
-    top: -.1em;
-    vertical-align: top;
-    font-size: 1.1em;
-    margin-right: .35em;
-    color: $border-grey;
+    display: none;
 }
 
 // Today when “disabled”.
@@ -322,9 +377,24 @@
 .picker__button--today[disabled]:hover {
     @include picker-item-disabled;
 }
+
 .picker__button--today[disabled]:before {
     border-top-color: $disabled-tag;
 }
 
+.picker__button--close {
+    display: none;
+}
 
+.picker__button--today {
+    margin-right: 5px;
+    border-color: #666;
+    color: #666;
+    background-color: #fff;
+}
 
+.picker__button--clear {
+    color: #e43a45;
+    background-color: #fff;
+    border-color: #e43a45;
+}
