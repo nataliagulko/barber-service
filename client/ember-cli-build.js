@@ -40,6 +40,7 @@ module.exports = function(defaults) {
   app.import("bower_components/pickadate/lib/picker.date.js");
   app.import("bower_components/pickadate/lib/picker.time.js");
   app.import("bower_components/pickadate/lib/translations/ru_RU.js");
+  app.import("vendor/plugins/pickadate/translations/ru_RU.js");
 
   // Layout JS
   app.import("vendor/scripts/app.js");
