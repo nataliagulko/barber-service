@@ -19,14 +19,19 @@
 /**
  * The holder is the base of the picker.
  */
+.picker--time.picker--opened .picker__holder {
+    max-height: none;
+    max-width: none;
+}
+
 .picker--time .picker__holder {
 
     // Add a slight background color.
-    background: $bg-grey-light;
+    background: #fff;
 
     // For `medium` screens, reduce the font-size a bit to get more in view.
     @media ( min-height: $breakpoint-medium ) {
-        font-size: .875em;
+        font-size: $year-font-size;
     }
 }
 
@@ -42,6 +47,5 @@
     // Make the “viewset” time position relative to the box.
     position: relative;
 }
-
 
 

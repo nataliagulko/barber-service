@@ -4,8 +4,10 @@ export default Ember.Service.extend({
 
 	init() {
 		var $input = $('.timepicker').pickatime({
+			clear: "Очистить",
 			closeOnSelect: false,
 			closeOnClear: false,
+			format: "HH:i"
 		});
 		var picker = $input.pickatime('picker');
 
@@ -13,5 +15,10 @@ export default Ember.Service.extend({
 		picker.$node.attr('aria-expanded', 'true');
 		picker.$root.addClass('picker--focused picker--opened');
 		picker.$root.attr('aria-hidden', 'false');
+	},
+
+	set(selector, func, params) {
+		var picker = $(selector).pickatime('picker')
+		picker.set(func, params);
 	}
 });

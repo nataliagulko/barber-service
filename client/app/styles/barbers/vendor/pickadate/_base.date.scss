@@ -325,7 +325,7 @@
 .picker__button--close {
     border: 1px solid rgb(204, 204, 204);
     background: $white;
-    font-size: .8em;
+    font-size: $footer-btn-font-size;
     padding: 5px;
     font-weight: normal;
     width: 40%;

@@ -9,7 +9,8 @@
  */
 .picker__list {
     list-style: none;
-    padding: 0.75em 0 4.2em;
+    padding: 0;
+    padding-bottom: 40px;
     margin: 0;
 }
 
@@ -18,12 +19,14 @@
  * The times on the clock.
  */
 .picker__list-item {
-    border-bottom: 1px solid $border-grey-light;
-    border-top: 1px solid $border-grey-light;
+    display: inline-block;
+    border-bottom: none;
+    border-top: none;
     margin-bottom: -1px; // Prevent border from doubling up.
     position: relative;
     background: $bg-white;
     padding: .75em 1.25em;
+    border-radius: 4px;
 
     // For `large` screens, reduce the padding to show more in view.
     @media ( min-height: $breakpoint-large ) {
@@ -61,7 +64,7 @@
 .picker__list-item--disabled:hover,
 .picker--focused .picker__list-item--disabled {
     @include picker-item-disabled;
-    border-color: $border-grey-light;
+    border-color: none;
     z-index: auto;
 }
 
@@ -75,18 +78,16 @@
 
     .picker__button--clear {
         display: block;
-        width: 80%;
-        margin: 1em auto 0;
-        padding: 1em 1.25em;
-
-        background: none;
-        border: 0;
-
-        font-weight: 500;
-        font-size: .67em;
+        width: 88px;
+        margin: .75em auto 0;
+        padding: 5px;
+        background: #fff;
+        border: 1px solid #e43a45;
+        font-weight: normal;
+        font-size: $footer-btn-font-size;
         text-align: center;
-        text-transform: uppercase;
-        color: #666;
+        text-transform: none;
+        color: #e43a45;
     }
 
     .picker__button--clear:hover,
