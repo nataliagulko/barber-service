@@ -354,45 +354,9 @@ class MasterAjaxController {
     }
 
     def list() {
-        List<User> userList = User.createCriteria().list {
-            def data = request.JSON.data
-//            if(data) {
-//                def attrs = data.attributes
-//                if (attrs.name) {
-//                    eq("name", attrs.name)
-//                }
-//                if (attrs.cost) {
-//                    eq("cost", Float.parseFloat(attrs.cost))
-//                }
-//                if (attrs.time) {
-//                    eq("time", Long.parseLong(attrs.time))
-//                }
-//                if (attrs.master) {
-//                    masters {
-//                        idEq(User.get(attrs.master)?.id)
-//                    }
-//                }
-//                if (data.max && data.offset) {
-//                    Integer max = Integer.parseInt(data.max)
-//                    Integer offset = Integer.parseInt(data.offset)
-//                    maxResults(max)
-//                    firstResult(offset)
-//                }
-//                if (attrs.partOfList) {
-//                    if (attrs.partOfList == true) {
-//                        eq("partOfList", true)
-//                    } else {
-//                        or {
-//                            eq("partOfList", false)
-//                            isNull("partOfList")
-//                        }
-//                    }
-//                }
-//            }
-
-            order("phone", "asc")
-        }
+        List<User> userList = UserRole.findAllByRole(Role.findByAuthority("ROLE_ADMIN")).user
         if (userList) {
+
             JSON.use('users') {
                 render([data: userList] as JSON)
             }
