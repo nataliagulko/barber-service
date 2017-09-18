@@ -123,6 +123,22 @@ class BootStrap {
 
 
         //init json render
+
+        JSON.createNamedConfig('users') {
+            it.registerObjectMarshaller(User) {
+                def returnArray = [:]
+                returnArray['id'] = it.id
+                returnArray['type'] = 'user'
+                returnArray['phone'] = it.phone
+                returnArray['firstname'] = it.firstname
+                returnArray['secondname'] = it.secondname
+                returnArray['username'] = it.username
+                returnArray['email'] = it.email
+                returnArray['masterTZ'] = it.masterTZ
+                return returnArray
+            }
+        }
+
         JSON.createNamedConfig('services') {
             it.registerObjectMarshaller(Service) {
                 def returnArray = [:]

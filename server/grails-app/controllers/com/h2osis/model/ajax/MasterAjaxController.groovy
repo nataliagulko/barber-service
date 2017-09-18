@@ -4,11 +4,7 @@ import com.h2osis.auth.Role
 import com.h2osis.auth.User
 import com.h2osis.auth.UserRole
 import com.h2osis.constant.AuthKeys
-import com.h2osis.model.Business
-import com.h2osis.model.Holiday
-import com.h2osis.model.UserBlockFact
-import com.h2osis.model.UsersService
-import com.h2osis.model.WorkTime
+import com.h2osis.model.*
 import com.h2osis.utils.BarberSecurityService
 import com.h2osis.utils.SearchService
 import grails.converters.JSON
@@ -24,7 +20,7 @@ class MasterAjaxController {
 
     def create() {
         if (params.phone && params.password && params.rpassword) {
-            if(params.password.equals(params.rpassword)) {
+            if (params.password.equals(params.rpassword)) {
                 def result = usersService.createUser(params)
                 if (result instanceof User) {
                     result.setPassword(null)
@@ -32,7 +28,7 @@ class MasterAjaxController {
                 } else {
                     render([msg: result] as JSON)
                 }
-            }else {
+            } else {
                 render([msg: g.message(code: "auth.reg.pass2.fail")] as JSON)
             }
         } else {
@@ -355,5 +351,53 @@ class MasterAjaxController {
     def getOrgMasters() {
         def data = request.JSON.data
         def attrs = data.attributes
+    }
+
+    def list() {
+        List<User> userList = User.createCriteria().list {
+            def data = request.JSON.data
+//            if(data) {
+//                def attrs = data.attributes
+//                if (attrs.name) {
+//                    eq("name", attrs.name)
+//                }
+//                if (attrs.cost) {
+//                    eq("cost", Float.parseFloat(attrs.cost))
+//                }
+//                if (attrs.time) {
+//                    eq("time", Long.parseLong(attrs.time))
+//                }
+//                if (attrs.master) {
+//                    masters {
+//                        idEq(User.get(attrs.master)?.id)
+//                    }
+//                }
+//                if (data.max && data.offset) {
+//                    Integer max = Integer.parseInt(data.max)
+//                    Integer offset = Integer.parseInt(data.offset)
+//                    maxResults(max)
+//                    firstResult(offset)
+//                }
+//                if (attrs.partOfList) {
+//                    if (attrs.partOfList == true) {
+//                        eq("partOfList", true)
+//                    } else {
+//                        or {
+//                            eq("partOfList", false)
+//                            isNull("partOfList")
+//                        }
+//                    }
+//                }
+//            }
+
+            order("phone", "asc")
+        }
+        if (userList) {
+            JSON.use('users') {
+                render([data: userList] as JSON)
+            }
+        } else {
+            render([erros: g.message(code: "user.fine.not.found")] as JSON)
+        }
     }
 }
