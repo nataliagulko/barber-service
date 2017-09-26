@@ -49,7 +49,7 @@ $speed-animate-in: .15s;
 $input-active-border: $grey;
 
 // Typography.
-$base-font-size: 16px;
+$base-font-size: 14px;
 $base-line-height: 1.2;
 
 // Corners.
@@ -71,7 +71,7 @@ $breakpoint-width-tiny: 24.5em; // 392px $ 16px
 //
 // The year and weekday labels.
 $year-weekday-label: #000;
-$year-font-size: 14px;
+$year-font-size: $base-font-size;
 $footer-btn-font-size: 12px;
 $weekday-padding: 5px;
 $weekday-width: 30px;
