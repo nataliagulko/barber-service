@@ -1,0 +1,13 @@
+<div class="mt-card-item" {{action 'selectMaster' master-name src}}>
+    <div class="mt-card-avatar mt-overlay-1">
+    {{#if src}}
+        <img src="{{src}}">
+    {{else}}
+        <img src="https://image.flaticon.com/icons/svg/522/522401.svg">
+    {{/if}}
+    </div>
+    <div class="mt-card-content">
+        <h3 class="mt-card-name">{{master-name}}</h3>
+    </div>
+</div>
+{{yield}}
