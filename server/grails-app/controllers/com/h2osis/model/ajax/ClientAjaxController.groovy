@@ -356,4 +356,15 @@ class ClientAjaxController {
         def data = request.JSON.data
         def attrs = data.attributes
     }
+
+    def list() {
+        List<User> userList = UserRole.findAllByRole(Role.findByAuthority("ROLE_USER")).user
+        if (userList) {
+            JSON.use('users') {
+                render([data: userList] as JSON)
+            }
+        } else {
+            render([erros: g.message(code: "user.fine.not.found")] as JSON)
+        }
+    }
 }

@@ -4,11 +4,7 @@ import com.h2osis.auth.Role
 import com.h2osis.auth.User
 import com.h2osis.auth.UserRole
 import com.h2osis.constant.AuthKeys
-import com.h2osis.model.Business
-import com.h2osis.model.Holiday
-import com.h2osis.model.UserBlockFact
-import com.h2osis.model.UsersService
-import com.h2osis.model.WorkTime
+import com.h2osis.model.*
 import com.h2osis.utils.BarberSecurityService
 import com.h2osis.utils.SearchService
 import grails.converters.JSON
@@ -355,5 +351,19 @@ class UserAjaxController {
     def getOrgMasters() {
         def data = request.JSON.data
         def attrs = data.attributes
+    }
+
+    def list() {
+        List<User> userList = User.executeQuery(
+                "select user.phone from user join user_role on user.id = user_role.user_id join role on user_role.role_id = role.id" +
+                        "where role.authority = 'ROLE_USER'"
+        )
+        if (userList) {
+            JSON.use('users') {
+                render([data: userList] as JSON)
+            }
+        } else {
+            render([erros: g.message(code: "user.fine.not.found")] as JSON)
+        }
     }
 }

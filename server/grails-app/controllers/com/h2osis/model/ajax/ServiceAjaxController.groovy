@@ -140,34 +140,36 @@ class ServiceAjaxController {
     def list() {
         List<Service> serviceList = Service.createCriteria().list {
             def data = request.JSON.data
-            def attrs = data.attributes
-            if (attrs.name) {
-                eq("name", attrs.name)
-            }
-            if (attrs.cost) {
-                eq("cost", Float.parseFloat(attrs.cost))
-            }
-            if (attrs.time) {
-                eq("time", Long.parseLong(attrs.time))
-            }
-            if (attrs.master) {
-                masters {
-                    idEq(User.get(attrs.master)?.id)
+            if(data) {
+                def attrs = data.attributes
+                if (attrs.name) {
+                    eq("name", attrs.name)
                 }
-            }
-            if (data.max && data.offset) {
-                Integer max = Integer.parseInt(data.max)
-                Integer offset =  Integer.parseInt(data.offset)
-                maxResults(max)
-                firstResult(offset)
-            }
-            if (attrs.partOfList) {
-                if (attrs.partOfList == true) {
-                    eq("partOfList", true)
-                } else {
-                    or {
-                        eq("partOfList", false)
-                        isNull("partOfList")
+                if (attrs.cost) {
+                    eq("cost", Float.parseFloat(attrs.cost))
+                }
+                if (attrs.time) {
+                    eq("time", Long.parseLong(attrs.time))
+                }
+                if (attrs.master) {
+                    masters {
+                        idEq(User.get(attrs.master)?.id)
+                    }
+                }
+                if (data.max && data.offset) {
+                    Integer max = Integer.parseInt(data.max)
+                    Integer offset = Integer.parseInt(data.offset)
+                    maxResults(max)
+                    firstResult(offset)
+                }
+                if (attrs.partOfList) {
+                    if (attrs.partOfList == true) {
+                        eq("partOfList", true)
+                    } else {
+                        or {
+                            eq("partOfList", false)
+                            isNull("partOfList")
+                        }
                     }
                 }
             }
@@ -175,7 +177,8 @@ class ServiceAjaxController {
             order("name", "asc")
         }
         if (serviceList) {
-            if (attrs.onlySimpleService == true) {
+            def data = request.JSON.data
+            if (data && data.attributes?.onlySimpleService == true) {
                 serviceList = serviceList.findAll {
                     (it.class == Service.class)
                 }
