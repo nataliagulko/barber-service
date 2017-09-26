@@ -10,6 +10,5 @@ body>.ember-view {
 
 .datepicker,
 .timepicker {
-	visibility: hidden;
-	position: absolute;
+	display: none;
 }
