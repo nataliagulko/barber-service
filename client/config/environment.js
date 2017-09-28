@@ -6,7 +6,8 @@ module.exports = function(environment) {
         environment: environment,
         rootURL: '/',
         locationType: 'auto',
-        host: 'https://service4barbers-h2osis.rhcloud.com',
+        //host: 'https://service4barbers-h2osis.rhcloud.com',
+        host: 'https://localhost:8090/nova',
         EmberENV: {
             FEATURES: {
                 // Here you can enable experimental features on an ember canary build
