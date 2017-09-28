@@ -5,7 +5,7 @@ export default Ember.Component.extend({
 
     actions: {
         inputNumber() {
-            var inputField = $('.client-phone__input'),
+            var inputField = $('.ticket-info-client__input'),
                 inputValue = $('#phone-number'),
                 phoneValue = "",
                 submitBtn = $('#phone-submit');

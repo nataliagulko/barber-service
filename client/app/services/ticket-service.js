@@ -8,5 +8,10 @@ export default Ember.Service.extend({
 
         $('.right-panel').addClass('hidden');
         $(elemSelector).removeClass('hidden');
+    },
+
+    selectMaster(masterName, imgSrc) {
+        $('.ticket-info-master__name').text(masterName);
+        $('.ticket-info-master__img').attr("src", imgSrc);
     }
 });

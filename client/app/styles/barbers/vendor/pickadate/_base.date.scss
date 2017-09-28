@@ -1,0 +1,317 @@
+/* ==========================================================================
+   $BASE-DATE-PICKER
+   ========================================================================== */
+
+
+/**
+ * The picker box.
+ */
+
+.picker__box {
+    padding: 0;
+}
+
+
+.picker__header {
+    text-align: center;
+    position: relative;
+    margin-top: .75em;
+}
+
+
+.picker__month,
+.picker__year {
+    font-weight: normal;
+    display: inline-block;
+    margin-left: .25em;
+    margin-right: .25em;
+    font-size: $year-font-size;
+}
+
+.picker__year {
+    color: $year-weekday-label;
+    font-size: $year-font-size;
+    font-style: normal;
+}
+
+.picker__select {
+    &--month,
+    &--year {
+        border: 1px solid $border-select;
+        height: 2em;
+        padding: .5em; // For firefox
+        margin-left: .25em;
+        margin-right: .25em; // For `tiny` width screens, move it up a bit.
+        @media ( min-width: $breakpoint-width-tiny) {
+            margin-top: -.5em;
+        }
+    }
+
+    &--month {
+        width: 35%;
+    }
+
+    &--year {
+        width: 22.5%;
+    }
+
+    &--month:focus,
+    &--year:focus {
+        border-color: $blue;
+    }
+}
+
+
+.picker__nav--prev,
+.picker__nav--next {
+    position: absolute;
+    padding: 5px;
+    width: 1em;
+    height: 1em;
+    box-sizing: content-box;
+    top: -.25em; // For `tiny` width screens, move it up a bit.
+    border-radius: 4px;
+
+    @media ( min-width: $breakpoint-width-tiny) {
+        top: -.33em;
+    }
+}
+
+.picker__nav--prev,
+.picker__nav--next {
+    &:before {
+        font-family: FontAwesome;
+        content: "\f104";
+        border-top: none;
+        border-bottom: none;
+        border-right: none;
+        width: auto;
+        height: auto;
+        display: block;
+        margin: -2px auto 0;
+    }
+
+    &:hover {
+        @include picker-item-hovered;
+    }
+}
+
+.picker__nav--prev {
+    left: 0;
+    padding-right: 5px; // For `tiny` width screens, increase the padding a bit.
+    @media ( min-width: $breakpoint-width-tiny) {
+        padding-right: 5px;
+    }
+}
+
+.picker__nav--next {
+    right: 0;
+    padding-left: 5px; // For `tiny` width screens, increase the padding a bit.
+    @media ( min-width: $breakpoint-width-tiny) {
+        padding-left: 5px;
+    }
+
+    &:before {
+        content: "\f105";
+        border-right: none;
+        border-left: none;
+    }
+}
+
+// Disabled month nav.
+.picker__nav--disabled,
+.picker__nav--disabled:hover,
+.picker__nav--disabled:before,
+.picker__nav--disabled:before:hover {
+    cursor: default;
+    background: none;
+    border-right-color: $disabled-things-bg;
+    border-left-color: $disabled-things-bg;
+}
+
+
+.picker__table {
+    text-align: center;
+    border-collapse: collapse;
+    border-spacing: 0;
+    table-layout: fixed;
+    font-size: inherit;
+    width: 100%;
+    margin-top: .75em;
+    margin-bottom: .5em; // For `small` screens, increase the spacing a tad.
+    @media ( min-height: $breakpoint-small) {
+        margin-bottom: .75em;
+    }
+    td {
+        margin: 0;
+        padding: 0;
+    }
+}
+
+
+.picker__weekday {
+    width: 14.285714286%; // 100/7
+    font-size: $year-font-size;
+    padding: $weekday-padding;
+    color: $year-weekday-label;
+    font-weight: normal;
+    width: $weekday-width;
+    height: $weekday-height;
+    line-height: $weekday-line-height;
+
+    /* Increase the spacing a tad */
+    @media ( min-height: $breakpoint-small) {
+        padding-bottom: .5em;
+    }
+}
+
+
+.picker__day {
+    padding: $weekday-padding;
+    font-weight: normal;
+    border-radius: 4px;
+    border: none;
+    font-size: $year-font-size;
+    width: $weekday-width;
+    height: $weekday-height;
+    line-height: $weekday-line-height;
+    &--today {
+        position: relative;
+        background-color: $today-bg-color;
+
+        &:before {
+            display: none;
+            content: " ";
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 0;
+            height: 0;
+            border-top: .5em solid $blue-tag;
+            border-left: .5em solid transparent;
+        }
+    }
+    &--disabled:before {
+        border-top-color: $disabled-tag;
+    }
+
+    &--outfocus {
+        color: $disabled-things-text;
+    } // Hovered date picker items.
+    &--infocus:hover,
+    &--outfocus:hover {
+        @include picker-item-hovered;
+    }
+    &--highlighted {
+        @include picker-item-highlighted;
+
+        &:hover {
+            @include picker-item-hovered;
+        }
+    }
+
+    &--selected,
+    &--selected:hover {
+        @include picker-item-selected;
+    }
+
+    &--disabled,
+    &--disabled:hover {
+        @include picker-item-selected;
+    }
+}
+
+.picker--focused .picker__day--highlighted {
+    @include picker-item-hovered;
+}
+
+// Selected and hovered/focused dates.
+.picker--focused .picker__day--selected {
+    @include picker-item-selected;
+}
+
+.picker--focused .picker__day--disabled {
+    @include picker-item-disabled;
+}
+
+// Disabled and highlighted dates.
+.picker__day--highlighted.picker__day--disabled,
+.picker__day--highlighted.picker__day--disabled:hover {
+    background: $disabled-highlighted-things-bg;
+}
+
+
+.picker__footer {
+    text-align: center;
+}
+
+// Today, clear, and close buttons.
+.picker__button {
+    &--today,
+    &--clear,
+    &--close {
+        border: 1px solid rgb(204, 204, 204);
+        background: $white;
+        font-size: $footer-btn-font-size;
+        padding: 5px;
+        font-weight: normal;
+        width: 40%;
+        display: inline-block;
+        vertical-align: bottom;
+        border-radius: 4px;
+
+        &:focus {
+            background: $blue-hover;
+            border-color: $blue;
+            outline: none;
+        }
+
+        &:before {
+            display: none;
+        }
+    }
+
+    &--today {
+        margin-right: 5px;
+        border-color: #666;
+        color: #666;
+        background-color: #fff;
+        &:focus,
+        &:hover {
+            color: #fff;
+            background-color: #666;
+            border-color: #666;
+        }
+
+        &[disabled],
+        &[disabled]:hover {
+            @include picker-item-disabled;
+
+            &:before {
+                border-top-color: $disabled-tag;
+            }
+        }
+    }
+
+    &--clear {
+        color: #e43a45;
+        background-color: #fff;
+        border-color: #e43a45;
+        &:hover {
+            &:focus,
+            &:hover {
+                color: #fff;
+                background-color: #e43a45;
+                border-color: #e43a45;
+            }
+        }
+    }
+
+    &--close {
+        display: none;
+        &:hover {
+            @include picker-item-hovered;
+            border-bottom: 1px solid rgb(204, 204, 204);
+        }
+    }
+}

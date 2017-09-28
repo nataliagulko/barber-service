@@ -54,8 +54,10 @@ class ServiceAjaxController {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
         if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
-            if (params.name && params.cost && params.time) {
-                Service service = new Service(name: params.name, cost: params.cost, time: params.time)
+            def data = request.JSON.data
+            def attrs = data.attributes
+            if (data.type && data.type == "service" && attrs.name && attrs.cost && attrs.time) {
+                Service service = new Service(name: attrs.name, cost: attrs.cost, time: attrs.time)
                 service.addToMasters(user)
                 service.save(flush: true)
                 Service.search().createIndexAndWait()
@@ -74,20 +76,22 @@ class ServiceAjaxController {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
         if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
-            if (params.id) {
-                Service service = Service.get(params.id)
+            def data = request.JSON.data
+            def attrs = data.attributes
+            if (data.id) {
+                Service service = Service.get(data.id)
                 if (service) {
-                    if (params.cost) {
-                        service.setCost(Long.parseLong(params.cost))
+                    if (attrs.cost) {
+                        service.setCost(Long.parseLong(attrs.cost))
                     }
-                    if (params.time) {
-                        service.setTime(Long.parseLong(params.time))
+                    if (attrs.time) {
+                        service.setTime(Long.parseLong(attrs.time))
                     }
-                    if (params.name) {
-                        service.setName(params.name)
+                    if (attrs.name) {
+                        service.setName(attrs.name)
                     }
-                    if (params.masters) {
-                        JSONArray mastersJSON = JSON.parse(params.masters)
+                    if (attrs.masters) {
+                        JSONArray mastersJSON = JSON.parse(attrs.masters)
                         List mastersList = new ArrayList<Long>()
                         mastersJSON.each {
                             mastersList.add(new Integer(it).longValue())
@@ -115,8 +119,9 @@ class ServiceAjaxController {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
         if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
-            if (params.id) {
-                Service service = Service.get(params.id)
+            def data = request.JSON.data
+            if (data.type && data.type == "service" && data.id) {
+                Service service = Service.get(data.id)
                 if (service) {
                     service.delete(flush: true)
                     Service.search().createIndexAndWait()
@@ -134,33 +139,37 @@ class ServiceAjaxController {
 
     def list() {
         List<Service> serviceList = Service.createCriteria().list {
-            if (params.name) {
-                eq("name", params.name)
-            }
-            if (params.cost) {
-                eq("cost", Float.parseFloat(params.cost))
-            }
-            if (params.time) {
-                eq("time", Long.parseLong(params.time))
-            }
-            if (params.master) {
-                masters {
-                    idEq(User.get(params.master)?.id)
+            def data = request.JSON.data
+            if(data) {
+                def attrs = data.attributes
+                if (attrs.name) {
+                    eq("name", attrs.name)
                 }
-            }
-            if (params.max && params.offset) {
-                Integer max = params.getInt('max')
-                Integer offset = params.getInt('offset')
-                maxResults(max)
-                firstResult(offset)
-            }
-            if (params.partOfList) {
-                if (params.partOfList == true) {
-                    eq("partOfList", true)
-                } else {
-                    or {
-                        eq("partOfList", false)
-                        isNull("partOfList")
+                if (attrs.cost) {
+                    eq("cost", Float.parseFloat(attrs.cost))
+                }
+                if (attrs.time) {
+                    eq("time", Long.parseLong(attrs.time))
+                }
+                if (attrs.master) {
+                    masters {
+                        idEq(User.get(attrs.master)?.id)
+                    }
+                }
+                if (data.max && data.offset) {
+                    Integer max = Integer.parseInt(data.max)
+                    Integer offset = Integer.parseInt(data.offset)
+                    maxResults(max)
+                    firstResult(offset)
+                }
+                if (attrs.partOfList) {
+                    if (attrs.partOfList == true) {
+                        eq("partOfList", true)
+                    } else {
+                        or {
+                            eq("partOfList", false)
+                            isNull("partOfList")
+                        }
                     }
                 }
             }
@@ -168,7 +177,8 @@ class ServiceAjaxController {
             order("name", "asc")
         }
         if (serviceList) {
-            if (params.onlySimpleService == true) {
+            def data = request.JSON.data
+            if (data && data.attributes?.onlySimpleService == true) {
                 serviceList = serviceList.findAll {
                     (it.class == Service.class)
                 }
