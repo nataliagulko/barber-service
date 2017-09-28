@@ -128,13 +128,34 @@ class BootStrap {
             it.registerObjectMarshaller(User) {
                 def returnArray = [:]
                 returnArray['id'] = it.id
-                returnArray['type'] = 'user'
-                returnArray['phone'] = it.phone
-                returnArray['firstname'] = it.firstname
-                returnArray['secondname'] = it.secondname
-                returnArray['username'] = it.username
-                returnArray['email'] = it.email
-                returnArray['masterTZ'] = it.masterTZ
+                returnArray['type'] = 'client'
+
+                def attrs = [:]
+                attrs['phone'] = it.phone
+                attrs['firstname'] = it.firstname
+                attrs['secondname'] = it.secondname
+                attrs['username'] = it.username
+                attrs['email'] = it.email
+                attrs['masterTZ'] = it.masterTZ
+                returnArray['attributes'] = attrs
+                return returnArray
+            }
+        }
+
+        JSON.createNamedConfig('masters') {
+            it.registerObjectMarshaller(User) {
+                def returnArray = [:]
+                returnArray['id'] = it.id
+                returnArray['type'] = 'master'
+
+                def attrs = [:]
+                attrs['phone'] = it.phone
+                attrs['firstname'] = it.firstname
+                attrs['secondname'] = it.secondname
+                attrs['username'] = it.username
+                attrs['email'] = it.email
+                attrs['masterTZ'] = it.masterTZ
+                returnArray['attributes'] = attrs
                 return returnArray
             }
         }
@@ -163,13 +184,16 @@ class BootStrap {
             it.registerObjectMarshaller(User) {
                 def returnArray = [:]
                 returnArray['id'] = it.id
-                returnArray['type'] = 'user'
-                returnArray['phone'] = it.phone
-                returnArray['firstname'] = it.firstname
-                returnArray['secondname'] = it.secondname
-                returnArray['username'] = it.username
-                returnArray['email'] = it.email
-                returnArray['masterTZ'] = it.masterTZ
+                returnArray['type'] = 'client'
+
+                def attrs = [:]
+                attrs['phone'] = it.phone
+                attrs['firstname'] = it.firstname
+                attrs['secondname'] = it.secondname
+                attrs['username'] = it.username
+                attrs['email'] = it.email
+                attrs['masterTZ'] = it.masterTZ
+                returnArray['attributes'] = attrs
                 return returnArray
             }
         }
@@ -220,12 +244,15 @@ class BootStrap {
                 def returnArray = [:]
                 returnArray['id'] = it.id
                 returnArray['type'] = 'client'
-                returnArray['phone'] = it.phone
-                returnArray['firstname'] = it.firstname
-                returnArray['secondname'] = it.secondname
-                returnArray['username'] = it.username
-                returnArray['email'] = it.email
-                returnArray['masterTZ'] = it.masterTZ
+
+                def attrs = [:]
+                attrs['phone'] = it.phone
+                attrs['firstname'] = it.firstname
+                attrs['secondname'] = it.secondname
+                attrs['username'] = it.username
+                attrs['email'] = it.email
+                attrs['masterTZ'] = it.masterTZ
+                returnArray['attributes'] = attrs
                 return returnArray
             }
 

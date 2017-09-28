@@ -25,39 +25,17 @@ environments {
 
         hibernate {
             // hibernate search configuration:
-            search.default.directory_provider = 'filesystem'
-            search.default.indexBase =  '/var/lib/openshift/594b85c80c1e66674f00010f/app-root/data'
+            search.default.directory_provider = 'ram'
+           // search.default.indexBase =  '/app-root/data'
         }
 
-
         dataSource {
-            driverClassName = "com.mysql.jdbc.Driver"
-            dialect = org.hibernate.dialect.MySQL5InnoDBDialect
-            dbCreate = "update" // one of 'create', 'create-drop', 'update', 'validate', ''
-            url = "jdbc:mysql://127.5.148.2:3306/service4barbers?useUnicode=true&characterEncoding=UTF-8"
-            username = "adminr2dnCN1"
-            password = "uBTeEk-4FG8q"
-            logSql = false
-            properties {
-               // See http://grails.org/doc/latest/guide/conf.html#dataSource for documentation
-               jmxEnabled = true
-               initialSize = 5
-               maxActive = 50
-               minIdle = 5
-               maxIdle = 25
-               maxWait = 10000
-               maxAge = 10 * 60000
-               timeBetweenEvictionRunsMillis = 5000
-               minEvictableIdleTimeMillis = 60000
-               validationQuery = "SELECT 1"
-               validationQueryTimeout = 3
-               validationInterval = 15000
-               testOnBorrow = true
-               testWhileIdle = true
-               testOnReturn = false
-               jdbcInterceptors = "ConnectionState"
-               defaultTransactionIsolation = java.sql.Connection.TRANSACTION_READ_COMMITTED
-            }
+            dataSource.dbCreate="update"
+            dataSource.driverClassName="com.mysql.jdbc.Driver"
+            dataSource.username="root"
+            dataSource.password="2Q5xnx"
+            logSql = true
+            url = "jdbc:mysql://localhost:3306/nova"
         }
     }
 }
