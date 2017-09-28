@@ -22,10 +22,10 @@ class ServiceAjaxController {
                     render([data: service] as JSON)
                 }
             } else {
-                render([erros: g.message(code: "service.get.user.not.found")] as JSON)
+                render([errors: g.message(code: "service.get.user.not.found")] as JSON)
             }
         } else {
-            render([erros: g.message(code: "service.get.id.null")] as JSON)
+            render([errors: g.message(code: "service.get.id.null")] as JSON)
         }
     }
 
@@ -43,10 +43,10 @@ class ServiceAjaxController {
                     render([data: serviceList] as JSON)
                 }
             } else {
-                render([erros: g.message(code: "service.fine.not.found")] as JSON)
+                render([errors: g.message(code: "service.fine.not.found")] as JSON)
             }
         } else {
-            render([erros: g.message(code: "find.value.null")] as JSON)
+            render([errors: g.message(code: "find.value.null")] as JSON)
         }
     }
 
@@ -65,10 +65,10 @@ class ServiceAjaxController {
                     render([data: service] as JSON)
                 }
             } else {
-                render([erros: g.message(code: "service.create.params.null")] as JSON)
+                render([errors: g.message(code: "service.create.params.null")] as JSON)
             }
         } else {
-            render([erros: g.message(code: "service.create.not.admin")] as JSON)
+            render([errors: g.message(code: "service.create.not.admin")] as JSON)
         }
     }
 
@@ -104,14 +104,14 @@ class ServiceAjaxController {
                     Service.search().createIndexAndWait()
                     render([data: service] as JSON)
                 } else {
-                    render([erros: g.message(code: "service.create.params.null")] as JSON)
+                    render([errors: g.message(code: "service.create.params.null")] as JSON)
                 }
 
             } else {
-                render([erros: g.message(code: "service.create.params.null")] as JSON)
+                render([errors: g.message(code: "service.create.params.null")] as JSON)
             }
         } else {
-            render([erros: g.message(code: "service.create.not.admin")] as JSON)
+            render([errors: g.message(code: "service.create.not.admin")] as JSON)
         }
     }
 
@@ -127,13 +127,13 @@ class ServiceAjaxController {
                     Service.search().createIndexAndWait()
                     render([data: 0] as JSON)
                 } else {
-                    render([erros: g.message(code: "service.get.user.not.found")] as JSON)
+                    render([errors: g.message(code: "service.get.user.not.found")] as JSON)
                 }
             } else {
-                render([erros: g.message(code: "service.get.id.null")] as JSON)
+                render([errors: g.message(code: "service.get.id.null")] as JSON)
             }
         } else {
-            render([erros: g.message(code: "service.delete.not.admin")] as JSON)
+            render([errors: g.message(code: "service.delete.not.admin")] as JSON)
         }
     }
 
@@ -187,7 +187,7 @@ class ServiceAjaxController {
                 render([data: serviceList] as JSON)
             }
         } else {
-            render([erros: g.message(code: "service.fine.not.found")] as JSON)
+            render([errors: g.message(code: "service.fine.not.found")] as JSON)
         }
     }
 

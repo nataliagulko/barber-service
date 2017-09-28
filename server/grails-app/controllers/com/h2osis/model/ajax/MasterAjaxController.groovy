@@ -357,11 +357,11 @@ class MasterAjaxController {
         List<User> userList = UserRole.findAllByRole(Role.findByAuthority("ROLE_ADMIN")).user
         if (userList) {
 
-            JSON.use('users') {
+            JSON.use('masters') {
                 render([data: userList] as JSON)
             }
         } else {
-            render([erros: g.message(code: "user.fine.not.found")] as JSON)
+            render([errors: g.message(code: "user.fine.not.found")] as JSON)
         }
     }
 }

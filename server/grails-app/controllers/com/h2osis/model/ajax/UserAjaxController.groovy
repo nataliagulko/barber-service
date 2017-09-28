@@ -363,7 +363,7 @@ class UserAjaxController {
                 render([data: userList] as JSON)
             }
         } else {
-            render([erros: g.message(code: "user.fine.not.found")] as JSON)
+            render([errors: g.message(code: "user.fine.not.found")] as JSON)
         }
     }
 }

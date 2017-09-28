@@ -53,6 +53,7 @@ grails.project.dependency.resolution = {
         // runtime 'org.postgresql:postgresql:9.3-1101-jdbc41'
         test "org.grails:grails-datastore-test-support:1.0.2-grails-2.4"
         runtime 'mysql:mysql-connector-java:5.1.29'
+        runtime 'com.h2database:h2:1.4.190'
         compile group: 'joda-time', name: 'joda-time', version: '2.9.4'
         //compile group: 'org.hibernate', name: 'hibernate-search-orm', version: '5.5.4.Final'
     }
@@ -83,6 +84,8 @@ grails.project.dependency.resolution = {
         runtime ":cors:1.3.0"
 
         compile "org.grails.plugins:hibernate-search:0.7"
+
+        compile "org.grails.plugins:standalone:9.0.0.M4"
         
         //runtime ":twitter-bootstrap:3.3.5"
         
