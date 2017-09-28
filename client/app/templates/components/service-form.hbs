@@ -14,8 +14,9 @@
 		</div>
 		<div class="form-group">
 			<label>Мастера</label>
-			{{#each masters as |master|}}
-				<span>{{master.email}}</span>
+			{{!-- {{input name="masters" class="form-control"  value=service.masters}} --}}
+			{{#each service.masters as |master|}}
+				{{master.email}}
 			{{/each}}
 		</div>
 		<div class="form-group">

@@ -12,6 +12,6 @@ export default DS.Model.extend({
     accountLocked: DS.attr(),
     passwordExpired: DS.attr(),
     holiday: DS.hasMany('holiday'),
-    services: DS.hasMany('holiday'),
+    services: DS.hasMany('service'),
     worktimes: DS.hasMany('worktime'),
 });

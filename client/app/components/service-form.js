@@ -19,7 +19,8 @@ export default Ember.Component.extend({
 
 	actions: {
 		saveService: function(service) {
-			service.save().then(() => this.transitionTo('service.index'));
+			console.log(service);
+			service.save();
 		}
 	}
 });
