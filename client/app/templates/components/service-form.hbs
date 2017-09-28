@@ -14,7 +14,9 @@
 		</div>
 		<div class="form-group">
 			<label>Мастера</label>
-			{{input name="time" class="form-control"  value=service.masters}}
+			{{#each masters as |master|}}
+				<span>{{master.email}}</span>
+			{{/each}}
 		</div>
 		<div class="form-group">
 			<label class="mt-checkbox"> Подуслуга
