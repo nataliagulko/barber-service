@@ -23,20 +23,26 @@ class ClientAjaxController {
     static allowedMethods = [choose: ['POST', 'GET']]
 
     def create() {
-        if (params.phone && params.password && params.rpassword) {
-            if(params.password.equals(params.rpassword)) {
-                def result = usersService.createUser(params)
+        def data = request.JSON.data
+        def attrs = data.attributes
+        if (attrs.phone && attrs.password && attrs.rpassword) {
+            if(attrs.password.equals(attrs.rpassword)) {
+                def result = usersService.createUser(attrs)
                 if (result instanceof User) {
-                    result.setPassword(null)
-                    render([user: result] as JSON)
+                    //result.setPassword(null)
+                    Role role = Role.findByAuthority(AuthKeys.USER)
+                    new UserRole(user: result, role: role).save(flush: true);
+                    JSON.use('masters') {
+                        render([data: result] as JSON)
+                    }
                 } else {
-                    render([msg: result] as JSON)
+                    render([errors: result] as JSON)
                 }
             }else {
-                render([msg: g.message(code: "auth.reg.pass2.fail")] as JSON)
+                render([errors: g.message(code: "auth.reg.pass2.fail")] as JSON)
             }
         } else {
-            render([msg: g.message(code: "user.phone.and.pass.null")] as JSON)
+            render([errors: g.message(code: "user.phone.and.pass.null")] as JSON)
         }
     }
 
