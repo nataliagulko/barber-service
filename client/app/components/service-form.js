@@ -19,7 +19,6 @@ export default Ember.Component.extend({
 
 	actions: {
 		saveService: function(service) {
-			console.log(service);
 			service.save();
 		}
 	}

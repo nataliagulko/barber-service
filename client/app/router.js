@@ -14,6 +14,9 @@ Router.map(function() {
   this.route('service', function() {
     this.route('create');
   });
+  this.route('master', function() {
+    this.route('create');
+  });
 });
 
 export default Router;

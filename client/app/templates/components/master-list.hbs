@@ -1,0 +1,18 @@
+<table id="master-list" class="table table-hover dataTables">
+	<thead>
+		<tr>
+			<th>Имя</th>
+			<th class="text-right">E-mail</th>
+		</tr>
+	</thead>
+	<tbody>
+		{{#each list as |master|}}
+			<tr>
+				<td>
+					{{master.firstname}} {{master.secondname}}
+				</td>
+				<td class="text-right">{{master.email}}</td>
+			</tr>
+		{{/each}}
+	</tbody>
+</table>
