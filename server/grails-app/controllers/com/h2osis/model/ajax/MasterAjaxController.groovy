@@ -19,26 +19,33 @@ class MasterAjaxController {
     static allowedMethods = [choose: ['POST', 'GET']]
 
     def create() {
-        if (params.phone && params.password && params.rpassword) {
-            if (params.password.equals(params.rpassword)) {
-                def result = usersService.createUser(params)
+        def data = request.JSON.data
+        def attrs = data.attributes
+        if (attrs.phone && attrs.password && attrs.rpassword) {
+            if (attrs.password.equals(attrs.rpassword)) {
+                def result = usersService.createUser(attrs)
                 if (result instanceof User) {
-                    result.setPassword(null)
-                    render([user: result] as JSON)
+                    //result.setPassword(null)
+                    Role role = Role.findByAuthority(AuthKeys.ADMIN)
+                    new UserRole(user: result, role: role).save(flush: true);
+                    JSON.use('masters') {
+                        render([data: result] as JSON)
+                    }
                 } else {
-                    render([msg: result] as JSON)
+                    render([errors: result] as JSON)
                 }
             } else {
-                render([msg: g.message(code: "auth.reg.pass2.fail")] as JSON)
+                render([errors: g.message(code: "auth.reg.pass2.fail")] as JSON)
             }
         } else {
-            render([msg: g.message(code: "user.phone.and.pass.null")] as JSON)
+            render([errors: g.message(code: "user.phone.and.pass.null")] as JSON)
         }
     }
 
     def get() {
-        if (params.id) {
-            User user = User.get(params.id)
+        def data = request.JSON.data
+        if (data.id) {
+            User user = User.get(data.id)
             if (user) {
                 user.setPassword(null)
                 List<WorkTime> workTimes = WorkTime.findAllByMaster(user)
@@ -59,10 +66,10 @@ class MasterAjaxController {
 
                 render([user: user, holidays: Holiday.findAllByMaster(user), worktTmesMap: worktTmesMap] as JSON)
             } else {
-                render([msg: g.message(code: "user.get.user.not.found")] as JSON)
+                render([errors: g.message(code: "user.get.user.not.found")] as JSON)
             }
         } else {
-            render([msg: g.message(code: "user.get.id.null")] as JSON)
+            render([errors: g.message(code: "user.get.id.null")] as JSON)
         }
     }
 
