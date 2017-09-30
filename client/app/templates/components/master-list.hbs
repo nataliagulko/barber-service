@@ -3,6 +3,7 @@
 		<tr>
 			<th>Имя</th>
 			<th class="text-right">E-mail</th>
+			<th class="text-right"></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -12,6 +13,11 @@
 					{{master.firstname}} {{master.secondname}}
 				</td>
 				<td class="text-right">{{master.email}}</td>
+				<td class="text-right">
+					{{#link-to "master.edit" master.id class="btn btn-default"}}
+						<i class="fa fa-pencil"></i>
+					{{/link-to}}
+				</td>
 			</tr>
 		{{/each}}
 	</tbody>

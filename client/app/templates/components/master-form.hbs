@@ -12,22 +12,21 @@
 			<label>Телефон</label>
 			{{input-mask mask='+7(999)999-99-99' id='phone' name='phone' class="form-control" type='tel' value=master.phone}}
 		</div>
-		<div class="form-group">
-			<label>Пароль</label>
-			{{input name="password" class="form-control"  value=master.password}}
-		</div>
-		<div class="form-group">
-			<label>Повторить пароль</label>
-			{{input name="rpassword" class="form-control"  value=master.rpassword}}
-		</div>
+
+		{{#unless master.id}}
+			<div class="form-group">
+				<label>Пароль</label>
+				{{input name="password" class="form-control"  value=master.password}}
+			</div>
+			<div class="form-group">
+				<label>Повторить пароль</label>
+				{{input name="rpassword" class="form-control"  value=master.rpassword}}
+			</div>
+		{{/unless}}
 		<div class="form-group">
 			<label>E-mail</label>
 			{{input name="email" class="form-control"  value=master.email}}
 		</div>
-
-		{{#if master.id}}
-			{{input type=hidden name="id" class="form-control" value=master.id}}
-		{{/if}}
 	</div>
 	<div class="form-actions">
 		<button type="submit" class="btn btn-success" {{action 'saveMaster'}}>Создать</button>

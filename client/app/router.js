@@ -16,6 +16,7 @@ Router.map(function() {
   });
   this.route('master', function() {
     this.route('create');
+    this.route('edit', { path: '/edit/:id' });
   });
 });
 

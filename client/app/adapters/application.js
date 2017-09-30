@@ -47,5 +47,29 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
 				Ember.run(null, reject, jqXHR);
 			});
 		});
+	},
+	findRecord(store, type, id, snapshot) {
+		var url = this.buildURL(type.modelName, null, null, 'findRecord');
+		url = url + 'Ajax/get';
+		let data = JSON.stringify({
+			data: {
+				"id": id
+			}
+		});
+		console.log(data);
+
+		return new Ember.RSVP.Promise(function(resolve, reject) {
+			Ember.$.ajax({
+				type: 'POST',
+				url: url,
+				dataType: 'json',
+				data: data,
+				contentType: 'application/json'
+			}).then(function(data) {
+				resolve(data);
+			}, function(jqXHR) {
+				reject(jqXHR);
+			});
+		});
 	}
 });
