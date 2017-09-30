@@ -3,7 +3,7 @@ import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 import config from '../config/environment';
 import Ember from 'ember';
 
-export default DS.RESTAdapter.extend(DataAdapterMixin, {
+export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
 	//namespace: 'api',
 	authorizer: 'authorizer:token',
 	host: config.host,
@@ -29,10 +29,8 @@ export default DS.RESTAdapter.extend(DataAdapterMixin, {
 		});
 	},
 	createRecord: function(store, type, snapshot) {
-		let data = this.serialize(snapshot),
+		let data = JSON.stringify(this.serialize(snapshot)),
 			url = this.buildURL(type.modelName, null, null, 'createRecord');
-
-			console.log(data);
 
 		url = url + 'Ajax/create';
 		return new Ember.RSVP.Promise(function(resolve, reject) {
@@ -41,7 +39,7 @@ export default DS.RESTAdapter.extend(DataAdapterMixin, {
 				url: url,
 				dataType: 'json',
 				data: data,
-				contentType: 'application/vnd.api+json'
+				contentType: 'application/json'
 			}).then(function(data) {
 				Ember.run(null, resolve, data);
 			}, function(jqXHR) {
