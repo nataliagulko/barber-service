@@ -11,6 +11,7 @@ Router.map(function() {
   this.route('ticket', function() {
     this.route('create');
   });
+  this.route('not-found', { path: '/*path' });
 });
 
 export default Router;
