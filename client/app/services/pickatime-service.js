@@ -7,7 +7,8 @@ export default Ember.Service.extend({
 			clear: "Очистить",
 			closeOnSelect: false,
 			closeOnClear: false,
-			format: "HH:i"
+			format: "HH:i",
+			interval: 10
 		});
 		var picker = $input.pickatime('picker');
 
