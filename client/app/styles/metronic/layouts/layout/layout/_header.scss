@@ -43,6 +43,8 @@ Page Header
 		}
 
 		.logo-default {
+            height: $header-logo-height;
+            width: auto;
 			margin: $header-logo-margin;
 		}
 

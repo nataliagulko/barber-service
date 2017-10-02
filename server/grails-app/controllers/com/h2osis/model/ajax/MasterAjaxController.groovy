@@ -64,7 +64,10 @@ class MasterAjaxController {
                     }
                 }
 
-                render([user: user, holidays: Holiday.findAllByMaster(user), worktTmesMap: worktTmesMap] as JSON)
+                //render([user: user, holidays: Holiday.findAllByMaster(user), worktTmesMap: worktTmesMap] as JSON)
+                JSON.use('masters') {
+                    render([data: user, refData: [holidays: Holiday.findAllByMaster(user), worktTmesMap: worktTmesMap]] as JSON)
+                }
             } else {
                 render([errors: g.message(code: "user.get.user.not.found")] as JSON)
             }
@@ -73,17 +76,20 @@ class MasterAjaxController {
         }
     }
 
-    def save() {
-        if (params.id) {
-            User user = User.get(params.id)
+    def update() {
+        def data = request.JSON.data
+        if (data.id) {
+            User user = User.get(data.id)
             if (user) {
-                usersService.saveUser(params, user)
-                render([code: 0] as JSON)
+                usersService.saveUser(data.attributes, user)
+                JSON.use('masters') {
+                    render([data: user] as JSON)
+                }
             } else {
-                render([msg: g.message(code: "user.get.user.not.found")] as JSON)
+                render([errors: g.message(code: "user.get.user.not.found")] as JSON)
             }
         } else {
-            render([msg: g.message(code: "user.get.id.null")] as JSON)
+            render([errors: g.message(code: "user.get.id.null")] as JSON)
         }
     }
 

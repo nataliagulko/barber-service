@@ -4,13 +4,13 @@
 //
 // Base colors
 //
-$grey: #909090;
+$grey: lighten(#909090, 15%);
 $grey-hover: #eee;
 $blue: #4b8df8;
 $blue-hover: #2678FC;
 $black: #000;
 $white: #fff;
-
+$red: #e43a45;
 
 //
 // Backgrounds
@@ -22,25 +22,26 @@ $bg-grey-light: #f2f2f2;
 //
 // Borders
 //
-$border-grey: #777;
-$border-grey-light: #ddd;
+$border-grey: #666;
+$border-grey-light: #ccc;
 $border-select: darken( $border-grey-light, 15%);
-
 
 //
 // Buttons
 //
-$clear-red: #e20;
+$clear-red: $red;
 
-
-
+//
+// Paddings
+//
+$padding-base: 8px;
 
 
 //
 // Picker base
 //
 // Make sure nothing is above the picker.
-$picker-z-index: 10000;
+$picker-z-index: 9990;
 
 // Animation speeds.
 $speed-animate-in: .15s;
@@ -49,7 +50,8 @@ $speed-animate-in: .15s;
 $input-active-border: $grey;
 
 // Typography.
-$base-font-size: 14px;
+$base-font-size: 18px;
+$btns-font-size: 14px;
 $base-line-height: 1.2;
 
 // Corners.
@@ -72,12 +74,12 @@ $breakpoint-width-tiny: 24.5em; // 392px $ 16px
 // The year and weekday labels.
 $year-weekday-label: #000;
 $year-font-size: $base-font-size;
-$footer-btn-font-size: 12px;
-$weekday-padding: 5px;
-$weekday-width: 30px;
+$footer-btn-font-size: $btns-font-size;
+$weekday-padding: $padding-base;
+$weekday-width: 36px;
 $weekday-height: $weekday-width;
 $weekday-line-height: 20px;
-$today-bg-color: #909090;
+$today-bg-color: $grey;
 
 // “Today” tag indicators.
 $blue-tag: #0059bc;
@@ -88,7 +90,10 @@ $disabled-things-bg: #f6f6f6;
 $disabled-things-text: #999;
 $disabled-highlighted-things-bg: #bbb;
 
-
+//
+// Date picker options
+//
+$list-item-padding: $padding-base $padding-base + 2px;
 
 
 
@@ -100,12 +105,12 @@ $picker-min-width: 256px;
 $picker-max-width: 666px;
 
 // The time picker min & max widths.
-$time-min-width: 220px;
-$time-max-width: 320px;
+$time-min-width: 255px;
+$time-max-width: 70%;
 
 // The “classic” theme settings.
-$classic-max-width: 220px;
-$classic-min-width: 220px;
+$classic-max-width: 255px;
+$classic-min-width: 255px;
 $classic-max-height: 25em;
 $classic-box-shadow: 0 6px 18px 1px rgba(0, 0, 0, .12);
 

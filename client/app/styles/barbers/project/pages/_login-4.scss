@@ -1,11 +1,15 @@
 .login {
 	height: 100%;
 	width: 100%;
-	
+
 	.logo {
-		//margin: 60px auto 20px auto;
-		padding: 15px;
+		padding: 60px 0 20px 0;
 		text-align: center;
+
+		img {
+			height: 25px;
+			width: auto;
+		}
 	}
 	.content {
 		background: url(/img/bg-white-lock.png) repeat;
@@ -118,6 +122,8 @@
 		font-size: 13px;
 	}
 }
+
+
 
 
 
