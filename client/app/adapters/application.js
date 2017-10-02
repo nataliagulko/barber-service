@@ -53,10 +53,10 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
 		url = url + 'Ajax/get';
 		let data = JSON.stringify({
 			data: {
-				"id": id
+				type: type.modelName,
+				id: id
 			}
 		});
-		console.log(data);
 
 		return new Ember.RSVP.Promise(function(resolve, reject) {
 			Ember.$.ajax({
