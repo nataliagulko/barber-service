@@ -48,25 +48,9 @@ class MasterAjaxController {
             User user = User.get(data.id)
             if (user) {
                 user.setPassword(null)
-                List<WorkTime> workTimes = WorkTime.findAllByMaster(user)
-                Map<Integer, List<WorkTime>> worktTmesMap = new HashMap<Integer, List<WorkTime>>()
-                if (workTimes) {
-                    workTimes.each {
-                        if (!worktTmesMap.get(it.dayOfWeek)) {
-                            worktTmesMap.put(it.dayOfWeek, new ArrayList<WorkTime>())
-                        }
-                        worktTmesMap.get(it.dayOfWeek).add(it)
-                    }
-                }
-                worktTmesMap.each {
-                    it.value = it.value.sort {
-                        it.timeFrom
-                    }
-                }
-
                 //render([user: user, holidays: Holiday.findAllByMaster(user), worktTmesMap: worktTmesMap] as JSON)
                 JSON.use('masters') {
-                    render([data: user, refData: [holidays: Holiday.findAllByMaster(user), worktTmesMap: worktTmesMap]] as JSON)
+                    render([data: user] as JSON)
                 }
             } else {
                 render([errors: g.message(code: "user.get.user.not.found")] as JSON)

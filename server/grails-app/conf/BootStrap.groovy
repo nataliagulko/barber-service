@@ -91,8 +91,8 @@ class BootStrap {
                 role = Role.findByAuthority(AuthKeys.ROOT)
                 new UserRole(user: root, role: role).save(flush: true)
             }
-            if(!User.findByUsername("root")){
-                if(!Role.findByAuthority(AuthKeys.ROOT)){
+            if (!User.findByUsername("root")) {
+                if (!Role.findByAuthority(AuthKeys.ROOT)) {
                     new Role(authority: AuthKeys.ROOT, description: "root").save(flush: true)
                 }
                 User root = new User(username: "root", password: "ijbjxzzi", email: "sokolovep@gmail.com", fio: "fio", phone: "+7(000)000-00-00").save(flush: true)
@@ -119,8 +119,6 @@ class BootStrap {
 
         User.search().createIndexAndWait()
         Business.search().createIndexAndWait()
-
-
 
         //init json render
 
@@ -156,7 +154,42 @@ class BootStrap {
                 attrs['email'] = it.email
                 attrs['masterTZ'] = it.masterTZ
                 returnArray['attributes'] = attrs
+
+
+                def relationships = [:]
+                relationships['holidays'] = Holiday.findAllByMaster(it)
+                List<WorkTime> workTimes = WorkTime.findAllByMaster(it)
+                Map<Integer, List<WorkTime>> worktTmesMap = new HashMap<Integer, List<WorkTime>>()
+                if (workTimes) {
+                    workTimes.each {
+                        if (!worktTmesMap.get(it.dayOfWeek)) {
+                            worktTmesMap.put(it.dayOfWeek, new ArrayList<WorkTime>())
+                        }
+                        worktTmesMap.get(it.dayOfWeek).add(it)
+                    }
+                }
+                worktTmesMap.each {
+                    it.value = it.value.sort {
+                        it.timeFrom
+                    }
+                }
+                relationships['worktTmesMap'] = worktTmesMap
+                returnArray['relationships'] = relationships
+
                 return returnArray
+            }
+
+            it.registerObjectMarshaller(Holiday) {
+                def holidayReturn = [:]
+                holidayReturn['id'] = it.id
+                holidayReturn['type'] = 'holiday'
+                def holidayAttrs = [:]
+                holidayAttrs['dateFrom'] = it.dateFrom
+                holidayAttrs['dateTo'] = it.dateTo
+                //holidayAttrs['master'] = it.master
+                holidayAttrs['comment'] = it.comment
+                holidayReturn['attributes'] = holidayAttrs
+                return holidayReturn
             }
         }
 
