@@ -32,6 +32,8 @@ module.exports = function(environment) {
         tokenPropertyName: 'access_token',
         serverTokenEndpoint: ENV.host + '/api/login',
         crossOriginWhitelist: [ENV.host],
+        authorizationPrefix: 'Bearer ',
+        authorizationHeaderName: 'Authorization',
     };
 
     ENV['ember-toastr'] = {
