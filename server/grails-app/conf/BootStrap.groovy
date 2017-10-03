@@ -159,21 +159,21 @@ class BootStrap {
                 def relationships = [:]
                 relationships['holidays'] = Holiday.findAllByMaster(it)
                 List<WorkTime> workTimes = WorkTime.findAllByMaster(it)
-                Map<Integer, List<WorkTime>> worktTmesMap = new HashMap<Integer, List<WorkTime>>()
+                Map<Integer, List<WorkTime>> workTimesMap = new HashMap<Integer, List<WorkTime>>()
                 if (workTimes) {
                     workTimes.each {
-                        if (!worktTmesMap.get(it.dayOfWeek)) {
-                            worktTmesMap.put(it.dayOfWeek, new ArrayList<WorkTime>())
+                        if (!workTimesMap.get(it.dayOfWeek)) {
+                            workTimesMap.put(it.dayOfWeek, new ArrayList<WorkTime>())
                         }
-                        worktTmesMap.get(it.dayOfWeek).add(it)
+                        workTimesMap.get(it.dayOfWeek).add(it)
                     }
                 }
-                worktTmesMap.each {
+                workTimesMap.each {
                     it.value = it.value.sort {
                         it.timeFrom
                     }
                 }
-                relationships['worktTmesMap'] = worktTmesMap
+                relationships['workTimes'] = workTimesMap
                 returnArray['relationships'] = relationships
 
                 return returnArray
