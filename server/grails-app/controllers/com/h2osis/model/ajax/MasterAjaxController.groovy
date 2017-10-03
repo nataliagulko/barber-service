@@ -32,13 +32,13 @@ class MasterAjaxController {
                         render([data: result] as JSON)
                     }
                 } else {
-                    render([errors: result] as JSON)
+                    render([errors: {result}] as JSON)
                 }
             } else {
-                render([errors: g.message(code: "auth.reg.pass2.fail")] as JSON)
+                render([errors: {g.message(code: "auth.reg.pass2.fail")}] as JSON)
             }
         } else {
-            render([errors: g.message(code: "user.phone.and.pass.null")] as JSON)
+            render([errors: {g.message(code: "user.phone.and.pass.null")}] as JSON)
         }
     }
 
@@ -53,10 +53,10 @@ class MasterAjaxController {
                     render([data: user] as JSON)
                 }
             } else {
-                render([errors: g.message(code: "user.get.user.not.found")] as JSON)
+                render([errors: {g.message(code: "user.get.user.not.found")}] as JSON)
             }
         } else {
-            render([errors: g.message(code: "user.get.id.null")] as JSON)
+            render([errors: {g.message(code: "user.get.id.null")}] as JSON)
         }
     }
 
@@ -70,10 +70,10 @@ class MasterAjaxController {
                     render([data: user] as JSON)
                 }
             } else {
-                render([errors: g.message(code: "user.get.user.not.found")] as JSON)
+                render([errors: {g.message(code: "user.get.user.not.found")}] as JSON)
             }
         } else {
-            render([errors: g.message(code: "user.get.id.null")] as JSON)
+            render([errors: {g.message(code: "user.get.id.null")}] as JSON)
         }
     }
 
@@ -358,7 +358,7 @@ class MasterAjaxController {
                 render([data: userList] as JSON)
             }
         } else {
-            render([errors: g.message(code: "user.fine.not.found")] as JSON)
+            render([errors: {g.message(code: "user.fine.not.found")}] as JSON)
         }
     }
 }
