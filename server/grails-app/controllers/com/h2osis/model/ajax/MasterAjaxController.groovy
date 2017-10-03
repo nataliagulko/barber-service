@@ -355,7 +355,7 @@ class MasterAjaxController {
         if (userList) {
 
             JSON.use('masters') {
-                render([data: userList].findAll { it.enabled == true}] as JSON)
+                render([data: userList.findAll{ it.enabled == true}] as JSON)
             }
         } else {
             render([errors: { g.message(code: "user.fine.not.found") }] as JSON)
