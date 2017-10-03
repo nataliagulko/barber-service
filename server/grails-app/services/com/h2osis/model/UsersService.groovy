@@ -48,10 +48,10 @@ class UsersService {
 
     def saveUser(def params, User user) {
         if (params.firstname) {
-            user.setFirstname(params.firstName)
+            user.setFirstname(params.firstname)
         }
         if (params.secondname) {
-            user.setSecondname(params.secondName)
+            user.setSecondname(params.secondname)
         }
         if (params.worktimes) {
             List<Long> workTimesIds = new ArrayList<Long>()
@@ -74,21 +74,21 @@ class UsersService {
             }
         }
 
-        if (params.holydays) {
-            List<Long> holydaysIds = new ArrayList<Long>()
-            params.holydays.split(",").each {
-                holydaysIds.add(Long.parseLong(it))
+        if (params.holidays) {
+            List<Long> holidaysIds = new ArrayList<Long>()
+            params.holidays.split(",").each {
+                holidaysIds.add(Long.parseLong(it))
             }
-            Set<Holiday> holydays = Holiday.findAllByIdInList(holydaysIds)
-            if (holydays) {
-                Set<Holiday> oldholydays = Holiday.findAllByMaster(user)
-                if (oldholydays) {
-                    oldholydays.each {
+            Set<Holiday> holidays = Holiday.findAllByIdInList(holidaysIds)
+            if (holidays) {
+                Set<Holiday> oldholidays = Holiday.findAllByMaster(user)
+                if (oldholidays) {
+                    oldholidays.each {
                         it.setMaster(null)
                         it.save(flush: true)
                     }
                 }
-                holydays.each {
+                holidays.each {
                     it.setMaster(user)
                     it.save(flush: true)
                 }
