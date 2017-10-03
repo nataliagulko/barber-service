@@ -153,7 +153,7 @@ grails.plugin.springsecurity.interceptUrlMap = [
         '/userAjax/create'      : ["permitAll"],
 
         '/clientAjax/get'         : ["ROLE_ADMIN", "ROLE_USER"],
-        '/clientAjax/save'        : ["ROLE_ADMIN", "ROLE_USER"],
+        '/clientAjax/update'        : ["ROLE_ADMIN", "ROLE_USER"],
         '/clientAjax/find'        : ["ROLE_ADMIN", "ROLE_USER"],
         '/clientAjax/block'       : ["ROLE_ADMIN"],
         '/clientAjax/getWorktimes': ["ROLE_ADMIN", "ROLE_USER"],
@@ -170,8 +170,9 @@ grails.plugin.springsecurity.interceptUrlMap = [
         '/clientAjax/list'      : ["permitAll"],
 
         '/masterAjax/get'         : ["ROLE_ADMIN", "ROLE_USER"],
-        '/masterAjax/save'        : ["ROLE_ADMIN", "ROLE_USER"],
+        '/masterAjax/update'        : ["ROLE_ADMIN", "ROLE_USER"],
         '/masterAjax/find'        : ["ROLE_ADMIN", "ROLE_USER"],
+        '/masterAjax/destroy'        : ["ROLE_ADMIN", "ROLE_USER"],
         '/masterAjax/block'       : ["ROLE_ADMIN"],
         '/masterAjax/getWorktimes': ["ROLE_ADMIN", "ROLE_USER"],
         '/masterAjax/getHolidays' : ["ROLE_ADMIN", "ROLE_USER"],
@@ -180,6 +181,7 @@ grails.plugin.springsecurity.interceptUrlMap = [
         '/masterAjax/saveHoliday' : ["ROLE_ADMIN"],
         '/masterAjax/deleteWorkTime'  : ["ROLE_ADMIN"],
         '/masterAjax/deleteHoliday'   : ["ROLE_ADMIN"],
+        '/masterAjax/destroy'   : ["ROLE_ADMIN"],
         '/masterAjax/saveByPhone' : ["ROLE_ADMIN", "ROLE_USER"],
         '/masterAjax/blockUser'   : ["ROLE_ADMIN"],
         '/masterAjax/unBlockUser' : ["ROLE_ADMIN"],
