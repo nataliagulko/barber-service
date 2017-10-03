@@ -362,12 +362,13 @@ class MasterAjaxController {
         }
     }
 
-    def delete() {
+    def destroy() {
         def data = request.JSON.data
         if (data.id) {
             User user = User.get(data.id)
             if (user) {
-                user.delete(flush: true)
+                user.setEnabled(false)
+                user.save(flush: true)
                 render([errors: {}] as JSON)
 
             } else {
