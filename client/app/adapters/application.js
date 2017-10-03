@@ -46,6 +46,13 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
 			});
 
 		return authorizedAjax(this.get("session"), url, data);
+	},
+
+	updateRecord(store, type, snapshot) {
+		let data = JSON.stringify(this.serialize(snapshot, { includeId: true })),
+		url = this.buildURL(type.modelName + 'Ajax/update', null, null, 'updateRecord');
+
+		return authorizedAjax(this.get("session"), url, data);
 	}
 });
 

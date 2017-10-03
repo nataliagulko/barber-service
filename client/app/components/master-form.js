@@ -3,7 +3,7 @@ import AuthentcatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route
 
 export default Ember.Component.extend({
 	actions: {
-		saveMaster: function() {
+		save: function() {
 			this.get("master")
 				.save();
 		}
