@@ -47,10 +47,10 @@ class UsersService {
     }
 
     def saveUser(def params, User user) {
-        if (params.firstName) {
+        if (params.firstname) {
             user.setFirstname(params.firstName)
         }
-        if (params.secondName) {
+        if (params.secondname) {
             user.setSecondname(params.secondName)
         }
         if (params.worktimes) {
@@ -105,7 +105,7 @@ class UsersService {
                 business.save(flush: true)
             }
         }
-        if (params.firstName || params.secondName) {
+        if (params.firstname || params.secondname) {
             user.save(flush: true)
         }
     }
