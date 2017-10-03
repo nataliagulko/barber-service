@@ -53,6 +53,13 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
 		url = this.buildURL(type.modelName + 'Ajax/update', null, null, 'updateRecord');
 
 		return authorizedAjax(this.get("session"), url, data);
+	},
+
+	deleteRecord(store, type, snapshot) {
+		let data = JSON.stringify(this.serialize(snapshot, { includeId: true })),
+		url = this.buildURL(type.modelName + 'Ajax/delete', null, null, 'deleteRecord');
+
+		return authorizedAjax(this.get("session"), url, data);
 	}
 });
 

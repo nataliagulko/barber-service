@@ -17,6 +17,9 @@
 					{{#link-to "master.edit" master.id class="btn btn-default"}}
 						<i class="fa fa-pencil"></i>
 					{{/link-to}}
+					 <button type="button" class="btn btn-danger" {{action 'delete' master.id}}>
+						<i class="fa fa-trash"></i>
+					</button>
 				</td>
 			</tr>
 		{{/each}}
