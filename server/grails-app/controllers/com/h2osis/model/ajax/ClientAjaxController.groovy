@@ -26,53 +26,41 @@ class ClientAjaxController {
         def data = request.JSON.data
         def attrs = data.attributes
         if (attrs.phone && attrs.password && attrs.rpassword) {
-            if(attrs.password.equals(attrs.rpassword)) {
+            if (attrs.password.equals(attrs.rpassword)) {
                 def result = usersService.createUser(attrs)
                 if (result instanceof User) {
                     //result.setPassword(null)
                     Role role = Role.findByAuthority(AuthKeys.USER)
                     new UserRole(user: result, role: role).save(flush: true);
-                    JSON.use('masters') {
+                    JSON.use('clients') {
                         render([data: result] as JSON)
                     }
                 } else {
-                    render([errors: result] as JSON)
+                    render([errors: { result }] as JSON)
                 }
-            }else {
-                render([errors: g.message(code: "auth.reg.pass2.fail")] as JSON)
+            } else {
+                render([errors: { g.message(code: "auth.reg.pass2.fail") }] as JSON)
             }
         } else {
-            render([errors: g.message(code: "user.phone.and.pass.null")] as JSON)
+            render([errors: { g.message(code: "user.phone.and.pass.null") }] as JSON)
         }
     }
 
     def get() {
-        if (params.id) {
-            User user = User.get(params.id)
+        def data = request.JSON.data
+        if (data.id) {
+            User user = User.get(data.id)
             if (user) {
                 user.setPassword(null)
-                List<WorkTime> workTimes = WorkTime.findAllByMaster(user)
-                Map<Integer, List<WorkTime>> worktTmesMap = new HashMap<Integer, List<WorkTime>>()
-                if (workTimes) {
-                    workTimes.each {
-                        if (!worktTmesMap.get(it.dayOfWeek)) {
-                            worktTmesMap.put(it.dayOfWeek, new ArrayList<WorkTime>())
-                        }
-                        worktTmesMap.get(it.dayOfWeek).add(it)
-                    }
+                //render([user: user, holidays: Holiday.findAllByMaster(user), worktTmesMap: worktTmesMap] as JSON)
+                JSON.use('clients') {
+                    render([data: user] as JSON)
                 }
-                worktTmesMap.each {
-                    it.value = it.value.sort {
-                        it.timeFrom
-                    }
-                }
-
-                render([user: user, holidays: Holiday.findAllByMaster(user), worktTmesMap: worktTmesMap] as JSON)
             } else {
-                render([msg: g.message(code: "user.get.user.not.found")] as JSON)
+                render([errors: { g.message(code: "user.get.user.not.found") }] as JSON)
             }
         } else {
-            render([msg: g.message(code: "user.get.id.null")] as JSON)
+            render([errors: { g.message(code: "user.get.id.null") }] as JSON)
         }
     }
 
@@ -87,6 +75,23 @@ class ClientAjaxController {
             }
         } else {
             render([msg: g.message(code: "user.get.id.null")] as JSON)
+        }
+    }
+
+    def update() {
+        def data = request.JSON.data
+        if (data.id) {
+            User user = User.get(data.id)
+            if (user) {
+                usersService.saveUser(data.attributes, user)
+                JSON.use('clients') {
+                    render([data: user] as JSON)
+                }
+            } else {
+                render([errors: { g.message(code: "user.get.user.not.found") }] as JSON)
+            }
+        } else {
+            render([errors: { g.message(code: "user.get.id.null") }] as JSON)
         }
     }
 
@@ -366,11 +371,28 @@ class ClientAjaxController {
     def list() {
         List<User> userList = UserRole.findAllByRole(Role.findByAuthority("ROLE_USER")).user
         if (userList) {
-            JSON.use('users') {
+            JSON.use('clients') {
                 render([data: userList] as JSON)
             }
         } else {
             render([errors: g.message(code: "user.fine.not.found")] as JSON)
+        }
+    }
+
+    def destroy() {
+        def data = request.JSON.data
+        if (data.id) {
+            User user = User.get(data.id)
+            if (user) {
+                user.setEnabled(false)
+                user.save(flush: true)
+                render([errors: {}] as JSON)
+
+            } else {
+                render([errors: { g.message(code: "user.get.user.not.found") }] as JSON)
+            }
+        } else {
+            render([errors: { g.message(code: "user.get.id.null") }] as JSON)
         }
     }
 }
