@@ -1,6 +1,6 @@
 import { moduleForModel, test } from 'ember-qunit';
 
-moduleForModel('service-group', 'Unit | Model | service group', {
+moduleForModel('subservice', 'Unit | Model | subservice', {
   // Specify the other units that are required for this test.
   needs: []
 });

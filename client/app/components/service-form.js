@@ -18,8 +18,8 @@ export default Ember.Component.extend({
 	},
 
 	actions: {
-		saveService: function(service) {
-			service.save();
+		saveService: function() {
+			this.get("service").save();
 		}
 	}
 });
