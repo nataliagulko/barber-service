@@ -14,15 +14,19 @@
 		</div>
 		<div class="form-group">
 			<label>Мастера</label>
-			{{#each service.masters as |master|}}
-				{{master.email}}
-			{{/each}}
+			<select id="master-list" class="form-control">
+				{{#each masters as |master|}}
+					<option value="{{master.id}}">{{master.firstname}} {{master.secondname}}</option>
+				{{/each}}
+			</select>
 		</div>
 		<div class="form-group">
 			<label>Подуслуги</label>
-			{{#each service.subservices as |subservice|}}
-				{{subservice.name}}
-			{{/each}}
+			<select id="subservice-list" class="show-tick  form-control" multiple="multiple" data-live-search="true">
+				{{#each subservices as |subservice|}}
+					<option value="{{subservice.id}}">{{subservice.name}}</option>
+				{{/each}}
+			</select>
 		</div>
 	</div>
 	<div class="form-actions">
