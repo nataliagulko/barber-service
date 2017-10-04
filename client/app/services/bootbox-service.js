@@ -16,7 +16,7 @@ export default Ember.Service.extend({
 					className: 'btn-default'
 				}
 			},
-			callback: function(result) {
+			callback: function() {
 				store.findRecord(type, id, { backgroundReload: false }).then(function(item) {
 					item.destroyRecord();
 				});

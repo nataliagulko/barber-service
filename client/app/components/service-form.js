@@ -2,11 +2,11 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
 	validateService: Ember.inject.service("validate-service"),
-	bootstrapSelectService: Ember.inject.service("bootstrap-select-service"),
+	isPartOfList: false,
 
 	didInsertElement: function() {
 		var validateService = this.get('validateService'),
-		bootstrapSelectService = this.get('bootstrapSelectService'),
+		select2Service = this.get('select2Service'),
 			options = {
 				rules: {
 					name: 'required',
@@ -17,13 +17,17 @@ export default Ember.Component.extend({
 			};
 
 		validateService.validateForm('#service-form', options);
-		bootstrapSelectService.initSelectpicker("#master-list");
-		bootstrapSelectService.initSelectpicker("#subservice-list");
+		$("#master-list").select2();
+		$("#subservice-list").select2();
 	},
 
 	actions: {
-		saveService: function() {
+		save: function() {
 			this.get("service").save();
+		},
+
+		checkPartOfList: function() {
+			console.log("checked");
 		}
 	}
 });

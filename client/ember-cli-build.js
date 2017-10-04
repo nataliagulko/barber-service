@@ -23,6 +23,8 @@ module.exports = function(defaults) {
   app.import("vendor/plugins/datatables/datatables.min.css");
   app.import("vendor/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css");
   app.import("vendor/plugins/bootstrap-select/css/bootstrap-select.css");
+  app.import("vendor/plugins/select2/css/select2.css");
+  app.import("vendor/plugins/select2/css/select2-bootstrap.min.css");
 
   // Plugins Fonts
   // Simple Line Icons
@@ -49,6 +51,8 @@ module.exports = function(defaults) {
   app.import("vendor/plugins/bootstrap-select/js/i18n/defaults-ru_RU.js");
   app.import("vendor/plugins/pickadate/translations/ru_RU.js");
   app.import("vendor/plugins/bootbox/bootbox.min.js");
+  app.import("vendor/plugins/select2/js/select2.js");
+  app.import("vendor/plugins/select2/js/i18n/ru.js");
 
   // Plugins' scripts
   app.import("vendor/scripts/app.js");

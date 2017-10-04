@@ -14,15 +14,24 @@
 		</div>
 		<div class="form-group">
 			<label>Мастера</label>
-			<select id="master-list" class="form-control">
+			<select id="master-list" class="form-control" multiple="multiple">
 				{{#each masters as |master|}}
 					<option value="{{master.id}}">{{master.firstname}} {{master.secondname}}</option>
 				{{/each}}
 			</select>
 		</div>
 		<div class="form-group">
-			<label>Подуслуги</label>
-			<select id="subservice-list" class="show-tick  form-control" multiple="multiple" data-live-search="true">
+			<label class="mt-checkbox">
+				Подуслуга
+				{{input type="checkbox" checked=service.partOfList name="partOfList"}}
+				<span></span>
+			</label>
+		</div>
+		<div class="form-group">
+			<button type="button" class="btn btn-default" data-toggle="collapse" href="#subservice-list-toggle">Добавить подуслуги</button>
+		</div>
+		<div class="collapse form-group" id="subservice-list-toggle">
+			<select id="subservice-list" class="" multiple="multiple">
 				{{#each subservices as |subservice|}}
 					<option value="{{subservice.id}}">{{subservice.name}}</option>
 				{{/each}}
@@ -30,6 +39,6 @@
 		</div>
 	</div>
 	<div class="form-actions">
-		<button type="submit" class="btn btn-success" {{action 'saveService'}}>Создать</button>
+		<button type="submit" class="btn btn-success" {{action 'save'}}>Сохранить</button>
 	</div>
 </form>
