@@ -6,7 +6,6 @@ export default Ember.Component.extend({
 
 	didInsertElement: function() {
 		var validateService = this.get('validateService'),
-		select2Service = this.get('select2Service'),
 			options = {
 				rules: {
 					name: 'required',
@@ -27,7 +26,7 @@ export default Ember.Component.extend({
 		},
 
 		checkPartOfList: function() {
-			console.log("checked");
-		}
+			this.get('isPartOfList');
+		}.observes('isPartOfList')
 	}
 });

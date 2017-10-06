@@ -23,12 +23,12 @@
 		<div class="form-group">
 			<label class="mt-checkbox">
 				Подуслуга
-				{{input type="checkbox" checked=service.partOfList name="partOfList"}}
+				{{input type="checkbox" checked=isPartOfList name="partOfList"}}
 				<span></span>
 			</label>
 		</div>
 		<div class="form-group">
-			<button type="button" class="btn btn-default" data-toggle="collapse" href="#subservice-list-toggle">Добавить подуслуги</button>
+			<button type="button" class="btn btn-default" data-toggle="collapse" href="#subservice-list-toggle" disabled={{isPartOfList}}>Добавить подуслуги</button>
 		</div>
 		<div class="collapse form-group" id="subservice-list-toggle">
 			<select id="subservice-list" class="" multiple="multiple">
