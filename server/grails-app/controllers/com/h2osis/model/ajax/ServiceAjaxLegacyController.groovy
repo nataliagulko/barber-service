@@ -8,7 +8,7 @@ import com.h2osis.utils.SearchService
 import grails.converters.JSON
 import org.codehaus.groovy.grails.web.json.JSONArray
 
-class ServiceAjaxController {
+class ServiceAjaxLegacyController {
 
     def springSecurityService
     SearchService searchService
@@ -140,7 +140,7 @@ class ServiceAjaxController {
     def list() {
         List<Service> serviceList = Service.createCriteria().list {
             def data = request.JSON.data
-            if (data) {
+            if(data) {
                 def attrs = data.attributes
                 if (attrs.name) {
                     eq("name", attrs.name)
@@ -190,4 +190,5 @@ class ServiceAjaxController {
             render([errors: g.message(code: "service.fine.not.found")] as JSON)
         }
     }
+
 }
