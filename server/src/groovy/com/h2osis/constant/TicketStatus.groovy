@@ -10,5 +10,6 @@ interface TicketStatus {
     String REJECTED = "REJECTED"
     String COMPLETED = "COMPLETED"
     String DELETED = "DELETED"
+    String CANCELED = "CANCELED"
 
 }
