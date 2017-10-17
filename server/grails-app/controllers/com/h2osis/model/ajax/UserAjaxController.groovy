@@ -7,6 +7,7 @@ import com.h2osis.constant.AuthKeys
 import com.h2osis.model.*
 import com.h2osis.utils.BarberSecurityService
 import com.h2osis.utils.SearchService
+import com.h2osis.utils.SlotsService
 import grails.converters.JSON
 import grails.transaction.Transactional
 
@@ -16,6 +17,7 @@ class UserAjaxController {
     def springSecurityService
     BarberSecurityService barberSecurityService
     UsersService usersService
+    SlotsService slotsService
     static allowedMethods = [choose: ['POST', 'GET']]
 
     def create() {
