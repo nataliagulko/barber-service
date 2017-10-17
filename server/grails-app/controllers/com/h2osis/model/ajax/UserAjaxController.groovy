@@ -173,7 +173,7 @@ class UserAjaxController {
                 nonWorkDays.each { it++ }
 
                 List<Holiday> holidays =
-                        Holiday.findAllByMasterAndCommentNotEqual(user, "maxTime", [sort: 'dateFrom'])?.plus(
+                        Holiday.findAllByMasterAndCommentNotEqualAndCommentNotEqual(user, "fullday", "maxTime", [sort: 'dateFrom'])?.plus(
                                 Holiday.findAllByMasterAndCommentAndMaxTimeLessThan(user, "maxTime", params.time ? params.time : slotsService.getDuration(1L),
                                         [sort: 'dateFrom']))?.sort { a, b -> a.dateFrom <=> b.dateFrom }
                 holidays?.each {
