@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+	store: Ember.inject.service("store"),
 	validateService: Ember.inject.service("validate-service"),
 	isPartOfList: false,
 
@@ -22,11 +23,16 @@ export default Ember.Component.extend({
 
 	actions: {
 		save: function() {
-			this.get("service").save();
+			const serviceRecord = this.get("service");
+			serviceRecord.save();
 		},
 
 		checkPartOfList: function() {
 			this.get('isPartOfList');
-		}.observes('isPartOfList')
+		}.observes('isPartOfList'),
+
+		foo: function() {
+
+		}
 	}
 });
