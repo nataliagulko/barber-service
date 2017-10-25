@@ -31,8 +31,14 @@ export default Ember.Component.extend({
 			this.get('isPartOfList');
 		}.observes('isPartOfList'),
 
-		foo: function() {
+		updateValue: function(value) {
+			const serviceRecord = this.get("service");
 
+			console.log(value);
+		},
+
+		foo: function() {
+			
 		}
 	}
 });
