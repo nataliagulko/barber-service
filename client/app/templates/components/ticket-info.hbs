@@ -1,4 +1,53 @@
+<div class="portlet-title">
+    <div class="caption">
+        <i class="icon-info font-green-sharp"></i>
+        <span class="caption-subject font-green-sharp">Инфо</span>
+    </div>
+</div>
 <div class="portlet-body">
-    {{ticket-info-client}}
+<!-- мастер -->
+    {{ticket-info-master-temp}}
+
+<!-- телефон -->
+<div class="row ticket-info-temp ticket-info-client-temp hidden">
+    <div class="col-md-12 text-center">
+        <span class="ticket-info-client-temp__code">
+            +7
+        </span>
+        <div class="ticket-info-client-temp__input"></div>
+        <div class="ticket-info-client-temp__mask">9041234567</div>
+    </div>
+</div>
+
+<!-- услуги -->
+<div class="row ticket-info-temp ticket-info-services-temp hidden">
+    <div class="col-md-12">
+        <ul class="list-unstyled no-space"></ul>
+    </div>
+</div>
+
+<!-- дата -->
+<div class="row ticket-info-temp ticket-info-date-temp hidden">
+    <div class="col-md-12 text-center">
+        <h4 class="ticket-info-date-temp__date"></h4>
+    </div>
+</div>
+
+<!-- время -->
+<div class="row ticket-info-temp ticket-info-time-temp hidden">
+    <div class="col-md-12 text-center">
+        <h4 class="ticket-info-time-temp__time"></h4>
+    </div>
+</div>
+<br>
+
     {{ticket-info-master}}
+    {{ticket-info-services}}
+    <div class="ticket-info-bottom ticket-info-date hidden">
+        <div>
+            <i class="icon-calendar font-red-sunglo margin-right-10"></i>
+        </div>
+        <div class="ticket-info-date__date ticket-info-bottom__text"></div>
+    </div>
+    {{ticket-info-client}}
 </div>

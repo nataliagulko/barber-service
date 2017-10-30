@@ -5,8 +5,9 @@ export default Ember.Component.extend({
 
     actions: {
         removeLastNumber() {
-            var inputField = $('.ticket-info-client__input'),
+            var inputField = $('.ticket-info-client-temp__input'),
                 inputValue = $('#phone-number'),
+                bottomInput = $('.ticket-info-client__phone'),
                 phoneValue = $(inputValue).val(),
                 submitBtn = $('#phone-submit');
 
@@ -14,6 +15,7 @@ export default Ember.Component.extend({
                 phoneValue = phoneValue.slice(0,-1);
                 $(inputValue).val(phoneValue);
                 $(inputField).text(phoneValue);
+                $(bottomInput).text(phoneValue);
 
                 $(submitBtn).attr('disabled','true');
                 $(submitBtn).removeClass('green-meadow');
