@@ -91,8 +91,8 @@ class BootStrap {
                 role = Role.findByAuthority(AuthKeys.ROOT)
                 new UserRole(user: root, role: role).save(flush: true)
             }
-            if(!User.findByUsername("root")){
-                if(!Role.findByAuthority(AuthKeys.ROOT)){
+            if (!User.findByUsername("root")) {
+                if (!Role.findByAuthority(AuthKeys.ROOT)) {
                     new Role(authority: AuthKeys.ROOT, description: "root").save(flush: true)
                 }
                 User root = new User(username: "root", password: "ijbjxzzi", email: "sokolovep@gmail.com", fio: "fio", phone: "+7(000)000-00-00").save(flush: true)
@@ -120,8 +120,6 @@ class BootStrap {
         User.search().createIndexAndWait()
         Business.search().createIndexAndWait()
 
-
-
         //init json render
 
         JSON.createNamedConfig('users') {
@@ -147,6 +145,59 @@ class BootStrap {
                 def returnArray = [:]
                 returnArray['id'] = it.id
                 returnArray['type'] = 'master'
+
+                def attrs = [:]
+                attrs['phone'] = it.phone
+                attrs['firstname'] = it.firstname
+                attrs['secondname'] = it.secondname
+                attrs['username'] = it.username
+                attrs['email'] = it.email
+                attrs['masterTZ'] = it.masterTZ
+                returnArray['attributes'] = attrs
+
+
+                def relationships = [:]
+                relationships['holidays'] = Holiday.findAllByMaster(it)
+                List<WorkTime> workTimes = WorkTime.findAllByMaster(it)
+                Map<Integer, List<WorkTime>> workTimesMap = new HashMap<Integer, List<WorkTime>>()
+                if (workTimes) {
+                    workTimes.each {
+                        if (!workTimesMap.get(it.dayOfWeek)) {
+                            workTimesMap.put(it.dayOfWeek, new ArrayList<WorkTime>())
+                        }
+                        workTimesMap.get(it.dayOfWeek).add(it)
+                    }
+                }
+                workTimesMap.each {
+                    it.value = it.value.sort {
+                        it.timeFrom
+                    }
+                }
+                relationships['workTimes'] = workTimesMap
+                returnArray['relationships'] = relationships
+
+                return returnArray
+            }
+
+            it.registerObjectMarshaller(Holiday) {
+                def holidayReturn = [:]
+                holidayReturn['id'] = it.id
+                holidayReturn['type'] = 'holiday'
+                def holidayAttrs = [:]
+                holidayAttrs['dateFrom'] = it.dateFrom
+                holidayAttrs['dateTo'] = it.dateTo
+                //holidayAttrs['master'] = it.master
+                holidayAttrs['comment'] = it.comment
+                holidayReturn['attributes'] = holidayAttrs
+                return holidayReturn
+            }
+        }
+
+        JSON.createNamedConfig('clients') {
+            it.registerObjectMarshaller(User) {
+                def returnArray = [:]
+                returnArray['id'] = it.id
+                returnArray['type'] = 'client'
 
                 def attrs = [:]
                 attrs['phone'] = it.phone

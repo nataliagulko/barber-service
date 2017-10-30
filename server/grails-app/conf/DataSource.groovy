@@ -25,17 +25,27 @@ environments {
 
         hibernate {
             // hibernate search configuration:
-            search.default.directory_provider = 'ram'
+            //search.default.directory_provider = 'ram'
            // search.default.indexBase =  '/app-root/data'
         }
-
         dataSource {
-            dataSource.dbCreate="update"
-            dataSource.driverClassName="com.mysql.jdbc.Driver"
-            dataSource.username="root"
-            dataSource.password="2Q5xnx"
+            dataSource.dbCreate = "update"
+            dataSource.driverClassName = "com.mysql.jdbc.Driver"
+//dataSource.url="jdbc:mysql://localhost:3306/barber"
+            dataSource.username = "userL1V"
+            dataSource.password = "plQyPDaARyYUuahp"
             logSql = true
-            url = "jdbc:mysql://localhost:3306/nova"
+            dbCreate = "update" // one of 'create', 'create-drop', 'update', 'validate', ''
+            url = "jdbc:mysql://mysql:3306/barbers"
         }
+
+//        dataSource {
+//            dataSource.dbCreate="update"
+//            dataSource.driverClassName="com.mysql.jdbc.Driver"
+//            dataSource.username="userL1V"
+//            dataSource.password="plQyPDaARyYUuahp"
+//            logSql = true
+//            url = "jdbc:mysql://mysql:3306/barbers"
+//        }
     }
 }

@@ -6,7 +6,8 @@ module.exports = function(environment) {
         environment: environment,
         rootURL: '/',
         locationType: 'auto',
-        host: 'https://service4barbers-h2osis.rhcloud.com',
+        //host: 'https://service4barbers-h2osis.rhcloud.com',
+        host: 'http://localhost:8090/nova',
         EmberENV: {
             FEATURES: {
                 // Here you can enable experimental features on an ember canary build
@@ -31,6 +32,8 @@ module.exports = function(environment) {
         tokenPropertyName: 'access_token',
         serverTokenEndpoint: ENV.host + '/api/login',
         crossOriginWhitelist: [ENV.host],
+        authorizationPrefix: 'Bearer ',
+        authorizationHeaderName: 'Authorization',
     };
 
     ENV['ember-toastr'] = {

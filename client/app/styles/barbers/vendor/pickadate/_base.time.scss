@@ -1,4 +1,3 @@
-
 /* ==========================================================================
    $BASE-TIME-PICKER
    ========================================================================== */
@@ -7,112 +6,106 @@
 /**
  * The list of times.
  */
+
 .picker__list {
     list-style: none;
     padding: 0;
     padding-bottom: 40px;
     margin: 0;
-}
 
+    &-item {
+        display: inline-block;
+        border-bottom: none;
+        border-top: none;
+        margin-bottom: -1px; // Prevent border from doubling up.
+        position: relative;
+        background: $bg-white;
+        padding: $list-item-padding;
+        border-radius: 4px;
+        @media ( min-height: $breakpoint-large) {
+            padding: $list-item-padding;
+        }
+        &:hover {
+            @include picker-item-hovered;
+            border-color: $blue;
+            z-index: 10;
+        }
 
-/**
- * The times on the clock.
- */
-.picker__list-item {
-    display: inline-block;
-    border-bottom: none;
-    border-top: none;
-    margin-bottom: -1px; // Prevent border from doubling up.
-    position: relative;
-    background: $bg-white;
-    padding: .75em 1.25em;
-    border-radius: 4px;
+        &--highlighted {
+            @include picker-item-highlighted;
+            z-index: 10;
 
-    // For `large` screens, reduce the padding to show more in view.
-    @media ( min-height: $breakpoint-large ) {
-        padding: .5em 1em;
+            &:hover {
+                @include picker-item-hovered;
+            }
+        }
+
+        &--selected,
+        &--selected:hover {
+            @include picker-item-selected;
+            z-index: 10;
+        }
+
+        &--disabled,
+        &--disabled:hover {
+            @include picker-item-disabled;
+            border-color: none;
+            z-index: auto;
+        }
     }
 }
 
-/* Hovered time */
-.picker__list-item:hover {
-    @include picker-item-hovered;
-    border-color: $blue;
-    z-index: 10;
-}
-
-/* Highlighted and hovered/focused time */
-.picker__list-item--highlighted {
-    @include picker-item-highlighted;
-    z-index: 10;
-}
-.picker__list-item--highlighted:hover,
 .picker--focused .picker__list-item--highlighted {
     @include picker-item-hovered;
 }
 
-/* Selected and hovered/focused time */
-.picker__list-item--selected,
-.picker__list-item--selected:hover,
 .picker--focused .picker__list-item--selected {
     @include picker-item-selected;
     z-index: 10;
 }
 
-/* Disabled time */
-.picker__list-item--disabled,
-.picker__list-item--disabled:hover,
 .picker--focused .picker__list-item--disabled {
     @include picker-item-disabled;
     border-color: none;
     z-index: auto;
 }
 
-
-
-
-/**
- * The clear button
- */
 .picker--time {
 
     .picker__button--clear {
         display: block;
         width: 88px;
-        margin: .75em auto 0;
+        margin: 8px auto 0;
         padding: 5px;
         background: #fff;
-        border: 1px solid #e43a45;
+        border: 1px solid $clear-red;
         font-weight: normal;
         font-size: $footer-btn-font-size;
         text-align: center;
         text-transform: none;
-        color: #e43a45;
-    }
+        color: $clear-red;
 
-    .picker__button--clear:hover,
-    .picker__button--clear:focus {
-        @include picker-item-hovered;
-        background: $clear-red;
-        border-color: $clear-red;
-        cursor: pointer;
-        color: $white;
-        outline: none;
-    }
 
-    .picker__button--clear:before {
-        top: -.25em;
-        color: #666;
-        font-size: 1.25em;
-        font-weight: bold;
-    }
+        &:hover,
+        &:focus {
+            @include picker-item-hovered;
+            background: $clear-red;
+            border-color: $clear-red;
+            cursor: pointer;
+            color: $white;
+            outline: none;
 
-    .picker__button--clear:hover:before,
-    .picker__button--clear:focus:before {
-        color: $white;
-        border-color: $white;
+            &:before {
+                color: $white;
+                border-color: $white;
+            }
+        }
+
+        &:before {
+            top: -3px;
+            color: $border-grey;
+            font-size: $btns-font-size;
+            font-weight: bold;
+        }
     }
 }
-
-
-

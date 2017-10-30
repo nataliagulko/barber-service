@@ -24,6 +24,9 @@ class Ticket {
     Long cost
     Long duration
 
+    Date dateCreated
+    Date lastUpdated
+
     static hasMany = [services: Service, subTickets: Ticket]
 
     static transients = ['subTickets', 'slotsService']
@@ -48,6 +51,8 @@ class Ticket {
         type nullable: true, display: false
         cost nullable: true
         duration nullable: true
+        dateCreated nullable: true
+        lastUpdated nullable: true
     }
 
     static search = {
@@ -63,6 +68,7 @@ class Ticket {
         updateDate()
         createSubTickets()
         updateFields()
+        dateCreated = new Date()
     }
 
     def beforeUpdate() {
@@ -72,6 +78,7 @@ class Ticket {
             updateSubTicketsDate()
             slotsService.syncFullDays(this, this.getPersistentValue("ticketDate"), null)
         }
+        lastUpdated = new Date()
     }
 
     def updateSubTicketsDate() {

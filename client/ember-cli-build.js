@@ -20,6 +20,9 @@ module.exports = function(defaults) {
   app.import("vendor/plugins/pickadate/lib/themes/classic.css");
   app.import("vendor/plugins/pickadate/lib/themes/classic.date.css");
   app.import("vendor/plugins/pickadate/lib/themes/classic.time.css");
+  app.import("vendor/plugins/datatables/datatables.min.css");
+  app.import("vendor/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css");
+  app.import("vendor/plugins/bootstrap-select/css/bootstrap-select.css");
 
   // Plugins Fonts
   // Simple Line Icons
@@ -40,12 +43,18 @@ module.exports = function(defaults) {
   app.import("vendor/plugins/pickadate/lib/picker.date.js");
   app.import("vendor/plugins/pickadate/lib/picker.time.js");
   app.import("vendor/plugins/pickadate/lib/translations/ru_RU.js");
+  app.import("vendor/plugins/datatables/datatables.min.js");
+  app.import("vendor/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js");
+  app.import("vendor/plugins/bootstrap-select/js/bootstrap-select.js");
+  app.import("vendor/plugins/bootstrap-select/js/i18n/defaults-ru_RU.js");
   app.import("vendor/plugins/pickadate/translations/ru_RU.js");
+  app.import("vendor/plugins/bootbox/bootbox.min.js");
 
-  // Layout JS
+  // Plugins' scripts
   app.import("vendor/scripts/app.js");
   app.import("vendor/scripts/layout/layout.js");
   app.import("vendor/scripts/quick-sidebar.js");
+  app.import("vendor/scripts/datatable.js");
 
   // Pages JS
 

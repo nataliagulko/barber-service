@@ -146,13 +146,13 @@ class SlotsService {
         if (currId) {
             Ticket curTicket = Ticket.findById(currId)
             if (curTicket) {
-                ticketList = Ticket.findAllByMasterAndTypeAndTicketDateBetweenAndGuidNotEqualAndStatusNotEqualAndStatusNotEqual(ticketsMaster,
-                        TicketType.SUB, dt1, dt2, curTicket.guid, TicketStatus.REJECTED, TicketStatus.DELETED, [sort: 'ticketDate'])
+                ticketList = Ticket.findAllByMasterAndTypeAndTicketDateBetweenAndGuidNotEqualAndStatusNotEqualAndStatusNotEqualAndStatusNotEqual(ticketsMaster,
+                        TicketType.SUB, dt1, dt2, curTicket.guid, TicketStatus.REJECTED, TicketStatus.DELETED, TicketStatus.CANCELED, [sort: 'ticketDate'])
             }
         }
         if (ticketList == null) {
-            ticketList = Ticket.findAllByMasterAndTypeAndTicketDateBetweenAndStatusNotEqualAndStatusNotEqual(ticketsMaster,
-                    TicketType.SUB, dt1, dt2, TicketStatus.REJECTED, TicketStatus.DELETED, [sort: 'ticketDate'])
+            ticketList = Ticket.findAllByMasterAndTypeAndTicketDateBetweenAndStatusNotEqualAndStatusNotEqualAndStatusNotEqual(ticketsMaster,
+                    TicketType.SUB, dt1, dt2, TicketStatus.REJECTED, TicketStatus.DELETED, TicketStatus.CANCELED, [sort: 'ticketDate'])
         }
 
         DateTime currentDT = new DateTime().toDateTime(DateTimeZone.forTimeZone(TimeZone.getTimeZone(timeZone)))
@@ -196,7 +196,7 @@ class SlotsService {
                     freePeriod.put("start",
                             changeTimeZone(lastSlotStart, timeZone).toString("yyyy-MM-dd HH:mm:ss"))
                     freePeriod.put("end",
-                            changeTimeZone(getWorkTimeDate(getWorkTimeDate(masterCurrentDT, it.timeTo, ticketsMaster.masterTZAct), time), timeZone)
+                            changeTimeZone(getWorkTimeDate(getWorkTimeDate(dt1, it.timeTo, ticketsMaster.masterTZAct), time), timeZone)
                                     .toString("yyyy-MM-dd HH:mm:ss"))
                     response.add(freePeriod)
 
@@ -226,9 +226,9 @@ class SlotsService {
                     if (isTicketBeforeCanCreate(lastSlotEnd, getWorkTimeDate(dt1, it.timeTo, ticketsMaster.masterTZAct), time)) {
                         Map<String, String> freePeriod = new HashMap<String, Date>()
                         freePeriod.put("start",
-                                changeTimeZone(lastSlotStart, timeZone).toString("yyyy-MM-dd HH:mm:ss"))
+                                changeTimeZone(lastSlotEnd, timeZone).toString("yyyy-MM-dd HH:mm:ss"))
                         freePeriod.put("end",
-                                changeTimeZone(getWorkTimeDate(getWorkTimeDate(masterCurrentDT, it.timeTo, ticketsMaster.masterTZAct), time), timeZone)
+                                changeTimeZone(getWorkTimeDate(dt1, it.timeTo, ticketsMaster.masterTZAct), timeZone)
                                         .toString("yyyy-MM-dd HH:mm:ss"))
                         response.add(freePeriod)
                     }
@@ -322,7 +322,7 @@ class SlotsService {
             holiday.setDateTo(localDateTime.withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59).toDate())
             holiday.setMaster(User.findById(master))
             holiday.setComment("fullday")
-            holiday.save()
+            holiday.save(flush: flush)
         } else {
             List<Holiday> holidays = Holiday.findAllByDateToAndDateFromAndCommentAndMaster(
                     localDateTime.withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59).toDate(),
@@ -352,11 +352,11 @@ class SlotsService {
         holiday.setMaster(User.findById(master))
         holiday.setComment("maxTime")
         holiday.setMaxTime(getMaxTime(User.findById(master), localDateTime.toDate()))
-        holiday.save()
+        holiday.save(flush: flush)
     }
 
     def getMaxTime(User master, Date date) {
-        List<Map<String, String>> slots = getSlots(master.id, 0L,
+        List<Map<String, String>> slots = getSlots(master.id, getDuration(1L),
                 new LocalDate(date.time), null)
         List<Integer> timesArray = new ArrayList<Integer>()
         for (Map<String, String> period : slots) {
@@ -364,12 +364,12 @@ class SlotsService {
                     DateTime.parse(period.get("start"), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")),
                     DateTime.parse(period.get("end"), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"))).minutes))
         }
-        return Collections.max(timesArray)
+        return timesArray.size() > 0 ? Collections.max(timesArray) : 0
     }
 
     def getDuration(Long time) {
 
-        List<Service> services = Service.findAll("from Service order by time", [max:1])
+        List<Service> services = Service.findAll("from Service order by time", [max: 1])
         return services == null ? time : services.get(0).time
 
     }
@@ -394,7 +394,8 @@ class SlotsService {
             DateTime dt1 = new DateTime(firstTicket.ticketDate).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0)
             DateTime dt2 = dt1.withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59)
             List<Ticket> ticketList =
-                    Ticket.findAllByTicketDateBetweenAndMasterAndTypeAndStatusNotEqualAndStatusNotEqual(dt1, dt2, master, TicketType.HEAD, TicketStatus.REJECTED, TicketStatus.DELETED, [sort: 'ticketDate'])
+                    Ticket.findAllByTicketDateBetweenAndMasterAndTypeAndStatusNotEqualAndStatusNotEqualAndStatusNotEqual(dt1, dt2, master,
+                            TicketType.HEAD, TicketStatus.REJECTED, TicketStatus.DELETED, TicketStatus.CANCELED, [sort: 'ticketDate'])
             if (ticketList) {
                 Integer firstPos = ticketList.findIndexOf { it.id.equals(firstTicket.id) }
                 ticketList = ticketList.subList(firstPos, ticketList.size())
@@ -415,7 +416,7 @@ class SlotsService {
                         Integer space = Minutes.minutesBetween(
                                 dtEndTicket.withSecondOfMinute(0).withMillisOfSecond(0),
                                 dtStartNextTicket.withSecondOfMinute(0).withMillisOfSecond(0)).minutes
-                        if(space.equals(0)){
+                        if (space.equals(0)) {
                             newTicketDate = newTicketDate.plusMinutes(time.toInteger())
                         } else {
                             if (space >= time) {

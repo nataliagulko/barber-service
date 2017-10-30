@@ -11,6 +11,13 @@ Router.map(function() {
   this.route('ticket', function() {
     this.route('create');
   });
+  this.route('service', function() {
+    this.route('create');
+  });
+  this.route('master', function() {
+    this.route('create');
+    this.route('edit', { path: '/edit/:id' });
+  });
 });
 
 export default Router;

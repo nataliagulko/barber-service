@@ -1,0 +1,21 @@
+<div class="row">
+	<div class="col-md-4 col-sm-6">
+		<div class="portlet light bordered">
+			<div class="portlet-title">
+				<div class="caption font-dark">
+					<i class="icon-bag font-green-sharp "></i>
+			        <span class="caption-subject bold uppercase">Новый мастер</span>
+		        </div>
+		        <div class="actions">
+		        	{{#link-to "master.index" class="btn btn-default"}}
+						<i class="fa fa-arrow-left"></i>
+						Назад
+					{{/link-to}}
+		        </div>
+			</div>
+			<div class="portlet-body form">
+				{{master-form master=model}}
+			</div>
+		</div>
+	</div>
+</div>

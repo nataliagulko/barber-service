@@ -32,13 +32,13 @@ class MasterAjaxController {
                         render([data: result] as JSON)
                     }
                 } else {
-                    render([errors: result] as JSON)
+                    render([errors: { result }] as JSON)
                 }
             } else {
-                render([errors: g.message(code: "auth.reg.pass2.fail")] as JSON)
+                render([errors: { g.message(code: "auth.reg.pass2.fail") }] as JSON)
             }
         } else {
-            render([errors: g.message(code: "user.phone.and.pass.null")] as JSON)
+            render([errors: { g.message(code: "user.phone.and.pass.null") }] as JSON)
         }
     }
 
@@ -48,42 +48,32 @@ class MasterAjaxController {
             User user = User.get(data.id)
             if (user) {
                 user.setPassword(null)
-                List<WorkTime> workTimes = WorkTime.findAllByMaster(user)
-                Map<Integer, List<WorkTime>> worktTmesMap = new HashMap<Integer, List<WorkTime>>()
-                if (workTimes) {
-                    workTimes.each {
-                        if (!worktTmesMap.get(it.dayOfWeek)) {
-                            worktTmesMap.put(it.dayOfWeek, new ArrayList<WorkTime>())
-                        }
-                        worktTmesMap.get(it.dayOfWeek).add(it)
-                    }
+                //render([user: user, holidays: Holiday.findAllByMaster(user), worktTmesMap: worktTmesMap] as JSON)
+                JSON.use('masters') {
+                    render([data: user] as JSON)
                 }
-                worktTmesMap.each {
-                    it.value = it.value.sort {
-                        it.timeFrom
-                    }
-                }
-
-                render([user: user, holidays: Holiday.findAllByMaster(user), worktTmesMap: worktTmesMap] as JSON)
             } else {
-                render([errors: g.message(code: "user.get.user.not.found")] as JSON)
+                render([errors: { g.message(code: "user.get.user.not.found") }] as JSON)
             }
         } else {
-            render([errors: g.message(code: "user.get.id.null")] as JSON)
+            render([errors: { g.message(code: "user.get.id.null") }] as JSON)
         }
     }
 
-    def save() {
-        if (params.id) {
-            User user = User.get(params.id)
+    def update() {
+        def data = request.JSON.data
+        if (data.id) {
+            User user = User.get(data.id)
             if (user) {
-                usersService.saveUser(params, user)
-                render([code: 0] as JSON)
+                usersService.saveUser(data.attributes, user)
+                JSON.use('masters') {
+                    render([data: user] as JSON)
+                }
             } else {
-                render([msg: g.message(code: "user.get.user.not.found")] as JSON)
+                render([errors: { g.message(code: "user.get.user.not.found") }] as JSON)
             }
         } else {
-            render([msg: g.message(code: "user.get.id.null")] as JSON)
+            render([errors: { g.message(code: "user.get.id.null") }] as JSON)
         }
     }
 
@@ -365,10 +355,27 @@ class MasterAjaxController {
         if (userList) {
 
             JSON.use('masters') {
-                render([data: userList] as JSON)
+                render([data: userList.findAll{ it.enabled == true}] as JSON)
             }
         } else {
-            render([errors: g.message(code: "user.fine.not.found")] as JSON)
+            render([errors: { g.message(code: "user.fine.not.found") }] as JSON)
+        }
+    }
+
+    def destroy() {
+        def data = request.JSON.data
+        if (data.id) {
+            User user = User.get(data.id)
+            if (user) {
+                user.setEnabled(false)
+                user.save(flush: true)
+                render([errors: {}] as JSON)
+
+            } else {
+                render([errors: { g.message(code: "user.get.user.not.found") }] as JSON)
+            }
+        } else {
+            render([errors: { g.message(code: "user.get.id.null") }] as JSON)
         }
     }
 }

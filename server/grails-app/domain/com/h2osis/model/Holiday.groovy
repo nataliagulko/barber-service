@@ -8,6 +8,7 @@ class Holiday {
     Date dateTo
     User master
     String comment
+    Long maxTime
 
     String toString() {
         return  dateFrom + "-" + dateTo + " " + comment
@@ -15,5 +16,6 @@ class Holiday {
 
     static constraints = {
         comment nullable: true
+        maxTime nullable: true, blank: true
     }
 }
