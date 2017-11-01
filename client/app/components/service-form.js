@@ -24,6 +24,11 @@ export default Ember.Component.extend({
 	actions: {
 		save: function() {
 			const serviceRecord = this.get("service");
+			const masters = this.get("masters");
+			const subservices = this.get("subservices");
+
+			serviceRecord.set("masters", masters)
+			//serviceRecord.set("subservices", subservices)
 			serviceRecord.save();
 		},
 
@@ -35,10 +40,6 @@ export default Ember.Component.extend({
 			const serviceRecord = this.get("service");
 
 			console.log(value);
-		},
-
-		foo: function() {
-			
 		}
 	}
 });

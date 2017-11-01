@@ -21,16 +21,13 @@
 		</div>
 		<div class="form-group">
 			<label>Мастера</label>
-			<select id="master-list" class="form-control" multiple="multiple" name="masters" onchange={{action "updateValue" value="target.value"}}>
-				{{#each masters as |master|}}
-					<option value="{{master.id}}">{{master.firstname}} {{master.secondname}}</option>
-				{{/each}}
-			</select>
 			{{#power-select-multiple 
 				options=masters 
-				onchange=(action "foo")
+				selected=master
+				searchField="firstname"
+				onchange=(action (mut master))
 				as |master|}}
-					{{firstname}}
+					{{master.firstname}} {{master.secondname}}
 			{{/power-select-multiple}}
 		</div>
 		<div class="form-group">
@@ -44,11 +41,14 @@
 			<button type="button" class="btn btn-default" data-toggle="collapse" href="#subservice-list-toggle" disabled={{isPartOfList}}>Добавить подуслуги</button>
 		</div>
 		<div class="collapse form-group" id="subservice-list-toggle">
-			<select id="subservice-list" class="" multiple="multiple" name="subservices">
-				{{#each subservices as |subservice|}}
-					<option value="{{subservice.id}}">{{subservice.name}}</option>
-				{{/each}}
-			</select>
+			{{#power-select-multiple 
+				options=subservices 
+				selected=subservice
+				searchField="name"
+				onchange=(action (mut subservice))
+				as |subservice|}}
+					{{subservice.name}}
+			{{/power-select-multiple}}
 		</div>
 	</div>
 	<div class="form-actions">
