@@ -1,0 +1,25 @@
+<table class="table">
+	<thead>
+		<tr>
+			<td>Услуга</td>
+			<td>Перерыв</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				{{#power-select 
+					options=subservices 
+					selected=subservice
+					searchField="name"
+					onchange=(action (mut subservice))
+					as |subservice|}}
+						{{subservice.name}}
+				{{/power-select}}
+			</td>
+			<td>
+				{{input class="form-control" type="tel"}}
+			</td>
+		</tr>
+	</tbody>
+</table>

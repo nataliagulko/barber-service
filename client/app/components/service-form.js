@@ -25,7 +25,6 @@ export default Ember.Component.extend({
 		save: function() {
 			const serviceRecord = this.get("service");
 			const masters = this.get("masters");
-			const subservices = this.get("subservices");
 
 			serviceRecord.set("masters", masters)
 			//serviceRecord.set("subservices", subservices)

@@ -54,8 +54,5 @@
   "engines": {
     "node": ">= 0.12.0"
   },
-  "private": true,
-  "dependencies": {
-    "ember-data-save-relationships": "0.0.5"
-  }
+  "private": true
 }

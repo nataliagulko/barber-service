@@ -1,9 +1,8 @@
 import ApplicationSerializer from './application';
-import SaveRelationshipsMixin from 'ember-data-save-relationships';
 
-export default ApplicationSerializer.extend(SaveRelationshipsMixin, {
+export default ApplicationSerializer.extend({
 	attrs: {
 		masters: { serialize: true },
-		subservices: { serialize: true }
+		serviceToGroup: { serialize: true }
 	}
 });

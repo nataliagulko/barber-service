@@ -16,4 +16,7 @@ export default DS.Model.extend({
     holiday: DS.hasMany('holiday'),
     services: DS.hasMany('service'),
     worktimes: DS.hasMany('worktime'),
+    fullname: Ember.computed('firstname', 'secondname', function() {
+            return `${this.get('firstname')} ${this.get('secondname')}`;
+        })
 });
