@@ -16,7 +16,7 @@ export default Ember.Component.extend({
 		pickatimeService.set("#ticket-time-picker", "disable", disableTimeArr);
         pickatimeService.on("#ticket-time-picker", "set", function(selectedTime) {
             var time = $('input[name=time_input_submit]').val(),
-                date = $('.ticket-info-date-temp__date').text();
+                date = $('.ticket-info-date-top__date').text();
 
             $('.ticket-info-time-temp').removeClass('hidden');
             $('.ticket-info-time-temp__time').text(time);

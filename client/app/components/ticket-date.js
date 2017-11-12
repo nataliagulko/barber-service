@@ -19,8 +19,8 @@ export default Ember.Component.extend({
                 locale = "ru-ru",
                 ticketDate = objDate.toLocaleString(locale, {day:"numeric", month: "long"});
 
-            $('.ticket-info-date-temp').removeClass('hidden');
-            $('.ticket-info-date-temp__date').text(ticketDate);
+            $('.ticket-info-date-top').removeClass('hidden');
+            $('.ticket-info-date-top__date').text(ticketDate);
             $('.ticket-info-date__date').text(ticketDate);
         });
 	}
