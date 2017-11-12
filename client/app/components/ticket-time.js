@@ -18,8 +18,8 @@ export default Ember.Component.extend({
             var time = $('input[name=time_input_submit]').val(),
                 date = $('.ticket-info-date-top__date').text();
 
-            $('.ticket-info-time-temp').removeClass('hidden');
-            $('.ticket-info-time-temp__time').text(time);
+            $('.ticket-info-time-top').removeClass('hidden');
+            $('.ticket-info-time-top__time').text(time);
             $('.ticket-info-date__date').text(date + ', ' + time);
         });
 	}
