@@ -43,20 +43,20 @@ export default Ember.Service.extend({
     },
 
     selectServiceItem(itemName, itemTime, itemPrice) {
-        $('.ticket-info-services-temp').removeClass('hidden');
+        $('.ticket-info-services-top').removeClass('hidden');
 
         var selectedItem = $(event.target).closest('.mt-widget-1');
 
         if (!$(selectedItem).hasClass('selected-item')) {
-            $('.ticket-info-services-temp ul').append('<li>' + itemName + '</li>');
+            $('.ticket-info-services-top ul').append('<li>' + itemName + '</li>');
         } else {
-            $('.ticket-info-services-temp ul').find('li').filter(function() {
+            $('.ticket-info-services-top ul').find('li').filter(function() {
                 return $.text([this]) === itemName;
             }).remove();
         }
 
         $('.ticket-info-services__text ul').remove();
-        $('.ticket-info-services-temp ul').clone().appendTo('.ticket-info-services__text');
+        $('.ticket-info-services-top ul').clone().appendTo('.ticket-info-services__text');
         $(selectedItem).toggleClass('selected-item');
     }
 });
