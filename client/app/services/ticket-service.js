@@ -25,7 +25,7 @@ export default Ember.Service.extend({
 
         // если на шаге "Клиент" то отображаем блок с маской телефона
         if ($('#client-step').hasClass('active')) {
-            $('.ticket-info-client-temp').removeClass('hidden');
+            $('.ticket-info-client-top').removeClass('hidden');
         }
     },
 

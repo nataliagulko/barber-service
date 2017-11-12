@@ -5,7 +5,7 @@ export default Ember.Component.extend({
 
     actions: {
         removeLastNumber() {
-            var inputField = $('.ticket-info-client-temp__input'),
+            var inputField = $('.ticket-info-client-top__input'),
                 inputValue = $('#phone-number'),
                 bottomInput = $('.ticket-info-client__phone'),
                 phoneValue = $(inputValue).val(),
