@@ -4,7 +4,7 @@ export default Ember.Service.extend({
 
     showElement(elemSelector, step) {
         // скрываем верхнюю половину блока "инфо"
-        $('.ticket-info-temp').addClass('hidden');
+        $('.ticket-info-top').addClass('hidden');
 
         // отображаем нижние строки блока "инфо" если они не пустые
         var bottomItems = $('.ticket-info-bottom');
@@ -30,7 +30,7 @@ export default Ember.Service.extend({
     },
 
     selectMaster(masterName, imgSrc) {
-        $('.ticket-info-master-temp').removeClass('hidden');
+        $('.ticket-info-master-top').removeClass('hidden');
 
         $('.ticket-info-master__name').text(masterName);
         if (imgSrc) {
