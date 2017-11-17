@@ -18,5 +18,10 @@ export default Ember.Service.extend({
 	set(selector, method, params) {
 		var picker = $(selector).pickadate('picker');
 		picker.set(method, params);
+	},
+
+	on(selector, method, callback) {
+		var picker = $(selector).pickadate('picker');
+		picker.on(method, callback);
 	}
 });
