@@ -17,8 +17,6 @@ export default Ember.Component.extend({
 			};
 
 		validateService.validateForm('#service-form', options);
-		$("#master-list").select2();
-		$("#subservice-list").select2();
 	},
 
 	actions: {
@@ -29,19 +27,13 @@ export default Ember.Component.extend({
 			const masters = this.get("masters");
 			const serviceToGroupRel = this.get("serviceToGroup");
 
-			serviceRecord.set("masters", masters);
-			serviceRecord.set("serviceToGroup", serviceToGroupRel);
+			// serviceRecord.set("masters", masters);
+			// serviceRecord.set("serviceToGroup", serviceToGroupRel);
 			serviceRecord.save();
 		},
 
 		checkPartOfList: function() {
 			this.get('isPartOfList');
-		}.observes('isPartOfList'),
-
-		updateValue: function(value) {
-			const serviceRecord = this.get("service");
-
-			console.log(value);
-		}
+		}.observes('isPartOfList')
 	}
 });

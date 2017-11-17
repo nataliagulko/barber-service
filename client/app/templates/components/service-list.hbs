@@ -4,6 +4,7 @@
 			<th>Название</th>
 			<th class="text-right">Стоимость</th>
 			<th class="text-right">Время</th>
+			<th class="text-right">Мастер</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -17,6 +18,7 @@
 				</td>
 				<td class="text-right">{{service.time}}&nbsp;₽</td>
 				<td class="text-right">{{service.cost}}&nbsp;мин.</td>
+				<td class="text-right">{{service.masters.fullname}}</td>
 			</tr>
 		{{/each}}
 	</tbody>

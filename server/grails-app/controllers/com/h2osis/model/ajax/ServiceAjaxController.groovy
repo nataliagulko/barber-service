@@ -51,6 +51,7 @@ class ServiceAjaxController {
     }
 
     def create() {
+        def errors = []
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
         if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
@@ -65,7 +66,15 @@ class ServiceAjaxController {
                     render([data: service] as JSON)
                 }
             } else {
-                render([errors: g.message(code: "service.create.params.null")] as JSON)
+                errors.add([
+                        "status": 422,
+                        "detail": g.message(code: "service.create.params.null"),
+                        "source": [
+                            "pointer": "data"
+                        ]
+                    ])
+                response.status = 422
+                render([errors: errors] as JSON)
             }
         } else {
             render([errors: g.message(code: "service.create.not.admin")] as JSON)

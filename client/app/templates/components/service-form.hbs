@@ -1,9 +1,9 @@
 <form id="service-form">
 	<div class="form-body">
-		{{#if errors}}
+		{{#if service.errors.messages}}
 			<div class="alert alert-danger">
-				{{#each errors as |error|}}
-					<div>error</div>
+				{{#each service.errors.messages as |message|}}
+					<div>{{message}}</div>
 				{{/each}}
 			</div>
 		{{/if}}
