@@ -25,7 +25,7 @@
 				options=masters 
 				selected=master
 				searchField="fullname"
-				onchange=(action (mut master))
+				onchange=(action "selectMaster")
 				as |master|}}
 					{{master.fullname}}
 			{{/power-select-multiple}}
