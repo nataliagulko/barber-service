@@ -5,19 +5,10 @@ export default Ember.Component.extend({
 	validateService: Ember.inject.service("validate-service"),
 	isPartOfList: false,
 	selectedMasters: [],
-
-	didInsertElement: function() {
-		var validateService = this.get('validateService'),
-			options = {
-				rules: {
-					name: 'required',
-					cost: 'required',
-					time: 'required',
-					//masters: 'required'
-				}
-			};
-
-		validateService.validateForm('#service-form', options);
+	rules: {
+		name: 'required',
+		cost: 'required',
+		time: 'required',
 	},
 
 	actions: {

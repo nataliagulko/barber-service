@@ -1,50 +1,90 @@
-<form id="service-form">
+{{#if service.errors.messages}}
+	<div class="alert alert-danger">
+		{{#each service.errors.messages as |message|}}
+			<div>{{message}}</div>
+		{{/each}}
+	</div>
+{{/if}}
+{{#lf-form rules=rules onSubmit=(action "save") as |validateFunction|}}
 	<div class="form-body">
-		{{#if service.errors.messages}}
-			<div class="alert alert-danger">
-				{{#each service.errors.messages as |message|}}
-					<div>{{message}}</div>
-				{{/each}}
-			</div>
-		{{/if}}
-		<div class="form-group">
-			<label>Название</label>
-			{{input name="name" class="form-control" value=service.name}}
-		</div>
-		<div class="form-group">
-			<label>Стоимость</label>
-			{{input name="cost" class="form-control"  value=service.cost}}
-		</div>
-		<div class="form-group">
-			<label>Продолжительность</label>
-			{{input name="time" class="form-control"  value=service.time}}
-		</div>
-		<div class="form-group">
-			<label>Мастера</label>
-			{{#power-select-multiple 
-				options=masters 
-				selected=master
-				searchField="fullname"
-				onchange=(action "selectMaster")
-				as |master|}}
-					{{master.fullname}}
-			{{/power-select-multiple}}
-		</div>
-		<div class="form-group">
-			<label class="mt-checkbox">
-				Подуслуга
-				{{input type="checkbox" checked=isPartOfList name="partOfList"}}
-				<span></span>
-			</label>
-		</div>
-		<div class="form-group">
-			<button type="button" class="btn btn-default" data-toggle="collapse" href="#subservice-list-toggle" disabled={{isPartOfList}}>Добавить подуслуги</button>
-		</div>
-		<div class="collapse form-group" id="subservice-list-toggle">
-			{{subservice-list subservices=subservices}}
-		</div>
+		{{lf-input
+			label="Название"
+			property=service.name
+			name="name"
+			validate=validateFunction
+			on-update=(action (mut service.name))
+		}}
+		{{lf-input
+			label="Стоимость"
+			property=service.cost
+			name="cost"
+			validate=validateFunction
+			on-update=(action (mut service.cost))
+		}}
+		{{lf-input
+			label="Продолжительность"
+			property=service.time
+			name="time"
+			validate=validateFunction
+			on-update=(action (mut service.time))
+		}}
+		{{lf-input
+			label="Подуслуга"
+			property=service.partOfList
+			name="partOfList"
+			inputClass="radio-input"
+      		inputComponent="radio-input"
+			validate=validateFunction
+		}}
+		{{lf-select
+			label="Мастера"
+			property=service.masters
+			name="masters"
+			content=masters
+			labelPath="fullname"
+			valuePath="id"
+			multiple="multiple"
+			validate=validateFunction
+			on-update=(action (mut service.masters))
+		}}
 	</div>
 	<div class="form-actions">
-		<button type="submit" class="btn btn-success" {{action 'save'}}>Сохранить</button>
+		{{input class="btn btn-success" type="submit" disabled=(not isValid)}}
 	</div>
-</form>
+{{/lf-form}}
+	{{!-- <div class="form-group">
+		<label>Название</label>
+		{{input name="name" class="form-control" value=service.name}}
+	</div>
+	<div class="form-group">
+		<label>Стоимость</label>
+		{{input name="cost" class="form-control"  value=service.cost}}
+	</div>
+	<div class="form-group">
+		<label>Продолжительность</label>
+		{{input name="time" class="form-control"  value=service.time}}
+	</div>
+	<div class="form-group">
+		<label>Мастера</label>
+		{{#power-select-multiple 
+			options=masters 
+			selected=master
+			searchField="fullname"
+			onchange=(action "selectMaster")
+			as |master|}}
+				{{master.fullname}}
+		{{/power-select-multiple}}
+	</div>
+	<div class="form-group">
+		<label class="mt-checkbox">
+			Подуслуга
+			{{input type="checkbox" checked=isPartOfList name="partOfList"}}
+			<span></span>
+		</label>
+	</div>
+	<div class="form-group">
+		<button type="button" class="btn btn-default" data-toggle="collapse" href="#subservice-list-toggle" disabled={{isPartOfList}}>Добавить подуслуги</button>
+	</div>
+	<div class="collapse form-group" id="subservice-list-toggle">
+		{{subservice-list subservices=subservices}}
+	</div> --}}
