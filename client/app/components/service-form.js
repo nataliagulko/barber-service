@@ -20,18 +20,15 @@ export default Ember.Component.extend({
 			const serviceToGroupRel = this.get("serviceToGroup");
 
 			serviceRecord.set("masters", masters);
-			// serviceRecord.set("serviceToGroup", serviceToGroupRel);
 			serviceRecord.save();
 		},
 
-		selectMaster: function(master) {
+		selectMaster: function(id) {
 			var masters = this.get("selectedMasters");
+			let master = this.get("store").peekRecord('master', id);
 
-			// const masterRecord = this.get("store").findRecord("master", master.id);
-			// masters.push(masterRecord);
-			// this.set("selectedMasters", masters);
-			console.log(master);
-			console.log(masters);
+			masters.push(master);
+			this.set("selectedMasters", masters);
 		},
 
 		checkPartOfList: function() {
