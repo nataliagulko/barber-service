@@ -1,24 +1,37 @@
 <table class="table">
 	<thead>
 		<tr>
+			<td></td>
 			<td>Услуга</td>
 			<td>Перерыв</td>
+			<td>
+				<button type="button" class="btn btn-default">
+					<i class="fa fa-plus"></i>
+				</button>
+			</td>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
 			<td>
-				{{#power-select 
-					options=subservices 
-					selected=subservice
-					searchField="name"
-					onchange=(action (mut subservice))
-					as |subservice|}}
-						{{subservice.name}}
-				{{/power-select}}
+				<button type="button" class="btn btn-default btn-borderless">
+					<img src="/img/drag-dots.svg">
+				</button>
+			</td>
+			<td>
+				<select class="select2 form-control" name="service" onchange={{action "selectSubservice" value="target.value"}}>
+		            {{#each subservices as |subservice|}}
+		                <option value="{{subservice.id}}">{{subservice.name}}</option>
+		            {{/each}}
+		        </select>
 			</td>
 			<td>
 				{{input class="form-control" type="tel"}}
+			</td>
+			<td>
+				<button type="button" class="btn btn-danger">
+					<i class="fa fa-trash"></i>
+				</button>
 			</td>
 		</tr>
 	</tbody>

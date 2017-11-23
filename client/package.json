@@ -47,6 +47,7 @@
     "ember-simple-auth-token": "2.1.0",
     "ember-source": "^2.11.0",
     "ember-toastr": "1.7.0",
+    "ember-truth-helpers": "^2.0.0",
     "loader.js": "^4.0.10",
     "toastr": "^2.1.2"
   },

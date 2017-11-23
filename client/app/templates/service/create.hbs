@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="col-md-4 col-sm-6">
+	<div class="col-md-6 col-sm-8">
 		<div class="portlet light bordered">
 			<div class="portlet-title">
 				<div class="caption font-dark">
@@ -14,7 +14,13 @@
 		        </div>
 			</div>
 			<div class="portlet-body form">
-				{{service-form service=model.service masters=model.masters subservices=model.subservices serviceToGroup=model.serviceToGroup}}
+				{{service-form 
+					service=model.service 
+					masters=model.masters 
+					subservices=model.subservices 
+					serviceToGroup=model.serviceToGroup
+					serviceGroup=model.serviceGroup
+				}}
 			</div>
 		</div>
 	</div>
