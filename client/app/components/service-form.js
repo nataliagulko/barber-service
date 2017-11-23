@@ -3,7 +3,6 @@ import Ember from 'ember';
 export default Ember.Component.extend({
 	store: Ember.inject.service("store"),
 	select2Service: Ember.inject.service("select2-service"),
-	isPartOfList: false,
 	selectedMasters: [],
 
 	didInsertElement: function() {
@@ -31,7 +30,7 @@ export default Ember.Component.extend({
 		},
 
 		checkPartOfList: function() {
-			this.get('isPartOfList');
-		}.observes('isPartOfList')
+			this.get('service[partOfList]');
+		}.observes('service[partOfList]')
 	}
 });
