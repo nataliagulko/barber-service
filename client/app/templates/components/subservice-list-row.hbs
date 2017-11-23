@@ -1,0 +1,23 @@
+{{!-- component in tbody --}}
+<tr>
+	<td>
+		<button type="button" class="btn btn-default btn-borderless">
+			<img src="/img/drag-dots.svg">
+		</button>
+	</td>
+	<td>
+		<select class="select2 form-control" name="service" onchange={{action "selectSubservice" value="target.value"}}>
+            {{#each subservices as |subservice|}}
+                <option value="{{subservice.id}}">{{subservice.name}}</option>
+            {{/each}}
+        </select>
+	</td>
+	<td>
+		{{input class="form-control" type="tel"}}
+	</td>
+	<td>
+		<button type="button" class="btn btn-danger">
+			<i class="fa fa-trash"></i>
+		</button>
+	</td>
+</tr>

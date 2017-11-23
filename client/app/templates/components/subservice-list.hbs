@@ -5,34 +5,14 @@
 			<td>Услуга</td>
 			<td>Перерыв</td>
 			<td>
-				<button type="button" class="btn btn-default">
+				<button type="button" class="btn btn-default" {{action "addSubserviceRow"}}>
 					<i class="fa fa-plus"></i>
 				</button>
 			</td>
 		</tr>
 	</thead>
-	<tbody>
-		<tr>
-			<td>
-				<button type="button" class="btn btn-default btn-borderless">
-					<img src="/img/drag-dots.svg">
-				</button>
-			</td>
-			<td>
-				<select class="select2 form-control" name="service" onchange={{action "selectSubservice" value="target.value"}}>
-		            {{#each subservices as |subservice|}}
-		                <option value="{{subservice.id}}">{{subservice.name}}</option>
-		            {{/each}}
-		        </select>
-			</td>
-			<td>
-				{{input class="form-control" type="tel"}}
-			</td>
-			<td>
-				<button type="button" class="btn btn-danger">
-					<i class="fa fa-trash"></i>
-				</button>
-			</td>
-		</tr>
-	</tbody>
+		{{subservice-list-row subservices=subservices}}
+		{{#if addRow}}
+			{{subservice-list-row subservices=subservices}}
+		{{/if}}
 </table>

@@ -33,15 +33,7 @@ export default Ember.Component.extend({
 		},
 
 		toggleIsServiceGroup: function() {
-			let isServiceGroup = this.get("isServiceGroup");
-
-			if (isServiceGroup) {
-				isServiceGroup = false;
-			} else {
-				isServiceGroup = true;
-			}
-
-			this.set("isServiceGroup", isServiceGroup);
+			this.toggleProperty("isServiceGroup");
 		},
 
 		checkPartOfList: function() {
