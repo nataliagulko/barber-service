@@ -1,65 +1,46 @@
-{{#if service.errors.messages}}
-	<div class="alert alert-danger">
-		{{#each service.errors.messages as |message|}}
-			<div>{{message}}</div>
-		{{/each}}
-	</div>
-{{/if}}
-{{#lf-form rules=rules onSubmit=(action "save") as |validateFunction|}}
-	<div class="form-body">
-		{{lf-input
-			label="Название"
-			property=service.name
-			name="name"
-			validate=validateFunction
-			on-update=(action (mut service.name))
-		}}
-		{{lf-input
-			label="Стоимость"
-			property=service.cost
-			name="cost"
-			validate=validateFunction
-			on-update=(action (mut service.cost))
-		}}
-		{{lf-input
-			label="Продолжительность"
-			property=service.time
-			name="time"
-			validate=validateFunction
-			on-update=(action (mut service.time))
-		}}
-		<div class="form-group">
-			<label class="mt-checkbox">
-				Подуслуга
-				{{one-way-checkbox 
-				    update=(action (mut isPartOfList))
-				    name="partOfList"
-				    checked=service.partOfList
-				}}
-				<span></span>
-			</label>
+<form {{action 'save' on='submit'}}>
+	{{#if service.errors.messages}}
+		<div class="alert alert-danger">
+			{{#each service.errors.messages as |message|}}
+				<div>{{message}}</div>
+			{{/each}}
 		</div>
-		{{lf-select
-			label="Мастера"
-			property=masters
-			name="service[masters]"
-			content=masters
-			labelPath="fullname"
-			valuePath="id"
-			multiple="multiple"
-			validate=validateFunction
-			on-update=(action "selectMaster")
-		}}
-	</div>
-	<div class="form-actions">
-		{{input class="btn btn-success" type="submit"}}
-	</div>
-{{/lf-form}}
-	{{!-- 
+	{{/if}}
+	<div class="form-group">
+        <label>Название</label>
+        {{input name="name" class="form-control" value=service.name}}
+    </div>
+    <div class="form-group">
+        <label>Стоимость</label>
+        {{input name="cost" class="form-control"  value=service.cost}}
+    </div>
+    <div class="form-group">
+        <label>Продолжительность</label>
+        {{input name="time" class="form-control"  value=service.time}}
+    </div>
+    <div class="form-group">
+        <label>Мастера</label>
+    	<select class="select2 form-control" multiple="multiple" name="masters" onchange={{action "selectMaster" value="target.value"}}>
+            {{#each masters as |master|}}
+                <option value="{{master.id}}">{{master.fullname}}</option>
+            {{/each}}
+        </select>
+    </div>
+    <div class="form-group">
+        <label class="mt-checkbox">
+            Подуслуга
+            {{input type="checkbox" checked=isPartOfList name="partOfList"}}
+            <span></span>
+        </label>
+    </div>
+
 	<div class="form-group">
 		<button type="button" class="btn btn-default" data-toggle="collapse" href="#subservice-list-toggle" disabled={{isPartOfList}}>Добавить подуслуги</button>
 	</div>
 	<div class="collapse form-group" id="subservice-list-toggle">
-		{{subservice-list subservices=subservices}}
+		{{!-- {{subservice-list subservices=subservices}} --}}
 	</div> 
-	--}}
+    <div class="form-actions">
+        {{input class="btn btn-success" type="submit"}}
+    </div>
+</form>

@@ -2,13 +2,12 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
 	store: Ember.inject.service("store"),
-	validateService: Ember.inject.service("validate-service"),
+	select2Service: Ember.inject.service("select2-service"),
 	isPartOfList: false,
 	selectedMasters: [],
-	rules: {
-		name: 'required',
-		cost: 'required',
-		time: 'required',
+
+	didInsertElement: function() {
+		var select2Service = this.get("select2Service");
 	},
 
 	actions: {

@@ -36,11 +36,10 @@
     "ember-cli-sri": "^2.1.0",
     "ember-cli-test-loader": "^1.1.0",
     "ember-cli-uglify": "^1.2.0",
-    "ember-cp-validations": "^3.5.1",
     "ember-data": "^2.15.0",
     "ember-export-application-global": "^1.0.5",
+    "ember-font-awesome": "^4.0.0-alpha.14",
     "ember-inputmask": "0.4.0-beta.4",
-    "ember-legit-forms": "^2.1.3",
     "ember-load-initializers": "^0.6.0",
     "ember-moment": "7.4.1",
     "ember-resolver": "^2.0.3",
@@ -55,5 +54,8 @@
     "node": ">= 0.12.0"
   },
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "broccoli-funnel": "^2.0.1",
+    "broccoli-merge-trees": "^2.0.0"
+  }
 }
