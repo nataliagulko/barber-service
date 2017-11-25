@@ -15,17 +15,35 @@ class ServiceAjaxController {
     static allowedMethods = [choose: ['POST', 'GET']]
 
     def get() {
-        if (params.id) {
-            Service service = Service.get(params.id)
+        def errors = []
+        def data = request.JSON.data
+        if (data.id) {
+            Service service = Service.get(data.id)
             if (service) {
                 JSON.use('services') {
                     render([data: service] as JSON)
                 }
             } else {
-                render([errors: g.message(code: "service.get.user.not.found")] as JSON)
+                errors.add([
+                        "status": 422,
+                        "detail": g.message(code: "service.get.user.not.found"),
+                        "source": [
+                            "pointer": "data"
+                        ]
+                    ])
+                response.status = 422
+                render([errors: errors] as JSON)
             }
         } else {
-            render([errors: g.message(code: "service.get.id.null")] as JSON)
+            errors.add([
+                    "status": 422,
+                    "detail": g.message(code: "service.get.id.null"),
+                    "source": [
+                        "pointer": "data"
+                    ]
+                ])
+            response.status = 422
+            render([errors: errors] as JSON)
         }
     }
 

@@ -13,6 +13,7 @@ Router.map(function() {
   });
   this.route('service', function() {
     this.route('create');
+    this.route('edit', { path: '/edit/:id' });
   });
   this.route('master', function() {
     this.route('create');

@@ -1,11 +1,11 @@
 import Ember from 'ember';
 
 export default Ember.Service.extend({
-	confirmDelete(store, type, id) {
+	confirmDelete(store, type, id, typeString) {
 		bootbox.confirm({
 			size: "small",
 			title: "Подтвердите удаление",
-			message: "Удалить мастера?",
+			message: "Удалить " + typeString + "?",
 			buttons: {
 				confirm: {
 					label: 'Удалить',
