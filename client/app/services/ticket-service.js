@@ -29,12 +29,15 @@ export default Ember.Service.extend({
         }
     },
 
-    selectMaster(masterName, imgSrc) {
-        $('.ticket-info-master-top').removeClass('hidden');
+    selectMaster(master) {
+        var masterJSON = master.toJSON();
 
-        $('.ticket-info-master__name').text(masterName);
-        if (imgSrc) {
-            $('.ticket-info-master__img').attr("src", imgSrc);
+        $('.ticket-info-master-top').removeClass('hidden');
+        console.log(masterJSON);
+
+        $('.ticket-info-master__name').text(masterJSON.firstname + " " +masterJSON.secondname);
+        if (typeof masterJSON.imgSrc !== "undefined") {
+            $('.ticket-info-master__img').attr("src", masterJSON.imgSrc);
         } else {
             $('.ticket-info-master__img').attr("src", 'https://image.flaticon.com/icons/svg/522/522401.svg');
         }
