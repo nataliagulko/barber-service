@@ -1,8 +1,8 @@
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-	service: DS.attr(),
-	group: DS.attr(),
+	serviceGroups: DS.hasMany("serviceGroup", { inverse: null }),
+	service: DS.belongsTo("service"),
 	serviceOrder: DS.attr(),
 	serviceTimeout: DS.attr(),
 });

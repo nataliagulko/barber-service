@@ -5,7 +5,9 @@
     "-Promise",
     "$",
     "jQuery",
-    "App"
+    "App",
+    "Layout",
+    "bootbox"
   ],
   "browser": true,
   "boss": true,

@@ -1,35 +1,50 @@
 <form id="service-form">
 	<div class="form-body">
+		{{#if service.errors.messages}}
+			<div class="alert alert-danger">
+				{{#each service.errors.messages as |message|}}
+					<div>{{message}}</div>
+				{{/each}}
+			</div>
+		{{/if}}
 		<div class="form-group">
 			<label>Название</label>
 			{{input name="name" class="form-control" value=service.name}}
 		</div>
 		<div class="form-group">
-			<label>Стоимость</label>
+			<label>Стоимость,&nbsp;₽</label>
 			{{input name="cost" class="form-control"  value=service.cost}}
 		</div>
 		<div class="form-group">
-			<label>Продолжительность</label>
+			<label>Продолжительность,&nbsp;мин.</label>
 			{{input name="time" class="form-control"  value=service.time}}
 		</div>
 		<div class="form-group">
 			<label>Мастера</label>
-			{{#each service.masters as |master|}}
-				{{master.email}}
-			{{/each}}
+			{{#power-select-multiple 
+				options=masters 
+				selected=master
+				searchField="fullname"
+				onchange=(action 'selectMaster' master.id)
+				as |master|}}
+					{{master.fullname}}
+			{{/power-select-multiple}}
 		</div>
 		<div class="form-group">
-			<label class="mt-checkbox"> Подуслуга
-                <input name="partOfList" type="checkbox"  value={{service.partOfList}}>
-                <span></span>
-            </label>
+			<label class="mt-checkbox">
+				Подуслуга
+				{{input type="checkbox" checked=isPartOfList name="partOfList"}}
+				<span></span>
+			</label>
 		</div>
-
-		{{#if service.id}}
-			{{input type=hidden name="id" class="form-control" value=service.id}}
-		{{/if}}
+		<div class="form-group">
+			<button type="button" class="btn btn-default" data-toggle="collapse" href="#subservice-list-toggle" disabled={{isPartOfList}}>Добавить подуслуги</button>
+		</div>
+		<div class="collapse form-group" id="subservice-list-toggle">
+			{{subservice-list subservices=subservices}}
+		</div>
 	</div>
 	<div class="form-actions">
-		<button type="submit" class="btn btn-success" {{action 'saveService' service}}>Создать</button>
+		<button type="submit" class="btn btn-success" {{action 'save'}}>Сохранить</button>
 	</div>
 </form>

@@ -235,7 +235,7 @@ class BootStrap {
             it.registerObjectMarshaller(User) {
                 def returnArray = [:]
                 returnArray['id'] = it.id
-                returnArray['type'] = 'client'
+                returnArray['type'] = 'master'
 
                 def attrs = [:]
                 attrs['phone'] = it.phone

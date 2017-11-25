@@ -5,5 +5,6 @@ export default DS.Model.extend({
 	cost: DS.attr(),
 	time: DS.attr(),
 	partOfList: DS.attr(),
-	masters: DS.hasMany('master')
+	masters: DS.hasMany('master'),
+	serviceToGroup: DS.belongsTo("serviceToGroup", { inverse: null }),
 });

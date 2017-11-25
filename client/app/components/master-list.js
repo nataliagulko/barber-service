@@ -13,7 +13,7 @@ export default Ember.Component.extend({
 		delete: function(id) {
 			var store = this.get("store");
 
-			this.get("bootbox").confirmDelete(store, "master", id);
+			this.get("bootbox").confirmDelete(store, "master", id, "мастера");
 		}
 	}
 });

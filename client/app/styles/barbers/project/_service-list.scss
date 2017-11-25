@@ -1,0 +1,14 @@
+.service-list {
+	&__master {
+		&:after {
+			content: ", ";
+			white-space: pre-wrap;
+		}
+
+		&:last-of-type {
+			&:after {
+				content: "";
+			}
+		}
+	}
+}

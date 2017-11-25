@@ -19,6 +19,7 @@ class MasterAjaxController {
     static allowedMethods = [choose: ['POST', 'GET']]
 
     def create() {
+        def errors = []
         def data = request.JSON.data
         def attrs = data.attributes
         if (attrs.phone && attrs.password && attrs.rpassword) {
@@ -35,10 +36,26 @@ class MasterAjaxController {
                     render([errors: { result }] as JSON)
                 }
             } else {
-                render([errors: { g.message(code: "auth.reg.pass2.fail") }] as JSON)
+                errors.add([
+                        "status": 422,
+                        "detail": g.message(code: "auth.reg.pass2.fail"),
+                        "source": [
+                            "pointer": "data"
+                        ]
+                    ])
+                response.status = 422
+                render([errors: errors] as JSON)
             }
         } else {
-            render([errors: { g.message(code: "user.phone.and.pass.null") }] as JSON)
+            errors.add([
+                    "status": 422,
+                    "detail": g.message(code: "user.phone.and.pass.null"),
+                    "source": [
+                        "pointer": "data"
+                    ]
+                ])
+            response.status = 422
+            render([errors: errors] as JSON)
         }
     }
 

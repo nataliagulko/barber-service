@@ -4,6 +4,8 @@
 			<th>Название</th>
 			<th class="text-right">Стоимость</th>
 			<th class="text-right">Время</th>
+			<th class="text-right">Мастер</th>
+			<th class="text-right"></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -17,6 +19,19 @@
 				</td>
 				<td class="text-right">{{service.time}}&nbsp;₽</td>
 				<td class="text-right">{{service.cost}}&nbsp;мин.</td>
+				<td class="text-right">
+					{{#each service.masters as |master|}}
+						{{master.fullname}}
+					{{/each}}
+				</td>
+				<td class="text-right">
+					{{#link-to "service.edit" service.id class="btn btn-default"}}
+						<i class="fa fa-pencil"></i>
+					{{/link-to}}
+					 <button type="button" class="btn btn-danger" {{action 'delete' service.id}}>
+						<i class="fa fa-trash"></i>
+					</button>
+				</td>
 			</tr>
 		{{/each}}
 	</tbody>

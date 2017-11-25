@@ -6,7 +6,7 @@ import com.h2osis.model.ServiceToGroup
 import grails.converters.JSON
 import grails.transaction.Transactional
 
-class ServiceGroupAjaxController {
+class ServiceGroupAjaxLegacyController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 

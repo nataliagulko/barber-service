@@ -32,7 +32,7 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
 
 	createRecord: function(store, type, snapshot) {
 		let url = this.buildURL(type.modelName + 'Ajax/create', null, null, 'createRecord'),
-			data = JSON.stringify(this.serialize(snapshot));
+			data = JSON.stringify(this.serialize(snapshot, { includeId: true }));
 
 		return authorizedAjax(this.get("session"), url, data);
 	},
@@ -50,14 +50,14 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
 
 	updateRecord(store, type, snapshot) {
 		let data = JSON.stringify(this.serialize(snapshot, { includeId: true })),
-		url = this.buildURL(type.modelName + 'Ajax/update', null, null, 'updateRecord');
+			url = this.buildURL(type.modelName + 'Ajax/update', null, null, 'updateRecord');
 
 		return authorizedAjax(this.get("session"), url, data);
 	},
 
 	deleteRecord(store, type, snapshot) {
 		let data = JSON.stringify(this.serialize(snapshot, { includeId: true })),
-		url = this.buildURL(type.modelName + 'Ajax/destroy', null, null, 'deleteRecord');
+			url = this.buildURL(type.modelName + 'Ajax/destroy', null, null, 'deleteRecord');
 
 		return authorizedAjax(this.get("session"), url, data);
 	}

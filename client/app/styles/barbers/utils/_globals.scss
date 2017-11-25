@@ -12,3 +12,9 @@ body>.ember-view {
 .timepicker {
 	display: none;
 }
+
+.btn {
+	&-borderless {
+		border: none;
+	}
+}

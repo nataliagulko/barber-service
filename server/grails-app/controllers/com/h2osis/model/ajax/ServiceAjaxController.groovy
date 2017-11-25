@@ -15,17 +15,35 @@ class ServiceAjaxController {
     static allowedMethods = [choose: ['POST', 'GET']]
 
     def get() {
-        if (params.id) {
-            Service service = Service.get(params.id)
+        def errors = []
+        def data = request.JSON.data
+        if (data.id) {
+            Service service = Service.get(data.id)
             if (service) {
                 JSON.use('services') {
                     render([data: service] as JSON)
                 }
             } else {
-                render([errors: g.message(code: "service.get.user.not.found")] as JSON)
+                errors.add([
+                        "status": 422,
+                        "detail": g.message(code: "service.get.user.not.found"),
+                        "source": [
+                            "pointer": "data"
+                        ]
+                    ])
+                response.status = 422
+                render([errors: errors] as JSON)
             }
         } else {
-            render([errors: g.message(code: "service.get.id.null")] as JSON)
+            errors.add([
+                    "status": 422,
+                    "detail": g.message(code: "service.get.id.null"),
+                    "source": [
+                        "pointer": "data"
+                    ]
+                ])
+            response.status = 422
+            render([errors: errors] as JSON)
         }
     }
 
@@ -51,6 +69,7 @@ class ServiceAjaxController {
     }
 
     def create() {
+        def errors = []
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
         if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
@@ -65,7 +84,15 @@ class ServiceAjaxController {
                     render([data: service] as JSON)
                 }
             } else {
-                render([errors: g.message(code: "service.create.params.null")] as JSON)
+                errors.add([
+                        "status": 422,
+                        "detail": g.message(code: "service.create.params.null"),
+                        "source": [
+                            "pointer": "data"
+                        ]
+                    ])
+                response.status = 422
+                render([errors: errors] as JSON)
             }
         } else {
             render([errors: g.message(code: "service.create.not.admin")] as JSON)
@@ -140,7 +167,7 @@ class ServiceAjaxController {
     def list() {
         List<Service> serviceList = Service.createCriteria().list {
             def data = request.JSON.data
-            if(data) {
+            if (data) {
                 def attrs = data.attributes
                 if (attrs.name) {
                     eq("name", attrs.name)
@@ -190,5 +217,4 @@ class ServiceAjaxController {
             render([errors: g.message(code: "service.fine.not.found")] as JSON)
         }
     }
-
 }
