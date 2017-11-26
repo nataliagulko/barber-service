@@ -1,50 +1,46 @@
-<form id="service-form">
-	<div class="form-body">
-		{{#if service.errors.messages}}
-			<div class="alert alert-danger">
-				{{#each service.errors.messages as |message|}}
-					<div>{{message}}</div>
-				{{/each}}
-			</div>
-		{{/if}}
-		<div class="form-group">
-			<label>Название</label>
-			{{input name="name" class="form-control" value=service.name}}
+<form {{action 'save' on='submit'}}>
+	{{#if service.errors.messages}}
+		<div class="alert alert-danger">
+			{{#each service.errors.messages as |message|}}
+				<div>{{message}}</div>
+			{{/each}}
 		</div>
-		<div class="form-group">
-			<label>Стоимость,&nbsp;₽</label>
-			{{input name="cost" class="form-control"  value=service.cost}}
-		</div>
-		<div class="form-group">
-			<label>Продолжительность,&nbsp;мин.</label>
-			{{input name="time" class="form-control"  value=service.time}}
-		</div>
-		<div class="form-group">
-			<label>Мастера</label>
-			{{#power-select-multiple 
-				options=masters 
-				selected=master
-				searchField="fullname"
-				onchange=(action 'selectMaster' master.id)
-				as |master|}}
-					{{master.fullname}}
-			{{/power-select-multiple}}
-		</div>
-		<div class="form-group">
-			<label class="mt-checkbox">
-				Подуслуга
-				{{input type="checkbox" checked=isPartOfList name="partOfList"}}
-				<span></span>
-			</label>
-		</div>
-		<div class="form-group">
-			<button type="button" class="btn btn-default" data-toggle="collapse" href="#subservice-list-toggle" disabled={{isPartOfList}}>Добавить подуслуги</button>
-		</div>
-		<div class="collapse form-group" id="subservice-list-toggle">
-			{{subservice-list subservices=subservices}}
-		</div>
+	{{/if}}
+	<div class="form-group">
+        <label>Название</label>
+        {{input name="name" class="form-control" value=service.name}}
+    </div>
+    <div class="form-group">
+        <label>Стоимость</label>
+        {{input name="cost" class="form-control"  value=service.cost}}
+    </div>
+    <div class="form-group">
+        <label>Продолжительность</label>
+        {{input name="time" class="form-control"  value=service.time}}
+    </div>
+    <div class="form-group">
+        <label>Мастера</label>
+    	<select class="select2 form-control" multiple="multiple" name="masters" onchange={{action "selectMaster" value="target.value"}}>
+            {{#each masters as |master|}}
+                <option value="{{master.id}}">{{master.fullname}}</option>
+            {{/each}}
+        </select>
+    </div>
+    <div class="form-group">
+        <label class="mt-checkbox">
+            Подуслуга
+            {{input type="checkbox" checked=isPartOfList name="partOfList"}}
+            <span></span>
+        </label>
+    </div>
+
+	<div class="form-group">
+		<button type="button" class="btn btn-default" data-toggle="collapse" href="#subservice-list-toggle" disabled={{isPartOfList}} onclick={{action "toggleIsServiceGroup"}}>Добавить подуслуги</button>
 	</div>
-	<div class="form-actions">
-		<button type="submit" class="btn btn-success" {{action 'save'}}>Сохранить</button>
-	</div>
+	<div class="collapse form-group" id="subservice-list-toggle">
+		{{subservice-list subservices=subservices}}
+	</div> 
+    <div class="form-actions">
+        {{input class="btn btn-success" type="submit"}}
+    </div>
 </form>
