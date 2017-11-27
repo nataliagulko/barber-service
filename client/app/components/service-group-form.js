@@ -13,7 +13,6 @@ export default Ember.Component.extend({
 
 	actions: {
 		save: function() {
-			const serviceToGroup = this.get("serviceToGroup");
 			const serviceGroupRecord = this.get("serviceGroup");
 			const masters = this.get("selectedMasters");
 

@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import { uuid } from 'ember-cli-uuid';
 
 export default Ember.Service.extend({
 	store: Ember.inject.service("store"),
@@ -25,11 +24,12 @@ export default Ember.Service.extend({
 	},
 
 	selectSubservice: function(subserviceId) {
-		if (typeof subserviceId === "undefined" || subserviceId === "") return;
+		if (typeof subserviceId === "undefined" || subserviceId === "") {
+			return;
+		}
 
 		var subservices = this.get("selectedSubservices"),
-			subservice = this.get("store").peekRecord('service', subserviceId),
-			servicesToGroup = this.get("servicesToGroup");
+			subservice = this.get("store").peekRecord('service', subserviceId);
 
 		subservices.pushObject(subservice);
 		this.changeIsRowAddingDisabled();
