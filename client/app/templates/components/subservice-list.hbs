@@ -1,18 +1,19 @@
 <table class="table">
 	<thead>
 		<tr>
-			<td></td>
-			<td>Услуга</td>
-			<td>Перерыв</td>
-			<td>
+			<td class="col-sm-1"></td>
+			<td class="col-sm-7">Услуга</td>
+			<td class="col-sm-3">Перерыв</td>
+			<td class="col-sm-1">
 				<button type="button" class="btn btn-default" {{action "addSubserviceRow"}}>
 					<i class="fa fa-plus"></i>
 				</button>
 			</td>
 		</tr>
 	</thead>
-		{{subservice-list-row subservices=subservices}}
-		{{#if addRow}}
-			{{subservice-list-row subservices=subservices}}
-		{{/if}}
+	<tbody>
+		{{#each addedSubservices as |row|}}
+			{{subservice-list-row subservice=row serviceList=subservices}}
+		{{/each}}
+	</tbody>
 </table>

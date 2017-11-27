@@ -1,18 +1,28 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-	tagName: "tbody",
+	tagName: "tr",
 	store: Ember.inject.service("store"),
 	select2Service: Ember.inject.service("select2-service"),
+	serviceService: Ember.inject.service("service-service"),
 	selectedSubservices: [],
 
-	actions: {
-		selectSubservice: function(id) {
-			var subservices = this.get("selectedSubservices");
-			let subservice = this.get("store").peekRecord('service', id);
+	didInsertElement: function() {
+		var select2Service = this.get("select2Service");
+		select2Service.initSelect2();
+	},
 
-			subservices.push(subservice);
-			this.set("selectedSubservices", subservices);
+	actions: {
+		selectSubservice: function(subserviceId) {
+			var serviceService = this.get("serviceService");
+
+			serviceService.selectSubservice(subserviceId);
 		},
+
+		removeSubserviceRow: function(subserviceId) {
+			var serviceService = this.get("serviceService");
+
+			serviceService.removeSubserviceRow(subserviceId);
+		}
 	}
 });

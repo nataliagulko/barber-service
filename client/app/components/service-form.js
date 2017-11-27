@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Component.extend({
 	store: Ember.inject.service("store"),
 	select2Service: Ember.inject.service("select2-service"),
+	serviceService: Ember.inject.service("service-service"),
 	selectedMasters: [],
 
 	didInsertElement: function() {
@@ -12,7 +13,6 @@ export default Ember.Component.extend({
 
 	actions: {
 		save: function() {
-			const isPartOfList = this.get("isPartOfList");
 			const serviceRecord = this.get("service");
 			const masters = this.get("selectedMasters");
 
@@ -21,11 +21,9 @@ export default Ember.Component.extend({
 		},
 
 		selectMaster: function(id) {
-			var masters = this.get("selectedMasters");
-			let master = this.get("store").peekRecord('master', id);
+			var serviceService = this.get("serviceService");
 
-			masters.push(master);
-			this.set("selectedMasters", masters);
+			serviceService.selectMaster(id);
 		}
 	}
 });

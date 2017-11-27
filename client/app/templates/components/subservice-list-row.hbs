@@ -1,23 +1,23 @@
-{{!-- component in tbody --}}
-<tr>
-	<td>
-		<button type="button" class="btn btn-default btn-borderless">
-			<img src="/img/drag-dots.svg">
-		</button>
-	</td>
-	<td>
-		<select class="select2 form-control" name="service" onchange={{action "selectSubservice" value="target.value"}}>
-            {{#each subservices as |subservice|}}
-                <option value="{{subservice.id}}">{{subservice.name}}</option>
-            {{/each}}
-        </select>
-	</td>
-	<td>
-		{{input class="form-control" type="tel"}}
-	</td>
-	<td>
-		<button type="button" class="btn btn-danger">
-			<i class="fa fa-trash"></i>
-		</button>
-	</td>
-</tr>
+{{!-- component in tr --}}
+
+<td>
+	<span class="subservice-list__drag-icon">
+		<img src="/img/drag-dots.svg">
+	</span>
+</td>
+<td>
+	<select class="select2 form-control" name="subservices" onchange={{action "selectSubservice" value="target.value"}}>
+        {{#each serviceList as |item|}}
+            <option value="{{item.id}}">{{item.name}}</option>
+        {{/each}}
+    </select>
+    {{subservice.name}}
+</td>
+<td>
+	{{input class="form-control subservice-list__timeout" type="tel" value=subservice.timeout}}
+</td>
+<td>
+	<button type="button" class="btn btn-danger" {{action "removeSubserviceRow" subservice.id}}>
+		<i class="fa fa-trash"></i>
+	</button>
+</td>

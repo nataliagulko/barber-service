@@ -1,0 +1,11 @@
+.subservice-list {
+	&__timeout {
+		text-align: right;
+	}
+
+	&__drag-icon {
+		display: inline-block;
+		padding: 7px 10px;
+		cursor: move;
+	}
+}
