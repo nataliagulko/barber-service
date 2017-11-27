@@ -4,8 +4,6 @@ export default Ember.Component.extend({
 	store: Ember.inject.service("store"),
 	select2Service: Ember.inject.service("select2-service"),
 	selectedMasters: [],
-	isServiceGroup: false,
-	isPartOfList: false,
 
 	didInsertElement: function() {
 		var select2Service = this.get("select2Service");
@@ -15,13 +13,11 @@ export default Ember.Component.extend({
 	actions: {
 		save: function() {
 			const isPartOfList = this.get("isPartOfList");
-			const isServiceGroup = this.get("isServiceGroup");
+			const serviceRecord = this.get("service");
+			const masters = this.get("selectedMasters");
 
-			if (!isPartOfList && isServiceGroup) {
-				this.saveServiceGroup();
-			} else {
-				this.saveService();
-			}
+			serviceRecord.set("masters", masters);
+			serviceRecord.save();
 		},
 
 		selectMaster: function(id) {
@@ -30,31 +26,6 @@ export default Ember.Component.extend({
 
 			masters.push(master);
 			this.set("selectedMasters", masters);
-		},
-
-		toggleIsServiceGroup: function() {
-			this.toggleProperty("isServiceGroup");
-		},
-
-		checkPartOfList: function() {
-			this.get('isPartOfList');
-		}.observes('isPartOfList')
-	},
-
-	saveServiceGroup: function() {
-		const serviceToGroup = this.get("serviceToGroup");
-		const serviceGroupRecord = this.get("serviceGroup");
-		const masters = this.get("selectedMasters");
-
-		serviceGroupRecord.set("masters", masters);
-		serviceGroupRecord.save();
-	},
-
-	saveService: function() {
-		const serviceRecord = this.get("service");
-		const masters = this.get("selectedMasters");
-
-		serviceRecord.set("masters", masters);
-		serviceRecord.save();
+		}
 	}
 });
