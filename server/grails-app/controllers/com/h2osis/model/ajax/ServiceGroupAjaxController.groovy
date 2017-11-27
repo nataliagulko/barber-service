@@ -5,10 +5,46 @@ import com.h2osis.model.ServiceGroup
 import com.h2osis.model.ServiceToGroup
 import grails.converters.JSON
 import grails.transaction.Transactional
+import com.h2osis.auth.User
+import com.h2osis.auth.Role
+import com.h2osis.constant.AuthKeys
+import org.codehaus.groovy.grails.web.json.JSONArray
 
-class ServiceGroupAjaxLegacyController {
+class ServiceGroupAjaxController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    def springSecurityService
+
+    def create() {
+        def errors = []
+        def principal = springSecurityService.principal
+        User user = User.get(principal.id)
+        if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+            def data = request.JSON.data
+            def attrs = data.attributes
+            if (data.type && data.type == "service-group" && attrs.name) {
+                ServiceGroup serviceGroup = new ServiceGroup(name: attrs.name)
+                serviceGroup.addToMasters(user)
+                serviceGroup.save(flush: true)
+                serviceGroup.search().createIndexAndWait()
+                JSON.use('services') {
+                    render([data: serviceGroup] as JSON)
+                }
+            } else {
+                errors.add([
+                        "status": 422,
+                        "detail": g.message(code: "service.create.params.null"),
+                        "source": [
+                            "pointer": "data"
+                        ]
+                    ])
+                response.status = 422
+                render([errors: errors] as JSON)
+            }
+        } else {
+            render([errors: g.message(code: "service.create.not.admin")] as JSON)
+        }
+    }
 
     def getSubServices() {
         if (params.id) {
@@ -64,6 +100,4 @@ class ServiceGroupAjaxLegacyController {
             render([msg: g.message(code: "params.id.null")] as JSON)
         }
     }
-
-
 }

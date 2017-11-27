@@ -12,7 +12,6 @@ export default Ember.Service.extend({
 		let master = this.get("store").peekRecord('master', id);
 
 		masters.pushObject(master);
-		return masters;
 	},
 
 	addServiceToGroup: function() {
