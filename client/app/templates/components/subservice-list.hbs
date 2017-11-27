@@ -5,15 +5,15 @@
 			<td class="col-sm-7">Услуга</td>
 			<td class="col-sm-3">Перерыв</td>
 			<td class="col-sm-1">
-				<button type="button" class="btn btn-default" {{action "addSubserviceRow"}}>
+				<button type="button" class="btn btn-default" {{action "addServiceToGroup"}} disabled={{isRowAddingDisabled}}>
 					<i class="fa fa-plus"></i>
 				</button>
 			</td>
 		</tr>
 	</thead>
 	<tbody>
-		{{#each addedSubservices as |row|}}
-			{{subservice-list-row row=row serviceList=subservices}}
+		{{#each servicesToGroup as |serviceToGroup|}}
+			{{subservice-list-row serviceToGroup=serviceToGroup serviceList=subservices}}
 		{{/each}}
 	</tbody>
 </table>

@@ -1,20 +1,22 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+	store: Ember.inject.service("store"),
 	serviceService: Ember.inject.service("service-service"),
-	addedSubservices: [],
+	servicesToGroup: Ember.computed.readOnly('serviceService.servicesToGroup'),
+	isRowAddingDisabled: Ember.computed.readOnly('serviceService.isRowAddingDisabled'),
 
 	didInsertElement: function() {
 		// add first empty row
-		this.send("addSubserviceRow");
+		this.send("addServiceToGroup");
 	},
 
 	actions: {
-		addSubserviceRow: function() {
-			var serviceService = this.get("serviceService"),
-				addedSubservices = serviceService.addSubserviceRow()
+		addServiceToGroup: function() {
+			var serviceService = this.get("serviceService");
 
-			this.set("addedSubservices", addedSubservices);
+			serviceService.addServiceToGroup();
 		}
 	}
+
 });

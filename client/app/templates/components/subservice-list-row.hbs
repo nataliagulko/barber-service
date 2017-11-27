@@ -6,19 +6,18 @@
 	</span>
 </td>
 <td>
-	<select class="select2 form-control" name="subservices" onchange={{action "selectSubservice" value="target.value" }}>
+	<select class="select2 form-control" name="subservices" onchange={{action "selectSubservice" value="target.value"}}>
         {{#each serviceList as |item|}}
-            <option value="{{item.id}}" data-value="{{row.id}}">{{item.name}}</option>
+            <option value="{{item.id}}">{{item.name}}</option>
         {{/each}}
     </select>
-    {{row.name}}
 </td>
 <td>
-	{{input class="form-control subservice-list__timeout" type="tel" value=row.timeout}}
-	{{input type="hidden" value=row.id name="rowId"}}
+	{{input class="form-control subservice-list__timeout" type="tel" value=serviceToGroup.timeout}}
+	{{input type="hidden" value=serviceToGroup.id name="rowId"}}
 </td>
 <td>
-	<button type="button" class="btn btn-danger" {{action "removeSubserviceRow" row.id}}>
+	<button type="button" class="btn btn-danger" {{action "removeServiceToGroup" serviceToGroup}}>
 		<i class="fa fa-trash"></i>
 	</button>
 </td>

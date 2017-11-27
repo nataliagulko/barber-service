@@ -4,8 +4,9 @@ import { uuid } from 'ember-cli-uuid';
 export default Ember.Service.extend({
 	store: Ember.inject.service("store"),
 	selectedMasters: [],
-	addedSubservices: [],
+	servicesToGroup: [],
 	selectedSubservices: [],
+	isRowAddingDisabled: false,
 
 	selectMaster: function(id) {
 		var masters = this.get("selectedMasters");
@@ -15,34 +16,47 @@ export default Ember.Service.extend({
 		return masters;
 	},
 
-	addSubserviceRow: function() {
-		var addedSubservices = this.get("addedSubservices"),
-			newRow = {
-				subservices: [],
-				timeout: 0,
-				order: 0,
-				id: uuid()
-			};
+	addServiceToGroup: function() {
+		var servicesToGroup = this.get("servicesToGroup"),
+			serviceToGroupRecord = this.get("store").createRecord("serviceToGroup");
 
-		addedSubservices.pushObject(newRow);
-		return addedSubservices;
+		servicesToGroup.pushObject(serviceToGroupRecord);
+		this.changeIsRowAddingDisabled();
 	},
 
-	selectSubservice: function(id) {
+	selectSubservice: function(subserviceId) {
+		if (typeof subserviceId === "undefined" || subserviceId === "") return;
+
 		var subservices = this.get("selectedSubservices"),
-			subservice = this.get("store").peekRecord('service', id),
-			addedSubservices = this.get("addedSubservices");
+			subservice = this.get("store").peekRecord('service', subserviceId),
+			servicesToGroup = this.get("servicesToGroup");
 
-		const rowId = $("[name=rowId]");
-
-		console.log(rowId);
-		console.log(id);
 		subservices.pushObject(subservice);
+		this.changeIsRowAddingDisabled();
 	},
 
-	removeSubserviceRow: function(subserviceId) {
-		var addedSubservices = this.get("addedSubservices");
+	removeServiceToGroup: function(record) {
+		var servicesToGroup = this.get("servicesToGroup");
 
-		console.log(subserviceId);
+		record.destroyRecord("serviceToGroup");
+		servicesToGroup.removeObject(record);
+		this.changeIsRowAddingDisabled();
+	},
+
+	changeIsRowAddingDisabled: function() {
+		// if subservices not chosen
+		// if servicesToGroup list is empty
+
+		var isRowAddingDisabled = this.get("isRowAddingDisabled"),
+			servicesToGroup = this.get("servicesToGroup"),
+			selectedSubservices = this.get("selectedSubservices");
+
+		if (selectedSubservices.length > 0 && servicesToGroup.length > 0) {
+			isRowAddingDisabled = false;
+		} else {
+			isRowAddingDisabled = true;
+		}
+
+		this.set("isRowAddingDisabled", isRowAddingDisabled);
 	}
 });
