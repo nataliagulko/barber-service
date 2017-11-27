@@ -58,5 +58,9 @@ export default Ember.Service.extend({
 		}
 
 		this.set("isRowAddingDisabled", isRowAddingDisabled);
+	},
+
+	reorderSubservices: function(subservicesArr) {
+		this.set("servicesToGroup", subservicesArr);
 	}
 });

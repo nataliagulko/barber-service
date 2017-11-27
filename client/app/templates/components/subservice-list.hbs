@@ -11,9 +11,37 @@
 			</td>
 		</tr>
 	</thead>
-	<tbody>
-		{{#each servicesToGroup as |serviceToGroup|}}
-			{{subservice-list-row serviceToGroup=serviceToGroup serviceList=subservices}}
-		{{/each}}
-	</tbody>
+	{{!-- <tbody> --}}
+
+		{{#sortable-group tagName="tbody" onChange="reorderSubservices" as |group|}}
+			{{#each servicesToGroup as |item|}}
+				{{#sortable-item tagName="tr" model=item group=group handle=".subservice-list__drag-icon"}}
+					<td>
+						<span class="subservice-list__drag-icon">
+							<img src="/img/drag-dots.svg">
+						</span>
+					</td>
+					<td>
+						<select class="select2 form-control" name="subservices" onchange={{action "selectSubservice" value="target.value"}} style="width: 180px;">
+					        {{#each subservices as |subservice|}}
+					            <option value="{{subservice.id}}">{{subservice.name}}</option>
+					        {{/each}}
+					    </select>
+					</td>
+					<td>
+						{{input class="form-control subservice-list__timeout" type="tel" value=item.timeout}}
+					</td>
+					<td>
+						<button type="button" class="btn btn-danger" {{action "removeServiceToGroup" item}}>
+							<i class="fa fa-trash"></i>
+						</button>
+					</td>
+				{{/sortable-item}}
+			{{/each}}
+		{{/sortable-group}}
+
+{{!-- 		<tr>
+
+		</tr> --}}
+	{{!-- </tbody> --}}
 </table>
