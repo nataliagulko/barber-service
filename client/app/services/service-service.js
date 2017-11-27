@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { uuid } from 'ember-cli-uuid';
 
 export default Ember.Service.extend({
 	store: Ember.inject.service("store"),
@@ -11,6 +12,7 @@ export default Ember.Service.extend({
 		let master = this.get("store").peekRecord('master', id);
 
 		masters.pushObject(master);
+		return masters;
 	},
 
 	addSubserviceRow: function() {
@@ -19,7 +21,7 @@ export default Ember.Service.extend({
 				subservices: [],
 				timeout: 0,
 				order: 0,
-				id: 0
+				id: uuid()
 			};
 
 		addedSubservices.pushObject(newRow);
@@ -31,7 +33,10 @@ export default Ember.Service.extend({
 			subservice = this.get("store").peekRecord('service', id),
 			addedSubservices = this.get("addedSubservices");
 
-		console.log(addedSubservices);
+		const rowId = $("[name=rowId]");
+
+		console.log(rowId);
+		console.log(id);
 		subservices.pushObject(subservice);
 	},
 

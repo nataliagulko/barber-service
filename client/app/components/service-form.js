@@ -20,10 +20,11 @@ export default Ember.Component.extend({
 			serviceRecord.save();
 		},
 
-		selectMaster: function(id) {
-			var serviceService = this.get("serviceService");
-
-			serviceService.selectMaster(id);
+		selectMaster: function(masterId) {
+			var serviceService = this.get("serviceService"),
+				masters = serviceService.selectMaster(masterId);
+				
+			this.set("selectedMasters", masters);
 		}
 	}
 });
