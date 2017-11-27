@@ -23,6 +23,8 @@ export default Ember.Component.extend({
 			var serviceService = this.get("serviceService");
 
 			serviceService.removeServiceToGroup(subserviceId);
-		}
+		},
+
+		reorderItems: function() {}
 	}
 });

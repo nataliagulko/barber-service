@@ -9,7 +9,7 @@
         <div class="form-group">
             <label class="col-sm-4 control-label">Мастера</label>
             <div class="col-sm-8">
-            	<select class="select2 form-control" multiple="multiple" name="masters" onchange={{action "selectMaster" value="target.value"}}>
+            	<select class="select2 form-control" multiple="multiple" name="masters" onchange={{action "selectMaster" value="target.value"}} style="width: 100%;">
                     {{#each masters as |master|}}
                         <option value="{{master.id}}">{{master.fullname}}</option>
                     {{/each}}
