@@ -1,6 +1,5 @@
 {
   "name": "barbers",
   "dependencies": {
-    "jquery-validation": "jquery.validate^1.13.0"
   }
 }
