@@ -1,7 +1,6 @@
 {
   "name": "barbers",
   "dependencies": {
-    "fullcalendar": "^3.4.0",
-    "jquery-validation": "jquery.validate#^1.13.0"
+    "jquery-validation": "jquery.validate^1.13.0"
   }
 }
