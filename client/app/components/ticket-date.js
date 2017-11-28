@@ -14,5 +14,14 @@ export default Ember.Component.extend({
 			];
 
 		pickadateService.set("#ticket-date-picker", "disable", disableDateArr);
+        pickadateService.on("#ticket-date-picker", "set", function(selectedDate) {
+            var objDate = new Date(selectedDate.select),
+                locale = "ru-ru",
+                ticketDate = objDate.toLocaleString(locale, {day:"numeric", month: "long"});
+
+            $('.ticket-info-date-top').removeClass('hidden');
+            $('.ticket-info-date-top__date').text(ticketDate);
+            $('.ticket-info-date__date').text(ticketDate);
+        });
 	}
 });

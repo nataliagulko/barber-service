@@ -86,6 +86,8 @@ grails.project.dependency.resolution = {
         compile "org.grails.plugins:hibernate-search:0.7"
 
         compile "org.grails.plugins:standalone:9.0.0.M4"
+
+        compile "org.grails.plugins:quartz:1.0.2"
         
         //runtime ":twitter-bootstrap:3.3.5"
         

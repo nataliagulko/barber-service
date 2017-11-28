@@ -8,6 +8,7 @@ export default Ember.Service.extend({
 			closeOnSelect: false,
 			closeOnClear: false,
 			format: "HH:i",
+			formatSubmit: 'HH:i',
 			interval: 10
 		});
 		var picker = $input.pickatime('picker');
@@ -21,5 +22,10 @@ export default Ember.Service.extend({
 	set(selector, func, params) {
 		var picker = $(selector).pickatime('picker');
 		picker.set(func, params);
+	},
+
+	on(selector, method, callback) {
+		var picker = $(selector).pickatime('picker');
+		picker.on(method, callback);
 	}
 });
