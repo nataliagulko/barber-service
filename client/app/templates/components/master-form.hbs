@@ -1,34 +1,55 @@
-<form id="master-form">
+<form class="form-horizontal" {{action 'save' on='submit'}}>
 	<div class="form-body">
 		<div class="form-group">
-			<label>Имя</label>
-			{{input name="firstname" class="form-control" value=master.firstname}}
-		</div>
+            <label class="col-sm-4 control-label">Имя</label>
+            <div class="col-sm-8">
+                {{input name="firstname" class="form-control" value=master.firstname}}
+            </div>
+        </div> 
 		<div class="form-group">
-			<label>Фамилия</label>
-			{{input name="secondname" class="form-control"  value=master.secondname}}
-		</div>
+            <label class="col-sm-4 control-label">Фамилия</label>
+            <div class="col-sm-8">
+                {{input name="secondname" class="form-control" value=master.secondname}}
+            </div>
+        </div>
 		<div class="form-group">
-			<label>Телефон</label>
-			{{input-mask mask='+7(999)999-99-99' id='phone' name='phone' class="form-control" type='tel' value=master.phone}}
-		</div>
+            <label class="col-sm-4 control-label">Телефон</label>
+            <div class="col-sm-8">
+                {{input-mask mask='+7(999)999-99-99' id='phone' name='phone' class="form-control" type='tel' value=master.phone}}
+            </div>
+        </div>
 
 		{{#unless master.id}}
 			<div class="form-group">
-				<label>Пароль</label>
-				{{input name="password" class="form-control"  value=master.password}}
-			</div>
+	            <label class="col-sm-4 control-label">Пароль</label>
+	            <div class="col-sm-8">
+	                {{input type="password" name="password" class="form-control"  value=master.password}}
+	            </div>
+	        </div>
 			<div class="form-group">
-				<label>Повторить пароль</label>
-				{{input name="rpassword" class="form-control"  value=master.rpassword}}
-			</div>
+	            <label class="col-sm-4 control-label">Повторить пароль</label>
+	            <div class="col-sm-8">
+	                {{input type="password" name="rpassword" class="form-control"  value=master.rpassword}}
+	            </div>
+	        </div>
 		{{/unless}}
+
 		<div class="form-group">
-			<label>E-mail</label>
-			{{input name="email" class="form-control"  value=master.email}}
-		</div>
+            <label class="col-sm-4 control-label">E-mail</label>
+            <div class="col-sm-8">
+                {{input name="email" class="form-control" value=master.email}}
+            </div>
+        </div>
 	</div>
 	<div class="form-actions">
-		<button type="submit" class="btn btn-success" {{action 'save'}}>Сохранить</button>
+        <div class="row">
+            <div class="col-sm-offset-4 col-sm-8">
+                {{input class="btn btn-success" type="submit" value="Сохранить"}}
+                {{#link-to "master.index" class="btn btn-default"}}
+                    <i class="fa fa-arrow-left"></i>
+                    Назад
+                {{/link-to}}
+            </div>
+        </div>
 	</div>
 </form>
