@@ -17,7 +17,9 @@
 						<span class="label label-info">подуслуга</span>
 					{{/if}}
 				</td>
-				<td class="text-right">{{service.time}}&nbsp;₽</td>
+				<td class="text-right">
+					{{service.time}}&nbsp;<i class="fa fa-ruble"></i>
+				</td>
 				<td class="text-right">{{service.cost}}&nbsp;мин.</td>
 				<td class="text-right">
 					{{#each service.masters as |master|}}

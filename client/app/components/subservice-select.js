@@ -1,10 +1,9 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-	store: Ember.inject.service("store"),
 	select2Service: Ember.inject.service("select2-service"),
 	serviceService: Ember.inject.service("service-service"),
-	selectedMasters: Ember.computed.readOnly('serviceService.selectedMasters'),
+	selectedSubservices: Ember.computed.readOnly('serviceService.selectedSubservices'),
 
 	didInsertElement: function() {
 		var select2Service = this.get("select2Service");
@@ -12,17 +11,12 @@ export default Ember.Component.extend({
 	},
 
 	actions: {
-		save: function() {
-			const serviceRecord = this.get("service");
-			var serviceService = this.get("serviceService");
 
-			serviceService.saveService(serviceRecord);
+		selectSubservice: function(subserviceId) {
+			var serviceService = this.get("serviceService");
+			var serviceToGroup = this.get("serviceToGroup");
+
+			serviceService.selectSubservice(subserviceId, serviceToGroup);
 		},
-
-		selectMaster: function(masterId) {
-			var serviceService = this.get("serviceService");
-
-			serviceService.selectMaster(masterId);
-		}
 	}
 });

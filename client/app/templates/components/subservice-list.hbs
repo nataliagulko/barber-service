@@ -1,18 +1,45 @@
 <table class="table">
 	<thead>
 		<tr>
-			<td></td>
-			<td>Услуга</td>
-			<td>Перерыв</td>
-			<td>
-				<button type="button" class="btn btn-default" {{action "addSubserviceRow"}}>
+			<td class="col-sm-1"></td>
+			<td class="col-sm-7">Услуга</td>
+			<td class="col-sm-3">Перерыв</td>
+			<td class="col-sm-1">
+				<button type="button" class="btn btn-default" {{action "addServiceToGroup"}} disabled={{isRowAddingDisabled}}>
 					<i class="fa fa-plus"></i>
 				</button>
 			</td>
 		</tr>
 	</thead>
-		{{subservice-list-row subservices=subservices}}
-		{{#if addRow}}
-			{{subservice-list-row subservices=subservices}}
-		{{/if}}
+	{{!-- <tbody> --}}
+
+		{{#sortable-group tagName="tbody" onChange="reorderSubservices" as |group|}}
+			{{#each servicesToGroup as |item|}}
+				{{#sortable-item tagName="tr" model=item group=group handle=".subservice-list__drag-icon"}}
+					<td>
+						<span class="subservice-list__drag-icon">
+							<img src="/img/drag-dots.svg">
+						</span>
+					</td>
+					<td>
+						{{subservice-select 
+							serviceToGroup=item 
+							subservices=subservices}}
+					</td>
+					<td>
+						{{input class="form-control subservice-list__timeout" type="tel" value=item.serviceTimeout}}
+					</td>
+					<td>
+						<button type="button" class="btn btn-danger" {{action "removeServiceToGroup" item}}>
+							<i class="fa fa-trash"></i>
+						</button>
+					</td>
+				{{/sortable-item}}
+			{{/each}}
+		{{/sortable-group}}
+
+{{!-- 		<tr>
+
+		</tr> --}}
+	{{!-- </tbody> --}}
 </table>

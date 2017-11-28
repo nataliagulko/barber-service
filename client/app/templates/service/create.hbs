@@ -1,26 +1,37 @@
 <div class="row">
 	<div class="col-md-6 col-sm-8">
 		<div class="portlet light bordered">
-			<div class="portlet-title">
+			<div class="portlet-title tabbable-line">
 				<div class="caption font-dark">
 					<i class="icon-bag font-green-sharp "></i>
 			        <span class="caption-subject bold uppercase">Новая услуга</span>
 		        </div>
-		        <div class="actions">
-		        	{{#link-to "service.index" class="btn btn-default"}}
-						<i class="fa fa-arrow-left"></i>
-						Назад
-					{{/link-to}}
-		        </div>
+				<ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#service" data-toggle="tab" aria-expanded="true">Простая</a>
+                    </li>
+                    <li class="">
+                        <a href="#service-group" data-toggle="tab" aria-expanded="false">Составная</a>
+                    </li>
+               </ul>
 			</div>
 			<div class="portlet-body form">
-				{{service-form 
-					service=model.service 
-					masters=model.masters 
-					subservices=model.subservices 
-					serviceToGroup=model.serviceToGroup
-					serviceGroup=model.serviceGroup
-				}}
+               <div class="tab-content">
+               		<div id="service" class="tab-pane active">
+						{{service-form 
+							service=model.service 
+							masters=model.masters 
+							subservices=model.subservices 
+						}}
+					</div>
+					<div id="service-group" class="tab-pane">
+						{{service-group-form
+							serviceGroup=model.serviceGroup
+							masters=model.masters 
+							subservices=model.subservices 
+						}}
+					</div>
+				</div>  
 			</div>
 		</div>
 	</div>
