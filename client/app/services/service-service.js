@@ -43,7 +43,7 @@ export default Ember.Service.extend({
 			serviceGroupTime = this.get("serviceGroupTime");
 
 		serviceGroupCost += subservice.get("cost");
-		serviceGroupTime += subservice.get("time");;
+		serviceGroupTime += subservice.get("time");
 
 		this.set("serviceGroupCost", serviceGroupCost);
 		this.set("serviceGroupTime", serviceGroupTime);
@@ -54,7 +54,7 @@ export default Ember.Service.extend({
 			serviceGroupTime = this.get("serviceGroupTime");
 
 		serviceGroupCost -= subservice.get("cost");
-		serviceGroupTime -= subservice.get("time");;
+		serviceGroupTime -= subservice.get("time");
 
 		this.set("serviceGroupCost", serviceGroupCost);
 		this.set("serviceGroupTime", serviceGroupTime);
