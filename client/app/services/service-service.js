@@ -5,6 +5,8 @@ export default Ember.Service.extend({
 	selectedMasters: [],
 	servicesToGroup: [],
 	selectedSubservices: [],
+	serviceGroupCost: 0,
+	serviceGroupTime: 0,
 	isRowAddingDisabled: false,
 
 	selectMaster: function(id) {
@@ -22,7 +24,7 @@ export default Ember.Service.extend({
 		this.changeIsRowAddingDisabled();
 	},
 
-	selectSubservice: function(subserviceId) {
+	selectSubservice: function(subserviceId, serviceToGroup) {
 		if (typeof subserviceId === "undefined" || subserviceId === "") {
 			return;
 		}
@@ -30,8 +32,32 @@ export default Ember.Service.extend({
 		var subservices = this.get("selectedSubservices"),
 			subservice = this.get("store").peekRecord('service', subserviceId);
 
+		serviceToGroup.set("service", subservice);
 		subservices.pushObject(subservice);
+		this.addServiceGroupCostAndTime(subservice);
 		this.changeIsRowAddingDisabled();
+	},
+
+	addServiceGroupCostAndTime: function(subservice) {
+		var serviceGroupCost = this.get("serviceGroupCost"),
+			serviceGroupTime = this.get("serviceGroupTime");
+
+		serviceGroupCost += subservice.get("cost");
+		serviceGroupTime += subservice.get("time");;
+
+		this.set("serviceGroupCost", serviceGroupCost);
+		this.set("serviceGroupTime", serviceGroupTime);
+	},
+
+	subtractServiceGroupCostAndTime: function(subservice) {
+		var serviceGroupCost = this.get("serviceGroupCost"),
+			serviceGroupTime = this.get("serviceGroupTime");
+
+		serviceGroupCost -= subservice.get("cost");
+		serviceGroupTime -= subservice.get("time");;
+
+		this.set("serviceGroupCost", serviceGroupCost);
+		this.set("serviceGroupTime", serviceGroupTime);
 	},
 
 	removeServiceToGroup: function(record) {
@@ -39,6 +65,7 @@ export default Ember.Service.extend({
 
 		record.destroyRecord("serviceToGroup");
 		servicesToGroup.removeObject(record);
+		this.subtractServiceGroupCostAndTime(record);
 		this.changeIsRowAddingDisabled();
 	},
 
@@ -59,7 +86,28 @@ export default Ember.Service.extend({
 		this.set("isRowAddingDisabled", isRowAddingDisabled);
 	},
 
-	reorderSubservices: function(subservicesArr) {
-		this.set("servicesToGroup", subservicesArr);
+	reorderSubservices: function(subservicesOrderedArr) {
+		this.set("servicesToGroup", subservicesOrderedArr);
+	},
+
+	saveService: function(serviceRecord) {
+		const masters = this.get("selectedMasters");
+
+		serviceRecord.set("masters", masters);
+		serviceRecord.save();
+	},
+
+	saveServiceGroup: function(serviceGroupRecord) {
+		const servicesToGroup = this.get("servicesToGroup");
+		const masters = this.get("selectedMasters");
+
+		serviceGroupRecord.set("masters", masters);
+		serviceGroupRecord.save().then(function(record) {
+			servicesToGroup.forEach(function(item, ind) {
+				item.set("serviceGroup", record);
+				item.set("serviceOrder", ind);
+				item.save();
+			});
+		});
 	}
 });

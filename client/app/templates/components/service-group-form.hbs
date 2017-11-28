@@ -26,8 +26,8 @@
             <label class="col-sm-4 control-label">Стоимость</label>
             <div class="col-sm-8">
                 <label class="form-control-static">
-                    {{#if serviceGroup.cost}}
-                        {{serviceGroup.cost}}
+                    {{#if serviceGroupCost}}
+                        {{serviceGroupCost}}
                     {{else}}
                         0&nbsp;<i class="fa fa-ruble"></i>
                     {{/if}}
@@ -38,8 +38,8 @@
             <label class="col-sm-4 control-label">Продолжительность</label>
             <div class="col-sm-8">
                 <label class="form-control-static">
-                    {{#if serviceGroup.time}}
-                        {{serviceGroup.time}}
+                    {{#if serviceGroupTime}}
+                        {{serviceGroupTime}}
                     {{else}}
                         0&nbsp;мин.
                     {{/if}}

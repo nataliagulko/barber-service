@@ -6,6 +6,8 @@ export default Ember.Component.extend({
 	serviceService: Ember.inject.service("service-service"),
 	servicesToGroup: Ember.computed.readOnly('serviceService.servicesToGroup'),
 	selectedMasters: Ember.computed.readOnly('serviceService.selectedMasters'),
+	serviceGroupCost: Ember.computed.readOnly('serviceService.serviceGroupCost'),
+	serviceGroupTime: Ember.computed.readOnly('serviceService.serviceGroupTime'),
 
 	didInsertElement: function() {
 		var select2Service = this.get("select2Service");
@@ -15,24 +17,9 @@ export default Ember.Component.extend({
 	actions: {
 		save: function() {
 			const serviceGroupRecord = this.get("serviceGroup");
-			const servicesToGroup = this.get("servicesToGroup");
-			const masters = this.get("selectedMasters");
+			var serviceService = this.get("serviceService");
 
-			servicesToGroup.forEach(function(item, ind) {
-				// item.set("serviceGroup", record);
-				// ? item.set("service", record);
-				item.set("serviceOrder", ind);
-				item.set("serviceTimeout", 0);
-				console.log(item);
-			});
-
-			serviceGroupRecord.set("masters", masters);
-			// serviceGroupRecord.save().then(function(record) {
-
-			// 	servicesToGroup.forEach(function(item) {
-
-			// 	});
-			// });
+			serviceService.saveServiceGroup(serviceGroupRecord);
 		},
 
 		selectMaster: function(masterId) {

@@ -14,10 +14,9 @@ export default Ember.Component.extend({
 	actions: {
 		save: function() {
 			const serviceRecord = this.get("service");
-			const masters = this.get("selectedMasters");
+			var serviceService = this.get("serviceService");
 
-			serviceRecord.set("masters", masters);
-			serviceRecord.save();
+			serviceService.saveService(serviceRecord);
 		},
 
 		selectMaster: function(masterId) {

@@ -22,7 +22,9 @@
 						</span>
 					</td>
 					<td>
-						{{subservice-select subservices=subservices}}
+						{{subservice-select 
+							serviceToGroup=item 
+							subservices=subservices}}
 					</td>
 					<td>
 						{{input class="form-control subservice-list__timeout" type="tel" value=item.serviceTimeout}}
