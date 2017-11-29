@@ -28,6 +28,12 @@ export default Ember.Component.extend({
 			var serviceService = this.get("serviceService");
 
 			serviceService.reorderSubservices(groupModel);
+		},
+
+		inputServiceToGroupTimeout: function() {
+			var serviceService = this.get("serviceService");
+
+			serviceService.inputServiceToGroupTimeout();
 		}
 	}
 

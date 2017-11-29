@@ -7,6 +7,7 @@ export default Ember.Service.extend({
 	selectedSubservices: [],
 	serviceGroupCost: 0,
 	serviceGroupTime: 0,
+	serviceToGroupTimeout: 0,
 	isRowAddingDisabled: false,
 
 	selectMaster: function(id) {
@@ -43,18 +44,19 @@ export default Ember.Service.extend({
 			serviceGroupTime = this.get("serviceGroupTime");
 
 		serviceGroupCost += subservice.get("cost");
-		serviceGroupTime += subservice.get("time");;
+		serviceGroupTime += subservice.get("time");
 
 		this.set("serviceGroupCost", serviceGroupCost);
 		this.set("serviceGroupTime", serviceGroupTime);
 	},
 
-	subtractServiceGroupCostAndTime: function(subservice) {
+	subtractServiceGroupCostAndTime: function(serviceToGroup) {
 		var serviceGroupCost = this.get("serviceGroupCost"),
-			serviceGroupTime = this.get("serviceGroupTime");
+			serviceGroupTime = this.get("serviceGroupTime"),
+			subservice = serviceToGroup.get("service");
 
 		serviceGroupCost -= subservice.get("cost");
-		serviceGroupTime -= subservice.get("time");;
+		serviceGroupTime -= subservice.get("time");
 
 		this.set("serviceGroupCost", serviceGroupCost);
 		this.set("serviceGroupTime", serviceGroupTime);
@@ -88,6 +90,28 @@ export default Ember.Service.extend({
 
 	reorderSubservices: function(subservicesOrderedArr) {
 		this.set("servicesToGroup", subservicesOrderedArr);
+	},
+
+	inputServiceToGroupTimeout: function() {
+		var serviceGroupTime = this.get("serviceGroupTime"),
+			// previous saved summary of timeouts:
+			serviceToGroupTimeout = this.get("serviceToGroupTimeout"),
+			// current summary of timeouts
+			serviceTimeout = 0,
+			$timeouts = Ember.$("[name=serviceTimeout]");
+
+		$timeouts.each(function(ind, elem) {
+			serviceTimeout += Number(elem.value);
+		});
+
+		// subtract previous timeouts
+		serviceGroupTime -= serviceToGroupTimeout;
+		// add current timeouts
+		serviceGroupTime += serviceTimeout;
+		// save current timeouts
+		serviceToGroupTimeout = serviceTimeout;
+		this.set("serviceGroupTime", serviceGroupTime);
+		this.set("serviceToGroupTimeout", serviceToGroupTimeout);
 	},
 
 	saveService: function(serviceRecord) {
