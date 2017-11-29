@@ -7,6 +7,7 @@ export default Ember.Service.extend({
 	selectedSubservices: [],
 	serviceGroupCost: 0,
 	serviceGroupTime: 0,
+	serviceToGroupTimeout: 0,
 	isRowAddingDisabled: false,
 
 	selectMaster: function(id) {
@@ -93,15 +94,24 @@ export default Ember.Service.extend({
 
 	inputServiceToGroupTimeout: function() {
 		var serviceGroupTime = this.get("serviceGroupTime"),
-			serviceTimeout = 0;
+			// previous saved summary of timeouts:
+			serviceToGroupTimeout = this.get("serviceToGroupTimeout"),
+			// current summary of timeouts
+			serviceTimeout = 0,
+			$timeouts = Ember.$("[name=serviceTimeout]");
 
-			var $timeouts = Ember.$("[name=serviceTimeout]");
-			$timeouts.each(function(ind, elem) {
-				serviceTimeout += Number(elem.value);
-			});
+		$timeouts.each(function(ind, elem) {
+			serviceTimeout += Number(elem.value);
+		});
 
-			serviceGroupTime += serviceTimeout;
-			this.set("serviceGroupTime", serviceGroupTime);
+		// subtract previous timeouts
+		serviceGroupTime -= serviceToGroupTimeout;
+		// add current timeouts
+		serviceGroupTime += serviceTimeout;
+		// save current timeouts
+		serviceToGroupTimeout = serviceTimeout;
+		this.set("serviceGroupTime", serviceGroupTime);
+		this.set("serviceToGroupTimeout", serviceToGroupTimeout);
 	},
 
 	saveService: function(serviceRecord) {
