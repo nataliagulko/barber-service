@@ -91,6 +91,19 @@ export default Ember.Service.extend({
 		this.set("servicesToGroup", subservicesOrderedArr);
 	},
 
+	inputServiceToGroupTimeout: function() {
+		var serviceGroupTime = this.get("serviceGroupTime"),
+			serviceTimeout = 0;
+
+			var $timeouts = Ember.$("[name=serviceTimeout]");
+			$timeouts.each(function(ind, elem) {
+				serviceTimeout += Number(elem.value);
+			});
+
+			serviceGroupTime += serviceTimeout;
+			this.set("serviceGroupTime", serviceGroupTime);
+	},
+
 	saveService: function(serviceRecord) {
 		const masters = this.get("selectedMasters");
 
