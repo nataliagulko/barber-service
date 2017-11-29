@@ -1,15 +1,15 @@
 <form class="form-horizontal" {{action 'save' on='submit'}}>
     <div class="form-body">
-    	<div class="form-group">
+        <div class="form-group">
             <label class="col-sm-4 control-label">Название</label>
             <div class="col-sm-8">
                 {{input name="name" class="form-control" value=serviceGroup.name}}
             </div>
-        </div>                                                
+        </div>
         <div class="form-group">
             <label class="col-sm-4 control-label">Мастера</label>
             <div class="col-sm-8">
-            	<select class="select2 form-control" multiple="multiple" name="masters" onchange={{action "selectMaster" value="target.value"}} style="width: 100%;">
+                <select class="select2 form-control" multiple="multiple" name="masters" onchange= {{action "selectMaster" value="target.value"}} style="width: 100%;">
                     {{#each masters as |master|}}
                         <option value="{{master.id}}">{{master.fullname}}</option>
                     {{/each}}
@@ -21,16 +21,12 @@
             <div class="col-sm-8">
                 {{subservice-list subservices=subservices}}
             </div>
-        </div> 
+        </div>
         <div class="form-group">
             <label class="col-sm-4 control-label">Стоимость</label>
             <div class="col-sm-8">
                 <label class="form-control-static">
-                    {{#if serviceGroupCost}}
-                        {{serviceGroupCost}}
-                    {{else}}
-                        0&nbsp;<i class="fa fa-ruble"></i>
-                    {{/if}}
+                    {{serviceGroupCost}}&nbsp;<i class="fa fa-ruble"></i>
                 </label>
             </div>
         </div>
@@ -38,11 +34,7 @@
             <label class="col-sm-4 control-label">Продолжительность</label>
             <div class="col-sm-8">
                 <label class="form-control-static">
-                    {{#if serviceGroupTime}}
-                        {{serviceGroupTime}}
-                    {{else}}
-                        0&nbsp;мин.
-                    {{/if}}
+                    {{serviceGroupTime}}&nbsp;мин.
                 </label>
             </div>
         </div>
@@ -52,8 +44,7 @@
             <div class="col-sm-offset-4 col-sm-8">
                 {{input class="btn btn-success" type="submit" value="Сохранить"}}
                 {{#link-to "service.index" class="btn btn-default"}}
-                    <i class="fa fa-arrow-left"></i>
-                    Назад
+                    <i class="fa fa-arrow-left"></i> Назад
                 {{/link-to}}
             </div>
         </div>
