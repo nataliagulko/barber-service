@@ -1,16 +1,17 @@
 <form class="form-horizontal" {{action 'save' on='submit'}}>
     <div class="form-body">
-        <div class="form-group">
+        <div class="form-group {{if showNameError "has-error" ""}}">
             <label class="col-sm-4 control-label">Название</label>
             <div class="col-sm-8">
                 {{input name="name" 
                 class="form-control" 
                 value=service.name
-                focus-out=(action (mut showFirstnameError) true)}}
-                {{#if showFirstnameError}}
-                    <div class="error">
-                        {{v-get user 'firstname' 'message'}}
-                    </div>
+                focus-out=(action (mut showNameError) true)}}
+
+                {{#if showNameError}}
+                    <small class="help-block">
+                        {{v-get service 'name' 'message'}}
+                    </small>
                 {{/if}}
             </div>
         </div>
