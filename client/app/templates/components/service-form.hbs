@@ -1,7 +1,10 @@
 <form class="form-horizontal" {{action 'save' on='submit'}}>
     <div class="form-body">
-        <div class="form-group {{if showNameError "has-error" ""}}">
-            <label class="col-sm-4 control-label">Название</label>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">
+                Название
+                <span class="required" aria-required="true"> * </span>
+            </label>
             <div class="col-sm-8">
                 {{input name="name" 
                 class="form-control" 
@@ -50,7 +53,11 @@
     <div class="form-actions">
         <div class="row">
             <div class="col-sm-offset-4 col-sm-8">
-                {{input class="btn btn-success" type="submit" value="Сохранить"}}
+                {{input 
+                    class="btn btn-success" 
+                    type="submit" 
+                    value="Сохранить"
+                    disabled=(v-get service 'isInvalid')}}
                 {{#link-to "service.index" class="btn btn-default" }}
                     <i class="fa fa-arrow-left"></i> Назад
                 {{/link-to}}
