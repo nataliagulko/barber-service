@@ -37,6 +37,7 @@
     "ember-cli-test-loader": "^1.1.0",
     "ember-cli-uglify": "^1.2.0",
     "ember-cli-uuid": "^0.5.0",
+    "ember-cp-validations": "^3.5.1",
     "ember-data": "^2.15.0",
     "ember-export-application-global": "^1.0.5",
     "ember-font-awesome": "^4.0.0-alpha.14",
