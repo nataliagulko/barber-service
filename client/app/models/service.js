@@ -5,7 +5,7 @@ const Validations = buildValidations({
 	name: validator('presence', true),
 	cost: validator('presence', true),
 	time: validator('presence', true),
-	masters: validator('presence', true)
+	masters: validator('has-many')
 });
 
 export default DS.Model.extend(Validations, {

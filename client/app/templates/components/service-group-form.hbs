@@ -1,13 +1,27 @@
 <form class="form-horizontal" {{action 'save' on='submit'}}>
     <div class="form-body">
         <div class="form-group">
-            <label class="col-sm-4 control-label">Название</label>
+            <label class="col-sm-4 control-label">
+                Название
+                <span class="required" aria-required="true"> * </span>
+            </label>
             <div class="col-sm-8">
-                {{input name="name" class="form-control" value=serviceGroup.name}}
+                {{input name="name" 
+                class="form-control" 
+                value=serviceGroup.name
+                focus-out=(action (mut showNameError) true)}}
+                {{#if showNameError}}
+                    <small class="help-block">
+                        {{v-get serviceGroup 'name' 'message'}}
+                    </small>
+                {{/if}}
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-4 control-label">Мастера</label>
+            <label class="col-sm-4 control-label">
+                Мастера
+                <span class="required" aria-required="true"> * </span>
+            </label>
             <div class="col-sm-8">
                 <select class="select2 form-control" multiple="multiple" name="masters" onchange= {{action "selectMaster" value="target.value"}} style="width: 100%;">
                     {{#each masters as |master|}}
@@ -28,6 +42,10 @@
                 <label class="form-control-static">
                     {{serviceGroupCost}}&nbsp;<i class="fa fa-ruble"></i>
                 </label>
+                {{input 
+                    class="hidden" 
+                    value=serviceGroupCost 
+                    name="cost"}}
             </div>
         </div>
         <div class="form-group">
@@ -36,14 +54,22 @@
                 <label class="form-control-static">
                     {{serviceGroupTime}}&nbsp;мин.
                 </label>
+                {{input 
+                    class="hidden" 
+                    value=serviceGroupTime 
+                    name="time"}}
             </div>
         </div>
     </div>
     <div class="form-actions">
         <div class="row">
             <div class="col-sm-offset-4 col-sm-8">
-                {{input class="btn btn-success" type="submit" value="Сохранить"}}
-                {{#link-to "service.index" class="btn btn-default"}}
+                {{input 
+                    class="btn btn-success" 
+                    type="submit" 
+                    value="Сохранить"
+                    }}
+                {{#link-to "service.index" class="btn btn-default" }}
                     <i class="fa fa-arrow-left"></i> Назад
                 {{/link-to}}
             </div>
