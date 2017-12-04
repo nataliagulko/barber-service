@@ -18,3 +18,10 @@ body>.ember-view {
 		border: none;
 	}
 }
+
+.portlet-body {
+	position: relative;
+	height: 47vh;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
