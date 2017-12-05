@@ -9,7 +9,5 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 			masters: this.get('store').findAll('master'),
 			subservices: this.get('store').findAll('service'),
 		});
-	},
-
-	actions: {}
+	}
 });

@@ -2,6 +2,7 @@
 	<thead>
 		<tr>
 			<th>Название</th>
+			<th class="text-right">modelName</th>
 			<th class="text-right">Стоимость</th>
 			<th class="text-right">Время</th>
 			<th class="text-right">Мастер</th>
@@ -16,6 +17,9 @@
 					{{#if service.partOfList}}
 						<span class="label label-info">подуслуга</span>
 					{{/if}}
+				</td>
+				<td class="text-right">
+					{{service.modelName}}
 				</td>
 				<td class="text-right">
 					{{service.time}}&nbsp;<i class="fa fa-ruble"></i>

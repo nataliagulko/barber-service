@@ -20,6 +20,9 @@ Router.map(function() {
     this.route('edit', { path: '/edit/:id' });
   });
   this.route('not-found', { path: '/*path' });
+  this.route('service-group', function() {
+    this.route('edit');
+  });
 });
 
 export default Router;
