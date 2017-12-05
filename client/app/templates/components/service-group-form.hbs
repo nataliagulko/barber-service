@@ -19,23 +19,27 @@
         <div class="form-group">
             <label class="col-sm-4 control-label">Подуслуги</label>
             <div class="col-sm-8">
-                {{subservice-list subservices=subservices}}
+                {{subservice-list 
+                    subservices=subservices
+                    serviceGroup=serviceGroup}}
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-4 control-label">Стоимость</label>
             <div class="col-sm-8">
                 <label class="form-control-static">
-                    {{serviceGroupCost}}&nbsp;<i class="fa fa-ruble"></i>
+                    {{serviceGroup.cost}}&nbsp;<i class="fa fa-ruble"></i>
                 </label>
+                {{input type="hidden" name="cost" value=serviceGroup.cost}}
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-4 control-label">Продолжительность</label>
             <div class="col-sm-8">
                 <label class="form-control-static">
-                    {{serviceGroupTime}}&nbsp;мин.
+                    {{serviceGroup.time}}&nbsp;мин.
                 </label>
+                {{input type="hidden" name="time" value=serviceGroup.time}}
             </div>
         </div>
     </div>
