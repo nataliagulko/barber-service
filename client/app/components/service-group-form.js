@@ -17,7 +17,13 @@ export default Ember.Component.extend({
 			const serviceGroupRecord = this.get("serviceGroup");
 			var serviceService = this.get("serviceService");
 
-			serviceService.saveServiceGroup(serviceGroupRecord);
+			// serviceGroupRecord
+			// 	.validate()
+			// 	.then(({ validations }) => {
+			// 		if (validations.get('isValid')) {
+						serviceService.saveServiceGroup(serviceGroupRecord);
+				// 	}
+				// });
 		},
 
 		selectMaster: function(masterId) {
