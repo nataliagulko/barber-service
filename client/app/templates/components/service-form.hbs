@@ -23,11 +23,19 @@
                 <span class="required" aria-required="true"> * </span>
             </label>
             <div class="col-sm-8">
-            	<select class="select2 form-control" multiple="multiple" name="masters" onchange={{action "selectMaster" value="target.value"}} style="width: 100%;">
+                <select class="select2 form-control" multiple="multiple" name="masters" onchange= {{action "selectMaster" value="target.value"}} style="width: 100%;">
                     {{#each masters as |master|}}
-                        <option value="{{master.id}}">
-                            {{master.fullname}}
-                        </option>
+                        {{#each service.masters as |serviceMaster|}}
+                            {{#if (eq master.id serviceMaster.id) }}
+                                <option value="{{master.id}}" selected="selected">
+                                    {{master.fullname}}
+                                </option>
+                            {{else}}
+                                <option value="{{master.id}}">
+                                    {{master.fullname}}
+                                </option>
+                            {{/if}}
+                        {{/each}}
                     {{/each}}
                 </select>
             </div>
