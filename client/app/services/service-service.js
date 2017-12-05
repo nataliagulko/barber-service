@@ -5,8 +5,6 @@ export default Ember.Service.extend({
 	selectedMasters: [],
 	servicesToGroup: [],
 	selectedSubservices: [],
-	serviceGroupCost: 0,
-	serviceGroupTime: 0,
 	serviceToGroupTimeout: 0,
 	isRowAddingDisabled: false,
 
@@ -40,30 +38,24 @@ export default Ember.Service.extend({
 	},
 
 	_addServiceGroupCostAndTime: function(subservice, serviceGroup) {
-		var serviceGroupCost = this.get("serviceGroupCost"),
-			serviceGroupTime = this.get("serviceGroupTime");
+		var serviceGroupCost = serviceGroup.get("cost"),
+			serviceGroupTime = serviceGroup.get("time");
 
 		serviceGroupCost += subservice.get("cost");
 		serviceGroupTime += subservice.get("time");
 
-		this.set("serviceGroupCost", serviceGroupCost);
-		this.set("serviceGroupTime", serviceGroupTime);
-		// set cost and time for serviceGroup record
 		serviceGroup.set("cost", serviceGroupCost);
 		serviceGroup.set("time", serviceGroupTime);
 	},
 
 	_subtractServiceGroupCostAndTime: function(serviceToGroup, serviceGroup) {
-		var serviceGroupCost = this.get("serviceGroupCost"),
-			serviceGroupTime = this.get("serviceGroupTime"),
+		var serviceGroupCost = serviceGroup.get("cost"),
+			serviceGroupTime = serviceGroup.get("time"),
 			subservice = serviceToGroup.get("service");
 
 		serviceGroupCost -= subservice.get("cost");
 		serviceGroupTime -= subservice.get("time");
 
-		this.set("serviceGroupCost", serviceGroupCost);
-		this.set("serviceGroupTime", serviceGroupTime);
-		// set cost and time for serviceGroup record
 		serviceGroup.set("cost", serviceGroupCost);
 		serviceGroup.set("time", serviceGroupTime);
 	},
@@ -98,8 +90,8 @@ export default Ember.Service.extend({
 		this.set("servicesToGroup", subservicesOrderedArr);
 	},
 
-	inputServiceToGroupTimeout: function() {
-		var serviceGroupTime = this.get("serviceGroupTime"),
+	inputServiceToGroupTimeout: function(serviceGroup) {
+		var serviceGroupTime = serviceGroup.get("time"),
 			// previous saved summary of timeouts:
 			serviceToGroupTimeout = this.get("serviceToGroupTimeout"),
 			// current summary of timeouts
@@ -116,7 +108,7 @@ export default Ember.Service.extend({
 		serviceGroupTime += serviceTimeout;
 		// save current timeouts
 		serviceToGroupTimeout = serviceTimeout;
-		this.set("serviceGroupTime", serviceGroupTime);
+		serviceGroup.set("time", serviceGroupTime);
 		this.set("serviceToGroupTimeout", serviceToGroupTimeout);
 	},
 
@@ -130,12 +122,8 @@ export default Ember.Service.extend({
 	saveServiceGroup: function(serviceGroupRecord) {
 		const servicesToGroup = this.get("servicesToGroup");
 		const masters = this.get("selectedMasters");
-		const serviceGroupCost = this.get("serviceGroupCost");
-		const serviceGroupTime = this.get("serviceGroupTime");
 
 		serviceGroupRecord.set("masters", masters);
-		serviceGroupRecord.set("cost", serviceGroupCost);
-		serviceGroupRecord.set("time", serviceGroupTime);
 
 		serviceGroupRecord.save().then(function(record) {
 			servicesToGroup.forEach(function(item, ind) {
