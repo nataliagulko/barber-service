@@ -21,7 +21,7 @@ Router.map(function() {
   });
   this.route('not-found', { path: '/*path' });
   this.route('service-group', function() {
-    this.route('edit');
+    this.route('edit', { path: '/edit/:id' });
   });
 });
 

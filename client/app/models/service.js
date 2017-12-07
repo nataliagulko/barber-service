@@ -5,11 +5,11 @@ const Validations = buildValidations({
 	name: validator('presence', true),
 	cost: validator('number', {
 		allowString: true,
-		positive: true
+		gt: 0
 	}),
 	time: validator('number', {
 		allowString: true,
-		positive: true
+		gt: 0
 	}),
 	masters: validator('has-many')
 });
