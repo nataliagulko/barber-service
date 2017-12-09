@@ -2,9 +2,3 @@
     display: table-cell;
     vertical-align: middle;
 }
-//works if block have fixed height!
-.center-block-vertically {
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-}

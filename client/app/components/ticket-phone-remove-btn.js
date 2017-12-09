@@ -11,10 +11,14 @@ export default Ember.Component.extend({
                 phoneValue = $(inputValue).val(),
                 submitBtn = $('#phone-submit');
 
+
                 phoneValue = phoneValue.slice(0,-1);
                 $(inputValue).val(phoneValue);
                 $(inputField).text(phoneValue);
                 $(bottomInput).text(phoneValue);
+
+                $(submitBtn).attr('disabled','true');
+                $(submitBtn).removeClass('green-meadow');
         }
     }
 });

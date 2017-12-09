@@ -6,19 +6,3 @@
         vertical-align: middle;
     }
 }
-
-
-.bottom-info {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0px;
-    padding-top: 20px;
-    border-top: 1px solid #e7ecf1;
-}
-
-.top-info {
-    position: relative;
-    top: 30%;
-    transform: translateY(-50%);
-}
