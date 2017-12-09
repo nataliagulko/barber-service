@@ -1,9 +1,5 @@
 @import "pages/__pages";
-@import "_ticket-phone-btn";
-@import "_ticket-info-client";
-@import "_ticket-info-master";
 @import "_selected-item";
 @import "_service-list";
 @import "_subservice-list";
-@import "_ticket-info-bottom";
-@import "_ticket-info";
+@import "ticket-info/__ticket-info.scss";

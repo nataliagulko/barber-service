@@ -12,3 +12,10 @@
     padding-top: 20px;
     border-top: 1px solid #e7ecf1;
 }
+
+.ticket-portlet-body {
+    position: relative;
+	height: 45vh;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
