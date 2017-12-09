@@ -13,8 +13,13 @@ body>.ember-view {
 	display: none;
 }
 
-.btn {
-	&-borderless {
-		border: none;
+.sortable-item {
+	&.is-dragging {
+		background-color: #fcfcfc;
+		z-index: 1000;
 	}
+}
+
+.control-label {
+	white-space: nowrap;
 }

@@ -4,7 +4,7 @@
 			<div class="portlet-title">
 				<div class="caption font-dark">
 					<i class="icon-bag font-green-sharp "></i>
-			        <span class="caption-subject bold uppercase">Новая услуга</span>
+			        <span class="caption-subject bold uppercase">{{model.service.name}}</span>
 		        </div>
 		        <div class="actions">
 		        	{{#link-to "service.index" class="btn btn-default"}}
@@ -14,7 +14,7 @@
 		        </div>
 			</div>
 			<div class="portlet-body form">
-				{{service-form service=model.service masters=model.masters subservices=model.subservices serviceToGroup=model.serviceToGroup serviceGroup=model.serviceGroup}}
+				{{service-form service=model.service masters=model.masters subservices=model.subservices serviceGroup=model.serviceGroup}}
 			</div>
 		</div>
 	</div>

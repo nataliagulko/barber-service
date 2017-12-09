@@ -1,0 +1,5 @@
+<select class="select2 form-control"  onchange={{action "selectSubservice" value="target.value"}} style="width: 180px;">
+    {{#each subservices as |subservice|}}
+        <option value="{{subservice.id}}">{{subservice.name}}</option>
+    {{/each}}
+</select>
