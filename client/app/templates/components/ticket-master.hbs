@@ -12,15 +12,12 @@
     <div class="grid">
         <div class="mt-element-card mt-element-overlay">
             <div class="row">
-                <div class="col-md-4 col-lg-3">
-                    {{ticket-master-card master-name="Jon Snow" src="http://www.tudoetodas.com.br/imagens/noticia/36088/42592-jon-snow.jpg"}}
-                </div>
-                <div class="col-md-4 col-lg-3">
-                    {{ticket-master-card master-name="Daenerys Targaryen" src="http://digitalspyuk.cdnds.net/17/30/320x320/square-1501096289-got2.jpg"}}
-                </div>
-                <div class="col-md-4 col-lg-3">
-                    {{ticket-master-card master-name="Some name"}}
-                </div>
+                {{#each masters as |master|}}
+                    <div class="col-md-4 col-lg-3">
+                    {{log master}}
+                        {{ticket-master-card master=master}}
+                    </div>
+                {{/each}}
             </div>
         </div>
     </div>
