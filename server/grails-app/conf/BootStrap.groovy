@@ -147,6 +147,7 @@ class BootStrap {
                 returnArray['type'] = 'master'
 
                 def attrs = [:]
+                returnArray['id'] = it.id
                 attrs['phone'] = it.phone
                 attrs['firstname'] = it.firstname
                 attrs['secondname'] = it.secondname

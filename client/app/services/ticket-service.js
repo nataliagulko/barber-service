@@ -1,6 +1,16 @@
 import Ember from 'ember';
 
 export default Ember.Service.extend({
+    formFields: {
+        master: "[name=master]",
+        client: "[name=client]",
+        ticketDate: "[name=ticketDate]",
+        time: "[name=time]",
+        status: "[name=status]",
+        cost: "[name=cost]",
+        duration: "[name=duration]",
+        services: "[name=services]"
+    },
 
     showElement(elemSelector, step) {
         // скрываем верхнюю половину блока "инфо"
@@ -29,17 +39,20 @@ export default Ember.Service.extend({
         }
     },
 
-    selectMaster(masterName, imgSrc) {
-        $('.ticket-info-master-top').removeClass('hidden');
+    selectMaster(master) {
+        var masterJSON = master.toJSON({ includeId: true });
+        var fields = this.get("formFields");
 
-        $('.ticket-info-master__name').text(masterName);
-        if (imgSrc) {
-            $('.ticket-info-master__img').attr("src", imgSrc);
+        $('.ticket-info-master-top').removeClass('hidden');
+        $('.ticket-info-master__name').text(masterJSON.firstname + " " +masterJSON.secondname);
+
+        $(fields.master).val(masterJSON.id);
+
+        if (typeof masterJSON.imgSrc !== "undefined") {
+            $('.ticket-info-master__img').attr("src", masterJSON.imgSrc);
         } else {
             $('.ticket-info-master__img').attr("src", 'https://image.flaticon.com/icons/svg/522/522401.svg');
         }
-        // var masterCard = $(event.target);
-        // console.log(masterCard);
     },
 
     selectServiceItem(itemName, itemTime, itemPrice) {
