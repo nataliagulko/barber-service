@@ -1,13 +1,23 @@
-<div class="mt-widget-1" {{action 'selectServiceItem' item-name item-time item-price}}>
+{{!--
+<div class="mt-widget-1" {{action 'selectServiceItem' service}}>
     <div class="mt-body">
-        <p class="mt-user-title">{{item-name}}</p>
+        <p class="mt-user-title">{{service.name}}</p>
         <div class="mt-stats no-space">
             <div class="btn-group btn-group-justified">
-                <a href="javascript:;" class="btn font-blue no-space">{{item-time}}</a>
-                <a href="javascript:;" class="btn font-blue">{{item-price}}</a>
+                <a href="javascript:;" class="btn font-blue no-space">{{service.time}}</a>
+                <a href="javascript:;" class="btn font-blue">{{service.cost}}</a>
             </div>
         </div>
     </div>
+</div> --}}
+<div class="tile bg-grey-cararra" {{action 'selectServiceItem' service}}>
+    <div class="corner"></div>
+    <div class="check"></div>
+    <div class="tile-body font-dark">
+        <span class="font-md">{{service.name}}</span>
+    </div>
+    <div class="tile-object">
+        <div class="name font-dark">{{service.time}}&nbsp;мин.</div>
+        <div class="number font-dark">{{service.cost}}&nbsp;₽</div>
+    </div>
 </div>
-
-{{yield}}

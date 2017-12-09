@@ -1,0 +1,19 @@
+.tiles {
+    .tile {
+        border: 2px solid transparent;
+
+        &.selected {
+            border-color: #32c5d2 !important;
+
+            .corner:after {
+                border-right-color: #32c5d2;
+            }
+        }
+
+        .tile-object {
+            > .number {
+                font-weight: normal;
+            }
+        }
+    }
+}

@@ -55,21 +55,25 @@ export default Ember.Service.extend({
         }
     },
 
-    selectServiceItem(itemName, itemTime, itemPrice) {
+    selectServiceItem(service) {
+        var serviceJSON = service.toJSON({ includeId: true });
+        var fields = this.get("formFields");
+
         $('.ticket-info-services-top').removeClass('hidden');
 
-        var selectedItem = $(event.target).closest('.mt-widget-1');
+        var selectedItem = $(event.target).closest('.tile');
+        console.log(selectedItem);
 
-        if (!$(selectedItem).hasClass('selected-item')) {
-            $('.ticket-info-services-top ul').append('<li>' + itemName + '</li>');
+        if (!$(selectedItem).hasClass('selected')) {
+            $('.ticket-info-services-top ul').append('<li>' + serviceJSON.name + '</li>');
         } else {
             $('.ticket-info-services-top ul').find('li').filter(function() {
-                return $.text([this]) === itemName;
+                return $.text([this]) === serviceJSON.name;
             }).remove();
         }
 
         $('.ticket-info-services__text ul').remove();
         $('.ticket-info-services-top ul').clone().appendTo('.ticket-info-services__text');
-        $(selectedItem).toggleClass('selected-item');
+        $(selectedItem).toggleClass('selected');
     }
 });
