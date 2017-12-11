@@ -19,7 +19,7 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
 		var url = this.buildURL(type.modelName, null, null, 'findAll');
 		url = url + "Ajax/list";
 
-		return authorizedAjax(this.get("session"), url);
+		return this.ajax(url, 'POST');
 	},
 
 	query: function(store, type, query) {
