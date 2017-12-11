@@ -30,6 +30,15 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
 		});
 	},
 
+	query: function(store, type, query) {
+		var url = this.buildURL(type.modelName, null, null, 'findAll');
+		url = url + "Ajax/list";
+
+		return this.ajax(url, 'POST', {
+			data: query
+		});
+	},
+
 	createRecord: function(store, type, snapshot) {
 		let url = this.buildURL(type.modelName + 'Ajax/create', null, null, 'createRecord'),
 			data = JSON.stringify(this.serialize(snapshot, { includeId: true }));
