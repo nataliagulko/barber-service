@@ -5,11 +5,16 @@
             {{ticket-info}}
         </div>
         <div class="col-md-7">
-            {{ticket-master}}
+            {{ticket-master masters=model.masters}}
             {{ticket-services class = "hidden"}}
             {{ticket-date class = "hidden"}}
             {{ticket-time class = "hidden"}}
             {{ticket-client class = "hidden"}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <button type="button" class="btn btn-lg btn-success pull-right" disabled>Записать</button>
         </div>
     </div>
 </div>

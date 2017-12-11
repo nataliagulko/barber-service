@@ -4,25 +4,30 @@
         <span class="caption-subject font-green-sharp">Инфо</span>
     </div>
 </div>
-<div class="portlet-body">
-    <!-- мастер -->
-    {{ticket-info-master-top}}
+<div class="portlet-body ticket-portlet-body">
+    <div class="info-top">
+        <!-- мастер -->
+        {{ticket-info-master-top}}
 
-    <!-- услуги -->
-    {{ticket-info-services-top}}
+        <!-- услуги -->
+        {{ticket-info-services-top}}
 
-    <!-- дата -->
-    {{ticket-info-date-top}}
+        <!-- дата -->
+        {{ticket-info-date-top}}
 
-    <!-- время -->
-    {{ticket-info-time-top}}
+        <!-- время -->
+        {{ticket-info-time-top}}
 
-    <!-- телефон -->
-    {{ticket-info-client-top}}
-    <br>
+        <!-- телефон -->
+        {{ticket-info-client-top}}
+    </div>
 
-    {{ticket-info-master}}
-    {{ticket-info-services}}
-    {{ticket-info-date}}
-    {{ticket-info-client}}
+    <div class="info-bottom">
+        {{ticket-info-master}}
+        {{ticket-info-services}}
+        {{ticket-info-date}}
+        {{ticket-info-client}}
+    </div>
+
+    {{ticket-form}}
 </div>
