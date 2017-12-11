@@ -8,17 +8,17 @@ class ServiceGroup extends Service {
     static constraints = {
     }
 
-    def beforeInsert() {
-        updateFields()
-    }
-
-    def beforeUpdate() {
-        updateFields()
-    }
-
-    def beforeValidate() {
-        updateFields()
-    }
+//    def beforeInsert() {
+//        updateFields()
+//    }
+//
+//    def beforeUpdate() {
+//        updateFields()
+//    }
+//
+//    def beforeValidate() {
+//        updateFields()
+//    }
 
     def updateFields() {
         Long allTime = 0L
