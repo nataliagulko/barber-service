@@ -249,7 +249,44 @@ class BootStrap {
                 return returnArray
             }
         }
+        
+        JSON.createNamedConfig('serviceGroups') {
+            it.registerObjectMarshaller(Service) {
+                def returnArray = [:]
+                returnArray['id'] = it.id
+                returnArray['type'] = 'service-group'
 
+                def attrs = [:]
+                attrs['name'] = it.name
+                attrs['cost'] = it.cost
+                attrs['time'] = it.time
+                attrs['partOfList'] = it.partOfList
+
+                def relationships = [:]
+                def mastersDatails = [:]
+                mastersDatails['data'] = it.masters
+                relationships['masters'] = mastersDatails
+                returnArray['relationships'] = relationships
+
+                returnArray['attributes'] = attrs
+                return returnArray
+            }
+            it.registerObjectMarshaller(User) {
+                def returnArray = [:]
+                returnArray['id'] = it.id
+                returnArray['type'] = 'master'
+
+                def attrs = [:]
+                attrs['phone'] = it.phone
+                attrs['firstname'] = it.firstname
+                attrs['secondname'] = it.secondname
+                attrs['username'] = it.username
+                attrs['email'] = it.email
+                attrs['masterTZ'] = it.masterTZ
+                returnArray['attributes'] = attrs
+                return returnArray
+            }
+        }
 
         JSON.createNamedConfig('tickets') {
             it.registerObjectMarshaller(Ticket) {

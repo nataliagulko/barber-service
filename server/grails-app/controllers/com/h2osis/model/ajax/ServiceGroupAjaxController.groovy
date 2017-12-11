@@ -22,12 +22,12 @@ class ServiceGroupAjaxController {
         if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
             def data = request.JSON.data
             def attrs = data.attributes
-            if (data.type && data.type == "service-group" && attrs.name) {
-                ServiceGroup serviceGroup = new ServiceGroup(name: attrs.name)
+            if (data.type && data.type == "service-group" && attrs.name && attrs.cost && attrs.time) {
+                ServiceGroup serviceGroup = new ServiceGroup(name: attrs.name, cost: attrs.cost, time: attrs.time)
                 serviceGroup.addToMasters(user)
                 serviceGroup.save(flush: true)
                 serviceGroup.search().createIndexAndWait()
-                JSON.use('services') {
+                JSON.use('serviceGroups') {
                     render([data: serviceGroup] as JSON)
                 }
             } else {
@@ -43,6 +43,39 @@ class ServiceGroupAjaxController {
             }
         } else {
             render([errors: g.message(code: "service.create.not.admin")] as JSON)
+        }
+    }
+    
+    def get() {
+        def errors = []
+        def data = request.JSON.data
+        if (data.id) {
+            ServiceGroup serviceGroup = ServiceGroup.get(data.id)
+            if (serviceGroup) {
+                JSON.use('serviceGroups') {
+                    render([data: serviceGroup] as JSON)
+                }
+            } else {
+                errors.add([
+                        "status": 422,
+                        "detail": g.message(code: "service.get.user.not.found"),
+                        "source": [
+                            "pointer": "data"
+                        ]
+                    ])
+                response.status = 422
+                render([errors: errors] as JSON)
+            }
+        } else {
+            errors.add([
+                    "status": 422,
+                    "detail": g.message(code: "service.get.id.null"),
+                    "source": [
+                        "pointer": "data"
+                    ]
+                ])
+            response.status = 422
+            render([errors: errors] as JSON)
         }
     }
 
