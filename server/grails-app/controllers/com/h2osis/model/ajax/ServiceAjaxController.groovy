@@ -204,8 +204,9 @@ class ServiceAjaxController {
             order("name", "asc")
         }
         if (serviceList) {
-            def data = request.JSON.data
-            if (data && data.attributes?.onlySimpleService == true) {
+            def query = request.JSON.query
+            println query
+            if (query && query.onlySimpleService == true) {
                 serviceList = serviceList.findAll {
                     (it.class == Service.class)
                 }

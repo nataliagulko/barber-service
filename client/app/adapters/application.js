@@ -15,28 +15,20 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
 		return Ember.String.singularize(camelized);
 	},
 
-	findAll: function(store, type, sinceToken) {
-		var query, url;
-
-		if (sinceToken) {
-			query = { since: sinceToken };
-		}
-
-		url = this.buildURL(type.modelName, null, null, 'findAll');
-		url = url + "Ajax/list";
-
-		return this.ajax(url, 'POST', {
-			data: query
-		});
-	},
-
-	query: function(store, type, query) {
+	findAll: function(store, type) {
 		var url = this.buildURL(type.modelName, null, null, 'findAll');
 		url = url + "Ajax/list";
 
-		return this.ajax(url, 'POST', {
-			data: query
-		});
+		return authorizedAjax(this.get("session"), url);
+	},
+
+	query: function(store, type, query) {
+		var url = this.buildURL(type.modelName, null, null, 'findAll'),
+			data = JSON.stringify(query);
+
+		url = url + "Ajax/list";
+
+		return authorizedAjax(this.get("session"), url, data);
 	},
 
 	createRecord: function(store, type, snapshot) {

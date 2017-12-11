@@ -8,7 +8,9 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 			serviceGroup: this.get('store').createRecord('serviceGroup'),
 			masters: this.get('store').findAll('master'),
 			subservices: this.get('store').query('service', {
-				onlySubservices: "true"
+				query: {
+					onlySimpleService: true
+				}
 			}),
 		});
 	}
