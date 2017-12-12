@@ -253,7 +253,7 @@ class BootStrap {
         }
         
         JSON.createNamedConfig('serviceGroups') {
-            it.registerObjectMarshaller(Service) {
+            it.registerObjectMarshaller(ServiceGroup) {
                 def returnArray = [:]
                 returnArray['id'] = it.id
                 returnArray['type'] = 'service-group'
@@ -268,9 +268,9 @@ class BootStrap {
                 def mastersDetails = [:]
                 def serviceToGroupsDetails = [:]
                 mastersDetails['data'] = it.masters
-//                serviceToGroupsDetails['data'] = it.serviceToGroups
+                serviceToGroupsDetails['data'] = it.serviceToGroups
                 relationships['masters'] = mastersDetails
-//                relationships['serviceToGroups'] = serviceToGroupsDetails
+                relationships['serviceToGroups'] = serviceToGroupsDetails
                 returnArray['relationships'] = relationships
 
                 returnArray['attributes'] = attrs
@@ -317,11 +317,11 @@ class BootStrap {
                 returnArray['attributes'] = attrs
 
                 def relationships = [:]
-                def serviceGroupDetails
-                def serviceDetails
-                serviceGroupDetails['data'] = it.group
+                def serviceGroupDetails = [:]
+                def serviceDetails = [:]
                 serviceDetails['data'] = it.service
-                relationships['serviceGroup'] = serviceGroupDetails
+                serviceGroupDetails['data'] = it.group
+                relationships['group'] = serviceGroupDetails
                 relationships['service'] = serviceDetails
                 returnArray['relationships'] = relationships
 

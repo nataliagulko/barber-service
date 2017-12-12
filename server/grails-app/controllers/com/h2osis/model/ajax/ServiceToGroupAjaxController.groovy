@@ -26,7 +26,7 @@ class ServiceToGroupAjaxController {
             if (data.type && data.type == "service-to-group") {
                 ServiceToGroup serviceToGroup = new ServiceToGroup(serviceOrder: attrs.serviceOrder, serviceTimeout: attrs.serviceTimeout)
                 Service service = Service.get(relations.service.data.id)
-                ServiceGroup group = ServiceGroup.get(relations.serviceGroup.data.id)
+                ServiceGroup group = ServiceGroup.get(relations.group.data.id)
                 serviceToGroup.setService(service)
                 serviceToGroup.setGroup(group)
                 serviceToGroup.save(flush: true)

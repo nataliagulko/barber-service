@@ -127,7 +127,7 @@ export default Ember.Service.extend({
 
 		serviceGroupRecord.save().then(function(record) {
 			servicesToGroup.forEach(function(item, ind) {
-				item.set("serviceGroup", record);
+				item.set("group", record);
 				item.set("serviceOrder", ind);
 				item.save();
 			});
