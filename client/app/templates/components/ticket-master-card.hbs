@@ -1,13 +1,14 @@
-<div class="mt-card-item" {{action 'selectMaster' master}}>
-    <div class="mt-card-avatar mt-overlay-1">
-    {{#if master.imgSrc}}
-        <img src="{{master.imgSrc}}">
-    {{else}}
-        <img src="https://image.flaticon.com/icons/svg/522/522401.svg">
-    {{/if}}
+<div class="tile bg-grey-cararra" {{action 'selectMaster' master}}>
+    <div class="corner"></div>
+    <div class="check"></div>
+    <div class="tile-body font-dark">
+        {{#if master.imgSrc}}
+            <img src="{{master.imgSrc}}"> 
+        {{else}}
+            <img src="https://image.flaticon.com/icons/svg/522/522401.svg"> 
+        {{/if}}
     </div>
-    <div class="mt-card-content">
-        <h3 class="mt-card-name">{{master.fullname}}</h3>
+    <div class="tile-object">
+        <div class="name font-dark">{{master.fullname}}</div>
     </div>
 </div>
-{{yield}}

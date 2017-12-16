@@ -10,10 +10,8 @@
 </div>
 <div class="portlet-body ticket-portlet-body">
     <div class="tiles">
-        {{!-- <div class="m-grid-row margin-bottom-10"> --}}
-            {{#each services as |service|}}
-                {{ticket-services-item service=service}}
-            {{/each}}
-        {{!-- </div> --}}
+        {{#each services as |service|}}
+            {{ticket-services-item service=service}}
+        {{/each}}
     </div>
 </div>

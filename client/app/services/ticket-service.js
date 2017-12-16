@@ -42,6 +42,7 @@ export default Ember.Service.extend({
     selectMaster(master) {
         var masterJSON = master.toJSON({ includeId: true });
         var fields = this.get("formFields");
+        var selectedItem = $(event.target).closest('.tile');
 
         $('.ticket-info-master-top').removeClass('hidden');
         $('.ticket-info-master__name').text(masterJSON.firstname + " " +masterJSON.secondname);
@@ -53,6 +54,8 @@ export default Ember.Service.extend({
         } else {
             $('.ticket-info-master__img').attr("src", 'https://image.flaticon.com/icons/svg/522/522401.svg');
         }
+        
+        $(selectedItem).toggleClass('selected');        
     },
 
     selectServiceItem(service) {

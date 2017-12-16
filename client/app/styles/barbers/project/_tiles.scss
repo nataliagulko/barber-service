@@ -1,4 +1,9 @@
 .tiles {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+
     .tile {
         border: 2px solid transparent;
 
