@@ -84,7 +84,22 @@ export default Ember.Service.extend({
         else {
             $('.ticket-info-services-top').removeClass('hidden');            
         }
-        
+
+        this._calculateTimeAndCost();
         $(selectedItem).toggleClass('selected');
+    },
+
+    _calculateTimeAndCost() {
+        var selectedServices = this.get("selectedServices"),
+            totalCost = 0,
+            totalTime = 0;
+            //todo computedproperties
+
+        selectedServices.forEach(function (item) {
+            totalCost += item.get("cost");
+            totalTime += item.get("time");
+        });
+        console.log("Time: ", totalTime);
+        console.log("Cost: ", totalCost);
     }
 });
