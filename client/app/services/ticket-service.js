@@ -2,16 +2,6 @@ import Ember from 'ember';
 
 export default Ember.Service.extend({
     store: Ember.inject.service("store"),
-    formFields: {
-        // master: "[name=master]",
-        client: "[name=client]",
-        ticketDate: "[name=ticketDate]",
-        time: "[name=time]",
-        status: "[name=status]",
-        cost: "[name=cost]",
-        duration: "[name=duration]",
-        services: "[name=services]",
-    },
     selectedMaster: null,
     servicesByMaster: [],
     selectedServices: [],
