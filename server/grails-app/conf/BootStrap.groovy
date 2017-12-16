@@ -6,6 +6,8 @@ import com.h2osis.constant.TicketStatus
 import com.h2osis.model.Business
 import com.h2osis.model.Holiday
 import com.h2osis.model.Service
+import com.h2osis.model.ServiceGroup
+import com.h2osis.model.ServiceToGroup
 import com.h2osis.model.Ticket
 import com.h2osis.model.WorkTime
 import com.h2osis.sm.SMObjectType
@@ -249,7 +251,111 @@ class BootStrap {
                 return returnArray
             }
         }
+        
+        JSON.createNamedConfig('serviceGroups') {
+            it.registerObjectMarshaller(ServiceGroup) {
+                def returnArray = [:]
+                returnArray['id'] = it.id
+                returnArray['type'] = 'service-group'
 
+                def attrs = [:]
+                attrs['name'] = it.name
+                attrs['cost'] = it.cost
+                attrs['time'] = it.time
+                attrs['partOfList'] = it.partOfList
+
+                def relationships = [:]
+                def mastersDetails = [:]
+                def serviceToGroupsDetails = [:]
+                mastersDetails['data'] = it.masters
+                serviceToGroupsDetails['data'] = it.serviceToGroups
+                relationships['masters'] = mastersDetails
+                relationships['serviceToGroups'] = serviceToGroupsDetails
+                returnArray['relationships'] = relationships
+
+                returnArray['attributes'] = attrs
+                return returnArray
+            }
+            it.registerObjectMarshaller(User) {
+                def returnArray = [:]
+                returnArray['id'] = it.id
+                returnArray['type'] = 'master'
+
+                def attrs = [:]
+                attrs['phone'] = it.phone
+                attrs['firstname'] = it.firstname
+                attrs['secondname'] = it.secondname
+                attrs['username'] = it.username
+                attrs['email'] = it.email
+                attrs['masterTZ'] = it.masterTZ
+                returnArray['attributes'] = attrs
+                return returnArray
+            }
+            
+            it.registerObjectMarshaller(ServiceToGroup) {
+                def returnArray = [:]
+                returnArray['id'] = it.id
+                returnArray['type'] = 'service-to-group'
+
+                def attrs = [:]
+                attrs['serviceOrder'] = it.serviceOrder
+                attrs['serviceTimeout'] = it.serviceTimeout
+                returnArray['attributes'] = attrs
+                return returnArray
+            }
+        }
+        
+        JSON.createNamedConfig('serviceToGroups') {
+            it.registerObjectMarshaller(ServiceToGroup) {
+                def returnArray = [:]
+                returnArray['id'] = it.id
+                returnArray['type'] = 'service-to-group'
+
+                def attrs = [:]
+                attrs['serviceOrder'] = it.serviceOrder
+                attrs['serviceTimeout'] = it.serviceTimeout
+                returnArray['attributes'] = attrs
+
+                def relationships = [:]
+                def serviceGroupDetails = [:]
+                def serviceDetails = [:]
+                serviceDetails['data'] = it.service
+                serviceGroupDetails['data'] = it.group
+                relationships['group'] = serviceGroupDetails
+                relationships['service'] = serviceDetails
+                returnArray['relationships'] = relationships
+
+                return returnArray
+            }
+            
+            it.registerObjectMarshaller(Service) {
+                def returnArray = [:]
+                returnArray['id'] = it.id
+                returnArray['type'] = 'service'
+
+                def attrs = [:]
+                attrs['name'] = it.name
+                attrs['cost'] = it.cost
+                attrs['time'] = it.time
+                attrs['partOfList'] = it.partOfList
+                returnArray['attributes'] = attrs
+                return returnArray
+            }
+            
+            it.registerObjectMarshaller(ServiceGroup) {
+                def returnArray = [:]
+                returnArray['id'] = it.id
+                returnArray['type'] = 'service-group'
+
+                def attrs = [:]
+                attrs['name'] = it.name
+                attrs['cost'] = it.cost
+                attrs['time'] = it.time
+                attrs['partOfList'] = it.partOfList
+                returnArray['attributes'] = attrs
+                return returnArray
+            }
+        }
 
         JSON.createNamedConfig('tickets') {
             it.registerObjectMarshaller(Ticket) {

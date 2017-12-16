@@ -12,7 +12,7 @@ export default Ember.Component.extend({
 	actions: {
 		delete: function(id) {
 			var store = this.get("store");
-
+			console.log(store.modelFor('service').modelName);
 			this.get("bootbox").confirmDelete(store, "service", id, "запись");
 		}
 	}

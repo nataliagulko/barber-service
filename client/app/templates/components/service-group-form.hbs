@@ -25,39 +25,54 @@
             <div class="col-sm-8">
                 <select class="select2 form-control" multiple="multiple" name="masters" onchange= {{action "selectMaster" value="target.value"}} style="width: 100%;">
                     {{#each masters as |master|}}
-                        <option value="{{master.id}}">{{master.fullname}}</option>
-                    {{/each}}
+                        {{#if serviceGroup.masters}}
+                            {{#each serviceGroup.masters as |serviceGroupMaster|}}
+                                {{#if (eq master.id serviceGroupMaster.id) }}
+                                    <option value="{{master.id}}" selected="selected">
+                                        {{master.fullname}}
+                                    </option>
+                                {{else}}
+                                    <option value="{{master.id}}">
+                                        {{master.fullname}}
+                                    </option>
+                                {{/if}}
+                            {{/each}}
+                        {{else}}
+                            <option value="{{master.id}}">
+                                {{master.fullname}}
+                            </option>
+                        {{/if}}
+                    {{/each}}H
                 </select>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-4 control-label">Подуслуги</label>
+            <label class="col-sm-4 control-label">
+                Подуслуги
+                <span class="required" aria-required="true"> * </span>
+            </label>
             <div class="col-sm-8">
-                {{subservice-list subservices=subservices}}
+                {{subservice-list 
+                    subservices=subservices
+                    serviceGroup=serviceGroup}}
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-4 control-label">Стоимость</label>
             <div class="col-sm-8">
                 <label class="form-control-static">
-                    {{serviceGroupCost}}&nbsp;<i class="fa fa-ruble"></i>
+                    {{serviceGroup.cost}}&nbsp;<i class="fa fa-ruble"></i>
                 </label>
-                {{input 
-                    class="hidden" 
-                    value=serviceGroupCost 
-                    name="cost"}}
+                {{input type="hidden" name="cost" value=serviceGroup.cost}}
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-4 control-label">Продолжительность</label>
             <div class="col-sm-8">
                 <label class="form-control-static">
-                    {{serviceGroupTime}}&nbsp;мин.
+                    {{serviceGroup.time}}&nbsp;мин.
                 </label>
-                {{input 
-                    class="hidden" 
-                    value=serviceGroupTime 
-                    name="time"}}
+                {{input type="hidden" name="time" value=serviceGroup.time}}
             </div>
         </div>
     </div>
@@ -68,7 +83,7 @@
                     class="btn btn-success" 
                     type="submit" 
                     value="Сохранить"
-                    }}
+                    disabled=(v-get serviceGroup 'isInvalid')}}
                 {{#link-to "service.index" class="btn btn-default" }}
                     <i class="fa fa-arrow-left"></i> Назад
                 {{/link-to}}
