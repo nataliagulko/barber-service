@@ -10,7 +10,7 @@ import com.h2osis.auth.Role
 import com.h2osis.constant.AuthKeys
 import org.codehaus.groovy.grails.web.json.JSONArray
 
-class ServiceGroupAjaxController {
+class ServiceToGroupAjaxController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
     def springSecurityService
@@ -22,13 +22,16 @@ class ServiceGroupAjaxController {
         if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
             def data = request.JSON.data
             def attrs = data.attributes
-            if (data.type && data.type == "service-group" && attrs.name && attrs.cost && attrs.time) {
-                ServiceGroup serviceGroup = new ServiceGroup(name: attrs.name, cost: attrs.cost, time: attrs.time)
-                serviceGroup.addToMasters(user)
-                serviceGroup.save(flush: true)
-                serviceGroup.search().createIndexAndWait()
-                JSON.use('serviceGroups') {
-                    render([data: serviceGroup] as JSON)
+            def relations = data.relationships
+            if (data.type && data.type == "service-to-group") {
+                ServiceToGroup serviceToGroup = new ServiceToGroup(serviceOrder: attrs.serviceOrder, serviceTimeout: attrs.serviceTimeout)
+                Service service = Service.get(relations.service.data.id)
+                ServiceGroup group = ServiceGroup.get(relations.group.data.id)
+                serviceToGroup.setService(service)
+                serviceToGroup.setGroup(group)
+                serviceToGroup.save(flush: true)
+                JSON.use('serviceToGroups') {
+                    render([data: serviceToGroup] as JSON)
                 }
             } else {
                 errors.add([

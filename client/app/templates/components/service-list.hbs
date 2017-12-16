@@ -2,6 +2,7 @@
 	<thead>
 		<tr>
 			<th>Название</th>
+			<th class="text-right">modelName</th>
 			<th class="text-right">Стоимость</th>
 			<th class="text-right">Время</th>
 			<th class="text-right">Мастер</th>
@@ -18,15 +19,18 @@
 					{{/if}}
 				</td>
 				<td class="text-right">
+					{{service.modelName}}
+				</td>
+				<td class="text-right">
 					{{service.time}}&nbsp;<i class="fa fa-ruble"></i>
 				</td>
 				<td class="text-right">{{service.cost}}&nbsp;мин.</td>
 				<td class="text-right">
 					{{#each service.masters as |master|}}
-						{{master.fullname}}
+						<span class="service-list__master">{{master.fullname}}</span>
 					{{/each}}
 				</td>
-				<td class="text-right">
+				<td class="text-right service-list__actions">
 					{{#link-to "service.edit" service.id class="btn btn-default"}}
 						<i class="fa fa-pencil"></i>
 					{{/link-to}}

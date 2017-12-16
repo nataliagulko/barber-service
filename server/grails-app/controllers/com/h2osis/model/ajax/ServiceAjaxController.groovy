@@ -142,7 +142,7 @@ class ServiceAjaxController {
         }
     }
 
-    def delete() {
+    def destroy() {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
         if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
@@ -204,8 +204,8 @@ class ServiceAjaxController {
             order("name", "asc")
         }
         if (serviceList) {
-            def data = request.JSON.data
-            if (data && data.attributes?.onlySimpleService == true) {
+            def query = request.JSON.query
+            if (query && query.onlySimpleService == true) {
                 serviceList = serviceList.findAll {
                     (it.class == Service.class)
                 }
