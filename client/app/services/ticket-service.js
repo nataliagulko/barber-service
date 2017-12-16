@@ -43,13 +43,21 @@ export default Ember.Service.extend({
         }
     },
 
-    selectMaster(master, event) {
-        var selectedItem = $(event.target).closest('.tile');
+    toggleMaster(master) {
+        var selectedItem = $(event.target).closest('.tile'),
+            selectedMaster = this.get("selectedMaster");
 
-        this.set("selectedMaster", master);
-        this._getServicesByMaster(master);
+        if (selectedMaster) {
+            this.set("selectedMaster", null)
+            this.set("servicesByMaster", []);
+            $('.ticket-info-master-top').addClass('hidden');
+        }
+        else {
+            this.set("selectedMaster", master)
+            this._getServicesByMaster(master);
+            $('.ticket-info-master-top').removeClass('hidden');
+        }
 
-        $('.ticket-info-master-top').removeClass('hidden');
         $(selectedItem).toggleClass('selected');
     },
 
@@ -68,13 +76,25 @@ export default Ember.Service.extend({
         })
     },
 
-    selectServiceItem(service) {
+    toggleServiceItem(service) {
         var selectedItem = $(event.target).closest('.tile'),
-            selectedServices = this.get("selectedServices");
+            selectedServices = this.get("selectedServices"),
+            isServiceIncludes = selectedServices.includes(service);
 
-        selectedServices.pushObject(service);
+        if (isServiceIncludes) {
+            selectedServices.removeObject(service);
+        }
+        else {
+            selectedServices.pushObject(service);
+        }
 
-        $('.ticket-info-services-top').removeClass('hidden');
+        if (selectedServices.get("length") == 0) {
+            $('.ticket-info-services-top').addClass('hidden');
+        }
+        else {
+            $('.ticket-info-services-top').removeClass('hidden');            
+        }
+        
         $(selectedItem).toggleClass('selected');
     }
 });
