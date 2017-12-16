@@ -1,8 +1,9 @@
 import Ember from 'ember';
 
 export default Ember.Service.extend({
+    store: Ember.inject.service("store"),
     formFields: {
-        master: "[name=master]",
+        // master: "[name=master]",
         client: "[name=client]",
         ticketDate: "[name=ticketDate]",
         time: "[name=time]",
@@ -10,9 +11,10 @@ export default Ember.Service.extend({
         cost: "[name=cost]",
         duration: "[name=duration]",
         services: "[name=services]",
-        selectedMaster: null,
-        selectedServices: []
     },
+    selectedMaster: null,
+    servicesByMaster: [],
+    selectedServices: [],
 
     showElement(elemSelector, step) {
         // скрываем верхнюю половину блока "инфо"
@@ -42,14 +44,28 @@ export default Ember.Service.extend({
     },
 
     selectMaster(master, event) {
-        var selectedItem = $(event.target).closest('.tile'),
-            selectedMaster = this.get("selectedMaster");
+        var selectedItem = $(event.target).closest('.tile');
 
         this.set("selectedMaster", master);
+        this._getServicesByMaster(master);
 
         $('.ticket-info-master-top').removeClass('hidden');
-
         $(selectedItem).toggleClass('selected');
+    },
+
+    _getServicesByMaster(master) {
+        var store = this.get("store"),
+        _this = this;
+
+        var services = store.query("service", {
+            query: {
+                master: master
+            }
+        });
+        
+        services.then(function() {
+            _this.set("servicesByMaster", services);
+        })
     },
 
     selectServiceItem(service) {

@@ -10,7 +10,7 @@
 </div>
 <div class="portlet-body ticket-portlet-body">
     <div class="tiles">
-        {{#each services as |service|}}
+        {{#each servicesByMaster as |service|}}
             {{ticket-services-item service=service}}
         {{/each}}
     </div>
