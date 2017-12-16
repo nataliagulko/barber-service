@@ -55,38 +55,26 @@ export default Ember.Service.extend({
 
     _getServicesByMaster(master) {
         var store = this.get("store"),
-        _this = this;
+            _this = this;
 
         var services = store.query("service", {
             query: {
                 master: master
             }
         });
-        
-        services.then(function() {
+
+        services.then(function () {
             _this.set("servicesByMaster", services);
         })
     },
 
     selectServiceItem(service) {
-        var serviceJSON = service.toJSON({ includeId: true });
-        var fields = this.get("formFields");
+        var selectedItem = $(event.target).closest('.tile'),
+            selectedServices = this.get("selectedServices");
+
+        selectedServices.pushObject(service);
 
         $('.ticket-info-services-top').removeClass('hidden');
-
-        var selectedItem = $(event.target).closest('.tile');
-        console.log(selectedItem);
-
-        if (!$(selectedItem).hasClass('selected')) {
-            $('.ticket-info-services-top ul').append('<li>' + serviceJSON.name + '</li>');
-        } else {
-            $('.ticket-info-services-top ul').find('li').filter(function () {
-                return $.text([this]) === serviceJSON.name;
-            }).remove();
-        }
-
-        $('.ticket-info-services__text ul').remove();
-        $('.ticket-info-services-top ul').clone().appendTo('.ticket-info-services__text');
         $(selectedItem).toggleClass('selected');
     }
 });
