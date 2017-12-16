@@ -1,12 +1,8 @@
-<div class="tile bg-grey-cararra" {{action 'selectMaster' master}}>
+<div class="tile bg-grey-cararra" {{action 'selectMaster' master this}}>
     <div class="corner"></div>
     <div class="check"></div>
     <div class="tile-body font-dark">
-        {{#if master.imgSrc}}
-            <img src="{{master.imgSrc}}"> 
-        {{else}}
-            <img src="https://image.flaticon.com/icons/svg/522/522401.svg"> 
-        {{/if}}
+        {{ticket-master-image master.imgSrc}}
     </div>
     <div class="tile-object">
         <div class="name font-dark">{{master.fullname}}</div>

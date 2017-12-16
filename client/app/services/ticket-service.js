@@ -9,7 +9,9 @@ export default Ember.Service.extend({
         status: "[name=status]",
         cost: "[name=cost]",
         duration: "[name=duration]",
-        services: "[name=services]"
+        services: "[name=services]",
+        selectedMaster: null,
+        selectedServices: []
     },
 
     showElement(elemSelector, step) {
@@ -19,8 +21,8 @@ export default Ember.Service.extend({
         // отображаем нижние строки блока "инфо" если они не пустые
         var bottomItems = $('.ticket-info-bottom');
 
-        bottomItems.each(function(){
-            if ($(this).find('.ticket-info-bottom__text').text()){
+        bottomItems.each(function () {
+            if ($(this).find('.ticket-info-bottom__text').text()) {
                 $(this).removeClass('hidden');
             }
         });
@@ -39,23 +41,15 @@ export default Ember.Service.extend({
         }
     },
 
-    selectMaster(master) {
-        var masterJSON = master.toJSON({ includeId: true });
-        var fields = this.get("formFields");
-        var selectedItem = $(event.target).closest('.tile');
+    selectMaster(master, event) {
+        var selectedItem = $(event.target).closest('.tile'),
+            selectedMaster = this.get("selectedMaster");
+
+        this.set("selectedMaster", master);
 
         $('.ticket-info-master-top').removeClass('hidden');
-        $('.ticket-info-master__name').text(masterJSON.firstname + " " +masterJSON.secondname);
 
-        $(fields.master).val(masterJSON.id);
-
-        if (typeof masterJSON.imgSrc !== "undefined") {
-            $('.ticket-info-master__img').attr("src", masterJSON.imgSrc);
-        } else {
-            $('.ticket-info-master__img').attr("src", 'https://image.flaticon.com/icons/svg/522/522401.svg');
-        }
-        
-        $(selectedItem).toggleClass('selected');        
+        $(selectedItem).toggleClass('selected');
     },
 
     selectServiceItem(service) {
@@ -70,7 +64,7 @@ export default Ember.Service.extend({
         if (!$(selectedItem).hasClass('selected')) {
             $('.ticket-info-services-top ul').append('<li>' + serviceJSON.name + '</li>');
         } else {
-            $('.ticket-info-services-top ul').find('li').filter(function() {
+            $('.ticket-info-services-top ul').find('li').filter(function () {
                 return $.text([this]) === serviceJSON.name;
             }).remove();
         }
