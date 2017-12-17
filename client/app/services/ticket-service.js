@@ -33,7 +33,7 @@ export default Ember.Service.extend({
         }
     },
 
-    toggleMaster(master) {
+    toggleMaster(master, event) {
         var selectedItem = $(event.target).closest('.tile'),
             selectedMaster = this.get("selectedMaster");
 
@@ -66,12 +66,12 @@ export default Ember.Service.extend({
         })
     },
 
-    toggleServiceItem(service) {
+    toggleServiceItem(service, event) {
         var selectedItem = $(event.target).closest('.tile'),
             selectedServices = this.get("selectedServices"),
-            isServiceIncludes = selectedServices.includes(service);
+            isServiceIncluded = selectedServices.includes(service);
 
-        if (isServiceIncludes) {
+        if (isServiceIncluded) {
             selectedServices.removeObject(service);
         }
         else {

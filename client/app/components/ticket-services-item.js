@@ -5,9 +5,9 @@ export default Ember.Component.extend({
     ticketService: Ember.inject.service('ticket-service'),
 
     actions: {
-        toggleServiceItem(service){
+        toggleServiceItem(service, event){
             var ticketService = this.get('ticketService');
-            ticketService.toggleServiceItem(service);
+            ticketService.toggleServiceItem(service, event);
         }
     }
 });
