@@ -9,16 +9,9 @@
     </div>
 </div>
 <div class="portlet-body ticket-portlet-body">
-    <div class="grid">
-        <div class="mt-element-card mt-element-overlay">
-            <div class="row">
-                {{#each masters as |master|}}
-                    <div class="col-md-4 col-lg-3">
-                    {{log master}}
-                        {{ticket-master-card master=master}}
-                    </div>
-                {{/each}}
-            </div>
-        </div>
+    <div class="tiles">
+        {{#each masters as |master|}}
+            {{ticket-master-card master=master}}
+        {{/each}}
     </div>
 </div>

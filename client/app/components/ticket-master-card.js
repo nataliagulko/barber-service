@@ -5,9 +5,9 @@ export default Ember.Component.extend({
     ticketService: Ember.inject.service('ticket-service'),
 
     actions: {
-        selectMaster(masterName, imgSrc){
+        toggleMaster(master){
             var ticketService = this.get('ticketService');
-            ticketService.selectMaster(masterName,imgSrc);
+            ticketService.toggleMaster(master);
         }
     }
 });

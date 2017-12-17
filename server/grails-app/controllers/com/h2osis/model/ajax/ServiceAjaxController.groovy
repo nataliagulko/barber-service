@@ -167,8 +167,10 @@ class ServiceAjaxController {
     def list() {
         List<Service> serviceList = Service.createCriteria().list {
             def data = request.JSON.data
+            def query = request.JSON.query
             if (data) {
                 def attrs = data.attributes
+                
                 if (attrs.name) {
                     eq("name", attrs.name)
                 }
@@ -178,9 +180,9 @@ class ServiceAjaxController {
                 if (attrs.time) {
                     eq("time", Long.parseLong(attrs.time))
                 }
-                if (attrs.master) {
+                if (query.master) {
                     masters {
-                        idEq(User.get(attrs.master)?.id)
+                        idEq(User.get(query.master)?.id)
                     }
                 }
                 if (data.max && data.offset) {
@@ -205,6 +207,7 @@ class ServiceAjaxController {
         }
         if (serviceList) {
             def query = request.JSON.query
+            
             if (query && query.onlySimpleService == true) {
                 serviceList = serviceList.findAll {
                     (it.class == Service.class)

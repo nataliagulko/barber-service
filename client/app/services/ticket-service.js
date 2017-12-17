@@ -1,16 +1,10 @@
 import Ember from 'ember';
 
 export default Ember.Service.extend({
-    formFields: {
-        master: "[name=master]",
-        client: "[name=client]",
-        ticketDate: "[name=ticketDate]",
-        time: "[name=time]",
-        status: "[name=status]",
-        cost: "[name=cost]",
-        duration: "[name=duration]",
-        services: "[name=services]"
-    },
+    store: Ember.inject.service("store"),
+    selectedMaster: null,
+    servicesByMaster: [],
+    selectedServices: [],
 
     showElement(elemSelector, step) {
         // скрываем верхнюю половину блока "инфо"
@@ -19,8 +13,8 @@ export default Ember.Service.extend({
         // отображаем нижние строки блока "инфо" если они не пустые
         var bottomItems = $('.ticket-info-bottom');
 
-        bottomItems.each(function(){
-            if ($(this).find('.ticket-info-bottom__text').text()){
+        bottomItems.each(function () {
+            if ($(this).find('.ticket-info-bottom__text').text()) {
                 $(this).removeClass('hidden');
             }
         });
@@ -39,37 +33,73 @@ export default Ember.Service.extend({
         }
     },
 
-    selectMaster(master) {
-        var masterJSON = master.toJSON({ includeId: true });
-        var fields = this.get("formFields");
+    toggleMaster(master) {
+        var selectedItem = $(event.target).closest('.tile'),
+            selectedMaster = this.get("selectedMaster");
 
-        $('.ticket-info-master-top').removeClass('hidden');
-        $('.ticket-info-master__name').text(masterJSON.firstname + " " +masterJSON.secondname);
-
-        $(fields.master).val(masterJSON.id);
-
-        if (typeof masterJSON.imgSrc !== "undefined") {
-            $('.ticket-info-master__img').attr("src", masterJSON.imgSrc);
-        } else {
-            $('.ticket-info-master__img').attr("src", 'https://image.flaticon.com/icons/svg/522/522401.svg');
+        if (selectedMaster) {
+            this.set("selectedMaster", null)
+            this.set("servicesByMaster", []);
+            $('.ticket-info-master-top').addClass('hidden');
         }
+        else {
+            this.set("selectedMaster", master)
+            this._getServicesByMaster(master);
+            $('.ticket-info-master-top').removeClass('hidden');
+        }
+
+        $(selectedItem).toggleClass('selected');
     },
 
-    selectServiceItem(itemName, itemTime, itemPrice) {
-        $('.ticket-info-services-top').removeClass('hidden');
+    _getServicesByMaster(master) {
+        var store = this.get("store"),
+            _this = this;
 
-        var selectedItem = $(event.target).closest('.mt-widget-1');
+        var services = store.query("service", {
+            query: {
+                master: master
+            }
+        });
 
-        if (!$(selectedItem).hasClass('selected-item')) {
-            $('.ticket-info-services-top ul').append('<li>' + itemName + '</li>');
-        } else {
-            $('.ticket-info-services-top ul').find('li').filter(function() {
-                return $.text([this]) === itemName;
-            }).remove();
+        services.then(function () {
+            _this.set("servicesByMaster", services);
+        })
+    },
+
+    toggleServiceItem(service) {
+        var selectedItem = $(event.target).closest('.tile'),
+            selectedServices = this.get("selectedServices"),
+            isServiceIncludes = selectedServices.includes(service);
+
+        if (isServiceIncludes) {
+            selectedServices.removeObject(service);
+        }
+        else {
+            selectedServices.pushObject(service);
         }
 
-        $('.ticket-info-services__text ul').remove();
-        $('.ticket-info-services-top ul').clone().appendTo('.ticket-info-services__text');
-        $(selectedItem).toggleClass('selected-item');
+        if (selectedServices.get("length") == 0) {
+            $('.ticket-info-services-top').addClass('hidden');
+        }
+        else {
+            $('.ticket-info-services-top').removeClass('hidden');            
+        }
+
+        this._calculateTimeAndCost();
+        $(selectedItem).toggleClass('selected');
+    },
+
+    _calculateTimeAndCost() {
+        var selectedServices = this.get("selectedServices"),
+            totalCost = 0,
+            totalTime = 0;
+            //todo computedproperties
+
+        selectedServices.forEach(function (item) {
+            totalCost += item.get("cost");
+            totalTime += item.get("time");
+        });
+        console.log("Time: ", totalTime);
+        console.log("Cost: ", totalCost);
     }
 });
