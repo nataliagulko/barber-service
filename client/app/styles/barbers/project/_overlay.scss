@@ -1,0 +1,38 @@
+.overlay {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	top: 0;
+	left: 45px;
+	width: calc(100% - 45px);
+	height: 100%;
+	background-color: rgba(0, 0, 0, .5);
+	pointer-events: none;
+	touch-action: none;
+	z-index: 10000;
+
+	&:before {
+		display: inline-block;
+		content: "";
+		height: 30px;
+		width: 30px;
+		animation: rotate 0.8s infinite linear;
+		border: 2px solid #fff;
+		border-right-color: rgb(255, 255, 255);
+		border-bottom-color: rgb(255, 255, 255);
+		border-right-color: rgba(255, 255, 255, 0.2);
+		border-bottom-color: rgba(255, 255, 255, 0.2);
+		border-radius: 50%;
+	}
+}
+
+@keyframes rotate {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
+}
