@@ -13,7 +13,7 @@ export default Ember.Component.extend({
 						masterRecord
 							.save()
 							.then(() => {
-								_this.transitionToRoute('master');
+								_this.get("router").transitionTo('master');
 							});
 					}
 				});

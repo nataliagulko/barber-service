@@ -10,14 +10,14 @@ const Validations = buildValidations({
         validator('format', { type: 'email' })
     ],
     password: [
-        validator('presence', true),
+        // validator('presence', true),
         validator('length', {
             min: 6,
             max: 20
         })
     ],
     rpassword: [
-        validator('presence', true),
+        // validator('presence', true),
         validator('confirmation', {
             on: 'password',
             message: '{description} do not match',
