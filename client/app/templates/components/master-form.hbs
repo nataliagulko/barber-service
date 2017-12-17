@@ -1,35 +1,99 @@
 <form class="form-horizontal" {{action 'save' on='submit'}}>
 	<div class="form-body">
 		<div class="form-group">
-            <label class="col-sm-4 control-label">Имя</label>
+            <label class="col-sm-4 control-label">
+                Имя
+                <span class="required" aria-required="true"> * </span>
+            </label>
             <div class="col-sm-8">
-                {{input name="firstname" class="form-control" value=master.firstname}}
+                {{input 
+                    name="firstname" 
+                    class="form-control" 
+                    value=master.firstname
+                    focus-out=(action (mut showFirstnameError) true)}}
+                {{#if showFirstnameError}}
+                    <small class="help-block">
+                        {{v-get service 'firstname' 'message'}}
+                    </small>
+                {{/if}}
             </div>
         </div> 
 		<div class="form-group">
-            <label class="col-sm-4 control-label">Фамилия</label>
+            <label class="col-sm-4 control-label">
+                Фамилия
+                <span class="required" aria-required="true"> * </span>
+            </label>
             <div class="col-sm-8">
-                {{input name="secondname" class="form-control" value=master.secondname}}
+                {{input 
+                    name="secondname" 
+                    class="form-control" 
+                    value=master.secondname
+                    focus-out=(action (mut showSecondnameError) true)}}
+                {{#if showSecondnameError}}
+                    <small class="help-block">
+                        {{v-get service 'secondname' 'message'}}
+                    </small>
+                {{/if}}
             </div>
         </div>
 		<div class="form-group">
-            <label class="col-sm-4 control-label">Телефон</label>
+            <label class="col-sm-4 control-label">
+                Телефон
+                <span class="required" aria-required="true"> * </span>
+            </label>
             <div class="col-sm-8">
-                {{input-mask mask='+7(999)999-99-99' id='phone' name='phone' class="form-control" type='tel' value=master.phone}}
+                {{input-mask 
+                    mask='+7(999)999-99-99' 
+                    name='phone' 
+                    class="form-control" 
+                    type='tel' 
+                    value=master.phone
+                    focus-out=(action (mut showPhoneError) true)}}
+                {{#if showPhoneError}}
+                    <small class="help-block">
+                        {{v-get service 'phone' 'message'}}
+                    </small>
+                {{/if}}
             </div>
         </div>
 
 		{{#unless master.id}}
 			<div class="form-group">
-	            <label class="col-sm-4 control-label">Пароль</label>
+	            <label class="col-sm-4 control-label">
+                    Пароль
+                    <span class="required" aria-required="true"> * </span>
+                </label>
 	            <div class="col-sm-8">
-	                {{input type="password" name="password" class="form-control"  value=master.password}}
+	                {{input 
+                        type="password" 
+                        name="password" 
+                        class="form-control"  
+                        value=master.password
+                        focus-out=(action (mut showPasswordError) true)}}
+                    {{#if showPasswordError}}
+                        <small class="help-block">
+                            {{v-get service 'password' 'message'}}
+                        </small>
+                    {{/if}}
 	            </div>
 	        </div>
 			<div class="form-group">
-	            <label class="col-sm-4 control-label">Повторить пароль</label>
+	            <label class="col-sm-4 control-label">
+                    Повторите пароль
+                    <span class="required" aria-required="true"> * </span>
+                </label>
 	            <div class="col-sm-8">
-	                {{input type="password" name="rpassword" class="form-control"  value=master.rpassword}}
+	                {{input 
+                        type="password" 
+                        name="rpassword" 
+                        class="form-control"  
+                        value=master.rpassword
+                        focus-out=(action (mut showRpasswordError) true)}}
+                    {{#if showRpasswordError}}
+                        <small class="help-block">
+                            {{v-get service 'rpassword' 'message'}}
+                        </small>
+                    {{/if}}
 	            </div>
 	        </div>
 		{{/unless}}
@@ -37,7 +101,16 @@
 		<div class="form-group">
             <label class="col-sm-4 control-label">E-mail</label>
             <div class="col-sm-8">
-                {{input name="email" class="form-control" value=master.email}}
+                {{input 
+                    name="email" 
+                    class="form-control" 
+                    value=master.email
+                    focus-out=(action (mut showEmailError) true)}}
+                    {{#if showEmailError}}
+                        <small class="help-block">
+                            {{v-get service 'email' 'message'}}
+                        </small>
+                    {{/if}}
             </div>
         </div>
 
@@ -46,7 +119,11 @@
 	<div class="form-actions">
         <div class="row">
             <div class="col-sm-offset-4 col-sm-8">
-                {{input class="btn btn-success" type="submit" value="Сохранить"}}
+                {{input 
+                    class="btn btn-success" 
+                    type="submit" 
+                    value="Сохранить"
+                    disabled=(v-get master 'isInvalid')}}
                 {{#link-to "master.index" class="btn btn-default"}}
                     <i class="fa fa-arrow-left"></i>
                     Назад
