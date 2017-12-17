@@ -7,6 +7,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
         return Ember.RSVP.hash({
             ticket: this.get('store').createRecord('ticket'),
             masters: this.get('store').findAll('master'),
+            //holidays: this.get('store').findAll('holiday'),            
         });
     },
 });
