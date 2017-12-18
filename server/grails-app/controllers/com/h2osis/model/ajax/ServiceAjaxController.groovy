@@ -151,7 +151,7 @@ class ServiceAjaxController {
         User user = User.get(principal.id)
         if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
             def data = request.JSON.data
-            if (data.type && data.type == "service" && data.id) {
+            if (data.type && data.id) {
                 Service service = Service.get(data.id)
                 if (service) {
                     service.delete(flush: true)
