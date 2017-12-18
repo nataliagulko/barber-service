@@ -75,9 +75,13 @@ class ServiceAjaxController {
         if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
             def data = request.JSON.data
             def attrs = data.attributes
-            if (data.type && data.type == "service" && attrs.name && attrs.cost && attrs.time) {
+            def masters = data.relationships.masters.data
+            if (data.type && data.type == "service" && attrs.name && attrs.cost && attrs.time && masters) {
                 Service service = new Service(name: attrs.name, cost: attrs.cost, time: attrs.time)
-                service.addToMasters(user)
+                masters.each {
+                    User master = User.get(it.id)
+                    service.addToMasters(master)
+                }                
                 service.save(flush: true)
                 Service.search().createIndexAndWait()
                 JSON.use('services') {
