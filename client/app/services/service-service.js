@@ -9,10 +9,20 @@ export default Ember.Service.extend({
 	isRowAddingDisabled: false,
 
 	selectMaster: function(id) {
-		var masters = this.get("selectedMasters");
-		let master = this.get("store").peekRecord('master', id);
+		var masters = this.get("selectedMasters"),
+			master = this.get("store").peekRecord('master', id),
+			isMasterIncluded = masters.includes(master);
+			
+		console.log("id ", id);
 
-		masters.pushObject(master);
+		if (isMasterIncluded) {
+			masters.removeObject(master);
+		} else {
+			masters.pushObject(master);
+		}
+
+		console.log("selectMaster ", this.get("selectedMasters"));
+
 	},
 
 	addServiceToGroup: function() {
@@ -115,8 +125,12 @@ export default Ember.Service.extend({
 	saveService: function(serviceRecord) {
 		const masters = this.get("selectedMasters");
 
+		console.log("before set ", this.get("selectedMasters"));
 		serviceRecord.set("masters", masters);
-		serviceRecord.save();
+		console.log("after set ", this.get("selectedMasters"));
+		console.log("after set json ", serviceRecord.toJSON());
+
+		// serviceRecord.save();
 	},
 
 	saveServiceGroup: function(serviceGroupRecord) {
