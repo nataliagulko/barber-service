@@ -5,7 +5,7 @@
                 Название
                 <span class="required" aria-required="true"> * </span>
             </label>
-            <div class="col-sm-8">
+            <div class="col-sm-6">
                 {{input name="name" 
                 class="form-control" 
                 value=serviceGroup.name
@@ -22,7 +22,7 @@
                 Мастера
                 <span class="required" aria-required="true"> * </span>
             </label>
-            <div class="col-sm-8">
+            <div class="col-sm-6">
                 {{#power-select-multiple 
                     options=masters 
                     selected=selectedMasters
@@ -46,7 +46,7 @@
         </div>
         <div class="form-group">
             <label class="col-sm-4 control-label">Стоимость</label>
-            <div class="col-sm-8">
+            <div class="col-sm-6">
                 <label class="form-control-static">
                     {{serviceGroup.cost}}&nbsp;<i class="fa fa-ruble"></i>
                 </label>
@@ -55,7 +55,7 @@
         </div>
         <div class="form-group">
             <label class="col-sm-4 control-label">Продолжительность</label>
-            <div class="col-sm-8">
+            <div class="col-sm-6">
                 <label class="form-control-static">
                     {{serviceGroup.time}}&nbsp;мин.
                 </label>
