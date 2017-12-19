@@ -15,13 +15,12 @@ export default Ember.Service.extend({
 		this._changeIsRowAddingDisabled();
 	},
 
-	selectSubservice: function(subserviceId, serviceToGroup, serviceGroup) {
-		if (typeof subserviceId === "undefined" || subserviceId === "") {
+	selectSubservice: function(subservice, serviceToGroup, serviceGroup) {
+		if (typeof subservice === "undefined") {
 			return;
 		}
 
-		var subservices = this.get("selectedSubservices"),
-			subservice = this.get("store").peekRecord('service', subserviceId);
+		var subservices = this.get("selectedSubservices");
 
 		serviceToGroup.set("service", subservice);
 		subservices.pushObject(subservice);

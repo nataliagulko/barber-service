@@ -22,17 +22,17 @@
 				</td>
 				<td>
 					{{subservice-select 
-							serviceToGroup=item 
-							subservices=subservices
-							serviceGroup=serviceGroup}}
+                        serviceToGroup=item 
+                        subservices=subservices
+                        serviceGroup=serviceGroup}}
 				</td>
 				<td>
 					{{input 
-							class="form-control subservice-list__timeout"
-							name="serviceTimeout" 
-							type="tel" 
-							value=item.serviceTimeout 
-							focus-out="inputServiceToGroupTimeout"}}
+						class="form-control subservice-list__timeout"
+						name="serviceTimeout" 
+						type="tel" 
+						value=item.serviceTimeout 
+						focus-out="inputServiceToGroupTimeout"}}
 				</td>
 				<td>
 					<button type="button" class="btn btn-danger" {{action "removeServiceToGroup" item}}>
