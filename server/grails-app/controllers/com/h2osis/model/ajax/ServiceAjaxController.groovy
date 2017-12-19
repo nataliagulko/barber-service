@@ -71,13 +71,17 @@ class ServiceAjaxController {
     def create() {
         def errors = []
         def principal = springSecurityService.principal
-        User user = User.get(principal.id)
-        if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+        User currentUser = User.get(principal.id)
+        if (currentUser.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
             def data = request.JSON.data
             def attrs = data.attributes
-            if (data.type && data.type == "service" && attrs.name && attrs.cost && attrs.time) {
+            def masters = data.relationships.masters.data
+            if (data.type && data.type == "service" && attrs.name && attrs.cost && attrs.time && masters) {
                 Service service = new Service(name: attrs.name, cost: attrs.cost, time: attrs.time)
-                service.addToMasters(user)
+                masters.each {
+                    User user = User.get(it.id)
+                    service.addToMasters(user)
+                }                
                 service.save(flush: true)
                 Service.search().createIndexAndWait()
                 JSON.use('services') {
@@ -147,7 +151,7 @@ class ServiceAjaxController {
         User user = User.get(principal.id)
         if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
             def data = request.JSON.data
-            if (data.type && data.type == "service" && data.id) {
+            if (data.type && data.id) {
                 Service service = Service.get(data.id)
                 if (service) {
                     service.delete(flush: true)

@@ -38,5 +38,4 @@ export default Ember.Component.extend({
 			serviceService.inputServiceToGroupTimeout(serviceGroup);
 		}
 	}
-
 });

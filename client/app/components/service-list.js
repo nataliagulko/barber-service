@@ -10,10 +10,19 @@ export default Ember.Component.extend({
 	},
 
 	actions: {
+		edit: function(service) {
+			var extension = service.get("extensionShort");
+			
+			if (extension === "ServiceGroup") {
+				this.get("router").transitionTo('/service-group/edit/' + service.id);
+			} else {
+				this.get("router").transitionTo('/service/edit/' + service.id);
+			}
+		},
+
 		delete: function(id) {
 			var store = this.get("store");
-			console.log(store.modelFor('service').modelName);
-			this.get("bootbox").confirmDelete(store, "service", id, "запись");
+			this.get("bootbox").confirmDelete(store, "service", id, "услугу");
 		}
 	}
 });

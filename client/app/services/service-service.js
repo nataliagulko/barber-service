@@ -2,18 +2,10 @@ import Ember from 'ember';
 
 export default Ember.Service.extend({
 	store: Ember.inject.service("store"),
-	selectedMasters: [],
 	servicesToGroup: [],
 	selectedSubservices: [],
 	serviceToGroupTimeout: 0,
 	isRowAddingDisabled: false,
-
-	selectMaster: function(id) {
-		var masters = this.get("selectedMasters");
-		let master = this.get("store").peekRecord('master', id);
-
-		masters.pushObject(master);
-	},
 
 	addServiceToGroup: function() {
 		var servicesToGroup = this.get("servicesToGroup"),
@@ -23,13 +15,12 @@ export default Ember.Service.extend({
 		this._changeIsRowAddingDisabled();
 	},
 
-	selectSubservice: function(subserviceId, serviceToGroup, serviceGroup) {
-		if (typeof subserviceId === "undefined" || subserviceId === "") {
+	selectSubservice: function(subservice, serviceToGroup, serviceGroup) {
+		if (typeof subservice === "undefined") {
 			return;
 		}
 
-		var subservices = this.get("selectedSubservices"),
-			subservice = this.get("store").peekRecord('service', subserviceId);
+		var subservices = this.get("selectedSubservices");
 
 		serviceToGroup.set("service", subservice);
 		subservices.pushObject(subservice);
@@ -112,19 +103,15 @@ export default Ember.Service.extend({
 		this.set("serviceToGroupTimeout", serviceToGroupTimeout);
 	},
 
-	saveService: function(serviceRecord) {
-		const masters = this.get("selectedMasters");
-
+	saveService: function(serviceRecord, masters) {
 		serviceRecord.set("masters", masters);
 		serviceRecord.save();
 	},
 
-	saveServiceGroup: function(serviceGroupRecord) {
+	saveServiceGroup: function(serviceGroupRecord, masters) {
 		const servicesToGroup = this.get("servicesToGroup");
-		const masters = this.get("selectedMasters");
 
 		serviceGroupRecord.set("masters", masters);
-
 		serviceGroupRecord.save().then(function(record) {
 			servicesToGroup.forEach(function(item, ind) {
 				item.set("group", record);
