@@ -5,6 +5,13 @@ export default Ember.Component.extend({
 	serviceService: Ember.inject.service("service-service"),
 	selectedMasters: [],
 
+	didInsertElement() {
+		const serviceRecord = this.get("service"),
+			masters = serviceRecord.get("masters");
+
+		this.set("selectedMasters", masters);
+	},
+
 	actions: {
 		save: function() {
 			const serviceRecord = this.get("service");
