@@ -2,28 +2,10 @@ import Ember from 'ember';
 
 export default Ember.Service.extend({
 	store: Ember.inject.service("store"),
-	selectedMasters: [],
 	servicesToGroup: [],
 	selectedSubservices: [],
 	serviceToGroupTimeout: 0,
 	isRowAddingDisabled: false,
-
-	selectMaster: function(id) {
-		var masters = this.get("selectedMasters"),
-			master = this.get("store").peekRecord('master', id),
-			isMasterIncluded = masters.includes(master);
-			
-		console.log("id ", id);
-
-		if (isMasterIncluded) {
-			masters.removeObject(master);
-		} else {
-			masters.pushObject(master);
-		}
-
-		console.log("selectMaster ", this.get("selectedMasters"));
-
-	},
 
 	addServiceToGroup: function() {
 		var servicesToGroup = this.get("servicesToGroup"),
@@ -122,23 +104,15 @@ export default Ember.Service.extend({
 		this.set("serviceToGroupTimeout", serviceToGroupTimeout);
 	},
 
-	saveService: function(serviceRecord) {
-		const masters = this.get("selectedMasters");
-
-		console.log("before set ", this.get("selectedMasters"));
+	saveService: function(serviceRecord, masters) {
 		serviceRecord.set("masters", masters);
-		console.log("after set ", this.get("selectedMasters"));
-		console.log("after set json ", serviceRecord.toJSON());
-
-		// serviceRecord.save();
+		serviceRecord.save();
 	},
 
-	saveServiceGroup: function(serviceGroupRecord) {
+	saveServiceGroup: function(serviceGroupRecord, masters) {
 		const servicesToGroup = this.get("servicesToGroup");
-		const masters = this.get("selectedMasters");
 
 		serviceGroupRecord.set("masters", masters);
-
 		serviceGroupRecord.save().then(function(record) {
 			servicesToGroup.forEach(function(item, ind) {
 				item.set("group", record);
