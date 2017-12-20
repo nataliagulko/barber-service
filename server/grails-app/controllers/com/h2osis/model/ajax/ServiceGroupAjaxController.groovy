@@ -12,19 +12,23 @@ import org.codehaus.groovy.grails.web.json.JSONArray
 
 class ServiceGroupAjaxController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [choose: ['POST', 'GET']]
     def springSecurityService
 
     def create() {
         def errors = []
         def principal = springSecurityService.principal
-        User user = User.get(principal.id)
-        if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+        User currentUser = User.get(principal.id)
+        if (currentUser.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
             def data = request.JSON.data
             def attrs = data.attributes
-            if (data.type && data.type == "service-group" && attrs.name && attrs.cost && attrs.time) {
+            def masters = data.relationships.masters.data
+            if (data.type && data.type == "service-group" && attrs.name && attrs.cost && attrs.time && masters) {
                 ServiceGroup serviceGroup = new ServiceGroup(name: attrs.name, cost: attrs.cost, time: attrs.time)
-                serviceGroup.addToMasters(user)
+                 masters.each {
+                    User user = User.get(it.id)
+                    serviceGroup.addToMasters(user)
+                } 
                 serviceGroup.save(flush: true)
                 serviceGroup.search().createIndexAndWait()
                 JSON.use('serviceGroups') {
@@ -38,6 +42,45 @@ class ServiceGroupAjaxController {
                             "pointer": "data"
                         ]
                     ])
+                response.status = 422
+                render([errors: errors] as JSON)
+            }
+        } else {
+            render([errors: g.message(code: "service.create.not.admin")] as JSON)
+        }
+    }
+
+    def update() {
+        def errors = []
+        def principal = springSecurityService.principal
+        User user = User.get(principal.id)
+        if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+            def data = request.JSON.data
+            def attrs = data.attributes
+            if (data.type && data.type == "service-group") {
+                ServiceGroup serviceGroup = ServiceGroup.get(data.id)
+                serviceGroup.setName(attrs.name)
+                if (data.relationships?.masters) {
+                    List mastersIdsList = new ArrayList<Long>()
+                    data.relationships.masters.data.id.each{
+                        it -> mastersIdsList.add(Long.parseLong(it))
+                    }
+                    Set<User> masters = new HashSet<User>()
+                    masters.addAll(User.findAllByIdInList(mastersIdsList))
+                    serviceGroup.setMasters(masters)
+                }
+                serviceGroup.save(flush: true)
+                JSON.use('serviceGroups') {
+                    render([data: serviceGroup] as JSON)
+                }
+            } else {
+                errors.add([
+                        "status": 422,
+                        "detail": g.message(code: "service.create.params.null"),
+                        "source": [
+                                "pointer": "data"
+                        ]
+                ])
                 response.status = 422
                 render([errors: errors] as JSON)
             }

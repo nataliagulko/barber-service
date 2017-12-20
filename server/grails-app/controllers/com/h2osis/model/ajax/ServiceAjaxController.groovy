@@ -121,14 +121,13 @@ class ServiceAjaxController {
                     if (attrs.name) {
                         service.setName(attrs.name)
                     }
-                    if (attrs.masters) {
-                        JSONArray mastersJSON = JSON.parse(attrs.masters)
-                        List mastersList = new ArrayList<Long>()
-                        mastersJSON.each {
-                            mastersList.add(new Integer(it).longValue())
+                    if (data.relationships.masters) {
+                        List mastersIdsList = new ArrayList<Long>()
+                        data.relationships.masters.data.id.each{
+                            it -> mastersIdsList.add(Long.parseLong(it))
                         }
                         Set<User> masters = new HashSet<User>()
-                        masters.addAll(User.findAllByIdInList(mastersList))
+                        masters.addAll(User.findAllByIdInList(mastersIdsList))
                         service.setMasters(masters)
                     }
                     service.save(flush: true)
