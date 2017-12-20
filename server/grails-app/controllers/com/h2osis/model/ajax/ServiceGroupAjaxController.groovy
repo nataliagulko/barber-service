@@ -12,7 +12,7 @@ import org.codehaus.groovy.grails.web.json.JSONArray
 
 class ServiceGroupAjaxController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [choose: ['POST', 'GET']]
     def springSecurityService
 
     def create() {
@@ -38,6 +38,45 @@ class ServiceGroupAjaxController {
                             "pointer": "data"
                         ]
                     ])
+                response.status = 422
+                render([errors: errors] as JSON)
+            }
+        } else {
+            render([errors: g.message(code: "service.create.not.admin")] as JSON)
+        }
+    }
+
+    def update() {
+        def errors = []
+        def principal = springSecurityService.principal
+        User user = User.get(principal.id)
+        if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+            def data = request.JSON.data
+            def attrs = data.attributes
+            if (data.type && data.type == "service-group") {
+                ServiceGroup serviceGroup = ServiceGroup.get(data.id)
+                serviceGroup.setName(attrs.name)
+                if (data.relationships?.masters) {
+                    List mastersIdsList = new ArrayList<Long>()
+                    data.relationships.masters.data.id.each{
+                        it -> mastersIdsList.add(Long.parseLong(it))
+                    }
+                    Set<User> masters = new HashSet<User>()
+                    masters.addAll(User.findAllByIdInList(mastersIdsList))
+                    serviceGroup.setMasters(masters)
+                }
+                serviceGroup.save(flush: true)
+                JSON.use('serviceGroups') {
+                    render([data: serviceGroup] as JSON)
+                }
+            } else {
+                errors.add([
+                        "status": 422,
+                        "detail": g.message(code: "service.create.params.null"),
+                        "source": [
+                                "pointer": "data"
+                        ]
+                ])
                 response.status = 422
                 render([errors: errors] as JSON)
             }
