@@ -114,7 +114,7 @@ export default Ember.Service.extend({
 		serviceGroupRecord.set("masters", masters);
 		serviceGroupRecord.save().then(function(record) {
 			servicesToGroup.forEach(function(item, ind) {
-				item.set("group", record);
+				item.set("serviceGroup", record);
 				item.set("serviceOrder", ind);
 				item.save();
 			});
