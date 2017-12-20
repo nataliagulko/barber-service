@@ -18,8 +18,8 @@ class ServiceGroupAjaxController {
     def create() {
         def errors = []
         def principal = springSecurityService.principal
-        User user = User.get(principal.id)
-        if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+        User currentUser = User.get(principal.id)
+        if (currentUser.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
             def data = request.JSON.data
             def attrs = data.attributes
             def masters = data.relationships.masters.data
