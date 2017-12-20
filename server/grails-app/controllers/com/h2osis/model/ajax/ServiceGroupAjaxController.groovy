@@ -22,9 +22,13 @@ class ServiceGroupAjaxController {
         if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
             def data = request.JSON.data
             def attrs = data.attributes
-            if (data.type && data.type == "service-group" && attrs.name && attrs.cost && attrs.time) {
+            def masters = data.relationships.masters.data
+            if (data.type && data.type == "service-group" && attrs.name && attrs.cost && attrs.time && masters) {
                 ServiceGroup serviceGroup = new ServiceGroup(name: attrs.name, cost: attrs.cost, time: attrs.time)
-                serviceGroup.addToMasters(user)
+                 masters.each {
+                    User user = User.get(it.id)
+                    serviceGroup.addToMasters(user)
+                } 
                 serviceGroup.save(flush: true)
                 serviceGroup.search().createIndexAndWait()
                 JSON.use('serviceGroups') {
