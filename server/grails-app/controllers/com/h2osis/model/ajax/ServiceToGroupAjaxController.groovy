@@ -12,7 +12,7 @@ import org.codehaus.groovy.grails.web.json.JSONArray
 
 class ServiceToGroupAjaxController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [choose: ['POST', 'GET']]
     def springSecurityService
 
     def create() {
@@ -26,7 +26,7 @@ class ServiceToGroupAjaxController {
             if (data.type && data.type == "service-to-group") {
                 ServiceToGroup serviceToGroup = new ServiceToGroup(serviceOrder: attrs.serviceOrder, serviceTimeout: attrs.serviceTimeout)
                 Service service = Service.get(relations.service.data.id)
-                ServiceGroup group = ServiceGroup.get(relations.group.data.id)
+                ServiceGroup group = ServiceGroup.get(relations.serviceGroup.data.id)
                 serviceToGroup.setService(service)
                 serviceToGroup.setGroup(group)
                 serviceToGroup.save(flush: true)
@@ -48,15 +48,51 @@ class ServiceToGroupAjaxController {
             render([errors: g.message(code: "service.create.not.admin")] as JSON)
         }
     }
+
+    def update() {
+        def errors = []
+        def principal = springSecurityService.principal
+        User user = User.get(principal.id)
+        if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+            def data = request.JSON.data
+            def attrs = data.attributes
+            def relations = data.relationships
+            if (data.type && data.type == "service-to-group") {
+                ServiceToGroup serviceToGroup = ServiceToGroup.get(data.id)
+                serviceToGroup.setServiceOrder(attrs.serviceOrder)
+                serviceToGroup.setServiceTimeout(Long.parseLong(attrs.serviceTimeout))
+                Service service = Service.get(relations.service.data.id)
+                ServiceGroup group = ServiceGroup.get(relations.serviceGroup.data.id)
+                serviceToGroup.setService(service)
+                serviceToGroup.setGroup(group)
+                serviceToGroup.save(flush: true)
+                JSON.use('serviceToGroups') {
+                    render([data: serviceToGroup] as JSON)
+                }
+            } else {
+                errors.add([
+                        "status": 422,
+                        "detail": g.message(code: "service.create.params.null"),
+                        "source": [
+                                "pointer": "data"
+                        ]
+                ])
+                response.status = 422
+                render([errors: errors] as JSON)
+            }
+        } else {
+            render([errors: g.message(code: "service.create.not.admin")] as JSON)
+        }
+    }
     
     def get() {
         def errors = []
         def data = request.JSON.data
         if (data.id) {
-            ServiceGroup serviceGroup = ServiceGroup.get(data.id)
-            if (serviceGroup) {
-                JSON.use('serviceGroups') {
-                    render([data: serviceGroup] as JSON)
+            ServiceToGroup serviceToGroup = ServiceToGroup.get(data.id)
+            if (serviceToGroup) {
+                JSON.use('serviceToGroups') {
+                    render([data: serviceToGroup] as JSON)
                 }
             } else {
                 errors.add([
@@ -134,6 +170,27 @@ class ServiceToGroupAjaxController {
             render([code: 0] as JSON)
         } else {
             render([msg: g.message(code: "params.id.null")] as JSON)
+        }
+    }
+
+    def destroy() {
+        def principal = springSecurityService.principal
+        User user = User.get(principal.id)
+        if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+            def data = request.JSON.data
+            if (data.type && data.id) {
+                ServiceToGroup serviceToGroup = ServiceToGroup.get(data.id)
+                if (serviceToGroup) {
+                    serviceToGroup.delete(flush: true)
+                    render([data: 0] as JSON)
+                } else {
+                    render([errors: g.message(code: "serviceToGroup.not.found")] as JSON)
+                }
+            } else {
+                render([errors: g.message(code: "serviceToGroup.get.id.null")] as JSON)
+            }
+        } else {
+            render([errors: g.message(code: "serviceToGroup.delete.not.admin")] as JSON)
         }
     }
 }
