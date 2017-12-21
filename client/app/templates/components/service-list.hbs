@@ -1,7 +1,7 @@
 <table id="service-list" class="table table-hover dataTables">
 	<thead>
 		<tr>
-			<th>Название</th>
+			<th class="col-sm-5">Название</th>
 			<th class="text-right">Стоимость</th>
 			<th class="text-right">Время</th>
 			<th class="text-right">Мастер</th>
@@ -14,7 +14,7 @@
 				<td>
 					{{service.name}}
 					{{#if service.partOfList}}
-						<span class="label label-info">подуслуга</span>
+						<span class="badge badge-info">подуслуга</span>
 					{{/if}}
 				</td>
 				<td class="text-right">

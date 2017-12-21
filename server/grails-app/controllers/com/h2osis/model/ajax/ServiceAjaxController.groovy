@@ -33,7 +33,7 @@ class ServiceAjaxController {
                         "source": [
                                 "pointer": "data"
                         ]
-                ])
+                    ])
                 response.status = 422
                 render([errors: errors] as JSON)
             }
@@ -44,7 +44,7 @@ class ServiceAjaxController {
                     "source": [
                             "pointer": "data"
                     ]
-            ])
+                ])
             response.status = 422
             render([errors: errors] as JSON)
         }
@@ -101,7 +101,7 @@ class ServiceAjaxController {
                         "source": [
                                 "pointer": "data"
                         ]
-                ])
+                    ])
                 response.status = 422
                 render([errors: errors] as JSON)
             }
@@ -120,10 +120,10 @@ class ServiceAjaxController {
                 Service service = Service.get(data.id)
                 if (service) {
                     if (attrs.cost) {
-                        service.setCost(Long.parseLong(attrs.cost))
+                        service.setCost(attrs.cost)
                     }
                     if (attrs.time) {
-                        service.setTime(Long.parseLong(attrs.time))
+                        service.setTime(attrs.time)
                     }
                     if (attrs.name) {
                         service.setName(attrs.name)
@@ -139,7 +139,9 @@ class ServiceAjaxController {
                     }
                     service.save(flush: true)
                     Service.search().createIndexAndWait()
-                    render([data: service] as JSON)
+                    JSON.use('services') {
+                        render([data: service] as JSON)
+                    }
                 } else {
                     render([errors: g.message(code: "service.create.params.null")] as JSON)
                 }

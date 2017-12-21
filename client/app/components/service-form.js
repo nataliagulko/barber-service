@@ -7,7 +7,7 @@ export default Ember.Component.extend({
 
 	didInsertElement() {
 		const serviceRecord = this.get("service"),
-			masters = serviceRecord.get("masters");
+			masters = serviceRecord.get("masters").toArray();
 
 		this.set("selectedMasters", masters);
 	},
@@ -18,6 +18,8 @@ export default Ember.Component.extend({
 			var serviceService = this.get("serviceService"),
 				selectedMasters = this.get("selectedMasters"),
 				_this = this;
+
+				console.log(selectedMasters);
 
 			serviceRecord
 				.validate()
