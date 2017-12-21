@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Service.extend({
 	store: Ember.inject.service("store"),
 	servicesToGroup: [],
-	selectedSubservices: [],
+	_selectedSubservices: [],
 	serviceToGroupTimeout: 0,
 	isRowAddingDisabled: false,
 
@@ -15,11 +15,20 @@ export default Ember.Service.extend({
 		this._changeIsRowAddingDisabled();
 	},
 
-	showSubservices: function(serviceGroupRecord) {
-		var servicesToGroup = this.get("servicesToGroup");
+	showSubservices: function(serviceGroupRecord, _this) {
+		var servicesToGroup = serviceGroupRecord
+			.get("serviceToGroups")
+			.toArray();
 
 		if (servicesToGroup.get("length") > 0) {
-
+			servicesToGroup = servicesToGroup.sortBy("serviceOrder");
+			servicesToGroup.forEach(function(it) {
+				// console.log(it.get("data.serviceOrder"));
+			});
+			this.set("_selectedSubservices", servicesToGroup);
+			this.set("servicesToGroup", servicesToGroup);
+		} else {
+			_this.send("addServiceToGroup");
 		}
 	},
 
@@ -28,7 +37,7 @@ export default Ember.Service.extend({
 			return;
 		}
 
-		var subservices = this.get("selectedSubservices");
+		var subservices = this.get("_selectedSubservices");
 
 		serviceToGroup.set("service", subservice);
 		subservices.pushObject(subservice);
@@ -74,9 +83,9 @@ export default Ember.Service.extend({
 
 		var isRowAddingDisabled = this.get("isRowAddingDisabled"),
 			servicesToGroup = this.get("servicesToGroup"),
-			selectedSubservices = this.get("selectedSubservices");
+			_selectedSubservices = this.get("_selectedSubservices");
 
-		if (selectedSubservices.length > 0 && servicesToGroup.length > 0) {
+		if (_selectedSubservices.length > 0 && servicesToGroup.length > 0) {
 			isRowAddingDisabled = false;
 		} else {
 			isRowAddingDisabled = true;

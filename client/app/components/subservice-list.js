@@ -7,8 +7,10 @@ export default Ember.Component.extend({
 	isRowAddingDisabled: Ember.computed.readOnly('serviceService.isRowAddingDisabled'),
 
 	didInsertElement: function() {
-		// add first empty row
-		this.send("addServiceToGroup");
+		var serviceGroup = this.get("serviceGroup"),
+			serviceService = this.get("serviceService");
+
+		serviceService.showSubservices(serviceGroup, this);
 	},
 
 	actions: {
@@ -36,6 +38,13 @@ export default Ember.Component.extend({
 			var serviceGroup = this.get("serviceGroup");
 
 			serviceService.inputServiceToGroupTimeout(serviceGroup);
+		},
+
+		selectSubservice: function(serviceToGroup, subservice) {
+			var serviceService = this.get("serviceService"),
+				serviceGroup = this.get("serviceGroup");
+
+			serviceService.selectSubservice(subservice, serviceToGroup, serviceGroup);
 		}
 	}
 });

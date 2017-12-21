@@ -1,9 +1,0 @@
-{{#power-select options=subservices selected=selectedSubservice searchField="name" onchange=(action "selectSubservice") as |subservice| }}
-	{{subservice.name}}
-	<small class="font-grey-silver">
-		{{subservice.cost}}<i class="fa fa-rouble"></i>,
-	</small> 
-	<small class="font-grey-silver">
-		{{subservice.time}}&nbsp;мин.
-	</small>
-{{/power-select}}

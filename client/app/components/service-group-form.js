@@ -8,15 +8,15 @@ export default Ember.Component.extend({
 
 	didInsertElement() {
 		const serviceGroupRecord = this.get("serviceGroup"),
-			masters = serviceGroupRecord.get("masters"),
-			serviceService = this.get("serviceService");
+			masters = serviceGroupRecord.get("masters");
 
 		this.set("selectedMasters", masters);
-		serviceService.showSubservices();
 	},
 
 	actions: {
 		save: function() {
+			// console.log(this.get("serviceGroup").get("validations.errors"));
+			// return;
 			const serviceGroupRecord = this.get("serviceGroup");
 			var serviceService = this.get("serviceService"),
 				selectedMasters = this.get("selectedMasters"),
