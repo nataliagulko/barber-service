@@ -15,6 +15,7 @@ class ServiceAjaxController {
     def springSecurityService
     SearchService searchService
     static allowedMethods = [choose: ['POST', 'GET']]
+    def sessionFactory
 
     def get() {
         def errors = []
@@ -161,23 +162,40 @@ class ServiceAjaxController {
                 Service service = Service.get(data.id)
                 if (service) {
                     if (ServiceToGroup.countByService(service)) {
-                        render([errors: g.message(code: "serviceGroup.service.is.subservice")] as JSON)
+                        ServiceGroup parent = ServiceToGroup.findByService(service).group
+                        response.status = 422
+                        render([errors: message(code: "serviceGroup.service.is.subservice", args: [parent.name, parent.id])] as JSON)
                     } else {
-                        if (service.class == com.h2osis.model.ServiceGroup.class) {
-                            ServiceGroup serviceGroup = ServiceGroup.get(data.id)
-                            ServiceToGroup.deleteAll(ServiceToGroup.findAllByGroup(serviceGroup))
+                        final session = sessionFactory.currentSession
+                        final String query = "select ticket_services_id from  ticket_service where service_id = $service.id limit 1"
+                        final sqlQuery = session.createSQLQuery(query)
+                        final ticketByService = sqlQuery.with {
+                                                      list()
                         }
-                        service.delete(flush: true)
-                        Service.search().createIndexAndWait()
-                        render([data: 0] as JSON)
+                        if(ticketByService){
+                            response.status = 422
+                            render([errors: message(code: "service.in.tickets")] as JSON)
+                        }else {
+                            if (service.class == com.h2osis.model.ServiceGroup.class) {
+                                ServiceGroup serviceGroup = ServiceGroup.get(data.id)
+                                ServiceToGroup.deleteAll(ServiceToGroup.findAllByGroup(serviceGroup))
+                            }
+                            service.delete(flush: true)
+                            Service.search().createIndexAndWait()
+                            response.status = 204
+                            render([data: 0] as JSON)
+                        }
                     }
                 } else {
+                    response.status = 422
                     render([errors: g.message(code: "service.get.user.not.found")] as JSON)
                 }
             } else {
+                response.status = 422
                 render([errors: g.message(code: "service.get.id.null")] as JSON)
             }
         } else {
+            response.status = 422
             render([errors: g.message(code: "service.delete.not.admin")] as JSON)
         }
     }

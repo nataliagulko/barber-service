@@ -6,6 +6,7 @@ import com.h2osis.constant.AuthKeys
 import com.h2osis.model.Service
 import com.h2osis.model.ServiceGroup
 import com.h2osis.model.ServiceToGroup
+import com.h2osis.model.Ticket
 import grails.converters.JSON
 import grails.transaction.Transactional
 
@@ -13,6 +14,7 @@ class ServiceGroupAjaxController {
 
     static allowedMethods = [choose: ['POST', 'GET']]
     def springSecurityService
+    def sessionFactory
 
     def create() {
         def errors = []
@@ -189,17 +191,32 @@ class ServiceGroupAjaxController {
             if (data.type && data.id) {
                 ServiceGroup serviceGroup = ServiceGroup.get(data.id)
                 if (serviceGroup) {
-                    ServiceToGroup.deleteAll(ServiceToGroup.findAllByGroup(serviceGroup))
-                    serviceGroup.delete(flush: true)
-                    Service.search().createIndexAndWait()
-                    render([data: 0] as JSON)
+                    final session = sessionFactory.currentSession
+                    final String query = "select ticket_services_id from  ticket_service where service_id = $serviceGroup.id limit 1"
+                    final sqlQuery = session.createSQLQuery(query)
+                    final ticketByService = sqlQuery.with {
+                        list()
+                    }
+                    if (ticketByService) {
+                        response.status = 422
+                        render([errors: message(code: "service.in.tickets")] as JSON)
+                    } else {
+                        ServiceToGroup.deleteAll(ServiceToGroup.findAllByGroup(serviceGroup))
+                        serviceGroup.delete(flush: true)
+                        Service.search().createIndexAndWait()
+                        response.status = 204
+                        render([data: 0] as JSON)
+                    }
                 } else {
+                    response.status = 422
                     render([errors: g.message(code: "service.get.user.not.found")] as JSON)
                 }
             } else {
+                response.status = 422
                 render([errors: g.message(code: "service.get.id.null")] as JSON)
             }
         } else {
+            response.status = 422
             render([errors: g.message(code: "service.delete.not.admin")] as JSON)
         }
     }
