@@ -6,7 +6,6 @@ import com.h2osis.constant.AuthKeys
 import com.h2osis.model.Service
 import com.h2osis.utils.SearchService
 import grails.converters.JSON
-import org.codehaus.groovy.grails.web.json.JSONArray
 
 class ServiceAjaxController {
 
@@ -28,9 +27,9 @@ class ServiceAjaxController {
                         "status": 422,
                         "detail": g.message(code: "service.get.user.not.found"),
                         "source": [
-                            "pointer": "data"
+                                "pointer": "data"
                         ]
-                    ])
+                ])
                 response.status = 422
                 render([errors: errors] as JSON)
             }
@@ -39,9 +38,9 @@ class ServiceAjaxController {
                     "status": 422,
                     "detail": g.message(code: "service.get.id.null"),
                     "source": [
-                        "pointer": "data"
+                            "pointer": "data"
                     ]
-                ])
+            ])
             response.status = 422
             render([errors: errors] as JSON)
         }
@@ -81,7 +80,7 @@ class ServiceAjaxController {
                 masters.each {
                     User user = User.get(it.id)
                     service.addToMasters(user)
-                }                
+                }
                 service.save(flush: true)
                 Service.search().createIndexAndWait()
                 JSON.use('services') {
@@ -92,9 +91,9 @@ class ServiceAjaxController {
                         "status": 422,
                         "detail": g.message(code: "service.create.params.null"),
                         "source": [
-                            "pointer": "data"
+                                "pointer": "data"
                         ]
-                    ])
+                ])
                 response.status = 422
                 render([errors: errors] as JSON)
             }
@@ -123,7 +122,7 @@ class ServiceAjaxController {
                     }
                     if (data.relationships.masters) {
                         List mastersIdsList = new ArrayList<Long>()
-                        data.relationships.masters.data.id.each{
+                        data.relationships.masters.data.id.each {
                             it -> mastersIdsList.add(Long.parseLong(it))
                         }
                         Set<User> masters = new HashSet<User>()
@@ -173,7 +172,7 @@ class ServiceAjaxController {
             def query = request.JSON.query
             if (data) {
                 def attrs = data.attributes
-                
+
                 if (attrs.name) {
                     eq("name", attrs.name)
                 }
@@ -210,7 +209,7 @@ class ServiceAjaxController {
         }
         if (serviceList) {
             def query = request.JSON.query
-            
+
             if (query && query.onlySimpleService == true) {
                 serviceList = serviceList.findAll {
                     (it.class == Service.class)
