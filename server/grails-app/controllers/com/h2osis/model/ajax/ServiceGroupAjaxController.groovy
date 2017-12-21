@@ -1,14 +1,13 @@
 package com.h2osis.model.ajax
 
+import com.h2osis.auth.Role
+import com.h2osis.auth.User
+import com.h2osis.constant.AuthKeys
 import com.h2osis.model.Service
 import com.h2osis.model.ServiceGroup
 import com.h2osis.model.ServiceToGroup
 import grails.converters.JSON
 import grails.transaction.Transactional
-import com.h2osis.auth.User
-import com.h2osis.auth.Role
-import com.h2osis.constant.AuthKeys
-import org.codehaus.groovy.grails.web.json.JSONArray
 
 class ServiceGroupAjaxController {
 
@@ -26,13 +25,13 @@ class ServiceGroupAjaxController {
                 ServiceGroup serviceGroup = new ServiceGroup(name: attrs.name, cost: attrs.cost, time: attrs.time)
                 if (data.relationships.masters) {
                     List mastersIdsList = new ArrayList<Long>()
-                    data.relationships.masters.data.id.each{
+                    data.relationships.masters.data.id.each {
                         it -> mastersIdsList.add(it)
                     }
                     Set<User> masters = new HashSet<User>()
                     masters.addAll(User.findAllByIdInList(mastersIdsList))
                     serviceGroup.setMasters(masters)
-                } 
+                }
                 serviceGroup.save(flush: true)
                 serviceGroup.search().createIndexAndWait()
                 JSON.use('serviceGroups') {
@@ -43,9 +42,9 @@ class ServiceGroupAjaxController {
                         "status": 422,
                         "detail": g.message(code: "service.create.params.null"),
                         "source": [
-                            "pointer": "data"
+                                "pointer": "data"
                         ]
-                    ])
+                ])
                 response.status = 422
                 render([errors: errors] as JSON)
             }
@@ -66,7 +65,7 @@ class ServiceGroupAjaxController {
                 serviceGroup.setName(attrs.name)
                 if (data.relationships?.masters) {
                     List mastersIdsList = new ArrayList<Long>()
-                    data.relationships.masters.data.id.each{
+                    data.relationships.masters.data.id.each {
                         it -> mastersIdsList.add(it)
                     }
                     Set<User> masters = new HashSet<User>()
@@ -92,7 +91,7 @@ class ServiceGroupAjaxController {
             render([errors: g.message(code: "service.create.not.admin")] as JSON)
         }
     }
-    
+
     def get() {
         def errors = []
         def data = request.JSON.data
@@ -107,9 +106,9 @@ class ServiceGroupAjaxController {
                         "status": 422,
                         "detail": g.message(code: "service.get.user.not.found"),
                         "source": [
-                            "pointer": "data"
+                                "pointer": "data"
                         ]
-                    ])
+                ])
                 response.status = 422
                 render([errors: errors] as JSON)
             }
@@ -118,9 +117,9 @@ class ServiceGroupAjaxController {
                     "status": 422,
                     "detail": g.message(code: "service.get.id.null"),
                     "source": [
-                        "pointer": "data"
+                            "pointer": "data"
                     ]
-                ])
+            ])
             response.status = 422
             render([errors: errors] as JSON)
         }
@@ -178,6 +177,30 @@ class ServiceGroupAjaxController {
             render([code: 0] as JSON)
         } else {
             render([msg: g.message(code: "params.id.null")] as JSON)
+        }
+    }
+
+    @Transactional
+    def destroy() {
+        def principal = springSecurityService.principal
+        User user = User.get(principal.id)
+        if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+            def data = request.JSON.data
+            if (data.type && data.id) {
+                ServiceGroup serviceGroup = ServiceGroup.get(data.id)
+                if (serviceGroup) {
+                    ServiceToGroup.deleteAll(ServiceToGroup.findAllByGroup(serviceGroup))
+                    serviceGroup.delete(flush: true)
+                    Service.search().createIndexAndWait()
+                    render([data: 0] as JSON)
+                } else {
+                    render([errors: g.message(code: "service.get.user.not.found")] as JSON)
+                }
+            } else {
+                render([errors: g.message(code: "service.get.id.null")] as JSON)
+            }
+        } else {
+            render([errors: g.message(code: "service.delete.not.admin")] as JSON)
         }
     }
 }
