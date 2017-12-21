@@ -76,11 +76,11 @@ class ServiceAjaxController {
             def data = request.JSON.data
             def attrs = data.attributes
             if (data.type && data.type == "service" && attrs.name && attrs.cost && attrs.time) {
-                Service service = new Service(name: attrs.name, cost: attrs.cost, time: attrs.time)
+                Service service = new Service(name: attrs.name, cost: attrs.cost, time: attrs.time, partOfList: attrs.partOfList)
                 if (data.relationships.masters) {
                     List mastersIdsList = new ArrayList<Long>()
                     data.relationships.masters.data.id.each{
-                        it -> mastersIdsList.add(Long.parseLong(it))
+                        it -> mastersIdsList.add(it)
                     }
                     Set<User> masters = new HashSet<User>()
                     masters.addAll(User.findAllByIdInList(mastersIdsList))
@@ -128,7 +128,7 @@ class ServiceAjaxController {
                     if (data.relationships.masters) {
                         List mastersIdsList = new ArrayList<Long>()
                         data.relationships.masters.data.id.each{
-                            it -> mastersIdsList.add(Long.parseLong(it))
+                            it -> mastersIdsList.add(it)
                         }
                         Set<User> masters = new HashSet<User>()
                         masters.addAll(User.findAllByIdInList(mastersIdsList))

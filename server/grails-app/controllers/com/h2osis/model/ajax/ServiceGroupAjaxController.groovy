@@ -27,11 +27,11 @@ class ServiceGroupAjaxController {
                 if (data.relationships.masters) {
                     List mastersIdsList = new ArrayList<Long>()
                     data.relationships.masters.data.id.each{
-                        it -> mastersIdsList.add(Long.parseLong(it))
+                        it -> mastersIdsList.add(it)
                     }
                     Set<User> masters = new HashSet<User>()
                     masters.addAll(User.findAllByIdInList(mastersIdsList))
-                    service.setMasters(masters)
+                    serviceGroup.setMasters(masters)
                 } 
                 serviceGroup.save(flush: true)
                 serviceGroup.search().createIndexAndWait()
@@ -67,7 +67,7 @@ class ServiceGroupAjaxController {
                 if (data.relationships?.masters) {
                     List mastersIdsList = new ArrayList<Long>()
                     data.relationships.masters.data.id.each{
-                        it -> mastersIdsList.add(Long.parseLong(it))
+                        it -> mastersIdsList.add(it)
                     }
                     Set<User> masters = new HashSet<User>()
                     masters.addAll(User.findAllByIdInList(mastersIdsList))

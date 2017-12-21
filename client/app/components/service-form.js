@@ -16,13 +16,14 @@ export default Ember.Component.extend({
 		save: function() {
 			const serviceRecord = this.get("service");
 			var serviceService = this.get("serviceService"),
-				selectedMasters = this.get("selectedMasters");
+				selectedMasters = this.get("selectedMasters"),
+				_this = this;
 
 			serviceRecord
 				.validate()
 				.then(({ validations }) => {
 					if (validations.get('isValid')) {
-						serviceService.saveService(serviceRecord, selectedMasters);
+						serviceService.saveService(serviceRecord, selectedMasters, _this);
 					}
 				});
 

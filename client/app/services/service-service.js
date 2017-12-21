@@ -103,21 +103,28 @@ export default Ember.Service.extend({
 		this.set("serviceToGroupTimeout", serviceToGroupTimeout);
 	},
 
-	saveService: function(serviceRecord, masters) {
+	saveService: function(serviceRecord, masters, _this) {
 		serviceRecord.set("masters", masters);
-		serviceRecord.save();
+		serviceRecord
+			.save()
+			.then(() => {
+				_this.get("router").transitionTo('service');
+			});
 	},
 
-	saveServiceGroup: function(serviceGroupRecord, masters) {
+	saveServiceGroup: function(serviceGroupRecord, masters, _this) {
 		const servicesToGroup = this.get("servicesToGroup");
 
 		serviceGroupRecord.set("masters", masters);
-		serviceGroupRecord.save().then(function(record) {
-			servicesToGroup.forEach(function(item, ind) {
-				item.set("serviceGroup", record);
-				item.set("serviceOrder", ind);
-				item.save();
+		serviceGroupRecord
+			.save()
+			.then(function(record) {
+				servicesToGroup.forEach(function(item, ind) {
+					item.set("serviceGroup", record);
+					item.set("serviceOrder", ind);
+					item.save();
+				});
+				_this.get("router").transitionTo('service');
 			});
-		});
 	}
 });
