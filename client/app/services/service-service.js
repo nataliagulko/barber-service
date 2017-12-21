@@ -15,6 +15,14 @@ export default Ember.Service.extend({
 		this._changeIsRowAddingDisabled();
 	},
 
+	showSubservices: function(serviceGroupRecord) {
+		var servicesToGroup = this.get("servicesToGroup");
+
+		if (servicesToGroup.get("length") > 0) {
+
+		}
+	},
+
 	selectSubservice: function(subservice, serviceToGroup, serviceGroup) {
 		if (typeof subservice === "undefined") {
 			return;

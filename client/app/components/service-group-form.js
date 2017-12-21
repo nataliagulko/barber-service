@@ -8,9 +8,11 @@ export default Ember.Component.extend({
 
 	didInsertElement() {
 		const serviceGroupRecord = this.get("serviceGroup"),
-			masters = serviceGroupRecord.get("masters");
+			masters = serviceGroupRecord.get("masters"),
+			serviceService = this.get("serviceService");
 
 		this.set("selectedMasters", masters);
+		serviceService.showSubservices();
 	},
 
 	actions: {
