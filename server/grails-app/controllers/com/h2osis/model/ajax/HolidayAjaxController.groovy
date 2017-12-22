@@ -13,6 +13,8 @@ import com.h2osis.utils.SlotsService
 import grails.converters.JSON
 import grails.transaction.Transactional
 import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
+import org.joda.time.format.DateTimeFormatter
 
 class HolidayAjaxController {
 
@@ -36,16 +38,29 @@ class HolidayAjaxController {
                     && attrs.dateFrom
                     && attrs.dateTo) {
                 Holiday holiday = new Holiday()
-                DateTime dateFrom = DateTime.parse(attrs.dateFrom)
-                DateTime dateTo = DateTime.parse(attrs.dateTo)
-                holiday.setDateFrom(dateFrom)
-                holiday.setDateTo(dateTo)
+                DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.mm.yyyy")
+                DateTime dateFrom = formatter.parseDateTime(attrs.dateFrom)
+                DateTime dateTo = formatter.parseDateTime(attrs.dateTo)
+                holiday.setDateFrom(dateFrom.toDate())
+                holiday.setDateTo(dateTo.toDate())
                 User user = User.get(master.id)
-                holiday.setMaster(user)
-                holiday.save(flush: true)
-                Service.search().createIndexAndWait()
-                JSON.use('holidays') {
-                    render([data: holiday] as JSON)
+                if (user) {
+                    holiday.setMaster(user)
+                    holiday.save(flush: true)
+                    Service.search().createIndexAndWait()
+                    JSON.use('holidays') {
+                        render([data: holiday] as JSON)
+                    }
+                } else {
+                    errors.add([
+                            "status": 422,
+                            "detail": g.message(code: "holiday.params.master.not.found"),
+                            "source": [
+                                    "pointer": "data"
+                            ]
+                    ])
+                    response.status = 422
+                    render([errors: errors] as JSON)
                 }
             } else {
                 errors.add([
@@ -107,8 +122,11 @@ class HolidayAjaxController {
             if (data.type && data.type == "holiday"
                     && data.id) {
                 Holiday holiday = Holiday.get(data.id)
-                holiday.setDateFrom(attrs.dateFrom)
-                holiday.setDateTo(attrs.dateTo)
+                DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.mm.yyyy")
+                DateTime dateFrom = formatter.parseDateTime(attrs.dateFrom)
+                DateTime dateTo = formatter.parseDateTime(attrs.dateTo)
+                holiday.setDateFrom(dateFrom.toDate())
+                holiday.setDateTo(dateTo.toDate())
                 masters.each {
                     User user = User.get(it.id)
                     holiday.setMaster(user)

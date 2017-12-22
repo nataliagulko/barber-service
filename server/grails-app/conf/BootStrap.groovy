@@ -437,7 +437,7 @@ class BootStrap {
                 return returnArray
             }
         }
-        new JSONRenderConfig().init
+        new JSONRenderConfig().init()
     }
     def destroy = {
     }

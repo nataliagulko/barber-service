@@ -20,7 +20,7 @@ class JSONRenderConfig {
 
                 def relationships = [:]
                 def mastersDetails = [:]
-                mastersDetails['data'] = it.masters
+                mastersDetails['data'] = it.master
                 relationships['masters'] = mastersDetails
 
                 returnArray['relationships'] = relationships
