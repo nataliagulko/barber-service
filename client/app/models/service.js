@@ -31,5 +31,4 @@ export default DS.Model.extend(Validations, {
 		return short;
 	}),
 	masters: DS.hasMany('master'),
-	serviceToGroup: DS.belongsTo("serviceToGroup", { inverse: null }),
 });
