@@ -33,7 +33,7 @@ class ServiceAjaxController {
                         "source": [
                                 "pointer": "data"
                         ]
-                    ])
+                ])
                 response.status = 422
                 render([errors: errors] as JSON)
             }
@@ -44,7 +44,7 @@ class ServiceAjaxController {
                     "source": [
                             "pointer": "data"
                     ]
-                ])
+            ])
             response.status = 422
             render([errors: errors] as JSON)
         }
@@ -101,7 +101,7 @@ class ServiceAjaxController {
                         "source": [
                                 "pointer": "data"
                         ]
-                    ])
+                ])
                 response.status = 422
                 render([errors: errors] as JSON)
             }
