@@ -34,9 +34,9 @@ class HolidayAjaxController {
             def attrs = data.attributes
             def master = data.relationships.master.data
             if (data.type && data.type == "holiday"
-                    && data.relationships.master.data.id
-                    && attrs.dateFrom
-                    && attrs.dateTo) {
+                && data.relationships.master.data.id
+                && attrs.dateFrom
+                && attrs.dateTo) {
                 Holiday holiday = new Holiday()
                 DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.mm.yyyy")
                 DateTime dateFrom = formatter.parseDateTime(attrs.dateFrom)
@@ -58,7 +58,7 @@ class HolidayAjaxController {
                             "source": [
                                     "pointer": "data"
                             ]
-                    ])
+                        ])
                     response.status = 422
                     render([errors: errors] as JSON)
                 }
@@ -69,7 +69,7 @@ class HolidayAjaxController {
                         "source": [
                                 "pointer": "data"
                         ]
-                ])
+                    ])
                 response.status = 422
                 render([errors: errors] as JSON)
             }
@@ -94,7 +94,7 @@ class HolidayAjaxController {
                         "source": [
                                 "pointer": "data"
                         ]
-                ])
+                    ])
                 response.status = 422
                 render([errors: errors] as JSON)
             }
@@ -105,7 +105,7 @@ class HolidayAjaxController {
                     "source": [
                             "pointer": "data"
                     ]
-            ])
+                ])
             response.status = 422
             render([errors: errors] as JSON)
         }
@@ -120,7 +120,7 @@ class HolidayAjaxController {
             def attrs = data.attributes
             def masters = data.relationships.masters.data
             if (data.type && data.type == "holiday"
-                    && data.id) {
+                && data.id) {
                 Holiday holiday = Holiday.get(data.id)
                 DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.mm.yyyy")
                 DateTime dateFrom = formatter.parseDateTime(attrs.dateFrom)
@@ -143,7 +143,7 @@ class HolidayAjaxController {
                         "source": [
                                 "pointer": "data"
                         ]
-                ])
+                    ])
                 response.status = 422
                 render([errors: errors] as JSON)
             }
@@ -168,8 +168,11 @@ class HolidayAjaxController {
     }
 
     def list() {
-        if (params.id) {
-            User user = User.get(params.id)
+        def data = request.JSON.data
+        def query = request.JSON.query
+        def attrs = data.attributes
+        if (data.id) {
+            User user = User.get(query.masterId)
             if (user) {
                 Set<WorkTime> workTimes = WorkTime.findAllByMaster(user)
                 Set<Integer> workDays = new HashSet<Integer>()
@@ -180,9 +183,9 @@ class HolidayAjaxController {
                 nonWorkDays.each { it++ }
 
                 List<Holiday> holidays =
-                        Holiday.findAllByMasterAndCommentNotEqual(user, "maxTime", [sort: 'dateFrom'])?.plus(
-                                Holiday.findAllByMasterAndCommentAndMaxTimeLessThan(user, "maxTime", params.time ? params.time : slotsService.getDuration(1L),
-                                        [sort: 'dateFrom']))?.sort { a, b -> a.dateFrom <=> b.dateFrom }
+                Holiday.findAllByMasterAndCommentNotEqual(user, "maxTime", [sort: 'dateFrom'])?.plus(
+                    Holiday.findAllByMasterAndCommentAndMaxTimeLessThan(user, "maxTime", query.time ? query.time : slotsService.getDuration(1L),
+                        [sort: 'dateFrom']))?.sort { a, b -> a.dateFrom <=> b.dateFrom }
                 holidays?.each {
                     it.master.setPassword(null)
                 }
