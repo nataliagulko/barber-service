@@ -38,20 +38,33 @@ export default Ember.Service.extend({
 
     toggleMaster(master, event) {
         var selectedItem = $(event.target).closest('.tile'),
-            selectedMaster = this.get("selectedMaster");
+            selectedMaster = this.get("selectedMaster"),
+            isSameMaster = selectedMaster === master;
 
-        if (selectedMaster) {
-            this.set("selectedMaster", null)
+        if (selectedMaster && isSameMaster) {
+            this.set("selectedMaster", null);
             this.set("servicesByMaster", []);
+            
             $('.ticket-info-master-top').addClass('hidden');
         }
+        else if(selectedMaster && !isSameMaster) {
+            this._setSelectedMaster(master);
+
+            $('.tile').each(function () {
+                $(this).removeClass('selected');
+            });          
+        }
         else {
-            this.set("selectedMaster", master)
-            this._getServicesByMaster(master);
-            $('.ticket-info-master-top').removeClass('hidden');
+            this._setSelectedMaster(master);
         }
 
         $(selectedItem).toggleClass('selected');
+    },
+
+    _setSelectedMaster(master) {
+        this.set("selectedMaster", master);
+        this._getServicesByMaster(master);
+        $('.ticket-info-master-top').removeClass('hidden');
     },
 
     _getServicesByMaster(master) {
