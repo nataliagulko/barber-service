@@ -57,7 +57,7 @@ export default Ember.Service.extend({
 
         var services = store.query("service", {
             query: {
-                master: master
+                masterId: master.id
             }
         });
 
