@@ -19,8 +19,6 @@ export default Ember.Component.extend({
 				selectedMasters = this.get("selectedMasters"),
 				_this = this;
 
-				console.log(selectedMasters);
-
 			serviceRecord
 				.validate()
 				.then(({ validations }) => {
