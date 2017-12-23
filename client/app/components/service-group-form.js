@@ -2,34 +2,33 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
 	store: Ember.inject.service("store"),
-	select2Service: Ember.inject.service("select2-service"),
 	serviceService: Ember.inject.service("service-service"),
 	servicesToGroup: Ember.computed.readOnly('serviceService.servicesToGroup'),
-	selectedMasters: Ember.computed.readOnly('serviceService.selectedMasters'),
+	selectedMasters: [],
 
-	didInsertElement: function() {
-		var select2Service = this.get("select2Service");
-		select2Service.initSelect2();
+	didInsertElement() {
+		const serviceGroupRecord = this.get("serviceGroup"),
+			masters = serviceGroupRecord.get("masters");
+
+		this.set("selectedMasters", masters);
 	},
 
 	actions: {
 		save: function() {
+			// console.log(this.get("serviceGroup").get("validations.errors"));
+			// return;
 			const serviceGroupRecord = this.get("serviceGroup");
-			var serviceService = this.get("serviceService");
+			var serviceService = this.get("serviceService"),
+				selectedMasters = this.get("selectedMasters"),
+				_this = this;
 
 			serviceGroupRecord
 				.validate()
 				.then(({ validations }) => {
 					if (validations.get('isValid')) {
-						serviceService.saveServiceGroup(serviceGroupRecord);
+						serviceService.saveServiceGroup(serviceGroupRecord, selectedMasters, _this);
 					}
 				});
-		},
-
-		selectMaster: function(masterId) {
-			var serviceService = this.get("serviceService");
-
-			serviceService.selectMaster(masterId);
 		}
 	}
 });

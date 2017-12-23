@@ -23,6 +23,12 @@ export default DS.Model.extend(Validations, {
 		defaultValue() { return 0; }
 	}),
 	partOfList: DS.attr('boolean'),
+	extension: DS.attr('string'),
+	extensionShort: Ember.computed('extension', function() {
+		let ext = this.get('extension').split("."),
+			short = ext[ext.length - 1];
+
+		return short;
+	}),
 	masters: DS.hasMany('master'),
-	serviceToGroup: DS.belongsTo("serviceToGroup", { inverse: null }),
 });

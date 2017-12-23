@@ -7,7 +7,10 @@ const Validations = buildValidations({
     secondname: validator('presence', true),
     phone: validator('presence', true),
     email: [
-        validator('format', { type: 'email' })
+        validator('format', {
+            type: 'email',
+            allowBlank: true
+        })
     ],
     password: [
         // validator('presence', true),

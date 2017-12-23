@@ -51,8 +51,6 @@ module.exports = function(defaults) {
   app.import("vendor/plugins/bootstrap-select/js/i18n/defaults-ru_RU.js");
   app.import("vendor/plugins/pickadate/translations/ru_RU.js");
   app.import("vendor/plugins/bootbox/bootbox.min.js");
-  app.import("vendor/plugins/select2/js/select2.js");
-  app.import("vendor/plugins/select2/js/i18n/ru.js");
 
   // Plugins' scripts
   app.import("vendor/scripts/app.js");

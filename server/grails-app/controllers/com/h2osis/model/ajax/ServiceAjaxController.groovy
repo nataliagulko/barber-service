@@ -4,15 +4,18 @@ import com.h2osis.auth.Role
 import com.h2osis.auth.User
 import com.h2osis.constant.AuthKeys
 import com.h2osis.model.Service
+import com.h2osis.model.ServiceGroup
+import com.h2osis.model.ServiceToGroup
 import com.h2osis.utils.SearchService
 import grails.converters.JSON
-import org.codehaus.groovy.grails.web.json.JSONArray
+import grails.transaction.Transactional
 
 class ServiceAjaxController {
 
     def springSecurityService
     SearchService searchService
     static allowedMethods = [choose: ['POST', 'GET']]
+    def sessionFactory
 
     def get() {
         def errors = []
@@ -28,7 +31,7 @@ class ServiceAjaxController {
                         "status": 422,
                         "detail": g.message(code: "service.get.user.not.found"),
                         "source": [
-                            "pointer": "data"
+                                "pointer": "data"
                         ]
                     ])
                 response.status = 422
@@ -39,7 +42,7 @@ class ServiceAjaxController {
                     "status": 422,
                     "detail": g.message(code: "service.get.id.null"),
                     "source": [
-                        "pointer": "data"
+                            "pointer": "data"
                     ]
                 ])
             response.status = 422
@@ -71,13 +74,21 @@ class ServiceAjaxController {
     def create() {
         def errors = []
         def principal = springSecurityService.principal
-        User user = User.get(principal.id)
-        if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+        User currentUser = User.get(principal.id)
+        if (currentUser.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
             def data = request.JSON.data
             def attrs = data.attributes
             if (data.type && data.type == "service" && attrs.name && attrs.cost && attrs.time) {
-                Service service = new Service(name: attrs.name, cost: attrs.cost, time: attrs.time)
-                service.addToMasters(user)
+                Service service = new Service(name: attrs.name, cost: attrs.cost, time: attrs.time, partOfList: attrs.partOfList)
+                if (data.relationships.masters) {
+                    List mastersIdsList = new ArrayList<Long>()
+                    data.relationships.masters.data.id.each {
+                        it -> mastersIdsList.add(it)
+                    }
+                    Set<User> masters = new HashSet<User>()
+                    masters.addAll(User.findAllByIdInList(mastersIdsList))
+                    service.setMasters(masters)
+                }
                 service.save(flush: true)
                 Service.search().createIndexAndWait()
                 JSON.use('services') {
@@ -88,7 +99,7 @@ class ServiceAjaxController {
                         "status": 422,
                         "detail": g.message(code: "service.create.params.null"),
                         "source": [
-                            "pointer": "data"
+                                "pointer": "data"
                         ]
                     ])
                 response.status = 422
@@ -109,27 +120,28 @@ class ServiceAjaxController {
                 Service service = Service.get(data.id)
                 if (service) {
                     if (attrs.cost) {
-                        service.setCost(Long.parseLong(attrs.cost))
+                        service.setCost(attrs.cost)
                     }
                     if (attrs.time) {
-                        service.setTime(Long.parseLong(attrs.time))
+                        service.setTime(attrs.time)
                     }
                     if (attrs.name) {
                         service.setName(attrs.name)
                     }
-                    if (attrs.masters) {
-                        JSONArray mastersJSON = JSON.parse(attrs.masters)
-                        List mastersList = new ArrayList<Long>()
-                        mastersJSON.each {
-                            mastersList.add(new Integer(it).longValue())
+                    if (data.relationships.masters) {
+                        List mastersIdsList = new ArrayList<Long>()
+                        data.relationships.masters.data.id.each {
+                            it -> mastersIdsList.add(it)
                         }
                         Set<User> masters = new HashSet<User>()
-                        masters.addAll(User.findAllByIdInList(mastersList))
+                        masters.addAll(User.findAllByIdInList(mastersIdsList))
                         service.setMasters(masters)
                     }
                     service.save(flush: true)
                     Service.search().createIndexAndWait()
-                    render([data: service] as JSON)
+                    JSON.use('services') {
+                        render([data: service] as JSON)
+                    }
                 } else {
                     render([errors: g.message(code: "service.create.params.null")] as JSON)
                 }
@@ -142,24 +154,50 @@ class ServiceAjaxController {
         }
     }
 
+    @Transactional
     def destroy() {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
         if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
             def data = request.JSON.data
-            if (data.type && data.type == "service" && data.id) {
+            if (data.type && data.id) {
                 Service service = Service.get(data.id)
                 if (service) {
-                    service.delete(flush: true)
-                    Service.search().createIndexAndWait()
-                    render([data: 0] as JSON)
+                    if (ServiceToGroup.countByService(service)) {
+                        ServiceGroup parent = ServiceToGroup.findByService(service).group
+                        response.status = 422
+                        render([errors: message(code: "serviceGroup.service.is.subservice", args: [parent.name, parent.id])] as JSON)
+                    } else {
+                        final session = sessionFactory.currentSession
+                        final String query = "select ticket_services_id from  ticket_service where service_id = $service.id limit 1"
+                        final sqlQuery = session.createSQLQuery(query)
+                        final ticketByService = sqlQuery.with {
+                                                      list()
+                        }
+                        if(ticketByService){
+                            response.status = 422
+                            render([errors: message(code: "service.in.tickets")] as JSON)
+                        }else {
+                            if (service.class == com.h2osis.model.ServiceGroup.class) {
+                                ServiceGroup serviceGroup = ServiceGroup.get(data.id)
+                                ServiceToGroup.deleteAll(ServiceToGroup.findAllByGroup(serviceGroup))
+                            }
+                            service.delete(flush: true)
+                            Service.search().createIndexAndWait()
+                            response.status = 204
+                            render([data: 0] as JSON)
+                        }
+                    }
                 } else {
+                    response.status = 422
                     render([errors: g.message(code: "service.get.user.not.found")] as JSON)
                 }
             } else {
+                response.status = 422
                 render([errors: g.message(code: "service.get.id.null")] as JSON)
             }
         } else {
+            response.status = 422
             render([errors: g.message(code: "service.delete.not.admin")] as JSON)
         }
     }
@@ -170,7 +208,7 @@ class ServiceAjaxController {
             def query = request.JSON.query
             if (data) {
                 def attrs = data.attributes
-                
+
                 if (attrs.name) {
                     eq("name", attrs.name)
                 }
@@ -207,7 +245,7 @@ class ServiceAjaxController {
         }
         if (serviceList) {
             def query = request.JSON.query
-            
+
             if (query && query.onlySimpleService == true) {
                 serviceList = serviceList.findAll {
                     (it.class == Service.class)

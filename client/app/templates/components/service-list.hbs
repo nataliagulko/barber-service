@@ -1,8 +1,7 @@
 <table id="service-list" class="table table-hover dataTables">
 	<thead>
 		<tr>
-			<th>Название</th>
-			<th class="text-right">modelName</th>
+			<th class="col-sm-5">Название</th>
 			<th class="text-right">Стоимость</th>
 			<th class="text-right">Время</th>
 			<th class="text-right">Мастер</th>
@@ -15,11 +14,8 @@
 				<td>
 					{{service.name}}
 					{{#if service.partOfList}}
-						<span class="label label-info">подуслуга</span>
+						<span class="badge badge-info">подуслуга</span>
 					{{/if}}
-				</td>
-				<td class="text-right">
-					{{service.modelName}}
 				</td>
 				<td class="text-right">
 					{{service.time}}&nbsp;<i class="fa fa-ruble"></i>
@@ -31,10 +27,10 @@
 					{{/each}}
 				</td>
 				<td class="text-right service-list__actions">
-					{{#link-to "service.edit" service.id class="btn btn-default"}}
+					<button type="button" class="btn btn-default" {{action 'edit' service}}>
 						<i class="fa fa-pencil"></i>
-					{{/link-to}}
-					 <button type="button" class="btn btn-danger" {{action 'delete' service.id}}>
+					</button>
+					<button type="button" class="btn btn-danger" {{action 'delete' service}}>
 						<i class="fa fa-trash"></i>
 					</button>
 				</td>

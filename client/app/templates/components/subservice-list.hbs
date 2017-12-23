@@ -11,7 +11,6 @@
 			</td>
 		</tr>
 	</thead>
-	{{!-- <tbody> --}}
 	{{#sortable-group tagName="tbody" onChange="reorderSubservices" as |group|}}
 		{{#each servicesToGroup as |item|}}
 			{{#sortable-item tagName="tr" model=item group=group handle=".subservice-list__drag-icon" }}
@@ -21,18 +20,28 @@
 						</span>
 				</td>
 				<td>
-					{{subservice-select 
-							serviceToGroup=item 
-							subservices=subservices
-							serviceGroup=serviceGroup}}
+					{{#power-select 
+						options=subservices 
+						selected=item.service 
+						searchField="name" 
+						onchange=(action "selectSubservice" item) 
+						as |subservice| }}
+							{{subservice.name}}
+							<small class="font-grey-silver">
+								{{subservice.cost}}<i class="fa fa-rouble"></i>,
+							</small>
+							<small class="font-grey-silver">
+								{{subservice.time}}&nbsp;мин.
+							</small>
+					{{/power-select}}
 				</td>
 				<td>
-					{{input 
-							class="form-control subservice-list__timeout"
-							name="serviceTimeout" 
-							type="tel" 
-							value=item.serviceTimeout 
-							focus-out="inputServiceToGroupTimeout"}}
+                    {{input 
+                        class="form-control subservice-list__timeout"
+                        name="serviceTimeout" 
+                        type="tel" 
+                        value=item.serviceTimeout 
+                        focus-out="inputServiceToGroupTimeout"}}
 				</td>
 				<td>
 					<button type="button" class="btn btn-danger" {{action "removeServiceToGroup" item}}>
@@ -42,8 +51,4 @@
 			{{/sortable-item}}
 		{{/each}}
 	{{/sortable-group}}
-	{{!-- 		<tr>
-
-		</tr> --}}
-	{{!-- </tbody> --}}
 </table>

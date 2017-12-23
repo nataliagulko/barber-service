@@ -83,11 +83,11 @@ class BootStrap {
 
                 DateTime date = DateTimeFormat.forPattern("yyyy-MM-dd").parseDateTime("2016-09-13")
                 new Holiday(master: User.findByUsername('master'), comment: "trololo! partyhard!!",
-                        dateFrom: date.toDate(), dateTo: date.withDayOfMonth(date.dayOfMonth + 14).toDate()).save(flush: true)
+                    dateFrom: date.toDate(), dateTo: date.withDayOfMonth(date.dayOfMonth + 14).toDate()).save(flush: true)
 
                 DateTime date1 = DateTimeFormat.forPattern("yyyy-MM-dd").parseDateTime("2016-09-16")
                 new Holiday(master: User.findByUsername('nnogieva'), comment: "0",
-                        dateFrom: date1.toDate(), dateTo: date1.withDayOfMonth(date.dayOfMonth + 14).toDate()).save(flush: true)
+                    dateFrom: date1.toDate(), dateTo: date1.withDayOfMonth(date.dayOfMonth + 14).toDate()).save(flush: true)
 
                 User root = new User(username: "root", password: "ijbjxzzi", email: "sokolovep@gmail.com", fio: "fio", phone: "+7(000)000-00-00").save(flush: true)
                 role = Role.findByAuthority(AuthKeys.ROOT)
@@ -225,6 +225,7 @@ class BootStrap {
                 attrs['cost'] = it.cost
                 attrs['time'] = it.time
                 attrs['partOfList'] = it.partOfList
+                attrs['extension'] = it.class
 
                 def relationships = [:]
                 def mastersDatails = [:]
@@ -321,7 +322,7 @@ class BootStrap {
                 def serviceDetails = [:]
                 serviceDetails['data'] = it.service
                 serviceGroupDetails['data'] = it.group
-                relationships['group'] = serviceGroupDetails
+                relationships['serviceGroup'] = serviceGroupDetails
                 relationships['service'] = serviceDetails
                 returnArray['relationships'] = relationships
 

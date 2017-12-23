@@ -5,7 +5,7 @@
                 Название
                 <span class="required" aria-required="true"> * </span>
             </label>
-            <div class="col-sm-8">
+            <div class="col-sm-6">
                 {{input name="name" 
                 class="form-control" 
                 value=service.name
@@ -22,33 +22,20 @@
                 Мастера
                 <span class="required" aria-required="true"> * </span>
             </label>
-            <div class="col-sm-8">
-                <select class="select2 form-control" multiple="multiple" name="masters" onchange= {{action "selectMaster" value="target.value"}} style="width: 100%;">
-                    {{#each masters as |master|}}
-                        {{#if service.masters}}
-                            {{#each service.masters as |serviceMaster|}}
-                                {{#if (eq master.id serviceMaster.id) }}
-                                    <option value="{{master.id}}" selected="selected">
-                                        {{master.fullname}}
-                                    </option>
-                                {{else}}
-                                    <option value="{{master.id}}">
-                                        {{master.fullname}}
-                                    </option>
-                                {{/if}}
-                            {{/each}}
-                        {{else}}
-                            <option value="{{master.id}}">
-                                {{master.fullname}}
-                            </option>
-                        {{/if}}
-                    {{/each}}
-                </select>
+            <div class="col-sm-6">
+                {{#power-select-multiple 
+                    options=masters 
+                    selected=selectedMasters
+                    searchField="fullname"
+                    onchange=(action (mut selectedMasters))
+                    as |master| }}
+                    {{master.fullname}}
+                {{/power-select-multiple}}
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-4 control-label">&nbsp;</label>
-            <div class="col-sm-8">
+            <div class="col-sm-6">
                 <label class="mt-checkbox">
                     Сделать подуслугой {{input type="checkbox" checked=service.partOfList name="partOfList"}}
                     <span></span>
@@ -60,7 +47,7 @@
                 Стоимость
                 <span class="required" aria-required="true"> * </span>
             </label>
-            <div class="col-sm-8">
+            <div class="col-sm-6">
                 {{input name="cost" 
                 class="form-control"  
                 value=service.cost
@@ -77,7 +64,7 @@
                 Продолжительность
                 <span class="required" aria-required="true"> * </span>
             </label>
-            <div class="col-sm-8">
+            <div class="col-sm-6">
                 {{input name="time" 
                 class="form-control"  
                 value=service.time
