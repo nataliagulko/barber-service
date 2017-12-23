@@ -1,19 +1,20 @@
 package com.h2osis.model.ajax
 
+import com.h2osis.auth.Role
+import com.h2osis.auth.User
+import com.h2osis.constant.AuthKeys
 import com.h2osis.model.Service
 import com.h2osis.model.ServiceGroup
 import com.h2osis.model.ServiceToGroup
+import com.h2osis.model.Ticket
 import grails.converters.JSON
 import grails.transaction.Transactional
-import com.h2osis.auth.User
-import com.h2osis.auth.Role
-import com.h2osis.constant.AuthKeys
-import org.codehaus.groovy.grails.web.json.JSONArray
 
 class ServiceGroupAjaxController {
 
     static allowedMethods = [choose: ['POST', 'GET']]
     def springSecurityService
+    def sessionFactory
 
     def create() {
         def errors = []
@@ -22,13 +23,17 @@ class ServiceGroupAjaxController {
         if (currentUser.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
             def data = request.JSON.data
             def attrs = data.attributes
-            def masters = data.relationships.masters.data
-            if (data.type && data.type == "service-group" && attrs.name && attrs.cost && attrs.time && masters) {
+            if (data.type && data.type == "service-group" && attrs.name && attrs.cost && attrs.time) {
                 ServiceGroup serviceGroup = new ServiceGroup(name: attrs.name, cost: attrs.cost, time: attrs.time)
-                 masters.each {
-                    User user = User.get(it.id)
-                    serviceGroup.addToMasters(user)
-                } 
+                if (data.relationships.masters) {
+                    List mastersIdsList = new ArrayList<Long>()
+                    data.relationships.masters.data.id.each {
+                        it -> mastersIdsList.add(it)
+                    }
+                    Set<User> masters = new HashSet<User>()
+                    masters.addAll(User.findAllByIdInList(mastersIdsList))
+                    serviceGroup.setMasters(masters)
+                }
                 serviceGroup.save(flush: true)
                 serviceGroup.search().createIndexAndWait()
                 JSON.use('serviceGroups') {
@@ -39,9 +44,9 @@ class ServiceGroupAjaxController {
                         "status": 422,
                         "detail": g.message(code: "service.create.params.null"),
                         "source": [
-                            "pointer": "data"
+                                "pointer": "data"
                         ]
-                    ])
+                ])
                 response.status = 422
                 render([errors: errors] as JSON)
             }
@@ -62,8 +67,8 @@ class ServiceGroupAjaxController {
                 serviceGroup.setName(attrs.name)
                 if (data.relationships?.masters) {
                     List mastersIdsList = new ArrayList<Long>()
-                    data.relationships.masters.data.id.each{
-                        it -> mastersIdsList.add(Long.parseLong(it))
+                    data.relationships.masters.data.id.each {
+                        it -> mastersIdsList.add(it)
                     }
                     Set<User> masters = new HashSet<User>()
                     masters.addAll(User.findAllByIdInList(mastersIdsList))
@@ -88,7 +93,7 @@ class ServiceGroupAjaxController {
             render([errors: g.message(code: "service.create.not.admin")] as JSON)
         }
     }
-    
+
     def get() {
         def errors = []
         def data = request.JSON.data
@@ -103,9 +108,9 @@ class ServiceGroupAjaxController {
                         "status": 422,
                         "detail": g.message(code: "service.get.user.not.found"),
                         "source": [
-                            "pointer": "data"
+                                "pointer": "data"
                         ]
-                    ])
+                ])
                 response.status = 422
                 render([errors: errors] as JSON)
             }
@@ -114,9 +119,9 @@ class ServiceGroupAjaxController {
                     "status": 422,
                     "detail": g.message(code: "service.get.id.null"),
                     "source": [
-                        "pointer": "data"
+                            "pointer": "data"
                     ]
-                ])
+            ])
             response.status = 422
             render([errors: errors] as JSON)
         }
@@ -174,6 +179,45 @@ class ServiceGroupAjaxController {
             render([code: 0] as JSON)
         } else {
             render([msg: g.message(code: "params.id.null")] as JSON)
+        }
+    }
+
+    @Transactional
+    def destroy() {
+        def principal = springSecurityService.principal
+        User user = User.get(principal.id)
+        if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+            def data = request.JSON.data
+            if (data.type && data.id) {
+                ServiceGroup serviceGroup = ServiceGroup.get(data.id)
+                if (serviceGroup) {
+                    final session = sessionFactory.currentSession
+                    final String query = "select ticket_services_id from  ticket_service where service_id = $serviceGroup.id limit 1"
+                    final sqlQuery = session.createSQLQuery(query)
+                    final ticketByService = sqlQuery.with {
+                        list()
+                    }
+                    if (ticketByService) {
+                        response.status = 422
+                        render([errors: message(code: "service.in.tickets")] as JSON)
+                    } else {
+                        ServiceToGroup.deleteAll(ServiceToGroup.findAllByGroup(serviceGroup))
+                        serviceGroup.delete(flush: true)
+                        Service.search().createIndexAndWait()
+                        response.status = 204
+                        render([data: 0] as JSON)
+                    }
+                } else {
+                    response.status = 422
+                    render([errors: g.message(code: "service.get.user.not.found")] as JSON)
+                }
+            } else {
+                response.status = 422
+                render([errors: g.message(code: "service.get.id.null")] as JSON)
+            }
+        } else {
+            response.status = 422
+            render([errors: g.message(code: "service.delete.not.admin")] as JSON)
         }
     }
 }

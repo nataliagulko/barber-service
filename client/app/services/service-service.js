@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Service.extend({
 	store: Ember.inject.service("store"),
 	servicesToGroup: [],
-	selectedSubservices: [],
+	_selectedSubservices: [],
 	serviceToGroupTimeout: 0,
 	isRowAddingDisabled: false,
 
@@ -15,12 +15,29 @@ export default Ember.Service.extend({
 		this._changeIsRowAddingDisabled();
 	},
 
+	showSubservices: function(serviceGroupRecord, _this) {
+		var servicesToGroup = serviceGroupRecord
+			.get("serviceToGroups")
+			.toArray();
+
+		if (servicesToGroup.get("length") > 0) {
+			servicesToGroup = servicesToGroup.sortBy("serviceOrder");
+			servicesToGroup.forEach(function(it) {
+				// console.log(it.get("data.serviceOrder"));
+			});
+			this.set("_selectedSubservices", servicesToGroup);
+			this.set("servicesToGroup", servicesToGroup);
+		} else {
+			_this.send("addServiceToGroup");
+		}
+	},
+
 	selectSubservice: function(subservice, serviceToGroup, serviceGroup) {
 		if (typeof subservice === "undefined") {
 			return;
 		}
 
-		var subservices = this.get("selectedSubservices");
+		var subservices = this.get("_selectedSubservices");
 
 		serviceToGroup.set("service", subservice);
 		subservices.pushObject(subservice);
@@ -66,9 +83,9 @@ export default Ember.Service.extend({
 
 		var isRowAddingDisabled = this.get("isRowAddingDisabled"),
 			servicesToGroup = this.get("servicesToGroup"),
-			selectedSubservices = this.get("selectedSubservices");
+			_selectedSubservices = this.get("_selectedSubservices");
 
-		if (selectedSubservices.length > 0 && servicesToGroup.length > 0) {
+		if (_selectedSubservices.length > 0 && servicesToGroup.length > 0) {
 			isRowAddingDisabled = false;
 		} else {
 			isRowAddingDisabled = true;
@@ -103,21 +120,28 @@ export default Ember.Service.extend({
 		this.set("serviceToGroupTimeout", serviceToGroupTimeout);
 	},
 
-	saveService: function(serviceRecord, masters) {
+	saveService: function(serviceRecord, masters, _this) {
 		serviceRecord.set("masters", masters);
-		serviceRecord.save();
+		serviceRecord
+			.save()
+			.then(() => {
+				_this.get("router").transitionTo('service');
+			});
 	},
 
-	saveServiceGroup: function(serviceGroupRecord, masters) {
+	saveServiceGroup: function(serviceGroupRecord, masters, _this) {
 		const servicesToGroup = this.get("servicesToGroup");
 
 		serviceGroupRecord.set("masters", masters);
-		serviceGroupRecord.save().then(function(record) {
-			servicesToGroup.forEach(function(item, ind) {
-				item.set("group", record);
-				item.set("serviceOrder", ind);
-				item.save();
+		serviceGroupRecord
+			.save()
+			.then(function(record) {
+				servicesToGroup.forEach(function(item, ind) {
+					item.set("serviceGroup", record);
+					item.set("serviceOrder", ind);
+					item.save();
+				});
+				_this.get("router").transitionTo('service');
 			});
-		});
 	}
 });

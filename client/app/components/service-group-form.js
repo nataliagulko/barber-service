@@ -6,17 +6,27 @@ export default Ember.Component.extend({
 	servicesToGroup: Ember.computed.readOnly('serviceService.servicesToGroup'),
 	selectedMasters: [],
 
+	didInsertElement() {
+		const serviceGroupRecord = this.get("serviceGroup"),
+			masters = serviceGroupRecord.get("masters");
+
+		this.set("selectedMasters", masters);
+	},
+
 	actions: {
 		save: function() {
+			// console.log(this.get("serviceGroup").get("validations.errors"));
+			// return;
 			const serviceGroupRecord = this.get("serviceGroup");
 			var serviceService = this.get("serviceService"),
-				selectedMasters = this.get("selectedMasters");
+				selectedMasters = this.get("selectedMasters"),
+				_this = this;
 
 			serviceGroupRecord
 				.validate()
 				.then(({ validations }) => {
 					if (validations.get('isValid')) {
-						serviceService.saveServiceGroup(serviceGroupRecord, selectedMasters);
+						serviceService.saveServiceGroup(serviceGroupRecord, selectedMasters, _this);
 					}
 				});
 		}
