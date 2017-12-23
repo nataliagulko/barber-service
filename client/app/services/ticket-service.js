@@ -5,6 +5,8 @@ export default Ember.Service.extend({
     selectedMaster: null,
     servicesByMaster: [],
     selectedServices: [],
+    cost: null,
+    time: null, 
 
     showElement(elemSelector, step) {
         // скрываем верхнюю половину блока "инфо"
@@ -14,7 +16,8 @@ export default Ember.Service.extend({
         var bottomItems = $('.ticket-info-bottom');
 
         bottomItems.each(function () {
-            if ($(this).find('.ticket-info-bottom__text').text()) {
+            var isNotEmpty = $(this).find('.ticket-info-bottom__text').text().trim();
+            if (isNotEmpty) {
                 $(this).removeClass('hidden');
             }
         });
@@ -99,7 +102,7 @@ export default Ember.Service.extend({
             totalCost += item.get("cost");
             totalTime += item.get("time");
         });
-        console.log("Time: ", totalTime);
-        console.log("Cost: ", totalCost);
+        this.set("cost", totalCost);
+        this.set("time", totalTime);
     }
 });
