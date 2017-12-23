@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Service.extend({
     store: Ember.inject.service("store"),
+    pickadateService: Ember.inject.service("pickadate-service"),
     selectedMaster: null,
     servicesByMaster: [],
     selectedServices: [],
@@ -102,6 +103,8 @@ export default Ember.Service.extend({
         }
 
         this._calculateTimeAndCost();
+        this._getHolidays();
+
         $(selectedItem).toggleClass('selected');
     },
 
@@ -117,5 +120,60 @@ export default Ember.Service.extend({
         });
         this.set("cost", totalCost);
         this.set("time", totalTime);
+    },
+
+    _getHolidays() {
+        var store = this.get("store"),
+            _this = this,
+            master = this.get("selectedMaster"),
+            time = this.get("time"),
+            pickadateService = this.get("pickadateService");
+
+        var holidays = store.query("holiday", {
+            query: {
+                masterId: master.id,
+                time: time
+            }
+        });
+        
+
+        holidays.then(function () {
+            var disableDates = _this._parseHolidays(holidays);
+            
+            pickadateService.set("#ticket-date-picker", "disable", false);
+            pickadateService.set("#ticket-date-picker", "min", new Date());            
+            pickadateService.set("#ticket-date-picker", "disable", disableDates);
+            pickadateService.on("#ticket-date-picker", "set", function (selectedDate) {
+                var objDate = new Date(selectedDate.select),
+                    locale = "ru-ru",
+                    ticketDate = objDate.toLocaleString(locale, { day: "numeric", month: "long" });
+
+                $('.ticket-info-date-top').removeClass('hidden');
+                $('.ticket-info-date-top__date').text(ticketDate);
+                $('.ticket-info-date__date').text(ticketDate);
+            });
+        })
+    },
+
+    _parseHolidays(holidays) {
+        var datesArr = [],
+            holidays = holidays.toArray();
+        
+        holidays.forEach(function (item) {
+            var startY = moment(item.get("dateFrom")).toObject().years,
+                startM = moment(item.get("dateFrom")).toObject().months,
+                startD = moment(item.get("dateFrom")).toObject().date,
+                endY = moment(item.get("dateTo")).toObject().years,
+                endM = moment(item.get("dateTo")).toObject().months,
+                endD = moment(item.dateTo).toObject().date,
+                range = {
+                    "from": [startY, startM, startD],
+                    "to": [endY, endM, endD]
+                };
+
+            datesArr.push(range);
+        });
+
+        return datesArr;
     }
 });

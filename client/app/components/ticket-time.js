@@ -14,6 +14,8 @@ export default Ember.Component.extend({
 		];
 
 		pickatimeService.set("#ticket-time-picker", "disable", disableTimeArr);
+		pickatimeService.set("#ticket-time-picker", "min", [9, 0]);
+		pickatimeService.set("#ticket-time-picker", "max", [19, 0]);
         pickatimeService.on("#ticket-time-picker", "set", function(selectedTime) {
             var time = $('input[name=time_input_submit]').val(),
                 date = $('.ticket-info-date-top__date').text();
