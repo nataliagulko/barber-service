@@ -216,7 +216,9 @@ class ServiceAjaxController {
                     eq("time", Long.parseLong(query.time))
                 }
                 if (query.masterId) {
-                    idEq(User.get(query.masterId)?.id)
+                    masters {
+                        idEq(User.get(query.masterId)?.id)
+                    }
                 }
                 if (query.max && query.offset) {
                     Integer max = Integer.parseInt(query.max)
