@@ -3,11 +3,8 @@
         <i class="icon-bag font-red-sunglo margin-right-10"></i>
     </div>
     <div class="ticket-info-bottom__text">
-        <ul class="list-unstyled no-space">
-            {{#each selectedServices as |selectedService|}}
-                <li>{{selectedService.name}}</li>
-            {{/each}}
-        </ul>
+        {{#each selectedServices as |selectedService|}}
+            <span>{{selectedService.name}}, </span>
+        {{/each}}
     </div>
 </div>
-{{yield}}

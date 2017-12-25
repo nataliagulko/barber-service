@@ -10,7 +10,7 @@ hibernate {
 //    cache.region.factory_class = 'org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory' // Hibernate 4
     singleSession = true // configure OSIV singleSession mode
     flush.mode = 'manual' // OSIV session flush mode outside of transactional context
-    hibernate.search.default.indexBase = '/var/lib/openshift/594b85c80c1e66674f00010f/app-root/data'
+    //hibernate.search.default.indexBase = '/var/lib/openshift/594b85c80c1e66674f00010f/app-root/data'
 }
 
 // environment specific settings

@@ -2,9 +2,12 @@ import Ember from 'ember';
 
 export default Ember.Service.extend({
     store: Ember.inject.service("store"),
+    pickadateService: Ember.inject.service("pickadate-service"),
     selectedMaster: null,
     servicesByMaster: [],
     selectedServices: [],
+    cost: null,
+    time: null, 
 
     showElement(elemSelector, step) {
         // скрываем верхнюю половину блока "инфо"
@@ -14,7 +17,8 @@ export default Ember.Service.extend({
         var bottomItems = $('.ticket-info-bottom');
 
         bottomItems.each(function () {
-            if ($(this).find('.ticket-info-bottom__text').text()) {
+            var isNotEmpty = $(this).find('.ticket-info-bottom__text').text().trim();
+            if (isNotEmpty) {
                 $(this).removeClass('hidden');
             }
         });
@@ -33,22 +37,35 @@ export default Ember.Service.extend({
         }
     },
 
-    toggleMaster(master) {
+    toggleMaster(master, event) {
         var selectedItem = $(event.target).closest('.tile'),
-            selectedMaster = this.get("selectedMaster");
+            selectedMaster = this.get("selectedMaster"),
+            isSameMaster = selectedMaster === master;
 
-        if (selectedMaster) {
-            this.set("selectedMaster", null)
+        if (selectedMaster && isSameMaster) {
+            this.set("selectedMaster", null);
             this.set("servicesByMaster", []);
+            
             $('.ticket-info-master-top').addClass('hidden');
         }
+        else if(selectedMaster && !isSameMaster) {
+            this._setSelectedMaster(master);
+
+            $('.tile').each(function () {
+                $(this).removeClass('selected');
+            });          
+        }
         else {
-            this.set("selectedMaster", master)
-            this._getServicesByMaster(master);
-            $('.ticket-info-master-top').removeClass('hidden');
+            this._setSelectedMaster(master);
         }
 
         $(selectedItem).toggleClass('selected');
+    },
+
+    _setSelectedMaster(master) {
+        this.set("selectedMaster", master);
+        this._getServicesByMaster(master);
+        $('.ticket-info-master-top').removeClass('hidden');
     },
 
     _getServicesByMaster(master) {
@@ -57,7 +74,7 @@ export default Ember.Service.extend({
 
         var services = store.query("service", {
             query: {
-                master: master
+                masterId: master.id
             }
         });
 
@@ -66,12 +83,12 @@ export default Ember.Service.extend({
         })
     },
 
-    toggleServiceItem(service) {
+    toggleServiceItem(service, event) {
         var selectedItem = $(event.target).closest('.tile'),
             selectedServices = this.get("selectedServices"),
-            isServiceIncludes = selectedServices.includes(service);
+            isServiceIncluded = selectedServices.includes(service);
 
-        if (isServiceIncludes) {
+        if (isServiceIncluded) {
             selectedServices.removeObject(service);
         }
         else {
@@ -86,6 +103,8 @@ export default Ember.Service.extend({
         }
 
         this._calculateTimeAndCost();
+        this._getHolidays();
+
         $(selectedItem).toggleClass('selected');
     },
 
@@ -99,7 +118,62 @@ export default Ember.Service.extend({
             totalCost += item.get("cost");
             totalTime += item.get("time");
         });
-        console.log("Time: ", totalTime);
-        console.log("Cost: ", totalCost);
+        this.set("cost", totalCost);
+        this.set("time", totalTime);
+    },
+
+    _getHolidays() {
+        var store = this.get("store"),
+            _this = this,
+            master = this.get("selectedMaster"),
+            time = this.get("time"),
+            pickadateService = this.get("pickadateService");
+
+        var holidays = store.query("holiday", {
+            query: {
+                masterId: master.id,
+                time: time
+            }
+        });
+        
+
+        holidays.then(function () {
+            var disableDates = _this._parseHolidays(holidays);
+            
+            pickadateService.set("#ticket-date-picker", "disable", false);
+            pickadateService.set("#ticket-date-picker", "min", new Date());            
+            pickadateService.set("#ticket-date-picker", "disable", disableDates);
+            pickadateService.on("#ticket-date-picker", "set", function (selectedDate) {
+                var objDate = new Date(selectedDate.select),
+                    locale = "ru-ru",
+                    ticketDate = objDate.toLocaleString(locale, { day: "numeric", month: "long" });
+
+                $('.ticket-info-date-top').removeClass('hidden');
+                $('.ticket-info-date-top__date').text(ticketDate);
+                $('.ticket-info-date__date').text(ticketDate);
+            });
+        })
+    },
+
+    _parseHolidays(holidays) {
+        var datesArr = [],
+            holidays = holidays.toArray();
+        
+        holidays.forEach(function (item) {
+            var startY = moment(item.get("dateFrom")).toObject().years,
+                startM = moment(item.get("dateFrom")).toObject().months,
+                startD = moment(item.get("dateFrom")).toObject().date,
+                endY = moment(item.get("dateTo")).toObject().years,
+                endM = moment(item.get("dateTo")).toObject().months,
+                endD = moment(item.dateTo).toObject().date,
+                range = {
+                    "from": [startY, startM, startD],
+                    "to": [endY, endM, endD]
+                };
+
+            datesArr.push(range);
+        });
+
+        return datesArr;
     }
 });
