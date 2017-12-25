@@ -20,11 +20,11 @@ export default Ember.Component.extend({
 			serviceService.addServiceToGroup();
 		},
 
-		removeServiceToGroup: function(subserviceId) {
+		removeServiceToGroup: function(subservice) {
 			var serviceService = this.get("serviceService");
 			var serviceGroup = this.get("serviceGroup");
 
-			serviceService.removeServiceToGroup(subserviceId, serviceGroup);
+			serviceService.removeServiceToGroup(subservice, serviceGroup);
 		},
 
 		reorderSubservices: function(groupModel) {
