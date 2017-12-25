@@ -22,9 +22,6 @@ export default Ember.Service.extend({
 
 		if (servicesToGroup.get("length") > 0) {
 			servicesToGroup = servicesToGroup.sortBy("serviceOrder");
-			servicesToGroup.forEach(function(it) {
-				// console.log(it.get("data.serviceOrder"));
-			});
 			this.set("_selectedSubservices", servicesToGroup);
 			this.set("servicesToGroup", servicesToGroup);
 		} else {
@@ -41,39 +38,38 @@ export default Ember.Service.extend({
 
 		serviceToGroup.set("service", subservice);
 		subservices.pushObject(subservice);
-		this._addServiceGroupCostAndTime(subservice, serviceGroup);
+		this._calculateServiceGroupCostAndTime(serviceGroup);
 		this._changeIsRowAddingDisabled();
 	},
 
-	_addServiceGroupCostAndTime: function(subservice, serviceGroup) {
-		var serviceGroupCost = serviceGroup.get("cost"),
-			serviceGroupTime = serviceGroup.get("time");
+	_calculateServiceGroupCostAndTime: function(serviceGroup) {
+		var subservices = this.get("_selectedSubservices");
 
-		serviceGroupCost += subservice.get("cost");
-		serviceGroupTime += subservice.get("time");
+		console.log(subservices.toArray().length);
 
-		serviceGroup.set("cost", serviceGroupCost);
-		serviceGroup.set("time", serviceGroupTime);
-	},
+		var serviceGroupCost = 0,
+			serviceGroupTime = 0;
 
-	_subtractServiceGroupCostAndTime: function(serviceToGroup, serviceGroup) {
-		var serviceGroupCost = serviceGroup.get("cost"),
-			serviceGroupTime = serviceGroup.get("time"),
-			subservice = serviceToGroup.get("service");
+		subservices.forEach(function(subservice) {
+			serviceGroupCost += subservice.get("cost");
+			serviceGroupTime += subservice.get("time");
+		});
 
-		serviceGroupCost -= subservice.get("cost");
-		serviceGroupTime -= subservice.get("time");
-
-		serviceGroup.set("cost", serviceGroupCost);
-		serviceGroup.set("time", serviceGroupTime);
+		serviceGroup.set("cost", Number(serviceGroupCost));
+		serviceGroup.set("time", Number(serviceGroupTime));
 	},
 
 	removeServiceToGroup: function(record, serviceGroup) {
-		var servicesToGroup = this.get("servicesToGroup");
+		var servicesToGroup = this.get("servicesToGroup"),
+			subservices = this.get("_selectedSubservices");
+
+		console.log("remove obj ", record);
 
 		record.destroyRecord("serviceToGroup");
 		servicesToGroup.removeObject(record);
-		this._subtractServiceGroupCostAndTime(record, serviceGroup);
+		subservices.removeObject(record);
+
+		this._calculateServiceGroupCostAndTime(serviceGroup);
 		this._changeIsRowAddingDisabled();
 	},
 
