@@ -170,8 +170,7 @@ class HolidayAjaxController {
     def list() {
         def data = request.JSON.data
         def query = request.JSON.query
-        def attrs = data.attributes
-        if (data.id) {
+        if (query) {
             User user = User.get(query.masterId)
             if (user) {
                 Set<WorkTime> workTimes = WorkTime.findAllByMaster(user)

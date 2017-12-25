@@ -172,7 +172,7 @@ class ServiceAjaxController {
                         final String query = "select ticket_services_id from  ticket_service where service_id = $service.id limit 1"
                         final sqlQuery = session.createSQLQuery(query)
                         final ticketByService = sqlQuery.with {
-                                                      list()
+                            list()
                         }
                         if(ticketByService){
                             response.status = 422
@@ -204,33 +204,30 @@ class ServiceAjaxController {
 
     def list() {
         List<Service> serviceList = Service.createCriteria().list {
-            def data = request.JSON.data
             def query = request.JSON.query
-            if (data) {
-                def attrs = data.attributes
-
-                if (attrs.name) {
-                    eq("name", attrs.name)
+            if (query) {
+                if (query.name) {
+                    eq("name", query.name)
                 }
-                if (attrs.cost) {
-                    eq("cost", Float.parseFloat(attrs.cost))
+                if (query.cost) {
+                    eq("cost", Float.parseFloat(query.cost))
                 }
-                if (attrs.time) {
-                    eq("time", Long.parseLong(attrs.time))
+                if (query.time) {
+                    eq("time", Long.parseLong(query.time))
                 }
-                if (query.master) {
+                if (query.masterId) {
                     masters {
-                        idEq(User.get(query.master)?.id)
+                        idEq(User.get(query.masterId)?.id)
                     }
                 }
-                if (data.max && data.offset) {
-                    Integer max = Integer.parseInt(data.max)
-                    Integer offset = Integer.parseInt(data.offset)
+                if (query.max && query.offset) {
+                    Integer max = Integer.parseInt(query.max)
+                    Integer offset = Integer.parseInt(query.offset)
                     maxResults(max)
                     firstResult(offset)
                 }
-                if (attrs.partOfList) {
-                    if (attrs.partOfList == true) {
+                if (query.partOfList) {
+                    if (query.partOfList == true) {
                         eq("partOfList", true)
                     } else {
                         or {
