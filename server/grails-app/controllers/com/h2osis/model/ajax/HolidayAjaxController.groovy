@@ -5,9 +5,7 @@ import com.h2osis.auth.User
 import com.h2osis.constant.AuthKeys
 import com.h2osis.model.Holiday
 import com.h2osis.model.Service
-import com.h2osis.model.UsersService
 import com.h2osis.model.WorkTime
-import com.h2osis.utils.BarberSecurityService
 import com.h2osis.utils.SearchService
 import com.h2osis.utils.SlotsService
 import grails.converters.JSON
@@ -20,8 +18,6 @@ class HolidayAjaxController {
 
     SearchService searchService
     def springSecurityService
-    BarberSecurityService barberSecurityService
-    UsersService usersService
     SlotsService slotsService
     static allowedMethods = [choose: ['POST', 'GET']]
 
@@ -118,7 +114,7 @@ class HolidayAjaxController {
         if (currentUser.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
             def data = request.JSON.data
             def attrs = data.attributes
-            def masters = data.relationships.masters.data
+            def master = data.relationships.master.data
             if (data.type && data.type == "holiday"
                 && data.id) {
                 Holiday holiday = Holiday.get(data.id)
@@ -127,8 +123,8 @@ class HolidayAjaxController {
                 DateTime dateTo = formatter.parseDateTime(attrs.dateTo)
                 holiday.setDateFrom(dateFrom.toDate())
                 holiday.setDateTo(dateTo.toDate())
-                masters.each {
-                    User user = User.get(it.id)
+                User user = User.get(master.id)
+                if (user) {
                     holiday.setMaster(user)
                 }
                 holiday.save(flush: true)
