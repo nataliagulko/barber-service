@@ -230,4 +230,21 @@ class HolidayAjaxController {
             render([msg: g.message(code: "params.id.null")] as JSON)
         }
     }
+
+    @Transactional
+    def destroy() {
+        def data = request.JSON.data
+        if (data.id) {
+            Holiday holiday = Holiday.get(data.id)
+            if (holiday) {
+                holiday.delete(flush: true)
+                render([errors: {}] as JSON)
+
+            } else {
+                render([errors: { g.message(code: "holiday.not.found") }] as JSON)
+            }
+        } else {
+            render([errors: { g.message(code: "holiday.not.found") }] as JSON)
+        }
+    }
 }

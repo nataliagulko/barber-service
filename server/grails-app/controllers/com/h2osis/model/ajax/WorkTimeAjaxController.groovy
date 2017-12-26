@@ -3,10 +3,12 @@ package com.h2osis.model.ajax
 import com.h2osis.auth.Role
 import com.h2osis.auth.User
 import com.h2osis.constant.AuthKeys
+import com.h2osis.model.Holiday
 import com.h2osis.model.Service
 import com.h2osis.model.WorkTime
 import com.h2osis.utils.SlotsService
 import grails.converters.JSON
+import grails.transaction.Transactional
 import org.joda.time.LocalDate
 
 class WorkTimeAjaxController {
@@ -178,6 +180,23 @@ class WorkTimeAjaxController {
             render(response as JSON)
         } else {
             render([msg: g.message(code: "slots.not.found")] as JSON)
+        }
+    }
+
+    @Transactional
+    def destroy() {
+        def data = request.JSON.data
+        if (data.id) {
+            WorkTime workTime = WorkTime.get(data.id)
+            if (workTime) {
+                workTime.delete(flush: true)
+                render([errors: {}] as JSON)
+
+            } else {
+                render([errors: { g.message(code: "workTime.not.found") }] as JSON)
+            }
+        } else {
+            render([errors: { g.message(code: "workTime.not.found") }] as JSON)
         }
     }
 }
