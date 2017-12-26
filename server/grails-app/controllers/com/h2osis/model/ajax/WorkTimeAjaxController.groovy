@@ -3,15 +3,11 @@ package com.h2osis.model.ajax
 import com.h2osis.auth.Role
 import com.h2osis.auth.User
 import com.h2osis.constant.AuthKeys
-import com.h2osis.model.Holiday
 import com.h2osis.model.Service
 import com.h2osis.model.WorkTime
 import com.h2osis.utils.SlotsService
 import grails.converters.JSON
-import org.joda.time.DateTime
 import org.joda.time.LocalDate
-import org.joda.time.format.DateTimeFormat
-import org.joda.time.format.DateTimeFormatter
 
 class WorkTimeAjaxController {
 
