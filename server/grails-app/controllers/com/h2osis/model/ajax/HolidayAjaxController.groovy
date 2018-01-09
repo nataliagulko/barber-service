@@ -6,6 +6,7 @@ import com.h2osis.constant.AuthKeys
 import com.h2osis.model.Holiday
 import com.h2osis.model.Service
 import com.h2osis.model.WorkTime
+import com.h2osis.utils.NovaDateUtilService
 import com.h2osis.utils.SearchService
 import com.h2osis.utils.SlotsService
 import grails.converters.JSON
@@ -19,6 +20,7 @@ class HolidayAjaxController {
     SearchService searchService
     def springSecurityService
     SlotsService slotsService
+    NovaDateUtilService novaDateUtilService
     static allowedMethods = [choose: ['POST', 'GET']]
 
     def create() {
@@ -34,13 +36,13 @@ class HolidayAjaxController {
                 && attrs.dateFrom
                 && attrs.dateTo) {
                 Holiday holiday = new Holiday()
-                DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.mm.yyyy")
-                DateTime dateFrom = formatter.parseDateTime(attrs.dateFrom)
-                DateTime dateTo = formatter.parseDateTime(attrs.dateTo)
-                holiday.setDateFrom(dateFrom.toDate())
-                holiday.setDateTo(dateTo.toDate())
+                holiday.setComment(attrs.comment)
                 User user = User.get(master.id)
                 if (user) {
+                    DateTime dateFrom = novaDateUtilService.getMasterTZDateTimeDDMMYYYY(attrs.dateFrom, user)
+                    DateTime dateTo = novaDateUtilService.getMasterTZDateTimeDDMMYYYY(attrs.dateTo, user)
+                    holiday.setDateFrom(dateFrom.toDate())
+                    holiday.setDateTo(dateTo.toDate())
                     holiday.setMaster(user)
                     holiday.save(flush: true)
                     Service.search().createIndexAndWait()
@@ -118,13 +120,13 @@ class HolidayAjaxController {
             if (data.type && data.type == "holiday"
                 && data.id) {
                 Holiday holiday = Holiday.get(data.id)
-                DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.mm.yyyy")
-                DateTime dateFrom = formatter.parseDateTime(attrs.dateFrom)
-                DateTime dateTo = formatter.parseDateTime(attrs.dateTo)
-                holiday.setDateFrom(dateFrom.toDate())
-                holiday.setDateTo(dateTo.toDate())
+                holiday.setComment(attrs.comment)
                 User user = User.get(master.id)
                 if (user) {
+                    DateTime dateFrom = novaDateUtilService.getMasterTZDateTimeDDMMYYYY(attrs.dateFrom, user)
+                    DateTime dateTo = novaDateUtilService.getMasterTZDateTimeDDMMYYYY(attrs.dateTo, user)
+                    holiday.setDateFrom(dateFrom.toDate())
+                    holiday.setDateTo(dateTo.toDate())
                     holiday.setMaster(user)
                 }
                 holiday.save(flush: true)
