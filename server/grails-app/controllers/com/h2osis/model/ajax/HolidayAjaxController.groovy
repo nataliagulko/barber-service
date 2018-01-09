@@ -240,8 +240,7 @@ class HolidayAjaxController {
             Holiday holiday = Holiday.get(data.id)
             if (holiday) {
                 holiday.delete(flush: true)
-                render([errors: {}] as JSON)
-
+                render([errors: []] as JSON)
             } else {
                 render([errors: { g.message(code: "holiday.not.found") }] as JSON)
             }

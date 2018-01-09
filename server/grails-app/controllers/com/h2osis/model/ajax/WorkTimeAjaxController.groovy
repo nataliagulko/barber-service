@@ -190,7 +190,7 @@ class WorkTimeAjaxController {
             WorkTime workTime = WorkTime.get(data.id)
             if (workTime) {
                 workTime.delete(flush: true)
-                render([errors: {}] as JSON)
+                render([errors: []] as JSON)
 
             } else {
                 render([errors: { g.message(code: "workTime.not.found") }] as JSON)

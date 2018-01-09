@@ -182,7 +182,7 @@ class ServiceToGroupAjaxController {
                 ServiceToGroup serviceToGroup = ServiceToGroup.get(data.id)
                 if (serviceToGroup) {
                     serviceToGroup.delete(flush: true)
-                    render([data: 0] as JSON)
+                    render([errors: []] as JSON)
                 } else {
                     render([errors: g.message(code: "serviceToGroup.not.found")] as JSON)
                 }
