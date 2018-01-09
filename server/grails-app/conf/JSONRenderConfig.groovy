@@ -1,4 +1,5 @@
 import com.h2osis.model.Holiday
+import com.h2osis.model.WorkTime
 import grails.converters.JSON
 
 /**
@@ -31,16 +32,16 @@ class JSONRenderConfig {
 
 
         JSON.createNamedConfig('worktimes') {
-            it.registerObjectMarshaller(Holiday) {
+            it.registerObjectMarshaller(WorkTime) {
                 def returnArray = [:]
                 returnArray['id'] = it.id
-                returnArray['type'] = 'holiday'
+                returnArray['type'] = 'workTime'
 
                 def attrs = [:]
-                attrs['dateFrom'] = it.dateFrom
-                attrs['dateTo'] = it.dateTo
+                attrs['timeFrom'] = it.timeFrom
+                attrs['timeTo'] = it.timeTo
                 attrs['master'] = it.master
-                attrs['comment'] = it.comment
+                attrs['dayOfWeek'] = it.dayOfWeek
 
                 def relationships = [:]
                 def mastersDetails = [:]

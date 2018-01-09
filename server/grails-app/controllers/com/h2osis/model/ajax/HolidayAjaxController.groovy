@@ -12,8 +12,6 @@ import com.h2osis.utils.SlotsService
 import grails.converters.JSON
 import grails.transaction.Transactional
 import org.joda.time.DateTime
-import org.joda.time.format.DateTimeFormat
-import org.joda.time.format.DateTimeFormatter
 
 class HolidayAjaxController {
 
@@ -32,9 +30,9 @@ class HolidayAjaxController {
             def attrs = data.attributes
             def master = data.relationships.master.data
             if (data.type && data.type == "holiday"
-                && data.relationships.master.data.id
-                && attrs.dateFrom
-                && attrs.dateTo) {
+                    && data.relationships.master.data.id
+                    && attrs.dateFrom
+                    && attrs.dateTo) {
                 Holiday holiday = new Holiday()
                 holiday.setComment(attrs.comment)
                 User user = User.get(master.id)
@@ -56,7 +54,7 @@ class HolidayAjaxController {
                             "source": [
                                     "pointer": "data"
                             ]
-                        ])
+                    ])
                     response.status = 422
                     render([errors: errors] as JSON)
                 }
@@ -67,7 +65,7 @@ class HolidayAjaxController {
                         "source": [
                                 "pointer": "data"
                         ]
-                    ])
+                ])
                 response.status = 422
                 render([errors: errors] as JSON)
             }
@@ -92,7 +90,7 @@ class HolidayAjaxController {
                         "source": [
                                 "pointer": "data"
                         ]
-                    ])
+                ])
                 response.status = 422
                 render([errors: errors] as JSON)
             }
@@ -103,7 +101,7 @@ class HolidayAjaxController {
                     "source": [
                             "pointer": "data"
                     ]
-                ])
+            ])
             response.status = 422
             render([errors: errors] as JSON)
         }
@@ -118,7 +116,7 @@ class HolidayAjaxController {
             def attrs = data.attributes
             def master = data.relationships.master.data
             if (data.type && data.type == "holiday"
-                && data.id) {
+                    && data.id) {
                 Holiday holiday = Holiday.get(data.id)
                 holiday.setComment(attrs.comment)
                 User user = User.get(master.id)
@@ -141,7 +139,7 @@ class HolidayAjaxController {
                         "source": [
                                 "pointer": "data"
                         ]
-                    ])
+                ])
                 response.status = 422
                 render([errors: errors] as JSON)
             }
@@ -180,9 +178,9 @@ class HolidayAjaxController {
                 nonWorkDays.each { it++ }
 
                 List<Holiday> holidays =
-                Holiday.findAllByMasterAndCommentNotEqual(user, "maxTime", [sort: 'dateFrom'])?.plus(
-                    Holiday.findAllByMasterAndCommentAndMaxTimeLessThan(user, "maxTime", query.time ? query.time : slotsService.getDuration(1L),
-                        [sort: 'dateFrom']))?.sort { a, b -> a.dateFrom <=> b.dateFrom }
+                        Holiday.findAllByMasterAndCommentNotEqual(user, "maxTime", [sort: 'dateFrom'])?.plus(
+                                Holiday.findAllByMasterAndCommentAndMaxTimeLessThan(user, "maxTime", query.time ? query.time : slotsService.getDuration(1L),
+                                        [sort: 'dateFrom']))?.sort { a, b -> a.dateFrom <=> b.dateFrom }
                 holidays?.each {
                     it.master.setPassword(null)
                 }

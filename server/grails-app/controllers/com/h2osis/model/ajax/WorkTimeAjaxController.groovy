@@ -25,12 +25,12 @@ class WorkTimeAjaxController {
             def data = request.JSON.data
             def attrs = data.attributes
             def master = data.relationships.master.data
-            if (data.type && data.type == "worktime"
+            if (data.type && data.type == "workTime"
                     && data.id) {
                 WorkTime workTime = WorkTime.get(data.id)
                 workTime.setTimeFrom(attrs.timeFrom)
                 workTime.setTimeTo(attrs.timeTo)
-                workTime.setDayOfWeek(attrs.dayOfWeek)
+                workTime.setDayOfWeek(attrs.dayOfWeek instanceof String ? Integer.parseInt(attrs.dayOfWeek) : attrs.dayOfWeek)
                 User user = User.get(master.id)
                 if (user) {
                     workTime.setMaster(user)
@@ -97,15 +97,15 @@ class WorkTimeAjaxController {
             def data = request.JSON.data
             def attrs = data.attributes
             def master = data.relationships.master.data
-            if (data.type && data.type == "worktime"
+            if (data.type && data.type == "workTime"
                     && data.relationships.master.data.id
                     && attrs.timeFrom
-                    && attrs.dateTo
+                    && attrs.timeTo
                     && attrs.dayOfWeek) {
-                WorkTime workTime = WorkTime()
+                WorkTime workTime = new WorkTime()
                 workTime.setTimeFrom(attrs.timeFrom)
                 workTime.setTimeTo(attrs.timeTo)
-                workTime.setDayOfWeek(attrs.dayOfWeek)
+                workTime.setDayOfWeek(attrs.dayOfWeek instanceof String ? Integer.parseInt(attrs.dayOfWeek) : attrs.dayOfWeek)
                 User user = User.get(master.id)
                 if (user) {
                     workTime.setMaster(user)
@@ -197,6 +197,24 @@ class WorkTimeAjaxController {
             }
         } else {
             render([errors: { g.message(code: "workTime.not.found") }] as JSON)
+        }
+    }
+
+    def list() {
+        def data = request.JSON.data
+        def query = request.JSON.query
+        if (query) {
+            User user = User.get(query.masterId)
+            if (user) {
+                Set<WorkTime> workTimes = WorkTime.findAllByMaster(user)
+                JSON.use('worktimes') {
+                    render([data: workTimes] as JSON)
+                }
+            } else {
+                render([msg: g.message(code: "user.get.user.not.found")] as JSON)
+            }
+        } else {
+            render([msg: g.message(code: "user.get.id.null")] as JSON)
         }
     }
 }
