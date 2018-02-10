@@ -205,7 +205,7 @@ class ServiceGroupAjaxController {
                         serviceGroup.delete(flush: true)
                         Service.search().createIndexAndWait()
                         response.status = 204
-                        render([data: 0] as JSON)
+                        render([errors: []] as JSON)
                     }
                 } else {
                     response.status = 422

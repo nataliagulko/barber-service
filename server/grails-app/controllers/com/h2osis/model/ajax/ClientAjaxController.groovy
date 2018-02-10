@@ -386,7 +386,7 @@ class ClientAjaxController {
             if (user) {
                 user.setEnabled(false)
                 user.save(flush: true)
-                render([errors: {}] as JSON)
+                render([errors: []] as JSON)
 
             } else {
                 render([errors: { g.message(code: "user.get.user.not.found") }] as JSON)

@@ -5,24 +5,20 @@ import com.h2osis.auth.User
 import com.h2osis.constant.AuthKeys
 import com.h2osis.model.Holiday
 import com.h2osis.model.Service
-import com.h2osis.model.UsersService
 import com.h2osis.model.WorkTime
-import com.h2osis.utils.BarberSecurityService
+import com.h2osis.utils.NovaDateUtilService
 import com.h2osis.utils.SearchService
 import com.h2osis.utils.SlotsService
 import grails.converters.JSON
 import grails.transaction.Transactional
 import org.joda.time.DateTime
-import org.joda.time.format.DateTimeFormat
-import org.joda.time.format.DateTimeFormatter
 
 class HolidayAjaxController {
 
     SearchService searchService
     def springSecurityService
-    BarberSecurityService barberSecurityService
-    UsersService usersService
     SlotsService slotsService
+    NovaDateUtilService novaDateUtilService
     static allowedMethods = [choose: ['POST', 'GET']]
 
     def create() {
@@ -34,17 +30,17 @@ class HolidayAjaxController {
             def attrs = data.attributes
             def master = data.relationships.master.data
             if (data.type && data.type == "holiday"
-                && data.relationships.master.data.id
-                && attrs.dateFrom
-                && attrs.dateTo) {
+                    && data.relationships.master.data.id
+                    && attrs.dateFrom
+                    && attrs.dateTo) {
                 Holiday holiday = new Holiday()
-                DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.mm.yyyy")
-                DateTime dateFrom = formatter.parseDateTime(attrs.dateFrom)
-                DateTime dateTo = formatter.parseDateTime(attrs.dateTo)
-                holiday.setDateFrom(dateFrom.toDate())
-                holiday.setDateTo(dateTo.toDate())
+                holiday.setComment(attrs.comment)
                 User user = User.get(master.id)
                 if (user) {
+                    DateTime dateFrom = novaDateUtilService.getMasterTZDateTimeDDMMYYYY(attrs.dateFrom, user)
+                    DateTime dateTo = novaDateUtilService.getMasterTZDateTimeDDMMYYYY(attrs.dateTo, user)
+                    holiday.setDateFrom(dateFrom.toDate())
+                    holiday.setDateTo(dateTo.toDate())
                     holiday.setMaster(user)
                     holiday.save(flush: true)
                     Service.search().createIndexAndWait()
@@ -58,7 +54,7 @@ class HolidayAjaxController {
                             "source": [
                                     "pointer": "data"
                             ]
-                        ])
+                    ])
                     response.status = 422
                     render([errors: errors] as JSON)
                 }
@@ -69,7 +65,7 @@ class HolidayAjaxController {
                         "source": [
                                 "pointer": "data"
                         ]
-                    ])
+                ])
                 response.status = 422
                 render([errors: errors] as JSON)
             }
@@ -94,7 +90,7 @@ class HolidayAjaxController {
                         "source": [
                                 "pointer": "data"
                         ]
-                    ])
+                ])
                 response.status = 422
                 render([errors: errors] as JSON)
             }
@@ -105,7 +101,7 @@ class HolidayAjaxController {
                     "source": [
                             "pointer": "data"
                     ]
-                ])
+            ])
             response.status = 422
             render([errors: errors] as JSON)
         }
@@ -118,17 +114,17 @@ class HolidayAjaxController {
         if (currentUser.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
             def data = request.JSON.data
             def attrs = data.attributes
-            def masters = data.relationships.masters.data
+            def master = data.relationships.master.data
             if (data.type && data.type == "holiday"
-                && data.id) {
+                    && data.id) {
                 Holiday holiday = Holiday.get(data.id)
-                DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.mm.yyyy")
-                DateTime dateFrom = formatter.parseDateTime(attrs.dateFrom)
-                DateTime dateTo = formatter.parseDateTime(attrs.dateTo)
-                holiday.setDateFrom(dateFrom.toDate())
-                holiday.setDateTo(dateTo.toDate())
-                masters.each {
-                    User user = User.get(it.id)
+                holiday.setComment(attrs.comment)
+                User user = User.get(master.id)
+                if (user) {
+                    DateTime dateFrom = novaDateUtilService.getMasterTZDateTimeDDMMYYYY(attrs.dateFrom, user)
+                    DateTime dateTo = novaDateUtilService.getMasterTZDateTimeDDMMYYYY(attrs.dateTo, user)
+                    holiday.setDateFrom(dateFrom.toDate())
+                    holiday.setDateTo(dateTo.toDate())
                     holiday.setMaster(user)
                 }
                 holiday.save(flush: true)
@@ -143,7 +139,7 @@ class HolidayAjaxController {
                         "source": [
                                 "pointer": "data"
                         ]
-                    ])
+                ])
                 response.status = 422
                 render([errors: errors] as JSON)
             }
@@ -182,9 +178,9 @@ class HolidayAjaxController {
                 nonWorkDays.each { it++ }
 
                 List<Holiday> holidays =
-                Holiday.findAllByMasterAndCommentNotEqual(user, "maxTime", [sort: 'dateFrom'])?.plus(
-                    Holiday.findAllByMasterAndCommentAndMaxTimeLessThan(user, "maxTime", query.time ? query.time : slotsService.getDuration(1L),
-                        [sort: 'dateFrom']))?.sort { a, b -> a.dateFrom <=> b.dateFrom }
+                        Holiday.findAllByMasterAndCommentNotEqual(user, "maxTime", [sort: 'dateFrom'])?.plus(
+                                Holiday.findAllByMasterAndCommentAndMaxTimeLessThan(user, "maxTime", query.time ? query.time : slotsService.getDuration(1L),
+                                        [sort: 'dateFrom']))?.sort { a, b -> a.dateFrom <=> b.dateFrom }
                 holidays?.each {
                     it.master.setPassword(null)
                 }
@@ -232,6 +228,22 @@ class HolidayAjaxController {
             render([code: 0] as JSON)
         } else {
             render([msg: g.message(code: "params.id.null")] as JSON)
+        }
+    }
+
+    @Transactional
+    def destroy() {
+        def data = request.JSON.data
+        if (data.id) {
+            Holiday holiday = Holiday.get(data.id)
+            if (holiday) {
+                holiday.delete(flush: true)
+                render([errors: []] as JSON)
+            } else {
+                render([errors: { g.message(code: "holiday.not.found") }] as JSON)
+            }
+        } else {
+            render([errors: { g.message(code: "holiday.not.found") }] as JSON)
         }
     }
 }
