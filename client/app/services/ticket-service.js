@@ -5,10 +5,11 @@ export default Ember.Service.extend({
     store: Ember.inject.service("store"),
     pickadateService: Ember.inject.service("pickadate-service"),
     selectedMaster: null,
+    ticketDate: null,
     servicesByMaster: [],
     selectedServices: [],
     cost: null,
-    time: null,
+    duration: null,
 
     showElement(elemSelector, step) {
         // скрываем верхнюю половину блока "инфо"
@@ -103,40 +104,38 @@ export default Ember.Service.extend({
             $('.ticket-info-services-top').removeClass('hidden');
         }
 
-        this._calculateTimeAndCost();
+        this._calculateDurationAndCost();
         this._getHolidays();
 
         $(selectedItem).toggleClass('selected');
     },
 
-    _calculateTimeAndCost() {
+    _calculateDurationAndCost() {
         var selectedServices = this.get("selectedServices"),
             totalCost = 0,
-            totalTime = 0;
-        //todo computedproperties
+            totalDuration = 0;
 
         selectedServices.forEach(function (item) {
             totalCost += item.get("cost");
-            totalTime += item.get("time");
+            totalDuration += item.get("time");
         });
         this.set("cost", totalCost);
-        this.set("time", totalTime);
+        this.set("duration", totalDuration);
     },
 
     _getHolidays() {
         var store = this.get("store"),
             _this = this,
             master = this.get("selectedMaster"),
-            time = this.get("time"),
+            duration = this.get("duration"),
             pickadateService = this.get("pickadateService");
 
         var holidays = store.query("holiday", {
             query: {
                 masterId: master.id,
-                time: time
+                time: duration
             }
         });
-
 
         holidays.then(function () {
             var disableDates = _this._parseHolidays(holidays);
@@ -144,16 +143,12 @@ export default Ember.Service.extend({
             pickadateService.set("#ticket-date-picker", "disable", false);
             pickadateService.set("#ticket-date-picker", "min", new Date());
             pickadateService.set("#ticket-date-picker", "disable", disableDates);
-            pickadateService.on("#ticket-date-picker", "set", function (selectedDate) {
-                var objDate = new Date(selectedDate.select),
-                    locale = "ru-ru",
-                    ticketDate = objDate.toLocaleString(locale, { day: "numeric", month: "long" });
-
-                $('.ticket-info-date-top').removeClass('hidden');
-                $('.ticket-info-date-top__date').text(ticketDate);
-                $('.ticket-info-date__date').text(ticketDate);
-            });
         });
+    },
+
+    onTicketDateChange(selectedDate) {
+        $('.ticket-info-date-top').removeClass('hidden');
+        this.set("ticketDate", selectedDate);
     },
 
     _parseHolidays(holidays) {
