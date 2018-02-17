@@ -3,5 +3,12 @@ import Ember from 'ember';
 export default Ember.Component.extend({
 	classNames: ['portlet', 'light', 'bordered', 'right-panel'],
 	elementId: 'ticket-date',
-	pickadateService: Ember.inject.service("pickadate-service"),
+	ticketService: Ember.inject.service("ticket-service"),
+
+	actions: {
+		onTicketDateChange: function (selectedDate) {
+			let ticketService = this.get("ticketService");
+			ticketService.onTicketDateChange(selectedDate);
+		}
+	}
 });

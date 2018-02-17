@@ -9,6 +9,5 @@
     </div>
 </div>
 <div class="portlet-body ticket-portlet-body">
-	{{input id="ticket-date-picker" class="datepicker"}}
-    <input type="text" id="ticket-date-input" hidden value="">
+	<input id="ticket-date-picker" class="datepicker" onchange={{action 'onTicketDateChange' value='target.value'}}/>
 </div>
