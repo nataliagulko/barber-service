@@ -6,6 +6,7 @@ export default Ember.Service.extend({
     pickadateService: Ember.inject.service("pickadate-service"),
     selectedMaster: null,
     ticketDate: null,
+    time: null,
     servicesByMaster: [],
     selectedServices: [],
     cost: null,
