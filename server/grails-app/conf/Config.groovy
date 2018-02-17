@@ -191,7 +191,7 @@ grails.plugin.springsecurity.interceptUrlMap = [
 
         '/serviceAjax/**'       : ["ROLE_ADMIN", "ROLE_USER"],
         '/ticketAjax/**'        : ["ROLE_ADMIN", "ROLE_USER"],
-        '/worktimeAjax/**'      : ["ROLE_ADMIN", "ROLE_USER"],
+        '/workTimeAjax/**'      : ["ROLE_ADMIN", "ROLE_USER"],
         '/holidayAjax/**'      : ["ROLE_ADMIN", "ROLE_USER"],        
         '/businessAjax/**'      : ["ROLE_ADMIN", "ROLE_USER"],
         '/service/**'           : ["ROLE_ADMIN", "ROLE_USER"],

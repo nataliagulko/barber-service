@@ -61,7 +61,16 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
 			url = this.buildURL(type.modelName + 'Ajax/destroy', null, null, 'deleteRecord');
 
 		return authorizedAjax(this.get("session"), url, data);
-	}
+	},
+
+	getSlots: function (store, type, query) {
+		var url = this.buildURL(type.modelName, null, null, 'findAll'),
+			data = JSON.stringify(query);
+
+		url = url + "Ajax/getSlotsInvert";
+
+		return authorizedAjax(this.get("session"), url, data);
+	},
 });
 
 export default function authorizedAjax(session, url, data) {

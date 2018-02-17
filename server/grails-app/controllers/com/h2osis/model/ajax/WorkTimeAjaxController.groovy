@@ -207,7 +207,7 @@ class WorkTimeAjaxController {
             User user = User.get(query.masterId)
             if (user) {
                 Set<WorkTime> workTimes = WorkTime.findAllByMaster(user)
-                JSON.use('worktimes') {
+                JSON.use('workTimes') {
                     render([data: workTimes] as JSON)
                 }
             } else {

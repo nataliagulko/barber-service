@@ -31,7 +31,7 @@ class JSONRenderConfig {
         }
 
 
-        JSON.createNamedConfig('worktimes') {
+        JSON.createNamedConfig('workTimes') {
             it.registerObjectMarshaller(WorkTime) {
                 def returnArray = [:]
                 returnArray['id'] = it.id

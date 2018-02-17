@@ -148,8 +148,21 @@ export default Ember.Service.extend({
     },
 
     onTicketDateChange(selectedDate) {
+        var store = this.get("store"),
+            master = this.get("selectedMaster");
+
         $('.ticket-info-date-top').removeClass('hidden');
         this.set("ticketDate", selectedDate);
+
+        var slots = store.getSlots("workTime", {
+            query: {
+                masterId: master.id,
+            }
+        });
+
+        slots.then((data) => {
+            console.log(data);
+        })
     },
 
     _parseHolidays(holidays) {
