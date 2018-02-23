@@ -1,6 +1,6 @@
 import { moduleForModel, test } from 'ember-qunit';
 
-moduleForModel('worktime', 'Unit | Model | worktime', {
+moduleForModel('work-time', 'Unit | Model | work time', {
   // Specify the other units that are required for this test.
   needs: []
 });

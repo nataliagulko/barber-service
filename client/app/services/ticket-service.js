@@ -17,10 +17,10 @@ export default Ember.Service.extend({
         $('.ticket-info-top').addClass('hidden');
 
         // отображаем нижние строки блока "инфо" если они не пустые
-        var bottomItems = $('.ticket-info-bottom');
+        let bottomItems = $('.ticket-info-bottom');
 
         bottomItems.each(function () {
-            var isNotEmpty = $(this).find('.ticket-info-bottom__text').text().trim();
+            let isNotEmpty = $(this).find('.ticket-info-bottom__text').text().trim();
             if (isNotEmpty) {
                 $(this).removeClass('hidden');
             }
@@ -41,7 +41,7 @@ export default Ember.Service.extend({
     },
 
     toggleMaster(master, event) {
-        var selectedItem = $(event.target).closest('.tile'),
+        let selectedItem = $(event.target).closest('.tile'),
             selectedMaster = this.get("selectedMaster"),
             isSameMaster = selectedMaster === master;
 
@@ -72,10 +72,10 @@ export default Ember.Service.extend({
     },
 
     _getServicesByMaster(master) {
-        var store = this.get("store"),
+        let store = this.get("store"),
             _this = this;
 
-        var services = store.query("service", {
+        let services = store.query("service", {
             query: {
                 masterId: master.id
             }
@@ -87,7 +87,7 @@ export default Ember.Service.extend({
     },
 
     toggleServiceItem(service, event) {
-        var selectedItem = $(event.target).closest('.tile'),
+        let selectedItem = $(event.target).closest('.tile'),
             selectedServices = this.get("selectedServices"),
             isServiceIncluded = selectedServices.includes(service);
 
@@ -112,7 +112,7 @@ export default Ember.Service.extend({
     },
 
     _calculateDurationAndCost() {
-        var selectedServices = this.get("selectedServices"),
+        let selectedServices = this.get("selectedServices"),
             totalCost = 0,
             totalDuration = 0;
 
@@ -125,13 +125,13 @@ export default Ember.Service.extend({
     },
 
     _getHolidays() {
-        var store = this.get("store"),
+        let store = this.get("store"),
             _this = this,
             master = this.get("selectedMaster"),
             duration = this.get("duration"),
             pickadateService = this.get("pickadateService");
 
-        var holidays = store.query("holiday", {
+        let holidays = store.query("holiday", {
             query: {
                 masterId: master.id,
                 time: duration
@@ -139,7 +139,7 @@ export default Ember.Service.extend({
         });
 
         holidays.then(function () {
-            var disableDates = _this._parseHolidays(holidays);
+            let disableDates = _this._parseHolidays(holidays);
 
             pickadateService.set("#ticket-date-picker", "disable", false);
             pickadateService.set("#ticket-date-picker", "min", new Date());
@@ -148,16 +148,34 @@ export default Ember.Service.extend({
     },
 
     onTicketDateChange(selectedDate) {
+        let store = this.get("store"),
+            master = this.get("selectedMaster"),
+            duration = this.get("duration"),
+            date = selectedDate;
+
         $('.ticket-info-date-top').removeClass('hidden');
-        this.set("ticketDate", selectedDate);
+        this.set("ticketDate", date);
+
+        let slots = store.query("workTime", {
+            query: {
+                id: master.id,
+                time: duration,
+                date: date
+            },
+            methodName: "getSlotsInvert"
+        });
+
+        slots.then((data) => {
+            console.log(data);
+        })
     },
 
     _parseHolidays(holidays) {
-        var datesArr = [];
+        let datesArr = [];
         holidays = holidays.toArray();
 
         holidays.forEach(function (item) {
-            var startY = moment(item.get("dateFrom")).toObject().years,
+            let startY = moment(item.get("dateFrom")).toObject().years,
                 startM = moment(item.get("dateFrom")).toObject().months,
                 startD = moment(item.get("dateFrom")).toObject().date,
                 endY = moment(item.get("dateTo")).toObject().years,
