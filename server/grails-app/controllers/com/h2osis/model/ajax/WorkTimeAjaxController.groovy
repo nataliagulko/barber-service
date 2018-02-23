@@ -10,6 +10,7 @@ import com.h2osis.utils.SlotsService
 import grails.converters.JSON
 import grails.transaction.Transactional
 import org.joda.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class WorkTimeAjaxController {
 
@@ -173,10 +174,13 @@ class WorkTimeAjaxController {
     }
 
     def getSlotsInvert() {
-        if (params.time && params.date && params.id) {
-            User master = User.get(params.id)
-            List<Map<String, String>> response = slotsService.getSlotsInvert(master.id, params.getLong("time"),
-                    new LocalDate(params.getDate("date", "dd.MM.yyyy").time), params.currentId ? Long.parseLong(params.currentId) : null)
+        def query = request.JSON.query
+
+        if (query.time && query.date && query.id) {
+            User master = User.get(query.id)
+
+            List<Map<String, String>> response = slotsService.getSlotsInvert(master.id, query.getLong("time"),
+                    new LocalDate(query.getDate("date", "dd.MM.yyyy").time), query.currentId ? Long.parseLong(query.currentId) : null)
             render(response as JSON)
         } else {
             render([msg: g.message(code: "slots.not.found")] as JSON)

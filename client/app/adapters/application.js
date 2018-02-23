@@ -11,22 +11,24 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
 	},
 
 	pathForType: function(type) {
-		var camelized = Ember.String.camelize(type);
+		let camelized = Ember.String.camelize(type);
 		return Ember.String.singularize(camelized);
 	},
 
 	findAll: function(store, type) {
-		var url = this.buildURL(type.modelName, null, null, 'findAll');
+		let url = this.buildURL(type.modelName, null, null, 'findAll');
+		
 		url = url + "Ajax/list";
 
 		return this.ajax(url, 'POST');
 	},
 
 	query: function(store, type, query) {
-		var url = this.buildURL(type.modelName, null, null, 'findAll'),
-			data = JSON.stringify(query);
+		let url = this.buildURL(type.modelName, null, null, 'findAll'),
+			data = JSON.stringify(query),
+			methodName = query.methodName || "list";	
 
-		url = url + "Ajax/list";
+		url = url + "Ajax/" + methodName;
 
 		return authorizedAjax(this.get("session"), url, data);
 	},
@@ -61,17 +63,8 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
 			url = this.buildURL(type.modelName + 'Ajax/destroy', null, null, 'deleteRecord');
 
 		return authorizedAjax(this.get("session"), url, data);
-	},
-
-	getSlots: function (store, type, query) {
-		var url = this.buildURL(type.modelName, null, null, 'findAll'),
-			data = JSON.stringify(query);
-
-		url = url + "Ajax/getSlotsInvert";
-
-		return authorizedAjax(this.get("session"), url, data);
-	},
-});
+	}
+});	
 
 export default function authorizedAjax(session, url, data) {
 	let token;
