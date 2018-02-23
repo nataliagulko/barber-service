@@ -7,4 +7,5 @@ export default Ember.Component.extend({
     ticketDate: Ember.computed.readOnly("ticketService.ticketDate"),
     time: Ember.computed.readOnly("ticketService.time"),    
     duration: Ember.computed.readOnly("ticketService.duration"),    
+    client: Ember.computed.readOnly("ticketService.client"), 
 });

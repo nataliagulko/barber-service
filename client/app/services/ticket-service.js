@@ -11,6 +11,8 @@ export default Ember.Service.extend({
     selectedServices: [],
     cost: null,
     duration: null,
+    phone: "",
+    client: null,
 
     showElement(elemSelector, step) {
         // скрываем верхнюю половину блока "инфо"
@@ -190,5 +192,30 @@ export default Ember.Service.extend({
         });
 
         return datesArr;
+    },
+
+    inputPhone(value) {
+        let client = this.get("client"),
+            phone = this.get("phone");
+
+        if (phone.length < 10) {
+            phone = phone + value;
+            this.set("phone", phone);
+        }
+        else {
+            this._getClient(phone);
+        }
+
+        console.log(phone);
+        console.log(value);  
+    },
+
+    _getClient(phone) {
+        let client = store.query("workTime", {
+            query: {
+                value: phone
+            },
+            methodName: "find"
+        });
     }
 });
