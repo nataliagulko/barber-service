@@ -39,8 +39,10 @@ class DataSyncService {
         masterCurrentDate = slotsService.changeTimeZone(masterCurrentDate, masterTZ)
         List<Ticket> oldTickets = Ticket.findAllByMasterAndTicketDateLessThanAndTicketDateGreaterThan(master,
                 masterCurrentDate.minusDays(1).toDate(), masterCurrentDate.minusDays(90).toDate())
-        SMObjectState.withTransaction {
-            SMObjectState.deleteAll(SMObjectState.findAllByObjectIdInList(oldTickets.id))
+        if(oldTickets) {
+            SMObjectState.withTransaction {
+                SMObjectState.deleteAll(SMObjectState.findAllByObjectIdInList(oldTickets.id))
+            }
         }
     }
 
