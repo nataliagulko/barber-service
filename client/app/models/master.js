@@ -29,7 +29,7 @@ const Validations = buildValidations({
     ],
     holidays: validator('has-many'),
     services: validator('has-many'),
-    worktimes: validator('has-many')
+    workTimes: validator('has-many')
 });
 
 export default DS.Model.extend(Validations, {
@@ -47,7 +47,7 @@ export default DS.Model.extend(Validations, {
     passwordExpired: DS.attr('boolean'),
     holidays: DS.hasMany('holiday'),
     services: DS.hasMany('service'),
-    worktimes: DS.hasMany('worktime'),
+    workTimes: DS.hasMany('work-time'),
     fullname: Ember.computed('firstname', 'secondname', function() {
         return `${this.get('firstname')} ${this.get('secondname')}`;
     })

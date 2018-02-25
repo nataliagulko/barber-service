@@ -8,8 +8,7 @@ export default Ember.Component.extend({
             var inputField = $('.ticket-info-client-top__input'),
                 inputValue = $('#phone-number'),
                 bottomInput = $('.ticket-info-client__phone'),
-                phoneValue = $(inputValue).val(),
-                submitBtn = $('#phone-submit');
+                phoneValue = $(inputValue).val();
 
                 phoneValue = phoneValue.slice(0,-1);
                 $(inputValue).val(phoneValue);

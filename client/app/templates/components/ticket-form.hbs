@@ -1,8 +1,11 @@
-<input type="text" name="master" value="{{selectedMaster.id}}">
-<input type="text" name="client">
-<input type="text" name="ticketDate">
-<input type="text" name="time">
-<input type="text" name="status">
-<input type="text" name="cost">
-<input type="text" name="duration">
-<button type="button" class="btn btn-lg btn-success pull-right" disabled>Записать</button>
+<form>
+    <input type="text" name="master" value={{selectedMaster.id}}/>
+    <input type="text" name="client" />
+    <input type="text" name="ticketDate" value={{ticketDate}}/>
+    <input type="text" name="time" value={{time}}/>
+    <input type="text" name="status" />
+    <input type="text" name="cost" />
+    <input type="text" name="duration" value={{duration}}/>
+    <input type="text" name="client" value={{client.id}}>
+    <button type="button" class="btn btn-lg btn-success pull-right" disabled>Записать</button>
+</form>

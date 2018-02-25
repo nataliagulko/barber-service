@@ -6,6 +6,8 @@ export default Ember.Service.extend({
 		var $input = $('.datepicker').pickadate({
 			closeOnSelect: false,
 			closeOnClear: false,
+			format: "dd.mm.yyyy",
+			formatSubmit: "dd.mm.yyyy",			
 		});
 		var picker = $input.pickadate('picker');
 

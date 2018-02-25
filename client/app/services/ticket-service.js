@@ -1,23 +1,28 @@
 import Ember from 'ember';
+import moment from 'moment';
 
 export default Ember.Service.extend({
     store: Ember.inject.service("store"),
     pickadateService: Ember.inject.service("pickadate-service"),
     selectedMaster: null,
+    ticketDate: null,
+    time: null,
     servicesByMaster: [],
     selectedServices: [],
     cost: null,
-    time: null, 
+    duration: null,
+    phone: "",
+    client: null,
 
     showElement(elemSelector, step) {
         // скрываем верхнюю половину блока "инфо"
         $('.ticket-info-top').addClass('hidden');
 
         // отображаем нижние строки блока "инфо" если они не пустые
-        var bottomItems = $('.ticket-info-bottom');
+        let bottomItems = $('.ticket-info-bottom');
 
         bottomItems.each(function () {
-            var isNotEmpty = $(this).find('.ticket-info-bottom__text').text().trim();
+            let isNotEmpty = $(this).find('.ticket-info-bottom__text').text().trim();
             if (isNotEmpty) {
                 $(this).removeClass('hidden');
             }
@@ -38,22 +43,22 @@ export default Ember.Service.extend({
     },
 
     toggleMaster(master, event) {
-        var selectedItem = $(event.target).closest('.tile'),
+        let selectedItem = $(event.target).closest('.tile'),
             selectedMaster = this.get("selectedMaster"),
             isSameMaster = selectedMaster === master;
 
         if (selectedMaster && isSameMaster) {
             this.set("selectedMaster", null);
             this.set("servicesByMaster", []);
-            
+
             $('.ticket-info-master-top').addClass('hidden');
         }
-        else if(selectedMaster && !isSameMaster) {
+        else if (selectedMaster && !isSameMaster) {
             this._setSelectedMaster(master);
 
             $('.tile').each(function () {
                 $(this).removeClass('selected');
-            });          
+            });
         }
         else {
             this._setSelectedMaster(master);
@@ -69,10 +74,10 @@ export default Ember.Service.extend({
     },
 
     _getServicesByMaster(master) {
-        var store = this.get("store"),
+        let store = this.get("store"),
             _this = this;
 
-        var services = store.query("service", {
+        let services = store.query("service", {
             query: {
                 masterId: master.id
             }
@@ -80,11 +85,11 @@ export default Ember.Service.extend({
 
         services.then(function () {
             _this.set("servicesByMaster", services);
-        })
+        });
     },
 
     toggleServiceItem(service, event) {
-        var selectedItem = $(event.target).closest('.tile'),
+        let selectedItem = $(event.target).closest('.tile'),
             selectedServices = this.get("selectedServices"),
             isServiceIncluded = selectedServices.includes(service);
 
@@ -95,72 +100,84 @@ export default Ember.Service.extend({
             selectedServices.pushObject(service);
         }
 
-        if (selectedServices.get("length") == 0) {
+        if (selectedServices.get("length") === 0) {
             $('.ticket-info-services-top').addClass('hidden');
         }
         else {
-            $('.ticket-info-services-top').removeClass('hidden');            
+            $('.ticket-info-services-top').removeClass('hidden');
         }
 
-        this._calculateTimeAndCost();
+        this._calculateDurationAndCost();
         this._getHolidays();
 
         $(selectedItem).toggleClass('selected');
     },
 
-    _calculateTimeAndCost() {
-        var selectedServices = this.get("selectedServices"),
+    _calculateDurationAndCost() {
+        let selectedServices = this.get("selectedServices"),
             totalCost = 0,
-            totalTime = 0;
-            //todo computedproperties
+            totalDuration = 0;
 
         selectedServices.forEach(function (item) {
             totalCost += item.get("cost");
-            totalTime += item.get("time");
+            totalDuration += item.get("time");
         });
         this.set("cost", totalCost);
-        this.set("time", totalTime);
+        this.set("duration", totalDuration);
     },
 
     _getHolidays() {
-        var store = this.get("store"),
+        let store = this.get("store"),
             _this = this,
             master = this.get("selectedMaster"),
-            time = this.get("time"),
+            duration = this.get("duration"),
             pickadateService = this.get("pickadateService");
 
-        var holidays = store.query("holiday", {
+        let holidays = store.query("holiday", {
             query: {
                 masterId: master.id,
-                time: time
+                time: duration
             }
         });
-        
 
         holidays.then(function () {
-            var disableDates = _this._parseHolidays(holidays);
-            
-            pickadateService.set("#ticket-date-picker", "disable", false);
-            pickadateService.set("#ticket-date-picker", "min", new Date());            
-            pickadateService.set("#ticket-date-picker", "disable", disableDates);
-            pickadateService.on("#ticket-date-picker", "set", function (selectedDate) {
-                var objDate = new Date(selectedDate.select),
-                    locale = "ru-ru",
-                    ticketDate = objDate.toLocaleString(locale, { day: "numeric", month: "long" });
+            let disableDates = _this._parseHolidays(holidays);
 
-                $('.ticket-info-date-top').removeClass('hidden');
-                $('.ticket-info-date-top__date').text(ticketDate);
-                $('.ticket-info-date__date').text(ticketDate);
-            });
+            pickadateService.set("#ticket-date-picker", "disable", false);
+            pickadateService.set("#ticket-date-picker", "min", new Date());
+            pickadateService.set("#ticket-date-picker", "disable", disableDates);
+        });
+    },
+
+    onTicketDateChange(selectedDate) {
+        let store = this.get("store"),
+            master = this.get("selectedMaster"),
+            duration = this.get("duration"),
+            date = selectedDate;
+
+        $('.ticket-info-date-top').removeClass('hidden');
+        this.set("ticketDate", date);
+
+        let slots = store.query("workTime", {
+            query: {
+                id: master.id,
+                time: duration,
+                date: date
+            },
+            methodName: "getSlotsInvert"
+        });
+
+        slots.then((data) => {
+            console.log(data);
         })
     },
 
     _parseHolidays(holidays) {
-        var datesArr = [],
-            holidays = holidays.toArray();
-        
+        let datesArr = [];
+        holidays = holidays.toArray();
+
         holidays.forEach(function (item) {
-            var startY = moment(item.get("dateFrom")).toObject().years,
+            let startY = moment(item.get("dateFrom")).toObject().years,
                 startM = moment(item.get("dateFrom")).toObject().months,
                 startD = moment(item.get("dateFrom")).toObject().date,
                 endY = moment(item.get("dateTo")).toObject().years,
@@ -175,5 +192,30 @@ export default Ember.Service.extend({
         });
 
         return datesArr;
+    },
+
+    inputPhone(value) {
+        let client = this.get("client"),
+            phone = this.get("phone");
+
+            const phoneLength = 10;
+            
+        if (phone.length !== phoneLength) {
+            phone += value;
+            this.set("phone", phone);
+        }
+        else {
+            this._getClient(phone);
+        }
+    },
+
+    _getClient(phone) {
+        const store = this.get("store");
+
+        let client = store.query("client", {
+            query: {
+                phone: phone
+            }
+        });
     }
 });
