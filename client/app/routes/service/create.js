@@ -19,6 +19,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
 	deactivate: function () {
 		this._super(...arguments);
+
 		const model = this.modelFor(this.routeName),
 			serviceRecord = model.service,
 			serviceGroupRecord = model.serviceGroup;

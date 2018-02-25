@@ -7,16 +7,16 @@ export default Ember.Service.extend({
 	serviceToGroupTimeout: 0,
 	isRowAddingDisabled: false,
 
-	addServiceToGroup: function() {
-		var servicesToGroup = this.get("servicesToGroup"),
-			serviceToGroupRecord = this.get("store").createRecord("serviceToGroup");
+	addServiceToGroup: function () {
+		let servicesToGroup = this.get("servicesToGroup");
+		const serviceToGroupRecord = this.get("store").createRecord("serviceToGroup");
 
 		servicesToGroup.pushObject(serviceToGroupRecord);
 		this._changeIsRowAddingDisabled();
 	},
 
-	showSubservices: function(serviceGroupRecord, _this) {
-		var servicesToGroup = serviceGroupRecord
+	showSubservices: function (serviceGroupRecord, _this) {
+		let servicesToGroup = serviceGroupRecord
 			.get("serviceToGroups")
 			.toArray();
 
@@ -29,12 +29,12 @@ export default Ember.Service.extend({
 		}
 	},
 
-	selectSubservice: function(subservice, serviceToGroup, serviceGroup) {
+	selectSubservice: function (subservice, serviceToGroup, serviceGroup) {
 		if (typeof subservice === "undefined") {
 			return;
 		}
 
-		var subservices = this.get("_selectedSubservices");
+		let subservices = this.get("_selectedSubservices");
 
 		serviceToGroup.set("service", subservice);
 		subservices.pushObject(subservice);
@@ -42,15 +42,13 @@ export default Ember.Service.extend({
 		this._changeIsRowAddingDisabled();
 	},
 
-	_calculateServiceGroupCostAndTime: function(serviceGroup) {
-		var subservices = this.get("_selectedSubservices");
+	_calculateServiceGroupCostAndTime: function (serviceGroup) {
+		const subservices = this.get("_selectedSubservices");
 
-		console.log(subservices.toArray().length);
-
-		var serviceGroupCost = 0,
+		let serviceGroupCost = 0,
 			serviceGroupTime = 0;
 
-		subservices.forEach(function(subservice) {
+		subservices.forEach(function (subservice) {
 			serviceGroupCost += subservice.get("cost");
 			serviceGroupTime += subservice.get("time");
 		});
@@ -59,25 +57,23 @@ export default Ember.Service.extend({
 		serviceGroup.set("time", Number(serviceGroupTime));
 	},
 
-	removeServiceToGroup: function(record, serviceGroup) {
-		var servicesToGroup = this.get("servicesToGroup"),
+	removeServiceToGroup: function (record, serviceGroup) {
+		let servicesToGroup = this.get("servicesToGroup"),
 			subservices = this.get("_selectedSubservices");
 
-		console.log("remove obj ", record);
-
-		record.destroyRecord("serviceToGroup");
 		servicesToGroup.removeObject(record);
 		subservices.removeObject(record);
+		record.destroyRecord("serviceToGroup");
 
 		this._calculateServiceGroupCostAndTime(serviceGroup);
 		this._changeIsRowAddingDisabled();
 	},
 
-	_changeIsRowAddingDisabled: function() {
+	_changeIsRowAddingDisabled: function () {
 		// if subservices not chosen
 		// if servicesToGroup list is empty
 
-		var isRowAddingDisabled = this.get("isRowAddingDisabled"),
+		let isRowAddingDisabled = this.get("isRowAddingDisabled"),
 			servicesToGroup = this.get("servicesToGroup"),
 			_selectedSubservices = this.get("_selectedSubservices");
 
@@ -90,19 +86,19 @@ export default Ember.Service.extend({
 		this.set("isRowAddingDisabled", isRowAddingDisabled);
 	},
 
-	reorderSubservices: function(subservicesOrderedArr) {
+	reorderSubservices: function (subservicesOrderedArr) {
 		this.set("servicesToGroup", subservicesOrderedArr);
 	},
 
-	inputServiceToGroupTimeout: function(serviceGroup) {
-		var serviceGroupTime = serviceGroup.get("time"),
+	inputServiceToGroupTimeout: function (serviceGroup) {
+		let serviceGroupTime = serviceGroup.get("time"),
 			// previous saved summary of timeouts:
 			serviceToGroupTimeout = this.get("serviceToGroupTimeout"),
 			// current summary of timeouts
 			serviceTimeout = 0,
 			$timeouts = Ember.$("[name=serviceTimeout]");
 
-		$timeouts.each(function(ind, elem) {
+		$timeouts.each(function (ind, elem) {
 			serviceTimeout += Number(elem.value);
 		});
 
@@ -116,7 +112,7 @@ export default Ember.Service.extend({
 		this.set("serviceToGroupTimeout", serviceToGroupTimeout);
 	},
 
-	saveService: function(serviceRecord, masters, _this) {
+	saveService: function (serviceRecord, masters, _this) {
 		serviceRecord.set("masters", masters);
 		serviceRecord
 			.save()
@@ -125,14 +121,14 @@ export default Ember.Service.extend({
 			});
 	},
 
-	saveServiceGroup: function(serviceGroupRecord, masters, _this) {
+	saveServiceGroup: function (serviceGroupRecord, masters, _this) {
 		const servicesToGroup = this.get("servicesToGroup");
 
 		serviceGroupRecord.set("masters", masters);
 		serviceGroupRecord
 			.save()
-			.then(function(record) {
-				servicesToGroup.forEach(function(item, ind) {
+			.then(function (record) {
+				servicesToGroup.forEach(function (item, ind) {
 					item.set("serviceGroup", record);
 					item.set("serviceOrder", ind);
 					item.save();
