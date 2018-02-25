@@ -13,9 +13,10 @@ export default Ember.Component.extend({
 	},
 
 	actions: {
-		save: function() {
+		save: function () {
 			const serviceRecord = this.get("service");
-			var serviceService = this.get("serviceService"),
+
+			let serviceService = this.get("serviceService"),
 				selectedMasters = this.get("selectedMasters"),
 				_this = this;
 
