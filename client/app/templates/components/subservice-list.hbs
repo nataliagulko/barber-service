@@ -27,10 +27,10 @@
 						onchange=(action "selectSubservice" item) 
 						as |subservice| }}
 							{{subservice.name}}
-							<small class="font-grey-silver">
-								{{subservice.cost}}<i class="fa fa-rouble"></i>,
+							<small class="font-grey-silver subservice-list__select-info">
+								{{subservice.cost}}&nbsp;<i class="fa fa-rouble"></i>,
 							</small>
-							<small class="font-grey-silver">
+							<small class="font-grey-silver subservice-list__select-info">
 								{{subservice.time}}&nbsp;мин.
 							</small>
 					{{/power-select}}

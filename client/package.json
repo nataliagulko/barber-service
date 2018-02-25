@@ -53,6 +53,7 @@
     "ember-toastr": "1.7.0",
     "ember-truth-helpers": "^2.0.0",
     "loader.js": "^4.0.10",
+    "phantomjs": "^2.1.7",
     "toastr": "^2.1.2"
   },
   "engines": {
