@@ -1,5 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-    tagName: ''
+    tagName: '',
+    ticketService: Ember.inject.service("ticket-service"),
+    phone: Ember.computed.readOnly("ticketService.phone"),
 });

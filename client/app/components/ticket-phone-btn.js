@@ -2,26 +2,12 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
     tagName:'',
+    ticketService: Ember.inject.service('ticket-service'),
 
     actions: {
-        inputNumber() {
-            var inputField = $('.ticket-info-client-top__input'),
-                inputValue = $('#phone-number'),
-                bottomInput = $('.ticket-info-client__phone'),
-                phoneValue = "",
-                submitBtn = $('#phone-submit');
-
-            if ($(inputValue).val().length<10) {
-                phoneValue = $(inputValue).val() + this.value;
-                $(inputValue).val(phoneValue);
-                $(inputField).text(phoneValue);
-                $(bottomInput).text(phoneValue);
-            }
-
-            if (phoneValue.length === 10) {
-                $(submitBtn).removeAttr('disabled');
-                $(submitBtn).addClass('green-meadow');
-            }
+        inputPhone(value) {
+            var ticketService = this.get('ticketService');
+            ticketService.inputPhone(value);
         }
     }
 });
