@@ -198,24 +198,24 @@ export default Ember.Service.extend({
         let client = this.get("client"),
             phone = this.get("phone");
 
-        if (phone.length < 10) {
-            phone = phone + value;
+            const phoneLength = 10;
+            
+        if (phone.length !== phoneLength) {
+            phone += value;
             this.set("phone", phone);
         }
         else {
             this._getClient(phone);
         }
-
-        console.log(phone);
-        console.log(value);  
     },
 
     _getClient(phone) {
-        let client = store.query("workTime", {
+        const store = this.get("store");
+
+        let client = store.query("client", {
             query: {
-                value: phone
-            },
-            methodName: "find"
+                phone: phone
+            }
         });
     }
 });
