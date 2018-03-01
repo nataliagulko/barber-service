@@ -1,110 +1,109 @@
 import Ember from 'ember';
-import Service from '@ember/service';
 
-export default Service.extend({
+export default Ember.Service.extend({
     store: Ember.inject.service("store"),
     servicesToGroup: [],
     serviceToGroupTimeout: 0,
-	isRowAddingDisabled: false,
+    isRowAddingDisabled: false,
 
     addServiceToGroup: function () {
-		let servicesToGroup = this.get("servicesToGroup");
-		const serviceToGroupRecord = this.get("store").createRecord("serviceToGroup");
+        let servicesToGroup = this.get("servicesToGroup");
+        const serviceToGroupRecord = this.get("store").createRecord("serviceToGroup");
 
-		servicesToGroup.pushObject(serviceToGroupRecord);
-		this._changeIsRowAddingDisabled();
-	},
+        servicesToGroup.pushObject(serviceToGroupRecord);
+        this._changeIsRowAddingDisabled();
+    },
 
-	showSubservices: function (serviceGroupRecord, _this) {
-		let servicesToGroup = serviceGroupRecord
-			.get("servicesToGroup")
-			.toArray();
+    showSubservices: function (serviceGroup, _this) {
+        let servicesToGroup = serviceGroup
+            .get("servicesToGroup")
+            .toArray();
 
-		if (servicesToGroup.get("length") > 0) {
-			servicesToGroup = servicesToGroup.sortBy("serviceOrder");
-			this.set("servicesToGroup", servicesToGroup);
-		} else {
-			_this.send("addServiceToGroup");
-		}
-	},
+        if (servicesToGroup.get("length") > 0) {
+            servicesToGroup = servicesToGroup.sortBy("serviceOrder");
+            this.set("servicesToGroup", servicesToGroup);
+        } else {
+            this.set("servicesToGroup", []);
+            _this.send("addServiceToGroup");
+        }
+    },
 
-	selectSubservice: function (subservice, serviceToGroup, serviceGroup) {
-		let servicesToGroup = this.get("servicesToGroup");
+    selectSubservice: function (serviceToGroup, subservice, serviceGroup) {
+        if (typeof subservice === "undefined") {
+            return;
+        }
 
-		if (typeof subservice === "undefined") {
-			return;
-		}
-
-		serviceToGroup.set("service", subservice);
-		servicesToGroup.pushObject(servicesToGroup);
-		this._calculateServiceGroupCostAndTime(serviceGroup);
-		this._changeIsRowAddingDisabled();
+        serviceToGroup.set("service", subservice);
+        this._calculateServiceGroupCostAndTime(serviceGroup);
+        this._changeIsRowAddingDisabled();
     },
 
     _calculateServiceGroupCostAndTime: function (serviceGroup) {
-		const subservices = this.get("servicesToGroup");
-		
-		let serviceGroupCost = 0,
-			serviceGroupTime = 0;
+        const servicesToGroup = this.get("servicesToGroup");
 
-		subservices.forEach(function (subservice) {
-			serviceGroupCost += subservice.get("cost");
-			serviceGroupTime += subservice.get("time");
-		});
+        let serviceGroupCost = 0,
+            serviceGroupTime = 0;
 
-		serviceGroup.set("cost", Number(serviceGroupCost));
-		serviceGroup.set("time", Number(serviceGroupTime));
-	},
+        servicesToGroup.forEach(function (serviceToGroup) {
+            let innerService = serviceToGroup.get("service");
 
-	_changeIsRowAddingDisabled: function () {
-		// if subservices not chosen
-		// if servicesToGroup list is empty
+            serviceGroupCost += innerService.get("cost");
+            serviceGroupTime += innerService.get("time");
+        });
 
-		let isRowAddingDisabled = this.get("isRowAddingDisabled"),
-			servicesToGroup = this.get("servicesToGroup");
-
-		if (servicesToGroup.length > 0) {
-			isRowAddingDisabled = false;
-		} else {
-			isRowAddingDisabled = true;
-		}
-
-		this.set("isRowAddingDisabled", isRowAddingDisabled);
-	},
-    
-    removeServiceToGroup: function (record, serviceGroup) {
-		let servicesToGroup = this.get("servicesToGroup");
-
-		servicesToGroup.removeObject(record);
-		record.destroyRecord("serviceToGroup");
-
-		this._calculateServiceGroupCostAndTime(serviceGroup);
-		this._changeIsRowAddingDisabled();
+        serviceGroup.set("cost", Number(serviceGroupCost));
+        serviceGroup.set("time", Number(serviceGroupTime));
     },
-    
+
+    _changeIsRowAddingDisabled: function () {
+        // if subservices not chosen
+        // if servicesToGroup list is empty
+
+        let isRowAddingDisabled = this.get("isRowAddingDisabled"),
+            servicesToGroup = this.get("servicesToGroup");
+
+        if (servicesToGroup.length > 0) {
+            isRowAddingDisabled = false;
+        } else {
+            isRowAddingDisabled = true;
+        }
+
+        this.set("isRowAddingDisabled", isRowAddingDisabled);
+    },
+
+    removeServiceToGroup: function (record, serviceGroup) {
+        let servicesToGroup = this.get("servicesToGroup");
+
+        servicesToGroup.removeObject(record);
+        record.destroyRecord("serviceToGroup");
+
+        this._calculateServiceGroupCostAndTime(serviceGroup);
+        this._changeIsRowAddingDisabled();
+    },
+
     reorderSubservices: function (subservicesOrderedArr) {
-		this.set("servicesToGroup", subservicesOrderedArr);
-	},
+        this.set("servicesToGroup", subservicesOrderedArr);
+    },
 
-	inputServiceToGroupTimeout: function (serviceGroup) {
-		let serviceGroupTime = serviceGroup.get("time"),
-			// previous saved summary of timeouts:
-			serviceToGroupTimeout = this.get("serviceToGroupTimeout"),
-			// current summary of timeouts
-			serviceTimeout = 0,
-			$timeouts = Ember.$("[name=serviceTimeout]");
+    inputServiceToGroupTimeout: function (serviceGroup) {
+        let serviceGroupTime = serviceGroup.get("time"),
+            // previous saved summary of timeouts:
+            serviceToGroupTimeout = this.get("serviceToGroupTimeout"),
+            // current summary of timeouts
+            serviceTimeout = 0,
+            $timeouts = Ember.$("[name=serviceTimeout]");
 
-		$timeouts.each(function (ind, elem) {
-			serviceTimeout += Number(elem.value);
-		});
+        $timeouts.each(function (ind, elem) {
+            serviceTimeout += Number(elem.value);
+        });
 
-		// subtract previous timeouts
-		serviceGroupTime -= serviceToGroupTimeout;
-		// add current timeouts
-		serviceGroupTime += serviceTimeout;
-		// save current timeouts
-		serviceToGroupTimeout = serviceTimeout;
-		serviceGroup.set("time", serviceGroupTime);
-		this.set("serviceToGroupTimeout", serviceToGroupTimeout);
-	},
+        // subtract previous timeouts
+        serviceGroupTime -= serviceToGroupTimeout;
+        // add current timeouts
+        serviceGroupTime += serviceTimeout;
+        // save current timeouts
+        serviceToGroupTimeout = serviceTimeout;
+        serviceGroup.set("time", serviceGroupTime);
+        this.set("serviceToGroupTimeout", serviceToGroupTimeout);
+    },
 });

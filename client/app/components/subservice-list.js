@@ -44,7 +44,7 @@ export default Ember.Component.extend({
 			var serviceToGroupService = this.get("serviceToGroupService"),
 				serviceGroup = this.get("serviceGroup");
 
-			serviceToGroupService.selectSubservice(subservice, serviceToGroup, serviceGroup);
+			serviceToGroupService.selectSubservice(serviceToGroup, subservice, serviceGroup);
 		}
 	}
 });
