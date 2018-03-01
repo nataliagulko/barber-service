@@ -3,7 +3,6 @@ import Ember from 'ember';
 export default Ember.Service.extend({
 	store: Ember.inject.service("store"),
 	servicesToGroup: [],
-	_selectedSubservices: [],
 	serviceToGroupTimeout: 0,
 	isRowAddingDisabled: false,
 
@@ -22,29 +21,28 @@ export default Ember.Service.extend({
 
 		if (servicesToGroup.get("length") > 0) {
 			servicesToGroup = servicesToGroup.sortBy("serviceOrder");
-			this.set("_selectedSubservices", servicesToGroup);
-			this.set("servicesToGroup", servicesToGroup);
+			this.set("serviceToGroups", servicesToGroup);
 		} else {
 			_this.send("addServiceToGroup");
 		}
 	},
 
 	selectSubservice: function (subservice, serviceToGroup, serviceGroup) {
+		let servicesToGroup = this.get("servicesToGroup");
+
 		if (typeof subservice === "undefined") {
 			return;
 		}
 
-		let subservices = this.get("_selectedSubservices");
-
 		serviceToGroup.set("service", subservice);
-		subservices.pushObject(subservice);
+		servicesToGroup.pushObject(servicesToGroup);
 		this._calculateServiceGroupCostAndTime(serviceGroup);
 		this._changeIsRowAddingDisabled();
 	},
 
 	_calculateServiceGroupCostAndTime: function (serviceGroup) {
-		const subservices = this.get("_selectedSubservices");
-
+		const subservices = this.get("servicesToGroup");
+		
 		let serviceGroupCost = 0,
 			serviceGroupTime = 0;
 
@@ -58,11 +56,9 @@ export default Ember.Service.extend({
 	},
 
 	removeServiceToGroup: function (record, serviceGroup) {
-		let servicesToGroup = this.get("servicesToGroup"),
-			subservices = this.get("_selectedSubservices");
+		let servicesToGroup = this.get("servicesToGroup");
 
 		servicesToGroup.removeObject(record);
-		subservices.removeObject(record);
 		record.destroyRecord("serviceToGroup");
 
 		this._calculateServiceGroupCostAndTime(serviceGroup);
@@ -74,10 +70,9 @@ export default Ember.Service.extend({
 		// if servicesToGroup list is empty
 
 		let isRowAddingDisabled = this.get("isRowAddingDisabled"),
-			servicesToGroup = this.get("servicesToGroup"),
-			_selectedSubservices = this.get("_selectedSubservices");
+			servicesToGroup = this.get("servicesToGroup");
 
-		if (_selectedSubservices.length > 0 && servicesToGroup.length > 0) {
+		if (servicesToGroup.length > 0) {
 			isRowAddingDisabled = false;
 		} else {
 			isRowAddingDisabled = true;
