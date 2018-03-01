@@ -1,8 +1,8 @@
 package com.h2osis.model
 
 class ServiceGroup extends Service {
-    static hasMany = [services: Service, serviceToGroups: ServiceToGroup]
-    static transients = ['services', 'serviceToGroups']
+    static hasMany = [services: Service, servicesToGroup: ServiceToGroup]
+    static transients = ['services', 'servicesToGroup']
 
     static constraints = {
     }
@@ -17,7 +17,7 @@ class ServiceGroup extends Service {
         return null
     }
 
-    def getServiceToGroups() {
+    def getServicesToGroup() {
         if (id) {
             List<ServiceToGroup> serviceToGroupList = ServiceToGroup.findAllByGroup(this)
             if (serviceToGroupList) {
