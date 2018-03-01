@@ -138,7 +138,7 @@ class SlotsService {
     def getSlots(Long master, Long time, LocalDate date, Long currId, String timeZone) {
         User ticketsMaster = User.get(master)
         List<WorkTime> workTimes = WorkTime.findAllByDayOfWeekAndMasterAndDateFromIsNullAndDateToIsNull(date.getDayOfWeek(), ticketsMaster, [sort: 'timeFrom'])
-        List<WorkTime> workTimesOnDate = WorkTime.findAllByDayOfWeekAndMasterAndDateFromLessThanAndDateToGreaterThan(date.getDayOfWeek(), date, date, ticketsMaster, [sort: 'timeFrom'])
+        List<WorkTime> workTimesOnDate = WorkTime.findAllByDayOfWeekAndMasterAndDateFromLessThanAndDateToGreaterThan(date.getDayOfWeek(), date.toDate(), date.toDate(), ticketsMaster, [sort: 'timeFrom'])
         workTimes = workTimes ? workTimes.addAll(workTimesOnDate ? workTimesOnDate : new ArrayList<WorkTime>()) : workTimes
 
         DateTime dt1 = date.toDateTime(new LocalTime("00:00"))
