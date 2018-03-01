@@ -6,15 +6,18 @@ import com.h2osis.constant.AuthKeys
 import com.h2osis.model.Holiday
 import com.h2osis.model.Service
 import com.h2osis.model.WorkTime
+import com.h2osis.utils.NovaDateUtilService
 import com.h2osis.utils.SlotsService
 import grails.converters.JSON
 import grails.transaction.Transactional
+import org.joda.time.DateTime
 import org.joda.time.LocalDate
 
 class WorkTimeAjaxController {
 
     def springSecurityService
     SlotsService slotsService
+    NovaDateUtilService novaDateUtilService
     static allowedMethods = [choose: ['POST', 'GET']]
 
     def update() {
@@ -30,8 +33,17 @@ class WorkTimeAjaxController {
                 WorkTime workTime = WorkTime.get(data.id)
                 workTime.setTimeFrom(attrs.timeFrom)
                 workTime.setTimeTo(attrs.timeTo)
-                workTime.setDayOfWeek(attrs.dayOfWeek instanceof String ? Integer.parseInt(attrs.dayOfWeek) : attrs.dayOfWeek)
+
                 User user = User.get(master.id)
+                if(attrs.dateFrom || attrs.dateTo) {
+                    DateTime dateFrom = novaDateUtilService.getMasterTZDateTimeDDMMYYYY(attrs.dateFrom, user)
+                    DateTime dateTo = novaDateUtilService.getMasterTZDateTimeDDMMYYYY(attrs.dateTo, user)
+                    workTime.setDateFrom(dateFrom.toDate())
+                    workTime.setDateTo(dateTo.toDate())
+                }
+
+                workTime.setDayOfWeek(attrs.dayOfWeek instanceof String ? Integer.parseInt(attrs.dayOfWeek) : attrs.dayOfWeek)
+
                 if (user) {
                     workTime.setMaster(user)
                     workTime.save(flush: true)
@@ -105,8 +117,17 @@ class WorkTimeAjaxController {
                 WorkTime workTime = new WorkTime()
                 workTime.setTimeFrom(attrs.timeFrom)
                 workTime.setTimeTo(attrs.timeTo)
-                workTime.setDayOfWeek(attrs.dayOfWeek instanceof String ? Integer.parseInt(attrs.dayOfWeek) : attrs.dayOfWeek)
+
                 User user = User.get(master.id)
+                if(attrs.dateFrom || attrs.dateTo) {
+                    DateTime dateFrom = novaDateUtilService.getMasterTZDateTimeDDMMYYYY(attrs.dateFrom, user)
+                    DateTime dateTo = novaDateUtilService.getMasterTZDateTimeDDMMYYYY(attrs.dateTo, user)
+                    workTime.setDateFrom(dateFrom.toDate())
+                    workTime.setDateTo(dateTo.toDate())
+                }
+
+                workTime.setDayOfWeek(attrs.dayOfWeek instanceof String ? Integer.parseInt(attrs.dayOfWeek) : attrs.dayOfWeek)
+
                 if (user) {
                     workTime.setMaster(user)
                     workTime.save(flush: true)
