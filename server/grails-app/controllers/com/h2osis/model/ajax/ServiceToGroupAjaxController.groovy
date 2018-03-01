@@ -30,7 +30,7 @@ class ServiceToGroupAjaxController {
                 serviceToGroup.setService(service)
                 serviceToGroup.setGroup(group)
                 serviceToGroup.save(flush: true)
-                JSON.use('serviceToGroups') {
+                JSON.use('servicesToGroup') {
                     render([data: serviceToGroup] as JSON)
                 }
             } else {
@@ -66,7 +66,7 @@ class ServiceToGroupAjaxController {
                 serviceToGroup.setService(service)
                 serviceToGroup.setGroup(group)
                 serviceToGroup.save(flush: true)
-                JSON.use('serviceToGroups') {
+                JSON.use('servicesToGroup') {
                     render([data: serviceToGroup] as JSON)
                 }
             } else {
@@ -91,7 +91,7 @@ class ServiceToGroupAjaxController {
         if (data.id) {
             ServiceToGroup serviceToGroup = ServiceToGroup.get(data.id)
             if (serviceToGroup) {
-                JSON.use('serviceToGroups') {
+                JSON.use('servicesToGroup') {
                     render([data: serviceToGroup] as JSON)
                 }
             } else {
