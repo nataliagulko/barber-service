@@ -40,7 +40,7 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
 		return authorizedAjax(this.get("session"), url, data);
 	},
 
-	findRecord(store, type, id, query) {
+	findRecord(store, type, id) {
 		let url = this.buildURL(type.modelName + 'Ajax/get', null, null, 'findRecord'),
 			data = JSON.stringify({
 				data: {
@@ -66,7 +66,7 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
 	}
 });	
 
-export default function authorizedAjax(session, url, data) {
+export function authorizedAjax(session, url, data) {
 	let token;
 
 	session.authorize('authorizer:token', (headerName, headerValue) => {
