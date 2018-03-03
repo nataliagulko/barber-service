@@ -5,7 +5,8 @@ export default Ember.Component.extend({
     ticketService: Ember.inject.service("ticket-service"),
     selectedMaster: Ember.computed.readOnly("ticketService.selectedMaster"),
     ticketDate: Ember.computed.readOnly("ticketService.ticketDate"),
-    time: Ember.computed.readOnly("ticketService.time"),    
+    ticketTime: Ember.computed.readOnly("ticketService.ticketTime"),    
     duration: Ember.computed.readOnly("ticketService.duration"),    
-    client: Ember.computed.readOnly("ticketService.client"), 
+    cost: Ember.computed.readOnly("ticketService.cost"), 
+    client: Ember.computed.readOnly("ticketService.client"),     
 });

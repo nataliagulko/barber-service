@@ -178,7 +178,10 @@ class WorkTimeAjaxController {
             User master = User.get(data.id)
             List<Map<String, String>> response = slotsService.getSlotsInvert(master.id, data.getLong("time"),
                     new LocalDate(Date.parse("dd.MM.yyyy", data.date).time), data.currentId ? Long.parseLong(data.currentId) : null)
-            render(response as JSON)
+            // render(response as JSON)
+            JSON.use('workTimes') {
+                render([data: response] as JSON)
+            }
         } else {
             render([msg: g.message(code: "slots.not.found")] as JSON)
         }

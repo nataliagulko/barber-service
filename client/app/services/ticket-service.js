@@ -4,9 +4,10 @@ import moment from 'moment';
 export default Ember.Service.extend({
     store: Ember.inject.service("store"),
     pickadateService: Ember.inject.service("pickadate-service"),
+    pickatimeService: Ember.inject.service("pickatime-service"),
     selectedMaster: null,
     ticketDate: null,
-    time: null,
+    ticketTime: null,
     servicesByMaster: [],
     selectedServices: [],
     cost: null,
@@ -141,6 +142,7 @@ export default Ember.Service.extend({
         });
 
         holidays.then(function () {
+            holidays = holidays.toArray();
             let disableDates = _this._parseHolidays(holidays);
 
             pickadateService.set("#ticket-date-picker", "disable", false);
@@ -149,32 +151,8 @@ export default Ember.Service.extend({
         });
     },
 
-    onTicketDateChange(selectedDate) {
-        let store = this.get("store"),
-            master = this.get("selectedMaster"),
-            duration = this.get("duration"),
-            date = selectedDate;
-
-        $('.ticket-info-date-top').removeClass('hidden');
-        this.set("ticketDate", date);
-
-        let slots = store.query("workTime", {
-            query: {
-                id: master.id,
-                time: duration,
-                date: date
-            },
-            methodName: "getSlotsInvert"
-        });
-
-        slots.then((data) => {
-            console.log(data);
-        })
-    },
-
     _parseHolidays(holidays) {
         let datesArr = [];
-        holidays = holidays.toArray();
 
         holidays.forEach(function (item) {
             let startY = moment(item.get("dateFrom")).toObject().years,
@@ -194,12 +172,78 @@ export default Ember.Service.extend({
         return datesArr;
     },
 
+    onTicketDateChange(selectedDate) {
+        let store = this.get("store"),
+            master = this.get("selectedMaster"),
+            duration = this.get("duration"),
+            date = selectedDate,
+            _this = this,
+            pickatimeService = this.get("pickatimeService");            
+
+        $('.ticket-info-date-top').removeClass('hidden');
+        this.set("ticketDate", date);
+
+        let slots = store.query("workTime", {
+            query: {
+                id: master.id,
+                time: duration,
+                date: date
+            },
+            methodName: "getSlotsInvert"
+        });
+
+        slots.then((workTimes) => {
+            workTimes = workTimes.toArray();
+            if (workTimes.length === 0) return;
+            
+            let parsedWorkTimes = _this._parseWorkTimes(workTimes);
+            console.log(parsedWorkTimes);
+            pickatimeService.set("#ticket-time-picker", "disable", false);
+            pickatimeService.set("#ticket-time-picker", "min", parsedWorkTimes.disabledMinTime);
+            pickatimeService.set("#ticket-time-picker", "max", parsedWorkTimes.disabledMaxTime);            
+            pickatimeService.set("#ticket-time-picker", "disable", parsedWorkTimes.disabledWorkTimes);
+        })
+    },
+
+    _parseWorkTimes(workTimes) {
+        let timesArr = [],
+            timeStepper = 10; 
+
+        workTimes.forEach(function (item) {
+            var startH = moment(item.get("timeFrom")).toObject().hours,
+                startM = moment(item.get("timeFrom")).toObject().minutes,
+                endH = moment(item.get("timeTo")).toObject().hours,
+                endM = moment(item.get("timeTo")).toObject().minutes - timeStepper;
+
+            var rangeObj = {
+                "from": [startH, startM],
+                "to": [endH, endM]
+            };
+
+            timesArr.push(rangeObj);
+        });
+
+        minTime = timesArr[0].to;
+        maxTime = timesArr[timesArr.length - 1].from + timeStepper;
+
+        return {
+            disabledWorkTimes: timesArr,
+            disabledMinTime: minTime,
+            disabledMaxTime: maxTime,
+        };
+    },
+
+    onTicketTimeChange(selectedTime){
+        $('.ticket-info-time-top').removeClass('hidden');
+        this.set("ticketTime", selectedTime);
+    },
+
     inputPhone(value) {
         let client = this.get("client"),
             phone = this.get("phone");
 
-            const phoneLength = 10;
-            
+        const phoneLength = 10;
+
         if (phone.length !== phoneLength) {
             phone += value;
             this.set("phone", phone);
