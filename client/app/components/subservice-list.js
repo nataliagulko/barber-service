@@ -2,49 +2,49 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
 	store: Ember.inject.service("store"),
-	serviceService: Ember.inject.service("service-service"),
-	servicesToGroup: Ember.computed.readOnly('serviceService.servicesToGroup'),
-	isRowAddingDisabled: Ember.computed.readOnly('serviceService.isRowAddingDisabled'),
+	serviceToGroupService: Ember.inject.service("service-to-group-service"),
+	servicesToGroup: Ember.computed.readOnly('serviceToGroupService.servicesToGroup'),
+	isRowAddingDisabled: Ember.computed.readOnly('serviceToGroupService.isRowAddingDisabled'),
 
 	didInsertElement: function() {
 		var serviceGroup = this.get("serviceGroup"),
-			serviceService = this.get("serviceService");
+			serviceToGroupService = this.get("serviceToGroupService");
 
-		serviceService.showSubservices(serviceGroup, this);
+		serviceToGroupService.showSubservices(serviceGroup, this);
 	},
 
 	actions: {
 		addServiceToGroup: function() {
-			var serviceService = this.get("serviceService");
+			var serviceToGroupService = this.get("serviceToGroupService");
 
-			serviceService.addServiceToGroup();
+			serviceToGroupService.addServiceToGroup();
 		},
 
-		removeServiceToGroup: function(subserviceId) {
-			var serviceService = this.get("serviceService");
+		removeServiceToGroup: function(subservice) {
+			var serviceToGroupService = this.get("serviceToGroupService");
 			var serviceGroup = this.get("serviceGroup");
 
-			serviceService.removeServiceToGroup(subserviceId, serviceGroup);
+			serviceToGroupService.removeServiceToGroup(subservice, serviceGroup);
 		},
 
 		reorderSubservices: function(groupModel) {
-			var serviceService = this.get("serviceService");
+			var serviceToGroupService = this.get("serviceToGroupService");
 
-			serviceService.reorderSubservices(groupModel);
+			serviceToGroupService.reorderSubservices(groupModel);
 		},
 
 		inputServiceToGroupTimeout: function() {
-			var serviceService = this.get("serviceService");
+			var serviceToGroupService = this.get("serviceToGroupService");
 			var serviceGroup = this.get("serviceGroup");
 
-			serviceService.inputServiceToGroupTimeout(serviceGroup);
+			serviceToGroupService.inputServiceToGroupTimeout(serviceGroup);
 		},
 
 		selectSubservice: function(serviceToGroup, subservice) {
-			var serviceService = this.get("serviceService"),
+			var serviceToGroupService = this.get("serviceToGroupService"),
 				serviceGroup = this.get("serviceGroup");
 
-			serviceService.selectSubservice(subservice, serviceToGroup, serviceGroup);
+			serviceToGroupService.selectSubservice(serviceToGroup, subservice, serviceGroup);
 		}
 	}
 });
