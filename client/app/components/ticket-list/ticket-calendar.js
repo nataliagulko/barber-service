@@ -6,22 +6,39 @@ export default Ember.Component.extend({
     events: [],
 
     didInsertElement() {
-        let events = this.get("events"),
-            tickets = this.get("tickets");
+        let tickets = this.get("tickets"),
+            events = this.get("events");
 
-            tickets.forEach(t => {
+        tickets.forEach(t => {
+            const ticketId = t.get("id"),
+                ticketStrartDate = moment(t.get("ticketDate")),
+                ticketDuration = t.get("duration"),
+                ticketEndDate = moment(t.get("ticketDate")).add(ticketDuration, 'minutes');
 
-                events.pushObject({
-                    id: t.id,
-                    title: t.id,
-                    start: moment(t.ticketDate),
-                    end: moment(t.ticketDate).add(t.duration, 'minutes'),
-                    className: ["event"],
-                    data: t
-                });
+            events.pushObject({
+                id: ticketId,
+                title: "Title for " + ticketId,
+                start: ticketStrartDate,
+                end: ticketEndDate,
+                className: ["event"],
+                data: t
             });
+        });
+    },
 
-        console.log("events: ", this.get("events"));
-            
+    getClientInfo(client) {
+        const firstname = client.get("firstname"),
+            secondname = client.get("secondname"),
+            phone = client.get("phone");
+
+        let title = "";
+
+        if (firstname && secondname) {
+            title = firstname + " " + secondname;
+        } else {
+            title = phone;
+        }
+
+        return title;
     }
 });

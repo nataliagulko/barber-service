@@ -3,11 +3,18 @@ import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-rout
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
     model() {
-        return this.store.query('ticket', {
-            query: {
-                onlyHead: true,
-                ticketDate: "03.03.2018"
+        return this.store.query(
+            'ticket',
+            {
+                query: {
+                    onlyHead: true,
+                    ticketDateFrom: "03.03.2018",
+                    ticketDateTo: "10.03.2018"
+                }
+            },
+            {
+                include: "client"
             }
-        })
+        )
     },
 });

@@ -189,18 +189,6 @@ class TicketAjaxController {
                 eq('service', Service.get(query.user))
             }
 
-            if (query.date) {
-                eq('ticketDate', Date.parse("dd.MM.yyyy", query.date))
-            }
-
-            if (query.dateFrom) {
-                ge('ticketDate', Date.parse("dd.MM.yyyy", query.dateFrom))
-            }
-
-            if (query.dateTo) {
-                le('ticketDate', Date.parse("dd.MM.yyyy", query.dateTo))
-            }
-
             if (query.onlyHead) {
                 eq('type', TicketType.HEAD)
             }
