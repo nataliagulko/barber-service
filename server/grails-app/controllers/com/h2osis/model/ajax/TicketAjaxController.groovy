@@ -172,55 +172,49 @@ class TicketAjaxController {
 
     def list() {
         def data = request.JSON.data
-        def attrs = data.attributes
+        def query = request.JSON.query
 
+        List<Ticket> ticketList = Ticket.createCriteria().list() {
 
-        List<Ticket> ticketList = Ticket.createCriteria().list(offset: data.offset) {
-
-            if (attrs.user) {
-                eq('user', User.get(attrs.user))
+            if (query.user) {
+                eq('user', User.get(query.user))
             }
 
-            if (attrs.master) {
-                eq('master', User.get(attrs.user))
+            if (query.master) {
+                eq('master', User.get(query.user))
             }
 
-            if (attrs.service) {
-                eq('service', Service.get(attrs.user))
+            if (query.service) {
+                eq('service', Service.get(query.user))
             }
 
-            if (attrs.date) {
-                eq('ticketDate', attrs.getDate("date"))
+            if (query.date) {
+                eq('ticketDate', query.getDate("date"))
             }
 
-            if (attrs.dateFrom) {
-                ge('ticketDate', attrs.getDate("dateFrom"))
+            if (query.dateFrom) {
+                ge('ticketDate', query.getDate("dateFrom"))
             }
 
-            if (attrs.dateTo) {
-                le('ticketDate', attrs.getDate("dateTo"))
+            if (query.dateTo) {
+                le('ticketDate', query.getDate("dateTo"))
             }
 
-            if (attrs.onlyHead) {
+            if (query.onlyHead) {
                 eq('type', TicketType.HEAD)
             }
 
-            if (attrs.onlySub) {
+            if (query.onlySub) {
                 eq('type', TicketType.SUB)
             }
 
-            if (data.max) {
-                def max = Integer.parseInt(data.max)
-                maxResults(max)
-            }
-
-            if (attrs.ticketDate) {
-                DateTime dt1 = new DateTime(Date.parse("dd.MM.yyyy", attrs.ticketDate)).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0)
+            if (query.ticketDate) {
+                DateTime dt1 = new DateTime(Date.parse("dd.MM.yyyy", query.ticketDate)).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0)
                 DateTime dt2 = dt1.withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59)
                 between('ticketDate', dt1.toDate(), dt2.toDate())
             }
-            if (attrs.ticketDatePeriod) {
-                List<String> dates = attrs.ticketDatePeriod.split('-')
+            if (query.ticketDatePeriod) {
+                List<String> dates = query.ticketDatePeriod.split('-')
                 if (dates.size() == 2) {
                     DateTime dt1 = new DateTime(Date.parse("dd.MM.yyyy", dates.get(0))).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0)
                     DateTime dt2 = new DateTime(Date.parse("dd.MM.yyyy", dates.get(1))).withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59)
@@ -228,9 +222,9 @@ class TicketAjaxController {
                 }
             }
 
-            if (attrs.ticketDateFrom && attrs.ticketDateTo) {
-                DateTime dt1 = new DateTime(Date.parse("dd.MM.yyyy", attrs.ticketDateFrom)).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0)
-                DateTime dt2 = new DateTime(Date.parse("dd.MM.yyyy", attrs.ticketDateTo)).withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59)
+            if (query.ticketDateFrom && query.ticketDateTo) {
+                DateTime dt1 = new DateTime(Date.parse("dd.MM.yyyy", query.ticketDateFrom)).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0)
+                DateTime dt2 = new DateTime(Date.parse("dd.MM.yyyy", query.ticketDateTo)).withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59)
                 between('ticketDate', dt1.toDate(), dt2.toDate())
             }
 
