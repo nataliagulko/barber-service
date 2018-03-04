@@ -173,8 +173,9 @@ class TicketAjaxController {
     def list() {
         def data = request.JSON.data
         def query = request.JSON.query
+        def errors = []
 
-        List<Ticket> ticketList = Ticket.createCriteria().list() {
+        List<Ticket> ticketList = Ticket.createCriteria().list(offset: query.offset) {
 
             if (query.user) {
                 eq('user', User.get(query.user))
@@ -189,15 +190,15 @@ class TicketAjaxController {
             }
 
             if (query.date) {
-                eq('ticketDate', query.getDate("date"))
+                eq('ticketDate', Date.parse("dd.MM.yyyy", query.date))
             }
 
             if (query.dateFrom) {
-                ge('ticketDate', query.getDate("dateFrom"))
+                ge('ticketDate', Date.parse("dd.MM.yyyy", query.dateFrom))
             }
 
             if (query.dateTo) {
-                le('ticketDate', query.getDate("dateTo"))
+                le('ticketDate', Date.parse("dd.MM.yyyy", query.dateTo))
             }
 
             if (query.onlyHead) {
@@ -206,6 +207,11 @@ class TicketAjaxController {
 
             if (query.onlySub) {
                 eq('type', TicketType.SUB)
+            }
+
+            if (query.max) {
+                def max = Integer.parseInt(query.max)
+                maxResults(max)
             }
 
             if (query.ticketDate) {
@@ -241,7 +247,15 @@ class TicketAjaxController {
                 render([data: ticketList] as JSON)
             }
         } else {
-            render([erorrs: g.message(code: "ticket.fine.not.found")] as JSON)
+            errors.add([
+                    "status": 422,
+                    "detail": g.message(code: "ticket.fine.not.found"),
+                    "source": [
+                            "pointer": "data"
+                    ]
+            ])
+            response.status = 422
+            render([errors: errors] as JSON)
         }
     }
 

@@ -5,7 +5,8 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     model() {
         return this.store.query('ticket', {
             query: {
-                onlyHead: true
+                onlyHead: true,
+                ticketDate: "03.03.2018"
             }
         })
     },
