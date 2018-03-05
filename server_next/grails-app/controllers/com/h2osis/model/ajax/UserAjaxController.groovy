@@ -100,7 +100,7 @@ class UserAjaxController {
     def block() {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
             if (params.id) {
                 User blockingUser = User.get(params.id)
                 if (blockingUser) {

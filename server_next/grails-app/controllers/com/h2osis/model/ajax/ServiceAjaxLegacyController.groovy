@@ -54,7 +54,7 @@ class ServiceAjaxLegacyController {
     def create() {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
             def data = request.JSON.data
             def attrs = data.attributes
             if (data.type && data.type == "service" && attrs.name && attrs.cost && attrs.time) {
@@ -76,7 +76,7 @@ class ServiceAjaxLegacyController {
     def update() {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
             def data = request.JSON.data
             def attrs = data.attributes
             if (data.id) {
@@ -119,7 +119,7 @@ class ServiceAjaxLegacyController {
     def delete() {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
             def data = request.JSON.data
             if (data.type && data.type == "service" && data.id) {
                 Service service = Service.get(data.id)
