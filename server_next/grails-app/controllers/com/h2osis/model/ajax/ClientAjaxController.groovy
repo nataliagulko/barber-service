@@ -10,6 +10,7 @@ import com.h2osis.model.UserBlockFact
 import com.h2osis.model.UsersService
 import com.h2osis.model.WorkTime
 import com.h2osis.utils.BarberSecurityService
+import com.h2osis.utils.NovaUtilsService
 import com.h2osis.utils.SearchService
 import grails.converters.JSON
 import grails.transaction.Transactional
@@ -20,6 +21,7 @@ class ClientAjaxController {
     def springSecurityService
     BarberSecurityService barberSecurityService
     UsersService usersService
+    NovaUtilsService novaUtilsService
     static allowedMethods = [choose: ['POST', 'GET']]
 
     def create() {
@@ -48,7 +50,7 @@ class ClientAjaxController {
 
     def get() {
         def data = request.JSON.data
-        if (data.id) {
+        if (data && data.id) {
             User user = User.get(data.id)
             if (user) {
                 user.setPassword(null)
@@ -60,7 +62,24 @@ class ClientAjaxController {
                 render([errors: { g.message(code: "user.get.user.not.found") }] as JSON)
             }
         } else {
-            render([errors: { g.message(code: "user.get.id.null") }] as JSON)
+            def query = request.JSON.query
+            if(query && query.phone) {
+                User user = User.findByPhone(query.phone)
+                if(!user){
+                    user = User.findByPhone(novaUtilsService.getFullPhone(query.phone))
+                }
+                if (user) {
+                    user.setPassword(null)
+                    JSON.use('clients') {
+                        render([data: user] as JSON)
+                    }
+                } else {
+                    render([errors:
+                                    novaUtilsService.getErrorsSingleArrayJSON(g.message(code: "user.get.user.by.phone.not.found"))] as JSON)
+                }
+            }else {
+                render([errors: novaUtilsService.getErrorsSingleArrayJSON(g.message(code: "user.get.id.null"))] as JSON)
+            }
         }
     }
 
