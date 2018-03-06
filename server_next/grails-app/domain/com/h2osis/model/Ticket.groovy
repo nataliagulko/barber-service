@@ -6,8 +6,6 @@ import com.h2osis.sm.SMObjectType
 import org.joda.time.DateTime
 import org.joda.time.LocalTime
 
-import java.time.LocalDate
-
 class Ticket {
 
     transient slotsService, SMManagerService

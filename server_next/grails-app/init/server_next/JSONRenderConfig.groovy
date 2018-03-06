@@ -1,6 +1,7 @@
 package server_next
 
 import com.h2osis.model.Holiday
+import com.h2osis.model.Slot
 import com.h2osis.model.WorkTime
 import grails.converters.JSON
 
@@ -47,6 +48,30 @@ class JSONRenderConfig {
 
                 def relationships = [:]
                 def mastersDetails = [:]
+                mastersDetails['data'] = it.master
+                relationships['masters'] = mastersDetails
+
+                returnArray['relationships'] = relationships
+                returnArray['attributes'] = attrs
+                return returnArray
+            }
+        }
+
+        JSON.createNamedConfig('slots') {
+            it.registerObjectMarshaller(Slot) {
+                def returnArray = [:]
+                returnArray['id'] = it.id
+                returnArray['type'] = 'slot'
+
+                def attrs = [:]
+                attrs['start'] = it.start
+                attrs['end'] = it.end
+                attrs['slotDate'] = it.slotDate
+                attrs['master'] = it.master
+
+                def relationships = [:]
+                def mastersDetails = [:]
+                it.master.password = null
                 mastersDetails['data'] = it.master
                 relationships['masters'] = mastersDetails
 
