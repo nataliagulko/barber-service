@@ -247,11 +247,10 @@ export default Ember.Service.extend({
 
         const phoneLength = 10;
 
-        if (phone.length !== phoneLength) {
-            phone += value;
-            this.set("phone", phone);
-        }
-        else {
+        phone += value;
+        this.set("phone", phone); 
+
+        if (phone.length == phoneLength) {
             this._getClient(phone);
         }
     },
@@ -259,10 +258,11 @@ export default Ember.Service.extend({
     _getClient(phone) {
         const store = this.get("store");
 
-        let client = store.query("client", {
+        let client = store.queryRecord("client", {
             query: {
                 phone: phone
-            }
+            },
         });
+        this.set("client", client);
     }
 });

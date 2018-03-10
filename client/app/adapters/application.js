@@ -33,6 +33,16 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
 		return authorizedAjax(this.get("session"), url, data);
 	},
 
+	queryRecord: function (store, type, query) {
+		let url = this.buildURL(type.modelName, null, null, 'findRecord'),
+			data = JSON.stringify(query),
+			methodName = query.methodName || "get";
+
+		url = url + "Ajax/" + methodName;
+
+		return authorizedAjax(this.get("session"), url, data);
+	},
+
 	createRecord: function(store, type, snapshot) {
 		let url = this.buildURL(type.modelName + 'Ajax/create', null, null, 'createRecord'),
 			data = JSON.stringify(this.serialize(snapshot, { includeId: true }));
