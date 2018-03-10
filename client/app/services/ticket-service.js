@@ -183,37 +183,40 @@ export default Ember.Service.extend({
         $('.ticket-info-date-top').removeClass('hidden');
         this.set("ticketDate", date);
 
-        let slots = store.query("workTime", {
+        let slots = store.query("slot", {
             query: {
-                id: master.id,
+                masterId: master.id,
                 time: duration,
-                date: date
+                slotDate: date
             },
-            methodName: "getSlotsInvert"
         });
 
-        slots.then((workTimes) => {
-            workTimes = workTimes.toArray();
-            if (workTimes.length === 0) return;
+        slots.then((timeSlots) => {
+            timeSlots = timeSlots.toArray();
+            if (timeSlots.length === 0) return;
             
-            let parsedWorkTimes = _this._parseWorkTimes(workTimes);
-            console.log(parsedWorkTimes);
+            let parsedSlots = _this._parsedSlots(timeSlots);
+
+            console.log(timeSlots);
+            
             pickatimeService.set("#ticket-time-picker", "disable", false);
-            pickatimeService.set("#ticket-time-picker", "min", parsedWorkTimes.disabledMinTime);
-            pickatimeService.set("#ticket-time-picker", "max", parsedWorkTimes.disabledMaxTime);            
-            pickatimeService.set("#ticket-time-picker", "disable", parsedWorkTimes.disabledWorkTimes);
+            pickatimeService.set("#ticket-time-picker", "min", parsedSlots.disabledMinTime);
+            pickatimeService.set("#ticket-time-picker", "max", parsedSlots.disabledMaxTime);            
+            pickatimeService.set("#ticket-time-picker", "disable", parsedSlots.disabledTimeSlots);
         })
     },
 
-    _parseWorkTimes(workTimes) {
+    _parsedSlots(timeSlots) {
         let timesArr = [],
-            timeStepper = 10; 
+            timeStepper = 10,
+            minTime = 0,
+            maxTime = 0;
 
-        workTimes.forEach(function (item) {
-            var startH = moment(item.get("timeFrom")).toObject().hours,
-                startM = moment(item.get("timeFrom")).toObject().minutes,
-                endH = moment(item.get("timeTo")).toObject().hours,
-                endM = moment(item.get("timeTo")).toObject().minutes - timeStepper;
+        timeSlots.forEach(function (item) {
+            var startH = moment(item.get("start")).toObject().hours,
+                startM = moment(item.get("start")).toObject().minutes,
+                endH = moment(item.get("end")).toObject().hours,
+                endM = moment(item.get("end")).toObject().minutes;
 
             var rangeObj = {
                 "from": [startH, startM],
@@ -224,10 +227,10 @@ export default Ember.Service.extend({
         });
 
         minTime = timesArr[0].to;
-        maxTime = timesArr[timesArr.length - 1].from + timeStepper;
+        maxTime = timesArr[timesArr.length - 1].from;
 
         return {
-            disabledWorkTimes: timesArr,
+            disabledTimeSlots: timesArr,
             disabledMinTime: minTime,
             disabledMaxTime: maxTime,
         };
