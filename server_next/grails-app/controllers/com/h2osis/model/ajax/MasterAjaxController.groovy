@@ -6,6 +6,7 @@ import com.h2osis.auth.UserRole
 import com.h2osis.constant.AuthKeys
 import com.h2osis.model.*
 import com.h2osis.utils.BarberSecurityService
+import com.h2osis.utils.NovaUtilsService
 import com.h2osis.utils.SearchService
 import grails.converters.JSON
 import grails.transaction.Transactional
@@ -16,6 +17,7 @@ class MasterAjaxController {
     def springSecurityService
     BarberSecurityService barberSecurityService
     UsersService usersService
+    NovaUtilsService novaUtilsService
     static allowedMethods = [choose: ['POST', 'GET']]
 
     def create() {
@@ -40,9 +42,9 @@ class MasterAjaxController {
                         "status": 422,
                         "detail": g.message(code: "auth.reg.pass2.fail"),
                         "source": [
-                            "pointer": "data"
+                                "pointer": "data"
                         ]
-                    ])
+                ])
                 response.status = 422
                 render([errors: errors] as JSON)
             }
@@ -51,9 +53,9 @@ class MasterAjaxController {
                     "status": 422,
                     "detail": g.message(code: "user.phone.and.pass.null"),
                     "source": [
-                        "pointer": "data"
+                            "pointer": "data"
                     ]
-                ])
+            ])
             response.status = 422
             render([errors: errors] as JSON)
         }
@@ -61,7 +63,7 @@ class MasterAjaxController {
 
     def get() {
         def data = request.JSON.data
-        if (data.id) {
+        if (data && data.id) {
             User user = User.get(data.id)
             if (user) {
                 user.setPassword(null)
@@ -73,7 +75,24 @@ class MasterAjaxController {
                 render([errors: { g.message(code: "user.get.user.not.found") }] as JSON)
             }
         } else {
-            render([errors: { g.message(code: "user.get.id.null") }] as JSON)
+            def query = request.JSON.query
+            if (query && query.phone) {
+                User user = User.findByPhone(query.phone)
+                if (!user) {
+                    user = User.findByPhone(novaUtilsService.getFullPhone(query.phone))
+                }
+                if (user) {
+                    user.setPassword(null)
+                    JSON.use('clients') {
+                        render([data: user] as JSON)
+                    }
+                } else {
+                    render([errors:
+                                    novaUtilsService.getErrorsSingleArrayJSON(g.message(code: "user.get.user.by.phone.not.found"))] as JSON)
+                }
+            } else {
+                render([errors: novaUtilsService.getErrorsSingleArrayJSON(g.message(code: "user.get.id.null"))] as JSON)
+            }
         }
     }
 
@@ -112,7 +131,7 @@ class MasterAjaxController {
     def block() {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
             if (params.id) {
                 User blockingUser = User.get(params.id)
                 if (blockingUser) {
@@ -372,7 +391,7 @@ class MasterAjaxController {
         if (userList) {
 
             JSON.use('masters') {
-                render([data: userList.findAll{ it.enabled == true}] as JSON)
+                render([data: userList.findAll { it.enabled == true }] as JSON)
             }
         } else {
             render([errors: { g.message(code: "user.fine.not.found") }] as JSON)
