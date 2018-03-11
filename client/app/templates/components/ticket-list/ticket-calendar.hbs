@@ -1,1 +1,9 @@
- {{full-calendar events=events}}
+{{full-calendar 
+    viewName='agendaWeek'
+    slotLabelFormat='HH:mm'
+    slotDuration='00:15:00'
+    selectable=true
+    minTime="08:00:00"
+    maxTime="20:30:00"
+    eventClick=(action 'clicked')
+    events=events}}
