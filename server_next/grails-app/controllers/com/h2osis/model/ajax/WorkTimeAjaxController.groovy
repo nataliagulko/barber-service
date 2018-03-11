@@ -21,7 +21,7 @@ class WorkTimeAjaxController {
         def errors = []
         def principal = springSecurityService.principal
         User currentUser = User.get(principal.id)
-        if (currentUser.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+        if (currentUser.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
             def data = request.JSON.data
             def attrs = data.attributes
             def master = data.relationships.master.data
@@ -93,7 +93,7 @@ class WorkTimeAjaxController {
         def errors = []
         def principal = springSecurityService.principal
         User currentUser = User.get(principal.id)
-        if (currentUser.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+        if (currentUser.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
             def data = request.JSON.data
             def attrs = data.attributes
             def master = data.relationships.master.data
@@ -144,7 +144,7 @@ class WorkTimeAjaxController {
     def delete() {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
             if (params.id) {
                 WorkTime workTime = WorkTime.get(params.id)
                 if (workTime) {
@@ -166,7 +166,9 @@ class WorkTimeAjaxController {
             User master = User.get(params.id)
             List<Map<String, String>> response = slotsService.getSlots(master.id, params.getLong("time"),
                     new LocalDate(params.getDate("date", "dd.MM.yyyy").time), params.currentId ? Long.parseLong(params.currentId) : null)
-            render(response as JSON)
+            JSON.use('slots') {
+                render([data: slotsService.getSlotDomains(response, master, params.getDate("date", "dd.MM.yyyy"))] as JSON)
+            }
         } else {
             render([msg: g.message(code: "slots.not.found")] as JSON)
         }
@@ -178,7 +180,9 @@ class WorkTimeAjaxController {
             User master = User.get(data.id)
             List<Map<String, String>> response = slotsService.getSlotsInvert(master.id, data.getLong("time"),
                     new LocalDate(Date.parse("dd.MM.yyyy", data.date).time), data.currentId ? Long.parseLong(data.currentId) : null)
-            render(response as JSON)
+            JSON.use('slots') {
+                render([data: slotsService.getSlotDomains(response, master, params.getDate("date", "dd.MM.yyyy"))] as JSON)
+            }
         } else {
             render([msg: g.message(code: "slots.not.found")] as JSON)
         }

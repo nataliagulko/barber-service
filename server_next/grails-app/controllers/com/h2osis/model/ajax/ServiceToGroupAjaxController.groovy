@@ -19,48 +19,12 @@ class ServiceToGroupAjaxController {
         def errors = []
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
             def data = request.JSON.data
             def attrs = data.attributes
             def relations = data.relationships
             if (data.type && data.type == "service-to-group") {
                 ServiceToGroup serviceToGroup = new ServiceToGroup(serviceOrder: attrs.serviceOrder, serviceTimeout: attrs.serviceTimeout)
-                Service service = Service.get(relations.service.data.id)
-                ServiceGroup group = ServiceGroup.get(relations.serviceGroup.data.id)
-                serviceToGroup.setService(service)
-                serviceToGroup.setGroup(group)
-                serviceToGroup.save(flush: true)
-                JSON.use('serviceToGroups') {
-                    render([data: serviceToGroup] as JSON)
-                }
-            } else {
-                errors.add([
-                        "status": 422,
-                        "detail": g.message(code: "service.create.params.null"),
-                        "source": [
-                            "pointer": "data"
-                        ]
-                    ])
-                response.status = 422
-                render([errors: errors] as JSON)
-            }
-        } else {
-            render([errors: g.message(code: "service.create.not.admin")] as JSON)
-        }
-    }
-
-    def update() {
-        def errors = []
-        def principal = springSecurityService.principal
-        User user = User.get(principal.id)
-        if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
-            def data = request.JSON.data
-            def attrs = data.attributes
-            def relations = data.relationships
-            if (data.type && data.type == "service-to-group") {
-                ServiceToGroup serviceToGroup = ServiceToGroup.get(data.id)
-                serviceToGroup.setServiceOrder(attrs.serviceOrder)
-                serviceToGroup.setServiceTimeout(Long.parseLong(attrs.serviceTimeout))
                 Service service = Service.get(relations.service.data.id)
                 ServiceGroup group = ServiceGroup.get(relations.serviceGroup.data.id)
                 serviceToGroup.setService(service)
@@ -84,7 +48,44 @@ class ServiceToGroupAjaxController {
             render([errors: g.message(code: "service.create.not.admin")] as JSON)
         }
     }
-    
+
+    def update() {
+        def errors = []
+        def principal = springSecurityService.principal
+        User user = User.get(principal.id)
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
+            def data = request.JSON.data
+            def attrs = data.attributes
+            def relations = data.relationships
+            if (data.type && data.type == "service-to-group") {
+                ServiceToGroup serviceToGroup = ServiceToGroup.get(data.id)
+                serviceToGroup.setServiceOrder(attrs.serviceOrder)
+                serviceToGroup.setServiceTimeout(attrs.serviceTimeout instanceof Integer ?
+                        attrs.serviceTimeout : Long.parseLong(attrs.serviceTimeout))
+                Service service = Service.get(relations.service.data.id)
+                ServiceGroup group = ServiceGroup.get(relations.serviceGroup.data.id)
+                serviceToGroup.setService(service)
+                serviceToGroup.setGroup(group)
+                serviceToGroup.save(flush: true)
+                JSON.use('serviceToGroups') {
+                    render([data: serviceToGroup] as JSON)
+                }
+            } else {
+                errors.add([
+                        "status": 422,
+                        "detail": g.message(code: "service.create.params.null"),
+                        "source": [
+                                "pointer": "data"
+                        ]
+                ])
+                response.status = 422
+                render([errors: errors] as JSON)
+            }
+        } else {
+            render([errors: g.message(code: "service.create.not.admin")] as JSON)
+        }
+    }
+
     def get() {
         def errors = []
         def data = request.JSON.data
@@ -99,9 +100,9 @@ class ServiceToGroupAjaxController {
                         "status": 422,
                         "detail": g.message(code: "service.get.user.not.found"),
                         "source": [
-                            "pointer": "data"
+                                "pointer": "data"
                         ]
-                    ])
+                ])
                 response.status = 422
                 render([errors: errors] as JSON)
             }
@@ -110,9 +111,9 @@ class ServiceToGroupAjaxController {
                     "status": 422,
                     "detail": g.message(code: "service.get.id.null"),
                     "source": [
-                        "pointer": "data"
+                            "pointer": "data"
                     ]
-                ])
+            ])
             response.status = 422
             render([errors: errors] as JSON)
         }
@@ -176,7 +177,7 @@ class ServiceToGroupAjaxController {
     def destroy() {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
             def data = request.JSON.data
             if (data.type && data.id) {
                 ServiceToGroup serviceToGroup = ServiceToGroup.get(data.id)

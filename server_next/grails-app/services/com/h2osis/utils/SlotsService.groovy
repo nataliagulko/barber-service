@@ -5,6 +5,7 @@ import com.h2osis.constant.TicketStatus
 import com.h2osis.constant.TicketType
 import com.h2osis.model.Holiday
 import com.h2osis.model.Service
+import com.h2osis.model.Slot
 import com.h2osis.model.Ticket
 import com.h2osis.model.UserBlockFact
 import com.h2osis.model.WorkTime
@@ -492,6 +493,22 @@ class SlotsService {
             return e.toString()
         }
         return null
+    }
+
+    def getSlotDomains(List<Map<String, String>> slotMap, User master, Date slotDate) {
+        List<Slot> response = new ArrayList<Slot>()
+        Long i = 1L
+        slotMap?.each {
+            Slot slotEntry = new Slot()
+            slotEntry.setStart(it['start'])
+            slotEntry.setEnd(it['end'])
+            slotEntry.setMaster(master)
+            slotEntry.setSlotDate(slotDate)
+            slotEntry.setId(i)
+            i++
+            response.add(slotEntry)
+        }
+        return response
     }
 
 }
