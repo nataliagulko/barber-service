@@ -389,7 +389,7 @@ class BootStrap {
 
                 def masterDetails = [:]
                 masterDetails['data'] = it.master
-                relationships['master'] = mastersDatails
+                relationships['master'] = masterDetails
 
                 def servicesDetails = [:]
                 servicesDetails['data'] = it.services
