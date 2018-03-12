@@ -9,12 +9,18 @@ class WorkTime {
     Integer dayOfWeek // номер дня недели
     User master
 
+    Date dateFrom
+    Date dateTo
+
 
     static constraints = {
         timeFrom nullable: false
         timeTo nullable: false
         dayOfWeek nullable: false
         master nullable: true
+
+        dateFrom nullable: true
+        dateTo nullable: true
     }
 
     String toString() {
