@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import moment from 'moment';
 
 export default Ember.Component.extend({
     classNames: ["calendar"],
@@ -11,7 +10,7 @@ export default Ember.Component.extend({
 
     actions: {
         clicked: function (event) {
-            console.log(event.id);
+            console.log(event.title);
         }
     }
 });
