@@ -13,9 +13,9 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
         let period = {
             from: now,
             to: week
-        }
+        };
 
-        this.set("datePeriod", period)
+        this.set("datePeriod", period);
     },
 
     model() {
@@ -27,7 +27,8 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
                 query: {
                     onlyHead: true,
                     ticketDateFrom: datePeriod.from.format(dateFormat),
-                    ticketDateTo: datePeriod.to.format(dateFormat)
+                    ticketDateTo: datePeriod.to.format(dateFormat),
+                    // include: "master, client, service"
                 }
             }),
             events: []
@@ -47,14 +48,19 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
                 ticketStrartDate = moment(ticketDate),
                 ticketEndDate = moment(ticketDate).add(ticketDuration, 'minutes'),
                 ticketStatus = t.get("status").toLowerCase();
+            let ticketTitle = null;
 
-            events.pushObject({
-                id: ticketId,
-                title: "Title for " + ticketId,
-                start: ticketStrartDate,
-                end: ticketEndDate,
-                className: ["ticket-calendar__event", `ticket-calendar__event_${ticketStatus}`],
-                data: t
+            t.get("client").then((client) => {
+                ticketTitle = `${client.get("firstname")} ${client.get("secondname")}` || client.get("phone");
+
+                events.pushObject({
+                    id: ticketId,
+                    title: ticketTitle,
+                    start: ticketStrartDate,
+                    end: ticketEndDate,
+                    className: ["ticket-calendar__event", `ticket-calendar__event_${ticketStatus}`],
+                    data: t
+                });
             });
         });
     }
