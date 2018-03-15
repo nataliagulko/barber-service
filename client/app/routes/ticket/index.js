@@ -54,15 +54,14 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
             let ticketTitle = null;
 
-            console.log(masterId);
-
             t.get("master").then((master) => {
-                resources.pushObject({
-                    id: masterId,
-                    title: `${master.get("firstname")} ${master.get("secondname")}`
-                });
-                // resources = resources.uniqBy('id');
-            });            
+                if (!resources.isAny("id", masterId)) {
+                    resources.pushObject({
+                        id: masterId,
+                        title: `${master.get("firstname")} ${master.get("secondname")}`
+                    });
+                }
+            });
 
             t.get("client").then((client) => {
                 ticketTitle = `${client.get("firstname")} ${client.get("secondname")}` || client.get("phone");
@@ -76,7 +75,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
                     className: ["ticket-calendar__event", `ticket-calendar__event_${ticketStatus}`],
                     data: t
                 });
-            });            
+            });
         });
     }
 });

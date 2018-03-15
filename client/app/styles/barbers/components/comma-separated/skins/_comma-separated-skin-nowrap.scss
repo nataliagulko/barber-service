@@ -1,0 +1,5 @@
+@mixin comma-separated-skin-nowrap($selector) {
+    #{$selector} {
+        white-space: nowrap;
+    }
+}

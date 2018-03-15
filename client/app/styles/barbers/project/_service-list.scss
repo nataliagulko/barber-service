@@ -1,20 +1,9 @@
-.service-list {
-	&__master {
-		white-space: nowrap;
-
-		&:after {
-			content: ", ";
-			white-space: pre-wrap;
-		}
-
-		&:last-of-type {
-			&:after {
-				content: "";
-			}
-		}
-	}
+.service-list { 
 
 	&__actions {
 		white-space: nowrap;
 	}
 }
+
+@include comma-separated(".service-list__master", false);
+@include comma-separated-skin-nowrap(".service-list__master");
