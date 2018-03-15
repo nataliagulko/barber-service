@@ -29,10 +29,10 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
                     onlyHead: true,
                     ticketDateFrom: datePeriod.from.format(dateFormat),
                     ticketDateTo: datePeriod.to.format(dateFormat),
-                    // include: "master, client, service"
                 }
             }),
-            events: []
+            events: [],
+            resources: [],
         });
     },
 
@@ -40,7 +40,8 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
         this._super(...arguments);
 
         let events = model.events,
-            tickets = model.tickets;
+            tickets = model.tickets,
+            resources = model.resources;
 
         tickets.forEach(t => {
             const ticketId = t.get("id"),
@@ -48,21 +49,34 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
                 ticketDate = t.get("ticketDate"),
                 ticketStrartDate = moment(ticketDate),
                 ticketEndDate = moment(ticketDate).add(ticketDuration, 'minutes'),
-                ticketStatus = t.get("status").toLowerCase();
+                ticketStatus = t.get("status").toLowerCase(),
+                masterId = t.belongsTo("master").id();
+
             let ticketTitle = null;
+
+            console.log(masterId);
+
+            t.get("master").then((master) => {
+                resources.pushObject({
+                    id: masterId,
+                    title: `${master.get("firstname")} ${master.get("secondname")}`
+                });
+                // resources = resources.uniqBy('id');
+            });            
 
             t.get("client").then((client) => {
                 ticketTitle = `${client.get("firstname")} ${client.get("secondname")}` || client.get("phone");
 
                 events.pushObject({
                     id: ticketId,
+                    resourceId: masterId,
                     title: ticketTitle,
                     start: ticketStrartDate,
                     end: ticketEndDate,
                     className: ["ticket-calendar__event", `ticket-calendar__event_${ticketStatus}`],
                     data: t
                 });
-            });
+            });            
         });
     }
 });

@@ -5,7 +5,15 @@ export default Ember.Component.extend({
     header: {
         left: 'prev,next,today',
         center: "title",
-        right: "agendaDay,agendaTwoDay,agendaWeek,month"
+        right: "agendaDay,agendaWeek,month"
+    },
+    views: {
+        agendaDay: {
+            groupByDateAndResource: true
+        },
+        agendaWeek: {
+            groupByDateAndResource: true
+        },
     },
 
     actions: {
