@@ -1,9 +1,16 @@
 {{full-calendar 
-    viewName='agendaWeek'
+    viewName='agendaDay'
     slotLabelFormat='HH:mm'
-    slotDuration='00:15:00'
+    slotDuration='00:10:00'
     selectable=true
     minTime="08:00:00"
     maxTime="20:30:00"
+    allDay=false
+    height="auto"
+    header=header
+    views=views
     eventClick=(action 'clicked')
+    nowIndicator=true
+    slotEventOverlap=false
+    locale="ru"
     events=events}}

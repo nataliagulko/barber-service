@@ -1,17 +1,38 @@
 import Ember from 'ember';
+import moment from 'moment';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
+    datePeriod: {},
+
+    beforeModel() {
+        this._super(...arguments);
+
+        const now = moment(),
+            week = moment().add(1, 'week');
+
+        let period = {
+            from: now,
+            to: week
+        };
+
+        this.set("datePeriod", period);
+    },
+
     model() {
+        const datePeriod = this.get("datePeriod"),
+            dateFormat = 'DD.MM.YYYY';
+
         return Ember.RSVP.hash({
             tickets: this.get('store').query('ticket', {
                 query: {
                     onlyHead: true,
-                    ticketDateFrom: "11.03.2018",
-                    ticketDateTo: "18.03.2018"
+                    ticketDateFrom: datePeriod.from.format(dateFormat),
+                    ticketDateTo: datePeriod.to.format(dateFormat),
                 }
             }),
-            events: []
+            events: [],
+            resources: [],
         });
     },
 
@@ -19,22 +40,43 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
         this._super(...arguments);
 
         let events = model.events,
-            tickets = model.tickets;
+            tickets = model.tickets,
+            resources = model.resources;
 
         tickets.forEach(t => {
             const ticketId = t.get("id"),
                 ticketDuration = t.get("duration"),
-                ticketStrartDate = moment(t.get("ticketDate")),
-                ticketEndDate = moment(t.get("ticketDate")).add(ticketDuration, 'minutes');
+                ticketDate = t.get("ticketDate"),
+                ticketStrartDate = moment(ticketDate),
+                ticketEndDate = moment(ticketDate).add(ticketDuration, 'minutes'),
+                ticketStatus = t.get("status").toLowerCase(),
+                masterId = t.belongsTo("master").id();
 
-            events.pushObject({
-                id: ticketId,
-                title: "Title for " + ticketId,
-                start: ticketStrartDate,
-                end: ticketEndDate,
-                className: ["event"],
-                data: t
-            });
+            let ticketTitle = null;
+
+            console.log(masterId);
+
+            t.get("master").then((master) => {
+                resources.pushObject({
+                    id: masterId,
+                    title: `${master.get("firstname")} ${master.get("secondname")}`
+                });
+                // resources = resources.uniqBy('id');
+            });            
+
+            t.get("client").then((client) => {
+                ticketTitle = `${client.get("firstname")} ${client.get("secondname")}` || client.get("phone");
+
+                events.pushObject({
+                    id: ticketId,
+                    resourceId: masterId,
+                    title: ticketTitle,
+                    start: ticketStrartDate,
+                    end: ticketEndDate,
+                    className: ["ticket-calendar__event", `ticket-calendar__event_${ticketStatus}`],
+                    data: t
+                });
+            });            
         });
     }
 });
