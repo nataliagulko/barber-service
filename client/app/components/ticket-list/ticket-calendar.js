@@ -9,16 +9,21 @@ export default Ember.Component.extend({
     },
     views: {
         agendaDay: {
-            groupByDateAndResource: true
         },
         agendaWeek: {
-            groupByDateAndResource: true
+            groupByDateAndResource: true,
         },
+        month: {
+            groupByDateAndResource: true,
+            eventLimit: 5
+        }
     },
+    selectedEvent: {},
 
     actions: {
-        clicked: function (event) {
-            console.log(event.title);
+        showTicketInfo: function (event) {
+            this.set("selectedEvent", event)
+            this.$("#ticket-info").modal('show');
         }
     }
 });

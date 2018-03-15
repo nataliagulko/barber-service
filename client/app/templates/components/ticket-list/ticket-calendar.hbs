@@ -9,8 +9,12 @@
     height="auto"
     header=header
     views=views
-    eventClick=(action 'clicked')
     nowIndicator=true
     slotEventOverlap=false
     locale="ru"
+    filterResourcesWithEvents=true
+    navLinks=true
+    eventClick=(action 'showTicketInfo')
     events=events}}
+
+    {{ticket-list/ticket-info event=selectedEvent}}
