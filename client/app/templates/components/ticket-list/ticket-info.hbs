@@ -1,5 +1,5 @@
 <div id="ticket-info" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -9,25 +9,25 @@
                 <div class="form-horizontal">
                     <div class="form-body">
                         <div class="form-group">
-                            <label class="control-label col-md-6">Клиент:</label>
+                            <label class="control-label col-md-4">Клиент:</label>
                             <label class="form-control-static col-md-6">
                                 {{event.title}}
                             </label>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-6">Телефон:</label>
+                            <label class="control-label col-md-4">Телефон:</label>
                             <label class="form-control-static col-md-6">
                                 {{event.data.client.phone}}
                             </label>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-6">Время:</label>
+                            <label class="control-label col-md-4">Время:</label>
                             <label class="form-control-static col-md-6">
-                                {{moment-format event.ticketDate "DD.MM.YYYY"}} {{moment-format event.start "HH:mm"}}—{{moment-format event.end "HH:mm"}}
+                                {{moment-format event.ticketDate "Do MMMM"}} {{moment-format event.start "HH:mm"}}—{{moment-format event.end "HH:mm"}}
                             </label>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-6">Услуги:</label>
+                            <label class="control-label col-md-4">Услуги:</label>
                             <label class="form-control-static col-md-6">
                                 {{#each event.data.services as |service|}}
                                 <span class="ticket-info__service">{{service.name}}</span>
@@ -35,13 +35,13 @@
                             </label>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-6">Статус:</label>
+                            <label class="control-label col-md-4">Статус:</label>
                             <label class="form-control-static col-md-6">
                                 {{event.data.status}}
                             </label>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-6">Комментарий:</label>
+                            <label class="control-label col-md-4">Комментарий:</label>
                             <label class="form-control-static col-md-6">
                                 {{#if event.data.comment}}
                                     {{event.data.comment}}
