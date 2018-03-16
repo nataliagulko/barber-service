@@ -13,13 +13,14 @@
                     <div class="col-md-10">
                         <div class="btn-group" data-toggle="buttons">
                             <label class="btn btn-default active" onclick={{action "filterEventsByStatus" "all"}}>
-                                <input class="toggle" type="radio">Все</label>
-                            <label class="btn btn-default" onclick={{action "filterEventsByStatus" "new"}}>
-                                <input class="toggle" type="radio">Новые</label>
-                            <label class="btn btn-default" onclick={{action "filterEventsByStatus" "accepted"}}>
-                                <input class="toggle" type="radio">Подтвержденные</label>
-                            <label class="btn btn-default" onclick={{action "filterEventsByStatus" "canceled"}}>
-                                <input class="toggle" type="radio">Отмененные</label>
+                                <input class="toggle" type="radio">Все
+                            </label>
+                            {{#each ticketStatuses as |status|}}
+                            <label class="btn btn-default" onclick={{action "filterEventsByStatus" status.alias}}>
+                                <i class="fa fa-circle {{status.fontClass}}"></i>
+                                <input class="toggle" type="radio">{{status.text}}
+                            </label>
+                            {{/each}}
                         </div>
                     </div>
                 </div>
