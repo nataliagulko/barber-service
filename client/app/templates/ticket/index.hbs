@@ -1,5 +1,11 @@
+{{ticket-list/calendar-filters}}
 <div class="portlet light portlet-fit bordered calendar">
-    <div class="portlet-title"></div>
+    <div class="portlet-title">
+        <div class="caption">
+            <i class=" icon-layers font-green"></i>
+            <span class="caption-subject font-green sbold uppercase">Записи</span>
+        </div>
+    </div>
     <div class="portlet-body">
         {{ticket-list/ticket-calendar events=model.events resources=model.resources}}
     </div>

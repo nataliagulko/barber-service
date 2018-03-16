@@ -2,10 +2,10 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
     classNames: ["calendar"],
-    header: {
-        left: 'prev,next,today',
-        center: "title",
-        right: "agendaDay,agendaWeek,month"
+    headerOptions: {
+        left: "title",
+        center: "",
+        right: "prev,next,today,agendaDay,agendaWeek,month"
     },
     views: {
         agendaDay: {
