@@ -72,6 +72,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
                     title: ticketTitle,
                     start: ticketStrartDate,
                     end: ticketEndDate,
+                    status: ticketStatus,
                     className: ["ticket-calendar__event", `ticket-calendar__event_${ticketStatus}`],
                     data: t
                 });
