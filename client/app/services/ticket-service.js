@@ -108,6 +108,7 @@ export default Ember.Service.extend({
             $('.ticket-info-services-top').removeClass('hidden');
         }
 
+
         this._calculateDurationAndCost();
         this._getHolidays();
 

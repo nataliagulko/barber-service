@@ -1,7 +1,13 @@
 <div class="row ticket-info-top ticket-info-client-top hidden">
     <div class="col-md-12 text-center">
-        {{#if client.id}}
-            <p>{{client.firstname}} {{client.secondname}}</p>
+        {{#if phone}}
+            {{#if client.id}}
+                <div>{{client.firstname}} {{client.secondname}}</div>
+            {{else}}
+                <div>
+                    {{input value=value placeholder="Имя и Фамилия клиента" class="form-control"}}
+                </div>
+            {{/if}}
         {{/if}}
         <div class="ticket-info-client-top__phone">
             <span class="ticket-info-client-top__code">
