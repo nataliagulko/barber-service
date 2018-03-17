@@ -143,10 +143,11 @@ export default Ember.Service.extend({
 
         holidays.then(function () {
             holidays = holidays.toArray();
-            let disableDates = _this._parseHolidays(holidays);
+            let disableDates = _this._parseHolidays(holidays),
+                yesterday = moment().subtract(1, 'days');
 
             pickadateService.set("#ticket-date-picker", "disable", false);
-            pickadateService.set("#ticket-date-picker", "min", new Date());
+            pickadateService.set("#ticket-date-picker", "min", yesterday);
             pickadateService.set("#ticket-date-picker", "disable", disableDates);
         });
     },
@@ -155,16 +156,13 @@ export default Ember.Service.extend({
         let datesArr = [];
 
         holidays.forEach(function (item) {
-            let startY = moment(item.get("dateFrom")).toObject().years,
-                startM = moment(item.get("dateFrom")).toObject().months,
-                startD = moment(item.get("dateFrom")).toObject().date,
-                endY = moment(item.get("dateTo")).toObject().years,
-                endM = moment(item.get("dateTo")).toObject().months,
-                endD = moment(item.dateTo).toObject().date,
-                range = {
-                    "from": [startY, startM, startD],
-                    "to": [endY, endM, endD]
-                };
+            const dateFrom = moment(item.get("dateFrom")).toObject(),
+                dateTo = moment(item.get("dateTo")).toObject();
+
+            let range = {
+                "from": [dateFrom.years, dateFrom.months, dateFrom.date],
+                "to": [dateTo.years, dateTo.months, dateTo.date]
+            };
 
             datesArr.push(range);
         });
@@ -178,7 +176,7 @@ export default Ember.Service.extend({
             duration = this.get("duration"),
             date = selectedDate,
             _this = this,
-            pickatimeService = this.get("pickatimeService");            
+            pickatimeService = this.get("pickatimeService");
 
         $('.ticket-info-date-top').removeClass('hidden');
         this.set("ticketDate", date);
@@ -193,34 +191,29 @@ export default Ember.Service.extend({
 
         slots.then((timeSlots) => {
             timeSlots = timeSlots.toArray();
-            if (timeSlots.length === 0) return;
-            
+            if (timeSlots.length === 0) { return; }
+
             let parsedSlots = _this._parsedSlots(timeSlots);
 
-            console.log(timeSlots);
-            
             pickatimeService.set("#ticket-time-picker", "disable", false);
             pickatimeService.set("#ticket-time-picker", "min", parsedSlots.disabledMinTime);
-            pickatimeService.set("#ticket-time-picker", "max", parsedSlots.disabledMaxTime);            
+            pickatimeService.set("#ticket-time-picker", "max", parsedSlots.disabledMaxTime);
             pickatimeService.set("#ticket-time-picker", "disable", parsedSlots.disabledTimeSlots);
         })
     },
 
     _parsedSlots(timeSlots) {
         let timesArr = [],
-            timeStepper = 10,
             minTime = 0,
             maxTime = 0;
 
         timeSlots.forEach(function (item) {
-            var startH = moment(item.get("start")).toObject().hours,
-                startM = moment(item.get("start")).toObject().minutes,
-                endH = moment(item.get("end")).toObject().hours,
-                endM = moment(item.get("end")).toObject().minutes;
+            const start = moment(item.get("start")).toObject(),
+                end = moment(item.get("end")).toObject();
 
             var rangeObj = {
-                "from": [startH, startM],
-                "to": [endH, endM]
+                "from": [start.hours, start.minutes],
+                "to": [end.hours, end.minutes]
             };
 
             timesArr.push(rangeObj);
@@ -236,21 +229,20 @@ export default Ember.Service.extend({
         };
     },
 
-    onTicketTimeChange(selectedTime){
+    onTicketTimeChange(selectedTime) {
         $('.ticket-info-time-top').removeClass('hidden');
         this.set("ticketTime", selectedTime);
     },
 
     inputPhone(value) {
-        let client = this.get("client"),
-            phone = this.get("phone");
+        let phone = this.get("phone");
 
         const phoneLength = 10;
 
         phone += value;
-        this.set("phone", phone); 
+        this.set("phone", phone);
 
-        if (phone.length == phoneLength) {
+        if (phone.length === phoneLength) {
             this._getClient(phone);
         }
     },
