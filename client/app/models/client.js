@@ -1,4 +1,5 @@
 import DS from 'ember-data';
+import Ember from 'ember';
 
 export default DS.Model.extend({
     username: DS.attr(),
@@ -12,5 +13,8 @@ export default DS.Model.extend({
     accountExpired: DS.attr(),
     accountLocked: DS.attr(),
     passwordExpired: DS.attr(),
-    tickets: DS.hasMany('ticket')
+    tickets: DS.hasMany('ticket'),
+    fullname: Ember.computed('firstname', 'secondname', function() {
+        return `${this.get('firstname')} ${this.get('secondname')}`;
+    })
 });

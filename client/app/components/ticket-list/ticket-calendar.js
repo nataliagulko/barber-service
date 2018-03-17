@@ -3,42 +3,96 @@ import moment from 'moment';
 
 export default Ember.Component.extend({
     classNames: ["calendar"],
-    events: [],
+    store: Ember.inject.service("store"),
 
-    didInsertElement() {
-        let tickets = this.get("tickets"),
-            events = this.get("events");
+    headerOptions: {
+        left: "title",
+        center: "",
+        right: "prev,next,today,agendaDay,agendaWeek,month"
+    },
+    views: {
+        agendaDay: {
+        },
+        agendaWeek: {
+            groupByDateAndResource: true,
+        },
+        month: {
+            groupByDateAndResource: true,
+            eventLimit: 5
+        }
+    },
+    selectedEvent: {},
 
-        tickets.forEach(t => {
-            const ticketId = t.get("id"),
-                ticketStrartDate = moment(t.get("ticketDate")),
-                ticketDuration = t.get("duration"),
-                ticketEndDate = moment(t.get("ticketDate")).add(ticketDuration, 'minutes');
+    actions: {
+        getEvents: function (start, end, timezone, callback) {
+            const dateFormat = 'DD.MM.YYYY',
+                _this = this;
 
-            events.pushObject({
-                id: ticketId,
-                title: "Title for " + ticketId,
-                start: ticketStrartDate,
-                end: ticketEndDate,
-                className: ["event"],
-                data: t
+            const ticketList = this.get('store').query('ticket', {
+                query: {
+                    onlyHead: true,
+                    ticketDateFrom: start.format(dateFormat),
+                    ticketDateTo: end.format(dateFormat),
+                }
             });
-        });
+
+            let events = [];
+
+            ticketList.then((tickets) => {
+                tickets.forEach(ticket => {
+                    _this.renderEvents(_this, ticket, events, callback);
+                });
+            });
+        },
+
+        showTicketInfo: function (event) {
+            this.set("selectedEvent", event);
+            this.$("#ticket-info").modal('show');
+        }
     },
 
-    getClientInfo(client) {
-        const firstname = client.get("firstname"),
-            secondname = client.get("secondname"),
-            phone = client.get("phone");
+    getClientNameOrPhone: function (client) {
+        return client.get("fullname") !== "null null" ? client.get("fullname") : client.get("phone")
+    },
 
-        let title = "";
+    renderEvents: function (_this, t, events, callback) {
+        const $calendar = Ember.$(".full-calendar"),
+            ticketId = t.get("id"),
+            ticketDuration = t.get("duration"),
+            ticketDate = t.get("ticketDate"),
+            ticketStrartDate = moment(ticketDate),
+            ticketEndDate = moment(ticketDate).add(ticketDuration, 'minutes'),
+            ticketStatus = t.get("status").toLowerCase(),
+            masterId = t.belongsTo("master").id();
 
-        if (firstname && secondname) {
-            title = firstname + " " + secondname;
-        } else {
-            title = phone;
-        }
+        let ticketTitle = null,
+            event = null;
 
-        return title;
+        // t.get("master").then((master) => {
+        //     if (!resources.isAny("id", masterId)) {
+        //         resources.pushObject({
+        //             id: masterId,
+        //             title: `master.get("fullname")`
+        //         });
+        //     }
+        // });
+
+        t.get("client").then((client) => {
+            ticketTitle = _this.getClientNameOrPhone(client);
+            event = {
+                id: ticketId,
+                resourceId: masterId,
+                title: ticketTitle,
+                start: ticketStrartDate,
+                end: ticketEndDate,
+                status: ticketStatus,
+                className: ["ticket-calendar__event", `ticket-calendar__event_${ticketStatus}`],
+                data: t
+            };
+
+            $calendar.fullCalendar("renderEvent", event);
+            events.pushObject(event);
+            callback(events);
+        });
     }
 });

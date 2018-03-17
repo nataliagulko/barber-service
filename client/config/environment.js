@@ -54,11 +54,16 @@ module.exports = function(environment) {
             showMethod: 'fadeIn',
             hideMethod: 'fadeOut'
         }
-    }
+    };
 
     ENV['ember-cli-uuid'] = {
         defaultUUID: false
-    }
+    };
+
+    ENV['emberFullCalendar'] = {
+        includeLocales: ['ru'],
+        includeScheduler: true
+    };
 
     if (environment === 'development') {
         // ENV.APP.LOG_RESOLVER = true;

@@ -172,55 +172,43 @@ class TicketAjaxController {
 
     def list() {
         def data = request.JSON.data
-        def attrs = data.attributes
+        def query = request.JSON.query
+        def errors = []
 
+        List<Ticket> ticketList = Ticket.createCriteria().list(offset: query.offset) {
 
-        List<Ticket> ticketList = Ticket.createCriteria().list(offset: data.offset) {
-
-            if (attrs.user) {
-                eq('user', User.get(attrs.user))
+            if (query.user) {
+                eq('user', User.get(query.user))
             }
 
-            if (attrs.master) {
-                eq('master', User.get(attrs.user))
+            if (query.master) {
+                eq('master', User.get(query.user))
             }
 
-            if (attrs.service) {
-                eq('service', Service.get(attrs.user))
+            if (query.service) {
+                eq('service', Service.get(query.user))
             }
 
-            if (attrs.date) {
-                eq('ticketDate', attrs.getDate("date"))
-            }
-
-            if (attrs.dateFrom) {
-                ge('ticketDate', attrs.getDate("dateFrom"))
-            }
-
-            if (attrs.dateTo) {
-                le('ticketDate', attrs.getDate("dateTo"))
-            }
-
-            if (attrs.onlyHead) {
+            if (query.onlyHead) {
                 eq('type', TicketType.HEAD)
             }
 
-            if (attrs.onlySub) {
+            if (query.onlySub) {
                 eq('type', TicketType.SUB)
             }
 
-            if (data.max) {
-                def max = Integer.parseInt(data.max)
+            if (query.max) {
+                def max = Integer.parseInt(query.max)
                 maxResults(max)
             }
 
-            if (attrs.ticketDate) {
-                DateTime dt1 = new DateTime(Date.parse("dd.MM.yyyy", attrs.ticketDate)).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0)
+            if (query.ticketDate) {
+                DateTime dt1 = new DateTime(Date.parse("dd.MM.yyyy", query.ticketDate)).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0)
                 DateTime dt2 = dt1.withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59)
                 between('ticketDate', dt1.toDate(), dt2.toDate())
             }
-            if (attrs.ticketDatePeriod) {
-                List<String> dates = attrs.ticketDatePeriod.split('-')
+            if (query.ticketDatePeriod) {
+                List<String> dates = query.ticketDatePeriod.split('-')
                 if (dates.size() == 2) {
                     DateTime dt1 = new DateTime(Date.parse("dd.MM.yyyy", dates.get(0))).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0)
                     DateTime dt2 = new DateTime(Date.parse("dd.MM.yyyy", dates.get(1))).withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59)
@@ -228,9 +216,9 @@ class TicketAjaxController {
                 }
             }
 
-            if (attrs.ticketDateFrom && attrs.ticketDateTo) {
-                DateTime dt1 = new DateTime(Date.parse("dd.MM.yyyy", attrs.ticketDateFrom)).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0)
-                DateTime dt2 = new DateTime(Date.parse("dd.MM.yyyy", attrs.ticketDateTo)).withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59)
+            if (query.ticketDateFrom && query.ticketDateTo) {
+                DateTime dt1 = new DateTime(Date.parse("dd.MM.yyyy", query.ticketDateFrom)).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0)
+                DateTime dt2 = new DateTime(Date.parse("dd.MM.yyyy", query.ticketDateTo)).withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59)
                 between('ticketDate', dt1.toDate(), dt2.toDate())
             }
 
@@ -247,7 +235,15 @@ class TicketAjaxController {
                 render([data: ticketList] as JSON)
             }
         } else {
-            render([erorrs: g.message(code: "ticket.fine.not.found")] as JSON)
+            errors.add([
+                    "status": 422,
+                    "detail": g.message(code: "ticket.fine.not.found"),
+                    "source": [
+                            "pointer": "data"
+                    ]
+            ])
+            response.status = 422
+            render([errors: errors] as JSON)
         }
     }
 

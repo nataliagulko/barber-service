@@ -1,1 +1,20 @@
- {{full-calendar events=events}}
+{{full-calendar 
+    viewName='agendaDay'
+    slotLabelFormat='HH:mm'
+    slotDuration='00:10:00'
+    selectable=true
+    minTime="08:00:00"
+    maxTime="20:30:00"
+    allDay=false
+    height="auto"
+    header=headerOptions
+    views=views
+    nowIndicator=true
+    slotEventOverlap=false
+    locale="ru"
+    filterResourcesWithEvents=true
+    navLinks=true
+    eventClick=(action 'showTicketInfo')
+    events=(action "getEvents")}}
+
+    {{ticket-list/ticket-info event=selectedEvent}}
