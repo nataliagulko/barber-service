@@ -99,7 +99,8 @@ dataSource:
     driverClassName: com.mysql.cj.jdbc.Driver
 #    driverClassName: org.h2.Driver
     username: root
-    password: Repgat39
+    password: Element1
+    
 
 environments:
     development:

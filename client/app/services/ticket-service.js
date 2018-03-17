@@ -4,9 +4,10 @@ import moment from 'moment';
 export default Ember.Service.extend({
     store: Ember.inject.service("store"),
     pickadateService: Ember.inject.service("pickadate-service"),
+    pickatimeService: Ember.inject.service("pickatime-service"),
     selectedMaster: null,
     ticketDate: null,
-    time: null,
+    ticketTime: null,
     servicesByMaster: [],
     selectedServices: [],
     cost: null,
@@ -107,6 +108,7 @@ export default Ember.Service.extend({
             $('.ticket-info-services-top').removeClass('hidden');
         }
 
+
         this._calculateDurationAndCost();
         this._getHolidays();
 
@@ -141,52 +143,27 @@ export default Ember.Service.extend({
         });
 
         holidays.then(function () {
-            let disableDates = _this._parseHolidays(holidays);
+            holidays = holidays.toArray();
+            let disableDates = _this._parseHolidays(holidays),
+                yesterday = moment().subtract(1, 'days');
 
             pickadateService.set("#ticket-date-picker", "disable", false);
-            pickadateService.set("#ticket-date-picker", "min", new Date());
+            pickadateService.set("#ticket-date-picker", "min", yesterday);
             pickadateService.set("#ticket-date-picker", "disable", disableDates);
         });
     },
 
-    onTicketDateChange(selectedDate) {
-        let store = this.get("store"),
-            master = this.get("selectedMaster"),
-            duration = this.get("duration"),
-            date = selectedDate;
-
-        $('.ticket-info-date-top').removeClass('hidden');
-        this.set("ticketDate", date);
-
-        let slots = store.query("workTime", {
-            query: {
-                id: master.id,
-                time: duration,
-                date: date
-            },
-            methodName: "getSlotsInvert"
-        });
-
-        slots.then((data) => {
-            console.log(data);
-        })
-    },
-
     _parseHolidays(holidays) {
         let datesArr = [];
-        holidays = holidays.toArray();
 
         holidays.forEach(function (item) {
-            let startY = moment(item.get("dateFrom")).toObject().years,
-                startM = moment(item.get("dateFrom")).toObject().months,
-                startD = moment(item.get("dateFrom")).toObject().date,
-                endY = moment(item.get("dateTo")).toObject().years,
-                endM = moment(item.get("dateTo")).toObject().months,
-                endD = moment(item.dateTo).toObject().date,
-                range = {
-                    "from": [startY, startM, startD],
-                    "to": [endY, endM, endD]
-                };
+            const dateFrom = moment(item.get("dateFrom")).toObject(),
+                dateTo = moment(item.get("dateTo")).toObject();
+
+            let range = {
+                "from": [dateFrom.years, dateFrom.months, dateFrom.date],
+                "to": [dateTo.years, dateTo.months, dateTo.date]
+            };
 
             datesArr.push(range);
         });
@@ -194,17 +171,79 @@ export default Ember.Service.extend({
         return datesArr;
     },
 
-    inputPhone(value) {
-        let client = this.get("client"),
-            phone = this.get("phone");
+    onTicketDateChange(selectedDate) {
+        let store = this.get("store"),
+            master = this.get("selectedMaster"),
+            duration = this.get("duration"),
+            date = selectedDate,
+            _this = this,
+            pickatimeService = this.get("pickatimeService");
 
-            const phoneLength = 10;
-            
-        if (phone.length !== phoneLength) {
-            phone += value;
-            this.set("phone", phone);
-        }
-        else {
+        $('.ticket-info-date-top').removeClass('hidden');
+        this.set("ticketDate", date);
+
+        let slots = store.query("slot", {
+            query: {
+                masterId: master.id,
+                time: duration,
+                slotDate: date
+            },
+        });
+
+        slots.then((timeSlots) => {
+            timeSlots = timeSlots.toArray();
+            if (timeSlots.length === 0) { return; }
+
+            let parsedSlots = _this._parsedSlots(timeSlots);
+
+            pickatimeService.set("#ticket-time-picker", "disable", false);
+            pickatimeService.set("#ticket-time-picker", "min", parsedSlots.disabledMinTime);
+            pickatimeService.set("#ticket-time-picker", "max", parsedSlots.disabledMaxTime);
+            pickatimeService.set("#ticket-time-picker", "disable", parsedSlots.disabledTimeSlots);
+        })
+    },
+
+    _parsedSlots(timeSlots) {
+        let timesArr = [],
+            minTime = 0,
+            maxTime = 0;
+
+        timeSlots.forEach(function (item) {
+            const start = moment(item.get("start")).toObject(),
+                end = moment(item.get("end")).toObject();
+
+            var rangeObj = {
+                "from": [start.hours, start.minutes],
+                "to": [end.hours, end.minutes]
+            };
+
+            timesArr.push(rangeObj);
+        });
+
+        minTime = timesArr[0].to;
+        maxTime = timesArr[timesArr.length - 1].from;
+
+        return {
+            disabledTimeSlots: timesArr,
+            disabledMinTime: minTime,
+            disabledMaxTime: maxTime,
+        };
+    },
+
+    onTicketTimeChange(selectedTime) {
+        $('.ticket-info-time-top').removeClass('hidden');
+        this.set("ticketTime", selectedTime);
+    },
+
+    inputPhone(value) {
+        let phone = this.get("phone");
+
+        const phoneLength = 10;
+
+        phone += value;
+        this.set("phone", phone);
+
+        if (phone.length === phoneLength) {
             this._getClient(phone);
         }
     },
@@ -212,10 +251,11 @@ export default Ember.Service.extend({
     _getClient(phone) {
         const store = this.get("store");
 
-        let client = store.query("client", {
+        let client = store.queryRecord("client", {
             query: {
                 phone: phone
-            }
+            },
         });
+        this.set("client", client);
     }
 });

@@ -16,22 +16,22 @@ class TicketsService {
     def createTicket(User user, def params) {
 
         User client = user
-        User master = User.get(params.master)
+        User master = User.get(params.master.id)
         Set<Long> servIds = new HashSet<>()
-        params.services.split(',').each {
+        params.services.split(', ').each {
             servIds.add(Long.parseLong(it))
         }
         List<Service> services = Service.findAllByIdInList(servIds)
         if (!services) {
             return null
         }
-        Ticket ticket = new Ticket(date: params.date, comment: params.comment)
+        Ticket ticket = new Ticket(date: params.ticketDate, comment: params.comment)
         ticket.setUser(client)
         ticket.setMaster(master)
         ticket.setServices(services.toSet())
-        ticket.setStatus(TicketStatus.NEW)
+        ticket.setStatus(params.status)
 
-        DateTime date = DateTimeFormat.forPattern("dd.MM.yyyy").parseDateTime(params.date)
+        DateTime date = DateTimeFormat.forPattern("dd.MM.yyyy").parseDateTime(params.ticketDate)
         String time = params.time
         String[] splitTime = time.split(":")
         DateTime dateTime = date.withHourOfDay(splitTime[0].toInteger()).withMinuteOfHour(splitTime[1].toInteger())
