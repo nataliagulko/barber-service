@@ -3,7 +3,7 @@ package com.h2osis.model.ajax
 import com.h2osis.auth.User
 import com.h2osis.utils.SlotsService
 import grails.converters.JSON
-import java.utils.date
+import java.util.Date
 import org.joda.time.LocalDate
 
 class SlotAjaxController {
