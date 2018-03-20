@@ -177,9 +177,12 @@ class HolidayAjaxController {
                 Set<Integer> nonWorkDays = workDays ? [0, 1, 2, 3, 4, 5, 6].minus(workDays) : [0, 1, 2, 3, 4, 5, 6]
                 nonWorkDays.each { it++ }
 
+                DateTime dateTimeCurrent = novaDateUtilService.getMasterTZDateTime(new DateTime(), user)
                 List<Holiday> holidays =
-                        Holiday.findAllByMasterAndCommentNotEqual(user, "maxTime", [sort: 'dateFrom'])?.plus(
-                                Holiday.findAllByMasterAndCommentAndMaxTimeLessThan(user, "maxTime", query.time ? query.time : slotsService.getDuration(1L),
+                        Holiday.findAllByMasterAndCommentNotEqualAndDateFromGreaterThan(user, "maxTime", dateTimeCurrent, [sort: 'dateFrom'])?.plus(
+                                Holiday.findAllByMasterAndCommentAndMaxTimeLessThanAndDateFromGreaterThan(user,
+                                        "maxTime", query.time ? query.time : slotsService.getDuration(1L),
+                                        dateTimeCurrent,
                                         [sort: 'dateFrom']))?.sort { a, b -> a.dateFrom <=> b.dateFrom }
                 holidays?.each {
                     it.master.setPassword(null)
