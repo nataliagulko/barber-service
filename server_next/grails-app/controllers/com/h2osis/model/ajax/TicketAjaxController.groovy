@@ -61,20 +61,20 @@ class TicketAjaxController {
     def create() {
         def data = request.JSON.data
         def attrs = data.attributes
-        if (data.type && data.type == "ticket" && attrs.master && attrs.services && attrs.date) {
-            def principal = springSecurityService.principal
-            User user = User.get(principal.id)
+        def relations = data.relationships
+        if (data.type && data.type == "ticket" && relations.master && relations.client && relations.services && attrs.ticketDate) {
+            User user = User.get(relations.client.id)
 
-            if (!user.secondname && !user.firstname) {
-                if (attrs.firstname && attrs.secondname) {
-                    user.setFirstname(attrs.firstname)
-                    user.setSecondname(attrs.secondname)
-                    user.save(flush: true)
-                } else {
-                    render([errors: g.message(code: "ticket.fio.empty")] as JSON)
-                    return
-                }
-            }
+            // if (!user.secondname && !user.firstname) {
+            //     if (attrs.firstname && attrs.secondname) {
+            //         user.setFirstname(attrs.firstname)
+            //         user.setSecondname(attrs.secondname)
+            //         user.save(flush: true)
+            //     } else {
+            //         render([errors: g.message(code: "ticket.fio.empty")] as JSON)
+            //         return
+            //     }
+            // }
 
             Ticket ticket = ticketsService.createTicket(user, attrs)
             if (ticket) {

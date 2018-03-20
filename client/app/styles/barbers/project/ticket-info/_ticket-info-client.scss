@@ -1,7 +1,4 @@
 .ticket-info-client-top {
-    position: relative;
-    width: 140px;
-    margin: 0 auto;
     font-size: 24px;
 
     &__code {
@@ -14,9 +11,17 @@
         z-index: 99;
         background: #fff;
         padding-right: 1px;
+        left: 15px;
     }
 
     &__mask {
-        color: #e0e0e0;;
+        color: #e0e0e0;
+        margin-left: 15px;
+    }
+
+    &__phone {
+        position: relative;
+        width: 140px;
+        margin: 0 auto;
     }
 }
