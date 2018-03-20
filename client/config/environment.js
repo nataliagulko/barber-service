@@ -1,6 +1,6 @@
 /* jshint node: true */
 
-module.exports = function(environment) {
+module.exports = function (environment) {
     var ENV = {
         modulePrefix: 'barbers',
         environment: environment,
@@ -34,6 +34,8 @@ module.exports = function(environment) {
         crossOriginWhitelist: [ENV.host],
         authorizationPrefix: 'Bearer ',
         authorizationHeaderName: 'Authorization',
+        refreshAccessTokens: true,
+        refreshLeeway: 3600
     };
 
     ENV['ember-toastr'] = {

@@ -14,7 +14,9 @@
     locale="ru"
     filterResourcesWithEvents=true
     navLinks=true
+    refetchResourcesOnNavigate=true
     eventClick=(action 'showTicketInfo')
-    events=(action "getEvents")}}
+    events=(action "getEvents")
+    resources=(action "getResources")}}
 
     {{ticket-list/ticket-info event=selectedEvent}}
