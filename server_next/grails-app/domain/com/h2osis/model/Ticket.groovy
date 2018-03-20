@@ -8,7 +8,8 @@ import org.joda.time.LocalTime
 
 class Ticket {
 
-    transient slotsService, SMManagerService
+    def slotsService
+    def SMManagerService
 
 
     User user // клиент
@@ -35,6 +36,7 @@ class Ticket {
         type defaultValue: "'HEAD'"
         user lazy: false
         services lazy: false
+        autowire true
     }
 
     static constraints = {
