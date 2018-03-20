@@ -1,4 +1,4 @@
-{{ticket-list/calendar-filters}}
+{{ticket-list/calendar-filters allEvents=model.allEvents}}
 
 <div class="portlet light portlet-fit bordered calendar">
     <div class="portlet-title">
@@ -8,6 +8,6 @@
         </div>
     </div>
     <div class="portlet-body">
-        {{ticket-list/ticket-calendar}}
+        {{ticket-list/ticket-calendar allEvents=model.allEvents}}
     </div>
 </div>

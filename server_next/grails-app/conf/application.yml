@@ -100,7 +100,7 @@ dataSource:
 #    driverClassName: org.h2.Driver
     dbCreate: update
     username: root
-    password: Element1
+    password: Repgat39
     
 
 environments:

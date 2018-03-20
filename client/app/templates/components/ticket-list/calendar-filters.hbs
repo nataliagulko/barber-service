@@ -16,10 +16,10 @@
                                 <input class="toggle" type="radio">Все
                             </label>
                             {{#each ticketStatuses as |status|}}
-                            <label class="btn btn-default" onclick={{action "filterEventsByStatus" status.alias}}>
-                                <i class="fa fa-circle {{status.fontClass}}"></i>
-                                <input class="toggle" type="radio">{{status.text}}
-                            </label>
+                                <label class="btn btn-default" onclick={{action "filterEventsByStatus" status.alias}}>
+                                    <i class="fa fa-circle {{status.fontClass}}"></i>
+                                    <input class="toggle" type="radio">{{status.text}}
+                                </label>
                             {{/each}}
                         </div>
                     </div>

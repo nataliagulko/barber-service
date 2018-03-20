@@ -52,7 +52,7 @@ export default Ember.Component.extend({
     },
 
     getClientNameOrPhone: function (client) {
-        return client.get("fullname") !== "null null" ? client.get("fullname") : client.get("phone")
+        return client.get("fullname") !== "null null" ? client.get("fullname") : client.get("phone");
     },
 
     renderEvents: function (_this, t, events, callback) {
@@ -89,10 +89,11 @@ export default Ember.Component.extend({
                 className: ["ticket-calendar__event", `ticket-calendar__event_${ticketStatus}`],
                 data: t
             };
-
+            
+            callback(events);
             $calendar.fullCalendar("renderEvent", event);
             events.pushObject(event);
-            callback(events);
+            this.set("allEvents", events);
         });
     }
 });
