@@ -372,7 +372,7 @@ class BootStrap {
                 returnArray['type'] = 'ticket'
 
                 def attrs = [:]
-                attrs['ticketDate'] = it.ticketDate
+                attrs['ticketDate'] = it.ticketDate.format("yyyy-MM-dd HH:mm:ss.S")
                 attrs['time'] = it.time
                 attrs['status'] = it.status
                 attrs['comment'] = it.comment
@@ -391,14 +391,15 @@ class BootStrap {
                 masterDetails['id'] = it.master.id
                 masterDetails['type'] = 'master'
 
+                def masterAttrsValues = [:]
+                masterAttrsValues['phone'] = it.master.phone
+                masterAttrsValues['firstname'] = it.master.firstname
+                masterAttrsValues['secondname'] = it.master.secondname
+                masterAttrsValues['username'] = it.master.username
+                masterAttrsValues['email'] = it.master.email
+                masterAttrsValues['masterTZ'] = it.master.masterTZ
                 def masterAttrs = [:]
-                attrs['phone'] = it.master.phone
-                attrs['firstname'] = it.master.firstname
-                attrs['secondname'] = it.master.secondname
-                attrs['username'] = it.master.username
-                attrs['email'] = it.master.email
-                attrs['masterTZ'] = it.master.masterTZ
-                masterAttrs['attributes'] = attrs
+                masterAttrs['attributes'] = masterAttrsValues
                 masterDetails['data'] = masterAttrs
                 relationships['master'] = masterDetails
 
