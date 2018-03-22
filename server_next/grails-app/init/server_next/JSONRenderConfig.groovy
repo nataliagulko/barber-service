@@ -19,13 +19,13 @@ class JSONRenderConfig {
                 def attrs = [:]
                 attrs['dateFrom'] = it.dateFrom
                 attrs['dateTo'] = it.dateTo
-                attrs['master'] = it.master
                 attrs['comment'] = it.comment
 
                 def relationships = [:]
-                def mastersDetails = [:]
-                mastersDetails['data'] = it.master
-                relationships['masters'] = mastersDetails
+                def masterDetails = [:]
+                masterDetails['id'] = it.master.id
+                mastersmasterDetailsDetails['type'] = 'master'
+                relationships['masters'] = masterDetails
 
                 returnArray['relationships'] = relationships
                 returnArray['attributes'] = attrs
@@ -47,9 +47,11 @@ class JSONRenderConfig {
                 attrs['dayOfWeek'] = it.dayOfWeek
 
                 def relationships = [:]
-                def mastersDetails = [:]
-                mastersDetails['data'] = it.master
-                relationships['masters'] = mastersDetails
+
+                def masterDetails = [:]
+                masterDetails['id'] = it.master.id
+                masterDetails['type'] = 'master'
+                relationships['masters'] = masterDetails
 
                 returnArray['relationships'] = relationships
                 returnArray['attributes'] = attrs
@@ -70,10 +72,11 @@ class JSONRenderConfig {
                 attrs['master'] = it.master
 
                 def relationships = [:]
-                def mastersDetails = [:]
-                it.master.password = null
-                mastersDetails['data'] = it.master
-                relationships['masters'] = mastersDetails
+
+                def masterDetails = [:]
+                masterDetails['id'] = it.master.id
+                masterDetails['type'] = 'master'
+                relationships['masters'] = masterDetails
 
                 returnArray['relationships'] = relationships
                 returnArray['attributes'] = attrs

@@ -25,22 +25,27 @@ export default Ember.Component.extend({
 
     actions: {
         getEvents: function (start, end, timezone, callback) {
-            const dateFormat = 'DD.MM.YYYY',
-                _this = this;
+            const _this = this;
 
-            const ticketList = this.get('store').query('ticket', {
-                query: {
-                    onlyHead: true,
-                    ticketDateFrom: start.format(dateFormat),
-                    ticketDateTo: end.format(dateFormat),
-                }
-            });
-
-            let events = [];
+            let events = [],
+                ticketList = _this.getTicketList(start, end);
 
             ticketList.then((tickets) => {
                 tickets.forEach(ticket => {
                     _this.renderEvents(_this, ticket, events, callback);
+                });
+            });
+        },
+
+        getResources: function (callback, start, end) {
+            const _this = this;
+
+            let resources = [],
+                ticketList = _this.getTicketList(start, end);
+
+            ticketList.then((tickets) => {
+                tickets.forEach(ticket => {
+                    _this.renderResources(_this, ticket, resources, callback);
                 });
             });
         },
@@ -51,48 +56,72 @@ export default Ember.Component.extend({
         }
     },
 
-    getClientNameOrPhone: function (client) {
-        return client.get("fullname") !== "null null" ? client.get("fullname") : client.get("phone")
+    getTicketList: function (start, end) {
+        const dateFormat = 'DD.MM.YYYY';
+
+        const ticketList = this.get('store').query('ticket', {
+            query: {
+                onlyHead: true,
+                ticketDateFrom: start.format(dateFormat),
+                ticketDateTo: end.format(dateFormat),
+            }
+        });
+
+        return ticketList;
     },
 
-    renderEvents: function (_this, t, events, callback) {
+    getClientNameOrPhone: function (client) {
+        return client.get("fullname") !== "null null" ? client.get("fullname") : client.get("phone");
+    },
+
+    renderEvents: function (_this, ticket, events, callback) {
         const $calendar = Ember.$(".full-calendar"),
-            ticketId = t.get("id"),
-            ticketDuration = t.get("duration"),
-            ticketDate = t.get("ticketDate"),
+            ticketDuration = ticket.get("duration"),
+            ticketDate = ticket.get("ticketDate"),
             ticketStrartDate = moment(ticketDate),
             ticketEndDate = moment(ticketDate).add(ticketDuration, 'minutes'),
-            ticketStatus = t.get("status").toLowerCase(),
-            masterId = t.belongsTo("master").id();
+            ticketStatus = ticket.get("status").toLowerCase(),
+            masterId = ticket.belongsTo("master").id();
 
         let ticketTitle = null,
             event = null;
 
-        // t.get("master").then((master) => {
-        //     if (!resources.isAny("id", masterId)) {
-        //         resources.pushObject({
-        //             id: masterId,
-        //             title: `master.get("fullname")`
-        //         });
-        //     }
-        // });
-
-        t.get("client").then((client) => {
+        ticket.get("client").then((client) => {
             ticketTitle = _this.getClientNameOrPhone(client);
             event = {
-                id: ticketId,
+                id: ticket.get("id"),
                 resourceId: masterId,
                 title: ticketTitle,
                 start: ticketStrartDate,
                 end: ticketEndDate,
                 status: ticketStatus,
                 className: ["ticket-calendar__event", `ticket-calendar__event_${ticketStatus}`],
-                data: t
+                data: ticket
             };
 
+            callback(events);
             $calendar.fullCalendar("renderEvent", event);
             events.pushObject(event);
-            callback(events);
+            this.set("allEvents", events);
+        });
+    },
+
+    renderResources: function (_this, ticket, resources, callback) {
+        const masterId = ticket.belongsTo("master").id();
+
+        let resource = null;
+
+        ticket.get("master").then((master) => {
+            resource = {
+                id: masterId,
+                title: master.get("fullname")
+            };
+
+            if (!resources.isAny("id", masterId)) {
+                resources.pushObject(resource);
+            }
+
+            callback(resources);
         });
     }
 });

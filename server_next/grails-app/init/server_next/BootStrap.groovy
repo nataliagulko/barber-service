@@ -165,25 +165,9 @@ class BootStrap {
                 attrs['masterTZ'] = it.masterTZ
                 returnArray['attributes'] = attrs
 
-
                 def relationships = [:]
                 relationships['holidays'] = Holiday.findAllByMaster(it)
-                List<WorkTime> workTimes = WorkTime.findAllByMaster(it)
-                Map<Integer, List<WorkTime>> workTimesMap = new HashMap<Integer, List<WorkTime>>()
-                if (workTimes) {
-                    workTimes.each {
-                        if (!workTimesMap.get(it.dayOfWeek)) {
-                            workTimesMap.put(it.dayOfWeek, new ArrayList<WorkTime>())
-                        }
-                        workTimesMap.get(it.dayOfWeek).add(it)
-                    }
-                }
-                workTimesMap.each {
-                    it.value = it.value.sort {
-                        it.timeFrom
-                    }
-                }
-                relationships['workTimes'] = workTimesMap
+                relationships['workTimes'] = WorkTime.findAllByMaster(it)
                 returnArray['relationships'] = relationships
 
                 return returnArray
@@ -193,13 +177,14 @@ class BootStrap {
                 def holidayReturn = [:]
                 holidayReturn['id'] = it.id
                 holidayReturn['type'] = 'holiday'
-                def holidayAttrs = [:]
-                holidayAttrs['dateFrom'] = it.dateFrom
-                holidayAttrs['dateTo'] = it.dateTo
-                //holidayAttrs['master'] = it.master
-                holidayAttrs['comment'] = it.comment
-                holidayReturn['attributes'] = holidayAttrs
                 return holidayReturn
+            }
+
+            it.registerObjectMarshaller(WorkTime) {
+                def workTimeReturn = [:]
+                workTimeReturn['id'] = it.id
+                workTimeReturn['type'] = 'workTime'
+                return workTimeReturn
             }
         }
 
@@ -235,27 +220,19 @@ class BootStrap {
                 attrs['extension'] = it.class
 
                 def relationships = [:]
-                def mastersDatails = [:]
-                mastersDatails['data'] = it.masters
-                relationships['masters'] = mastersDatails
+                def mastersDetails = [:]
+                mastersDetails['data'] = it.masters
+                relationships['masters'] = mastersDetails
                 returnArray['relationships'] = relationships
 
                 returnArray['attributes'] = attrs
                 return returnArray
             }
+
             it.registerObjectMarshaller(User) {
                 def returnArray = [:]
                 returnArray['id'] = it.id
                 returnArray['type'] = 'master'
-
-                def attrs = [:]
-                attrs['phone'] = it.phone
-                attrs['firstname'] = it.firstname
-                attrs['secondname'] = it.secondname
-                attrs['username'] = it.username
-                attrs['email'] = it.email
-                attrs['masterTZ'] = it.masterTZ
-                returnArray['attributes'] = attrs
                 return returnArray
             }
         }
@@ -273,30 +250,25 @@ class BootStrap {
                 attrs['partOfList'] = it.partOfList
 
                 def relationships = [:]
+
                 def mastersDetails = [:]
-                def serviceToGroupsDetails = [:]
                 mastersDetails['data'] = it.masters
-                serviceToGroupsDetails['data'] = it.serviceToGroups
                 relationships['masters'] = mastersDetails
+
+                def serviceToGroupsDetails = [:]
+                serviceToGroupsDetails['data'] = it.serviceToGroups
                 relationships['serviceToGroups'] = serviceToGroupsDetails
+
                 returnArray['relationships'] = relationships
 
                 returnArray['attributes'] = attrs
                 return returnArray
             }
+
             it.registerObjectMarshaller(User) {
                 def returnArray = [:]
                 returnArray['id'] = it.id
                 returnArray['type'] = 'master'
-
-                def attrs = [:]
-                attrs['phone'] = it.phone
-                attrs['firstname'] = it.firstname
-                attrs['secondname'] = it.secondname
-                attrs['username'] = it.username
-                attrs['email'] = it.email
-                attrs['masterTZ'] = it.masterTZ
-                returnArray['attributes'] = attrs
                 return returnArray
             }
 
@@ -304,11 +276,6 @@ class BootStrap {
                 def returnArray = [:]
                 returnArray['id'] = it.id
                 returnArray['type'] = 'service-to-group'
-
-                def attrs = [:]
-                attrs['serviceOrder'] = it.serviceOrder
-                attrs['serviceTimeout'] = it.serviceTimeout
-                returnArray['attributes'] = attrs
                 return returnArray
             }
         }
@@ -325,12 +292,15 @@ class BootStrap {
                 returnArray['attributes'] = attrs
 
                 def relationships = [:]
-                def serviceGroupDetails = [:]
+
                 def serviceDetails = [:]
                 serviceDetails['data'] = it.service
+                relationships['service'] = serviceDetails
+
+                def serviceGroupDetails = [:]
                 serviceGroupDetails['data'] = it.group
                 relationships['serviceGroup'] = serviceGroupDetails
-                relationships['service'] = serviceDetails
+
                 returnArray['relationships'] = relationships
 
                 return returnArray
@@ -340,13 +310,6 @@ class BootStrap {
                 def returnArray = [:]
                 returnArray['id'] = it.id
                 returnArray['type'] = 'service'
-
-                def attrs = [:]
-                attrs['name'] = it.name
-                attrs['cost'] = it.cost
-                attrs['time'] = it.time
-                attrs['partOfList'] = it.partOfList
-                returnArray['attributes'] = attrs
                 return returnArray
             }
 
@@ -354,13 +317,6 @@ class BootStrap {
                 def returnArray = [:]
                 returnArray['id'] = it.id
                 returnArray['type'] = 'service-group'
-
-                def attrs = [:]
-                attrs['name'] = it.name
-                attrs['cost'] = it.cost
-                attrs['time'] = it.time
-                attrs['partOfList'] = it.partOfList
-                returnArray['attributes'] = attrs
                 return returnArray
             }
         }
@@ -372,7 +328,7 @@ class BootStrap {
                 returnArray['type'] = 'ticket'
 
                 def attrs = [:]
-                attrs['ticketDate'] = it.ticketDate
+                attrs['ticketDate'] = it.ticketDate.format("yyyy-MM-dd HH:mm:ss.S")
                 attrs['time'] = it.time
                 attrs['status'] = it.status
                 attrs['comment'] = it.comment
@@ -384,11 +340,13 @@ class BootStrap {
                 def relationships = [:]
 
                 def userDetails = [:]
-                userDetails['data'] = it.user
+                userDetails['id'] = it.user.id
+                userDetails['type'] = 'client'
                 relationships['client'] = userDetails
 
                 def masterDetails = [:]
-                masterDetails['data'] = it.master
+                masterDetails['id'] = it.master.id
+                masterDetails['type'] = 'master'
                 relationships['master'] = masterDetails
 
                 def servicesDetails = [:]
@@ -400,41 +358,18 @@ class BootStrap {
                 returnArray['attributes'] = attrs
                 return returnArray
             }
+
             it.registerObjectMarshaller(User) {
                 def returnArray = [:]
                 returnArray['id'] = it.id
                 returnArray['type'] = 'client'
-
-                def attrs = [:]
-                attrs['phone'] = it.phone
-                attrs['firstname'] = it.firstname
-                attrs['secondname'] = it.secondname
-                attrs['username'] = it.username
-                attrs['email'] = it.email
-                attrs['masterTZ'] = it.masterTZ
-                returnArray['attributes'] = attrs
                 return returnArray
             }
 
             it.registerObjectMarshaller(Service) {
-
                 def returnArray = [:]
                 returnArray['id'] = it.id
                 returnArray['type'] = 'service'
-
-                def attrs = [:]
-                attrs['name'] = it.name
-                attrs['cost'] = it.cost
-                attrs['time'] = it.time
-                attrs['partOfList'] = it.partOfList
-
-                def relationships = [:]
-                def mastersDatails = [:]
-                mastersDatails['data'] = it.masters
-                relationships['masters'] = mastersDatails
-                returnArray['relationships'] = relationships
-
-                returnArray['attributes'] = attrs
                 return returnArray
             }
         }
