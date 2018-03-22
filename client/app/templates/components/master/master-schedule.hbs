@@ -1,15 +1,19 @@
-
-<ul>
-    {{#each-in groupedWorkTimes as |dayOfWeek workTimes|}}
-        <li>{{moment-format dayOfWeek "dddd" "d"}}
-            <ol>
+<div class="master-schedule__days">
+    <ul class="master-schedule__days-list">
+        {{#each-in groupedWorkTimes as |dayOfWeek workTimes|}}
+        <li class="master-schedule__day-of-week">
+            <div class="master-schedule__day-title">{{moment-format dayOfWeek "dddd" "d"}}</div>
             {{#each workTimes as |workTime|}}
-                <li>
-                    {{workTime.timeFrom}}
-                    {{workTime.timeTo}}
-                </li>
+                <div class="master-schedule__time-button">
+                    <button class="btn btn-default" onclick={{action 'onTimeButtonClick' workTime}}>
+                        {{workTime.timeRange}}
+                    </button>
+                </div>
             {{/each}}
-            </ol>
         </li>
-    {{/each-in}}
-</ul>
+        {{/each-in}}
+    </ul>
+</div>
+<div class="master-schedule__time">
+	<input id="master-schedule__time-picker" class="timepicker"/>
+</div>
