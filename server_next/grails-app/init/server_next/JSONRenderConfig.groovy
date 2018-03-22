@@ -24,7 +24,7 @@ class JSONRenderConfig {
                 def relationships = [:]
                 def masterDetails = [:]
                 masterDetails['id'] = it.master.id
-                mastersmasterDetailsDetails['type'] = 'master'
+                masterDetails['type'] = 'master'
                 relationships['masters'] = masterDetails
 
                 returnArray['relationships'] = relationships
@@ -43,7 +43,6 @@ class JSONRenderConfig {
                 def attrs = [:]
                 attrs['timeFrom'] = it.timeFrom
                 attrs['timeTo'] = it.timeTo
-                attrs['master'] = it.master
                 attrs['dayOfWeek'] = it.dayOfWeek
 
                 def relationships = [:]
