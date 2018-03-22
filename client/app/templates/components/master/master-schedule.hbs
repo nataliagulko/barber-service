@@ -1,0 +1,15 @@
+
+<ul>
+    {{#each-in groupedWorkTimes as |dayOfWeek workTimes|}}
+        <li>{{moment-format dayOfWeek "dddd" "d"}}
+            <ol>
+            {{#each workTimes as |workTime|}}
+                <li>
+                    {{workTime.timeFrom}}
+                    {{workTime.timeTo}}
+                </li>
+            {{/each}}
+            </ol>
+        </li>
+    {{/each-in}}
+</ul>

@@ -1,10 +1,22 @@
 import Ember from 'ember';
+import _ from 'lodash';
 
 export default Ember.Component.extend({
-    didInsertElement() {
-        const master = this.get("master"),
-            workTimesRef = master.hasMany('workTimes');
+    store: Ember.inject.service("store"),
+    groupedWorkTimes: [],
 
-        console.log(workTimesRef.ids());
+    didInsertElement() {
+        const master = this.get("master");
+
+        let workTimesList = this.get("store").query("workTime", {
+            query: {
+                masterId: master.id
+            }
+        });
+
+        workTimesList.then((workTimes) => {
+            let groupedWorkTimes = _.groupBy(workTimes.toArray(), "data.dayOfWeek");
+            this.set("groupedWorkTimes", groupedWorkTimes);
+        });
     }
 });
