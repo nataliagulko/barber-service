@@ -179,8 +179,8 @@ class HolidayAjaxController {
 
                 DateTime dateTimeCurrent = novaDateUtilService.getMasterTZDateTime(new DateTime(), user)
                 List<Holiday> holidays =
-                        Holiday.findAllByMasterAndCommentNotEqualAndDateFromGreaterThan(user, "maxTime", dateTimeCurrent, [sort: 'dateFrom'])?.plus(
-                                Holiday.findAllByMasterAndCommentAndMaxTimeLessThanAndDateFromGreaterThan(user,
+                        Holiday.findAllByMasterAndCommentNotEqualAndDateToGreaterThan(user, "maxTime", dateTimeCurrent, [sort: 'dateFrom'])?.plus(
+                                Holiday.findAllByMasterAndCommentAndMaxTimeLessThanAndDateToGreaterThan(user,
                                         "maxTime", query.time ? query.time : slotsService.getDuration(1L),
                                         dateTimeCurrent,
                                         [sort: 'dateFrom']))?.sort { a, b -> a.dateFrom <=> b.dateFrom }
