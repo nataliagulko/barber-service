@@ -4,7 +4,7 @@
         <li class="master-schedule__day-of-week">
             <div class="master-schedule__day-title">{{moment-format dayOfWeek "dddd" "d"}}</div>
             {{#each workTimes as |workTime|}}
-                <div class="master-schedule__time-button">
+                <div class="master-schedule__time-btn-wrapper">
                     <button class="btn btn-default" onclick={{action 'onTimeButtonClick' workTime}}>
                         {{workTime.timeRange}}
                     </button>
