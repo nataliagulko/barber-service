@@ -67,6 +67,10 @@ module.exports = function (environment) {
         includeScheduler: true
     };
 
+    ENV['moment'] = {
+        includeLocales: ['ru']
+    }
+
     if (environment === 'development') {
         // ENV.APP.LOG_RESOLVER = true;
         // ENV.APP.LOG_ACTIVE_GENERATION = true;

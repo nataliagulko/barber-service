@@ -182,33 +182,6 @@ class WorkTimeAjaxController {
         }
     }
 
-    def getSlots() {
-        if (params.time && params.date && params.id) {
-            User master = User.get(params.id)
-            List<Map<String, String>> response = slotsService.getSlots(master.id, params.getLong("time"),
-                    new LocalDate(params.getDate("date", "dd.MM.yyyy").time), params.currentId ? Long.parseLong(params.currentId) : null)
-            JSON.use('slots') {
-                render([data: slotsService.getSlotDomains(response, master, params.getDate("date", "dd.MM.yyyy"))] as JSON)
-            }
-        } else {
-            render([msg: g.message(code: "slots.not.found")] as JSON)
-        }
-    }
-
-    def getSlotsInvert() {
-        def data = request.JSON.query
-        if (data.time && data.date && data.id) {
-            User master = User.get(data.id)
-            List<Map<String, String>> response = slotsService.getSlotsInvert(master.id, data.getLong("time"),
-                    new LocalDate(Date.parse("dd.MM.yyyy", data.date).time), data.currentId ? Long.parseLong(data.currentId) : null)
-            JSON.use('slots') {
-                render([data: slotsService.getSlotDomains(response, master, params.getDate("date", "dd.MM.yyyy"))] as JSON)
-            }
-        } else {
-            render([msg: g.message(code: "slots.not.found")] as JSON)
-        }
-    }
-
     @Transactional
     def destroy() {
         def data = request.JSON.data

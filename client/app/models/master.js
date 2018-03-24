@@ -26,10 +26,7 @@ const Validations = buildValidations({
             message: '{description} do not match',
             description: 'Passwords'
         })
-    ],
-    holidays: validator('has-many'),
-    services: validator('has-many'),
-    workTimes: validator('has-many')
+    ]
 });
 
 export default DS.Model.extend(Validations, {
@@ -45,9 +42,6 @@ export default DS.Model.extend(Validations, {
     accountExpired: DS.attr('boolean'),
     accountLocked: DS.attr('boolean'),
     passwordExpired: DS.attr('boolean'),
-    holidays: DS.hasMany('holiday'),
-    services: DS.hasMany('service'),
-    workTimes: DS.hasMany('work-time'),
     fullname: Ember.computed('firstname', 'secondname', function() {
         return `${this.get('firstname')} ${this.get('secondname')}`;
     })

@@ -165,11 +165,6 @@ class BootStrap {
                 attrs['masterTZ'] = it.masterTZ
                 returnArray['attributes'] = attrs
 
-                def relationships = [:]
-                relationships['holidays'] = Holiday.findAllByMaster(it)
-                relationships['workTimes'] = WorkTime.findAllByMaster(it)
-                returnArray['relationships'] = relationships
-
                 return returnArray
             }
 
@@ -220,9 +215,11 @@ class BootStrap {
                 attrs['extension'] = it.class
 
                 def relationships = [:]
+
                 def mastersDetails = [:]
                 mastersDetails['data'] = it.masters
                 relationships['masters'] = mastersDetails
+                
                 returnArray['relationships'] = relationships
 
                 returnArray['attributes'] = attrs
