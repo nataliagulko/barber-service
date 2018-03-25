@@ -253,6 +253,16 @@ export default Ember.Service.extend({
         }
     },
 
+    removeLastNumber() {
+        let phone = this.get("phone");
+
+        this.set("phone", phone.slice(0, -1)); //почему-то если написать phone.slice(0,-1) строкой выше и сюда передавать просто phone то оно не работает
+    },
+
+    clearPhoneNumber() {
+        this.set("phone", "");
+    },
+
     _getClient(phone) {
         const store = this.get("store");
 
