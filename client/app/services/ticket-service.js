@@ -245,8 +245,11 @@ export default Ember.Service.extend({
 
         const phoneLength = 10;
 
-        phone += value;
-        this.set("phone", phone);
+        //todo подумать как сделать без двух if
+        if (phone.length < phoneLength) {
+            phone += value;
+            this.set("phone", phone);
+        }
 
         if (phone.length === phoneLength) {
             this._getClient(phone);
