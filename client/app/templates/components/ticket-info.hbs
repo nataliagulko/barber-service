@@ -22,13 +22,15 @@
         {{ticket-info-client-top}}
     </div> --}}
 
-    <div class="info-bottom">
+    <div class="ticket-info">
         {{ticket-info-master}}
         {{ticket-info-services}}
         {{ticket-info-cost}}        
         {{ticket-info-date}}
         {{ticket-info-client}}
     </div>
-
-
+    
+    <div class="ticket-submit-btn-wrapper">
+        {{ticket-form ticket=model.ticket}}
+    </div>            
 </div>

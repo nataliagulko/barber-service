@@ -1,0 +1,19 @@
+.ticket-info {
+	font-size: 16px;
+
+	&__item {
+		margin-bottom: 10px;
+
+		&>div {
+			display: table-cell;
+			vertical-align: top;
+    	}
+	}
+}
+
+.ticket-portlet-body {
+    position: relative;
+	height: 45vh;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
