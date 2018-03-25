@@ -1,15 +1,15 @@
 {{ticket-steps class=""}}
 <div class="grid">
     <div class="row">
-        <div class="col-md-5">
-            {{ticket-info}}
-        </div>
         <div class="col-md-7">
             {{ticket-master masters=model.masters}}
-            {{ticket-services services=model.services class = "hidden"}}
-            {{ticket-date class = "hidden"}}
-            {{ticket-time class = "hidden"}}
-            {{ticket-client class = "hidden"}}
+            {{ticket-services services=model.services}}
+            {{ticket-date}}
+            {{ticket-time}}
+            {{ticket-client}}
+        </div>
+        <div class="col-md-5">
+            {{ticket-info}}
         </div>
     </div>
     <div class="row">

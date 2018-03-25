@@ -1,13 +1,17 @@
-<div class="portlet-title">
-    <div class="caption">
-        <i class="fa fa-scissors font-red-sunglo"></i>
-        <span class="caption-subject font-red-sunglo">Мастер</span>
+{{!-- {{#if (eq activeStep "#master-step")}}  --}}
+<div id="ticket-master" class="portlet light bordered right-panel {{if (not-eq activeStep "#master-step") "hidden"}}">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="fa fa-scissors font-red-sunglo"></i>
+            <span class="caption-subject font-red-sunglo">Мастер</span>
+        </div>
+    </div>
+    <div class="portlet-body ticket-portlet-body">
+        <div class="tiles">
+            {{#each masters as |master|}}
+                {{ticket-master-card master=master}}
+            {{/each}}
+        </div>
     </div>
 </div>
-<div class="portlet-body ticket-portlet-body">
-    <div class="tiles">
-        {{#each masters as |master|}}
-            {{ticket-master-card master=master}}
-        {{/each}}
-    </div>
-</div>
+{{!-- {{/if}} --}}

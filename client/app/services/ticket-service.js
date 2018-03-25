@@ -14,33 +14,38 @@ export default Ember.Service.extend({
     duration: null,
     phone: "",
     client: null,
+    activeStep: '#master-step',
 
-    showElement(elemSelector, step) {
+    changeStep(step) {
         // скрываем верхнюю половину блока "инфо"
-        $('.ticket-info-top').addClass('hidden');
+        // $('.ticket-info-top').addClass('hidden');
+        this.set("activeStep", step);
+
+        //показываем слева инфу того блока на котором находимся
+        // $(infoToShow).removeClass('hidden');
 
         // отображаем нижние строки блока "инфо" если они не пустые
-        let bottomItems = $('.ticket-info-bottom');
+        // let bottomItems = $('.ticket-info-bottom');
 
-        bottomItems.each(function () {
-            let isNotEmpty = $(this).find('.ticket-info-bottom__text').text().trim();
-            if (isNotEmpty) {
-                $(this).removeClass('hidden');
-            }
-        });
+        // bottomItems.each(function () {
+        //     let isNotEmpty = $(this).find('.ticket-info-bottom__text').text().trim();
+        //     if (isNotEmpty) {
+        //         $(this).removeClass('hidden');
+        //     }
+        // });
 
-        // убираем активное состояние со всех шагов и добавляем выбранному
+        // // убираем активное состояние со всех шагов и добавляем выбранному
         $('.mt-step-col').removeClass('active');
         $(step).addClass('active');
 
-        // скрываем правые панельки и отображаем выбранную
-        $('.right-panel').addClass('hidden');
-        $(elemSelector).removeClass('hidden');
+        // // скрываем правые панельки и отображаем выбранную
+        // $('.right-panel').addClass('hidden');
+        // $(elemToShow).removeClass('hidden');
 
-        // если на шаге "Клиент" то отображаем блок с маской телефона
-        if ($('#client-step').hasClass('active')) {
-            $('.ticket-info-client-top').removeClass('hidden');
-        }
+        // // если на шаге "Клиент" то отображаем блок с маской телефона
+        // if ($('#client-step').hasClass('active')) {
+        //     $('.ticket-info-client-top').removeClass('hidden');
+        // }
     },
 
     toggleMaster(master, event) {
