@@ -1,5 +1,5 @@
-{{#if cost}}
-<div class="ticket-info__item ticket-info-cost">
+{{!-- {{#if cost}} --}}
+<div class="ticket-info__item ticket-info-cost {{if cost "showItem" ""}}">
     <div>
         <i class="icon-wallet font-red-sunglo margin-right-10"></i>
     </div>
@@ -8,4 +8,4 @@
         <span>{{time}}</span> мин.
     </div>
 </div>
-{{/if}}
+{{!-- {{/if}} --}}

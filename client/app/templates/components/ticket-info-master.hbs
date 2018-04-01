@@ -1,5 +1,5 @@
-{{#if selectedMaster}}
-    <div class="ticket-info__item ticket-info-master">
+{{!-- {{#if selectedMaster}} --}}
+    <div class="ticket-info__item ticket-info-master {{if selectedMaster "showItem" ""}}">
             <!-- <img class="img-circle ticket-info-master__img" src="https://image.flaticon.com/icons/svg/522/522401.svg"> -->
             <!-- onError="this.src='https://image.flaticon.com/icons/svg/522/522401.svg'" -->
             <div>
@@ -7,4 +7,4 @@
             </div>
             <div>{{selectedMaster.fullname}}</div>
     </div>
-{{/if}}
+{{!-- {{/if}} --}}

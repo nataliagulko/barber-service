@@ -1,12 +1,12 @@
-{{#if selectedServices}}
-    <div class="ticket-info__item ticket-info-services">
+{{!-- {{#if selectedServices}} --}}
+    <div class="ticket-info__item ticket-info-services {{if selectedServices "showItem" ""}}">
         <div>
             <i class="icon-bag font-red-sunglo margin-right-10"></i>
         </div>
         <div>
             {{#each selectedServices as |selectedService|}}
-                <span>{{selectedService.name}}, </span>
+                <div class="showItem">{{selectedService.name}}</div>
             {{/each}}
         </div>
     </div>
-{{/if}}
+{{!-- {{/if}} --}}

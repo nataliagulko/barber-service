@@ -1,5 +1,5 @@
- {{#if ticketDate}}
-<div class="ticket-info__item ticket-info-date">
+ {{!-- {{#if ticketDate}} --}}
+<div class="ticket-info__item ticket-info-date {{if ticketDate "showItem" ""}}">
     <div>
         <i class="icon-calendar font-red-sunglo margin-right-10"></i>
     </div>
@@ -8,4 +8,4 @@
         {{ticketTime}}
     </div>
 </div>
-{{/if}}
+{{!-- {{/if}} --}}

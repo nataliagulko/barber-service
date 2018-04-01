@@ -3,6 +3,7 @@
 
 	&__item {
 		margin-bottom: 10px;
+		opacity: 0;
 
 		&>div {
 			display: table-cell;
@@ -12,7 +13,7 @@
 }
 
 .ticket-portlet-body {
-    position: relative;
+  	position: relative;
 	height: 45vh;
 	overflow-y: auto;
 	overflow-x: hidden;

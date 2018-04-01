@@ -1,11 +1,11 @@
-{{#if (eq activeStep "#client-step")}}
-    <div class="ticket-info__item ticket-info-client">
+{{!-- {{#if (eq activeStep "#client-step")}} --}}
+    <div class="ticket-info__item ticket-info-client {{if (eq activeStep "#client-step") "showItem" ""}}">
         <div>
             <i class="icon-call-end font-red-sunglo margin-right-10"></i>
         </div>
-        <div class="ticket-info-client__phone">+7 {{phone}}</div>
+        <div class="ticket-info-client__phone">+7{{phone}}</div>
     </div>
-{{/if}}
+{{!-- {{/if}} --}}
 
 {{#if client.id}}
     <div class="ticket-info__item ticket-info-client">
