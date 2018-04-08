@@ -28,16 +28,16 @@
             <li class="heading">
                 <h3 class="uppercase">Features</h3>
             </li>
-            <li class="nav-item  ">
+            <li class="nav-item">
+                {{#link-to 'ticket.create' class="nav-link nav-toggle"}}
+                    <i class="icon-note"></i>
+                    <span class="title">Создать запись</span>
+                {{/link-to}}
+            </li>
+            <li class="nav-item">
                 {{#link-to 'ticket.index' class="nav-link nav-toggle"}}
                     <i class="icon-calendar"></i>
                     <span class="title">Записи</span>
-                {{/link-to}}
-            </li>
-            <li class="nav-item  ">
-                {{#link-to 'ticket.create' class="nav-link nav-toggle"}}
-                    <i class="icon-note"></i>
-                    <span class="title">Создание</span>
                 {{/link-to}}
             </li>
             <li class="nav-item">
@@ -56,7 +56,6 @@
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-settings"></i>
                     <span class="title">Настройки</span>
-                    <span class="arrow"></span>
                 </a>
             </li>
         </ul>
