@@ -337,13 +337,17 @@ class BootStrap {
                 def relationships = [:]
 
                 def userDetails = [:]
-                userDetails['id'] = it.user.id
-                userDetails['type'] = 'client'
+                def userData = [:]
+                userData['id'] = it.user.id
+                userData['type'] = 'client'
+                userDetails['data'] = userData
                 relationships['client'] = userDetails
 
                 def masterDetails = [:]
-                masterDetails['id'] = it.master.id
-                masterDetails['type'] = 'master'
+                def masterData = [:]
+                masterData['id'] = it.master.id
+                masterData['type'] = 'master'
+                masterDetails['data'] = masterData
                 relationships['master'] = masterDetails
 
                 def servicesDetails = [:]
