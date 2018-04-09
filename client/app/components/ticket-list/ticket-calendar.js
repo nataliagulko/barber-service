@@ -70,8 +70,11 @@ export default Ember.Component.extend({
         return ticketList;
     },
 
-    getClientNameOrPhone: function (client) {
-        return client.get("fullname") !== "null null" ? client.get("fullname") : client.get("phone");
+    getClientNameOrPhone: function (clientId) {
+        let client = this.get("store").findRecord("client", clientId);
+        client.then((c) => {
+            return c.get("fullname") !== "null null" ? c.get("fullname") : c.get("phone");
+        });
     },
 
     renderEvents: function (_this, ticket, events, callback) {
@@ -81,13 +84,10 @@ export default Ember.Component.extend({
             ticketStrartDate = moment(ticketDate),
             ticketEndDate = moment(ticketDate).add(ticketDuration, 'minutes'),
             ticketStatus = ticket.get("status").toLowerCase(),
-            masterId = ticket.belongsTo("master").id();
+            masterId = ticket.belongsTo("master").id(),
+            clientId = ticket.belongsTo("client").id();
 
-        let ticketTitle = null,
-            event = null;
-
-        ticket.get("client").then((client) => {
-            ticketTitle = _this.getClientNameOrPhone(client);
+        let ticketTitle = _this.getClientNameOrPhone(clientId),
             event = {
                 id: ticket.get("id"),
                 resourceId: masterId,
@@ -99,11 +99,10 @@ export default Ember.Component.extend({
                 data: ticket
             };
 
-            callback(events);
-            $calendar.fullCalendar("renderEvent", event);
-            events.pushObject(event);
-            this.set("allEvents", events);
-        });
+        callback(events);
+        $calendar.fullCalendar("renderEvent", event);
+        events.pushObject(event);
+        this.set("allEvents", events);
     },
 
     renderResources: function (_this, ticket, resources, callback) {
