@@ -6,15 +6,10 @@
         </div>
         <div class="col-md-7">
             {{ticket-master masters=model.masters}}
-            {{ticket-services services=model.services class = "hidden"}}
-            {{ticket-date class = "hidden"}}
-            {{ticket-time class = "hidden"}}
-            {{ticket-client class = "hidden"}}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            {{ticket-form ticket=model.ticket}}
+            {{ticket-services services=model.services}}
+            {{ticket-date}}
+            {{ticket-time}}
+            {{ticket-client}}
         </div>
     </div>
 </div>

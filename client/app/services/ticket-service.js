@@ -14,33 +14,14 @@ export default Ember.Service.extend({
     duration: null,
     phone: "",
     client: null,
+    activeStep: '#master-step',
 
-    showElement(elemSelector, step) {
-        // скрываем верхнюю половину блока "инфо"
-        $('.ticket-info-top').addClass('hidden');
-
-        // отображаем нижние строки блока "инфо" если они не пустые
-        let bottomItems = $('.ticket-info-bottom');
-
-        bottomItems.each(function () {
-            let isNotEmpty = $(this).find('.ticket-info-bottom__text').text().trim();
-            if (isNotEmpty) {
-                $(this).removeClass('hidden');
-            }
-        });
+    changeStep(step) {
+        this.set("activeStep", step);
 
         // убираем активное состояние со всех шагов и добавляем выбранному
         $('.mt-step-col').removeClass('active');
         $(step).addClass('active');
-
-        // скрываем правые панельки и отображаем выбранную
-        $('.right-panel').addClass('hidden');
-        $(elemSelector).removeClass('hidden');
-
-        // если на шаге "Клиент" то отображаем блок с маской телефона
-        if ($('#client-step').hasClass('active')) {
-            $('.ticket-info-client-top').removeClass('hidden');
-        }
     },
 
     toggleMaster(master, event) {
@@ -240,12 +221,25 @@ export default Ember.Service.extend({
 
         const phoneLength = 10;
 
-        phone += value;
-        this.set("phone", phone);
+        //todo подумать как сделать без двух if
+        if (phone.length < phoneLength) {
+            phone += value;
+            this.set("phone", phone);
+        }
 
         if (phone.length === phoneLength) {
             this._getClient(phone);
         }
+    },
+
+    removeLastNumber() {
+        let phone = this.get("phone");
+
+        this.set("phone", phone.slice(0, -1)); //почему-то если написать phone.slice(0,-1) строкой выше и сюда передавать просто phone то оно не работает
+    },
+
+    clearPhoneNumber() {
+        this.set("phone", "");
     },
 
     _getClient(phone) {

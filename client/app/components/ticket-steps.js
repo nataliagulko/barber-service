@@ -5,9 +5,9 @@ export default Ember.Component.extend({
     ticketService: Ember.inject.service('ticket-service'),
 
     actions: {
-        showElement: function(elemSelector, stepSelector) {
+        changeStep: function(stepSelector) {
             var ticketService = this.get('ticketService');
-            ticketService.showElement(elemSelector,stepSelector);
+            ticketService.changeStep(stepSelector);
         }
     }
 });

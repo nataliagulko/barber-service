@@ -23,39 +23,28 @@
                 {{#link-to 'index' class="nav-link nav-toggle"}}
                     <i class="icon-home"></i>
                     <span class="title">Главная</span>
-                    <span class="arrow"></span>
                 {{/link-to}}
             </li>
             <li class="heading">
                 <h3 class="uppercase">Features</h3>
             </li>
-            <li class="nav-item  ">
+            <li class="nav-item">
+                {{#link-to 'ticket.create' class="nav-link nav-toggle"}}
+                    <i class="icon-note"></i>
+                    <span class="title">Создать запись</span>
+                {{/link-to}}
+            </li>
+            <li class="nav-item">
                 {{#link-to 'ticket.index' class="nav-link nav-toggle"}}
                     <i class="icon-calendar"></i>
                     <span class="title">Записи</span>
-                    <span class="arrow"></span>
                 {{/link-to}}
-                <ul class="sub-menu">
-                    <li class="nav-item  ">
-                    {{#link-to 'ticket.create' class="nav-link"}}
-                            <span class="title">Создание</span>
-                    {{/link-to}}
-                    </li>
-                </ul>
             </li>
             <li class="nav-item">
                 {{#link-to 'service.index' class="nav-link nav-toggle"}}
                     <i class="icon-bag"></i>
                     <span class="title">Услуги</span>
-                    <span class="arrow"></span>
                 {{/link-to}}
-                <ul class="sub-menu">
-                    <li class="nav-item  ">
-                         {{#link-to 'service.create' class="nav-link"}}
-                            <span class="title">Создание</span>
-                        {{/link-to}}
-                    </li>
-                </ul>
             </li>
             <li class="nav-item">
                 {{#link-to 'master.index' class="nav-link"}}
@@ -67,15 +56,7 @@
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-settings"></i>
                     <span class="title">Настройки</span>
-                    <span class="arrow"></span>
                 </a>
-                <ul class="sub-menu">
-                    <li class="nav-item  ">
-                        <a href="" class="nav-link ">
-                            <span class="title">Элемент</span>
-                        </a>
-                    </li>
-                </ul>
             </li>
         </ul>
         <!-- END SIDEBAR MENU -->
