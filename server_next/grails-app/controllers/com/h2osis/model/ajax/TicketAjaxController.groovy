@@ -63,7 +63,7 @@ class TicketAjaxController {
         def attrs = data.attributes
         def relations = data.relationships
         if (data.type && data.type == "ticket" && relations.master && relations.client && relations.services && attrs.ticketDate) {
-            User user = User.get(relations.client.id)
+            User user = User.get(relations.client.data.id)
 
             // if (!user.secondname && !user.firstname) {
             //     if (attrs.firstname && attrs.secondname) {
@@ -76,7 +76,7 @@ class TicketAjaxController {
             //     }
             // }
 
-            Ticket ticket = ticketsService.createTicket(user, attrs)
+            Ticket ticket = ticketsService.createTicket(user, attrs, relations)
             if (ticket) {
                 JSON.use('tickets') {
                     render([data: ticket] as JSON)

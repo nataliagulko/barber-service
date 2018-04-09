@@ -1,10 +1,11 @@
-<div class="ticket-info-bottom ticket-info-cost hidden">
+{{!-- {{#if cost}} --}}
+<div class="ticket-info__item ticket-info-cost {{if cost "animate-from-top" ""}}">
     <div>
         <i class="icon-wallet font-red-sunglo margin-right-10"></i>
     </div>
-<div>
-    <span class="ticket-info-bottom__text">{{cost}}</span><i class="fa fa-ruble"></i>,
-    <span class="ticket-info-bottom__text">{{time}}</span> мин.
- </div>
-
+    <div>
+        <span>{{cost}}</span> ₽,
+        <span>{{time}}</span> мин.
+    </div>
 </div>
+{{!-- {{/if}} --}}

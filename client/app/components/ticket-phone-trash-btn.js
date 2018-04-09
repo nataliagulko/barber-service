@@ -2,17 +2,12 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
     tagName: '',
+    ticketService: Ember.inject.service("ticket-service"),
 
     actions: {
         clearPhone() {
-            var inputField = $('.ticket-info-client-top__input'),
-                inputValue = $('#phone-number'),
-                bottomInput = $('.ticket-info-client__phone'),
-                phoneValue = "";
-
-            $(inputValue).val(phoneValue);
-            $(inputField).text(phoneValue);
-            $(bottomInput).text(phoneValue);
+            var ticketService = this.get('ticketService');
+            ticketService.clearPhoneNumber();
         }
     }
 });
