@@ -85,10 +85,12 @@ export default Ember.Component.extend({
             ticketEndDate = moment(ticketDate).add(ticketDuration, 'minutes'),
             ticketStatus = ticket.get("status").toLowerCase(),
             masterId = ticket.belongsTo("master").id(),
-            clientId = ticket.belongsTo("client").id();
+            client = ticket.get("client");
 
-        let ticketTitle = _this.getClientNameOrPhone(clientId),
-            event = {
+        client.then((c) => {
+            let ticketTitle = c.get("fullname") !== "null null" ? c.get("fullname") : c.get("phone");
+
+            let event = {
                 id: ticket.get("id"),
                 resourceId: masterId,
                 title: ticketTitle,
@@ -99,10 +101,11 @@ export default Ember.Component.extend({
                 data: ticket
             };
 
-        callback(events);
-        $calendar.fullCalendar("renderEvent", event);
-        events.pushObject(event);
-        this.set("allEvents", events);
+            callback(events);
+            $calendar.fullCalendar("renderEvent", event);
+            events.pushObject(event);
+            this.set("allEvents", events);
+        });
     },
 
     renderResources: function (_this, ticket, resources, callback) {
