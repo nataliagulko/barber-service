@@ -291,11 +291,17 @@ class BootStrap {
                 def relationships = [:]
 
                 def serviceDetails = [:]
-                serviceDetails['data'] = it.service
+                def serviceData = [:]
+                serviceData['id'] = it.service.id
+                serviceData['type'] = 'service'
+                serviceDetails['data'] = serviceData
                 relationships['service'] = serviceDetails
 
                 def serviceGroupDetails = [:]
-                serviceGroupDetails['data'] = it.group
+                def serviceGroupData = [:]
+                serviceGroupData['id'] = it.group.id
+                serviceGroupData['type'] = 'service-group'
+                serviceGroupDetails['data'] = serviceGroupData
                 relationships['serviceGroup'] = serviceGroupDetails
 
                 returnArray['relationships'] = relationships
