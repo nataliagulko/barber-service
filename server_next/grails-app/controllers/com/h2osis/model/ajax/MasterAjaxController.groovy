@@ -4,8 +4,10 @@ import com.h2osis.auth.Role
 import com.h2osis.auth.User
 import com.h2osis.auth.UserRole
 import com.h2osis.constant.AuthKeys
+import com.h2osis.constant.TicketStatus
 import com.h2osis.model.*
 import com.h2osis.utils.BarberSecurityService
+import com.h2osis.utils.NovaDateUtilService
 import com.h2osis.utils.NovaUtilsService
 import com.h2osis.utils.SearchService
 import grails.converters.JSON
@@ -18,6 +20,7 @@ class MasterAjaxController {
     BarberSecurityService barberSecurityService
     UsersService usersService
     NovaUtilsService novaUtilsService
+    NovaDateUtilService novaDateUtilService
     static allowedMethods = [choose: ['POST', 'GET']]
 
     def create() {
@@ -414,4 +417,50 @@ class MasterAjaxController {
             render([errors: { g.message(code: "user.get.id.null") }] as JSON)
         }
     }
+
+    def clientStatistic() {
+        def data = request.JSON.query
+        if (data.id) {
+            User user = User.get(data.id)
+            user = user == null ?
+                    User.get(springSecurityService.principal.id) : user
+            if (user) {
+                def result = Ticket.executeQuery("select user from Ticket where master_id = $user group by user_id ")
+                JSON.use('clients') {
+                    if(data.noUserList){
+                        render([cnt: result?.size()] as JSON)
+                    }else {
+                        render([data: result, cnt: result?.size()] as JSON)
+                    }
+                }
+            } else {
+                render([errors: { g.message(code: "user.get.user.not.found") }] as JSON)
+            }
+        } else {
+            render([errors: { g.message(code: "user.get.id.null") }] as JSON)
+        }
+    }
+
+    def payStatistic(){
+        def data = request.JSON.query
+        if (data.id) {
+            User user = User.get(data.id)
+            user = user == null ?
+                    User.get(springSecurityService.principal.id) : user
+            if (user) {
+                Date dateFrom = novaDateUtilService.getMasterTZDateTimeDDMMYYYY(data.dateFrom, user).toDate()
+                Date dateTo = novaDateUtilService.getMasterTZDateTimeDDMMYYYY(data.dateTo, user).toDate()
+                String ticketStatus = data.ticketStatus ? data.ticketStatus : TicketStatus.COMPLETED
+                def costAVG = Ticket.executeQuery("select avg(cost) from Ticket where master_id = $user and ticketDate between $dateFrom and $dateTo and status = $ticketStatus")
+                def costSUMM = Ticket.executeQuery("select sum(cost) from Ticket where master_id = $user and ticketDate between $dateFrom and $dateTo and status = $ticketStatus")
+                render([costAVG: costAVG?.get(0), costSUMM:costSUMM?.get(0)] as JSON)
+            } else {
+                render([errors: { g.message(code: "user.get.user.not.found") }] as JSON)
+            }
+        } else {
+            render([errors: { g.message(code: "user.get.id.null") }] as JSON)
+        }
+    }
+
+
 }
