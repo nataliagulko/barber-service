@@ -103,6 +103,8 @@ class SecConfig {
                 '/masterAjax/destroy',
                 '/masterAjax/blockUser',
                 '/masterAjax/unBlockUser',
+                '/masterAjax/clientStatistic',
+                '/masterAjax/payStatistic',
         ]) {
             new NovaRequestMap(url: url, configAttribute: "ROLE_ADMIN").save(flush: true)
         }
