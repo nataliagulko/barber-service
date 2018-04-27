@@ -243,13 +243,23 @@ export default Ember.Service.extend({
     },
 
     _getClient(phone) {
-        const store = this.get("store");
+        const store = this.get("store"),
+            _this = this;
 
         let client = store.queryRecord("client", {
             query: {
                 phone: phone
             },
         });
-        this.set("client", client);
+
+        client.then(
+            (c) => {
+                console.log(c);
+                _this.set("client", c);
+            },
+            () => {
+                // user not found
+                _this.set("client", null);
+            });
     }
 });

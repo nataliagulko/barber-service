@@ -63,6 +63,7 @@ class ClientAjaxController {
             }
         } else {
             def query = request.JSON.query
+            def errors = []
             if(query && query.phone) {
                 User user = User.findByPhone(query.phone)
                 if(!user){
@@ -74,8 +75,17 @@ class ClientAjaxController {
                         render([data: user] as JSON)
                     }
                 } else {
-                    render([errors:
-                                    novaUtilsService.getErrorsSingleArrayJSON(g.message(code: "user.get.user.by.phone.not.found"))] as JSON)
+                    // render([errors:
+                                    // novaUtilsService.getErrorsSingleArrayJSON(g.message(code: "user.get.user.by.phone.not.found"))] as JSON)
+                    errors.add([
+                        "status": 422,
+                        "detail": g.message(code: "user.get.user.by.phone.not.found"),
+                        "source": [
+                                "pointer": "data"
+                        ]
+                    ])
+                    response.status = 422
+                    render([errors: errors] as JSON)
                 }
             }else {
                 render([errors: novaUtilsService.getErrorsSingleArrayJSON(g.message(code: "user.get.id.null"))] as JSON)
