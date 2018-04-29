@@ -8,6 +8,21 @@ export default Ember.Component.extend({
         changeStep: function(stepSelector) {
             var ticketService = this.get('ticketService');
             ticketService.changeStep(stepSelector);
+        },
+
+        getServicesByMaster: function () {
+            var ticketService = this.get('ticketService');
+            ticketService.getServicesByMaster();
+        },
+
+        getHolidays: function () {
+            var ticketService = this.get('ticketService');
+            ticketService.getHolidays();
+        },
+
+        getTimeSlots: function () {
+            var ticketService = this.get('ticketService');
+            ticketService.getTimeSlots();
         }
     }
 });

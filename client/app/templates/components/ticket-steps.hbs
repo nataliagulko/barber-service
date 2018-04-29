@@ -6,19 +6,19 @@
         </div>
         <div class="mt-step-title uppercase font-grey-cascade"></div>
     </div>
-    <div id="services-step" class="col-xs-2 mt-step-col" {{action "changeStep" "#services-step"}}>
+    <div id="services-step" class="col-xs-2 mt-step-col" {{action "changeStep" "#services-step"}} {{action "getServicesByMaster"}}>
         <div class="mt-step-number bg-white">
             <i class="icon-bag"></i>
         </div>
         <div class="mt-step-title uppercase font-grey-cascade"></div>
     </div>
-    <div id="date-step" class="col-xs-2 mt-step-col" {{action "changeStep" "#date-step"}}>
+    <div id="date-step" class="col-xs-2 mt-step-col" {{action "changeStep" "#date-step"}} {{action "getHolidays"}}>
         <div class="mt-step-number bg-white">
             <i class="icon-calendar"></i>
         </div>
         <div class="mt-step-title uppercase font-grey-cascade"></div>
     </div>
-    <div id="time-step" class="col-xs-2 mt-step-col" {{action "changeStep" "#time-step"}}>
+    <div id="time-step" class="col-xs-2 mt-step-col" {{action "changeStep" "#time-step"}} {{action "getTimeSlots"}}>
         <div class="mt-step-number bg-white">
             <i class="icon-clock"></i>
         </div>

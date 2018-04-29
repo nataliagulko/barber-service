@@ -36,27 +36,30 @@ export default Ember.Service.extend({
             $('.ticket-info-master-top').addClass('hidden');
         }
         else if (selectedMaster && !isSameMaster) {
-            this._setSelectedMaster(master);
+            // this._setSelectedMaster(master);
+            this.set("selectedMaster", master);            
 
             $('.tile').each(function () {
                 $(this).removeClass('selected');
             });
         }
         else {
-            this._setSelectedMaster(master);
+            // this._setSelectedMaster(master);
+            this.set("selectedMaster", master);            
         }
 
         $(selectedItem).toggleClass('selected');
     },
 
-    _setSelectedMaster(master) {
-        this.set("selectedMaster", master);
-        this._getServicesByMaster(master);
-        $('.ticket-info-master-top').removeClass('hidden');
-    },
+    // _setSelectedMaster(master) {
+    //     this.set("selectedMaster", master);
+    //    // this._getServicesByMaster(master);
+    //     // $('.ticket-info-master-top').removeClass('hidden');
+    // },
 
-    _getServicesByMaster(master) {
+    getServicesByMaster() {
         let store = this.get("store"),
+            master = this.get("selectedMaster"),
             _this = this;
 
         let services = store.query("service", {
@@ -91,7 +94,7 @@ export default Ember.Service.extend({
 
 
         this._calculateDurationAndCost();
-        this._getHolidays();
+        // this._getHolidays();
 
         $(selectedItem).toggleClass('selected');
     },
@@ -109,7 +112,7 @@ export default Ember.Service.extend({
         this.set("duration", totalDuration);
     },
 
-    _getHolidays() {
+    getHolidays() {
         let store = this.get("store"),
             _this = this,
             master = this.get("selectedMaster"),
@@ -153,15 +156,19 @@ export default Ember.Service.extend({
     },
 
     onTicketDateChange(selectedDate) {
+        let date = selectedDate;
+        this.set("ticketDate", date);
+    },
+
+    getTimeSlots() {
         let store = this.get("store"),
             master = this.get("selectedMaster"),
             duration = this.get("duration"),
-            date = selectedDate,
+            date = this.get("ticketDate"),
             _this = this,
             pickatimeService = this.get("pickatimeService");
 
-        $('.ticket-info-date-top').removeClass('hidden');
-        this.set("ticketDate", date);
+        // $('.ticket-info-date-top').removeClass('hidden');
 
         let slots = store.query("slot", {
             query: {
@@ -181,7 +188,7 @@ export default Ember.Service.extend({
             pickatimeService.set("#ticket-time-picker", "min", parsedSlots.disabledMinTime);
             pickatimeService.set("#ticket-time-picker", "max", parsedSlots.disabledMaxTime);
             pickatimeService.set("#ticket-time-picker", "disable", parsedSlots.disabledTimeSlots);
-        })
+        });
     },
 
     _parsedSlots(timeSlots) {

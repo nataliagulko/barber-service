@@ -5,7 +5,7 @@
     </div>
     <div>
         {{moment-format ticketDate 'Do MMMM YYYY' 'DD.MM.YYYY' allow-empty=true}},
-        {{ticketTime}}
+        <span class="{{if ticketTime "animate-from-top" ""}}">{{ticketTime}}</span>
     </div>
 </div>
 {{!-- {{/if}} --}}
