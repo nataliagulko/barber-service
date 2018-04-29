@@ -14,8 +14,10 @@ export default Ember.Service.extend({
     duration: null,
     phone: "",
     client: null,
+    clientName: null,
+    isNewClient: false,
     activeStep: '#master-step',
-
+    
     changeStep(step) {
         this.set("activeStep", step);
 
@@ -243,10 +245,17 @@ export default Ember.Service.extend({
         let phone = this.get("phone");
 
         this.set("phone", phone.slice(0, -1)); //почему-то если написать phone.slice(0,-1) строкой выше и сюда передавать просто phone то оно не работает
+        this._resetClient();        
     },
 
     clearPhoneNumber() {
         this.set("phone", "");
+        this._resetClient();
+    },
+
+    _resetClient() {
+        this.set("client", null);
+        this.set("isNewClient", false);                        
     },
 
     _getClient(phone) {
@@ -261,12 +270,16 @@ export default Ember.Service.extend({
 
         client.then(
             (c) => {
-                console.log(c);
+                _this.set("isNewClient", false);                
                 _this.set("client", c);
             },
             () => {
-                // user not found
+                _this.set("isNewClient", true);
                 _this.set("client", null);
             });
+    },
+
+    getClientName(name) {
+        this.set("clientName", name);
     }
 });
