@@ -22,7 +22,8 @@ class UsersService {
                     email: params.email,
                     secondname: params.secondname,
                     firstname: params.firstname,
-                    phone: params.phone).save(flush: true)
+                    phone: params.phone,
+                    enabled: params.enabled ? params.enabled : true).save(flush: true)
             if (params.businessId) {
                 Business business = Business.get(params.businessId)
                 if (business) {
@@ -39,7 +40,7 @@ class UsersService {
                 Role role = Role.findByAuthority(authority)
                 new UserRole(user: user, role: role).save(flush: true);
             }
-            User.search().createIndexAndWait()
+            //User.search().createIndexAndWait()
             return user
         } else {
             return messageSource.getMessage("user.double.phone", null, Locale.default)
