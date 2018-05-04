@@ -16,7 +16,8 @@ export default Ember.Component.extend({
 
     actions: {
         saveTicket: function () {
-            const store = this.get("store");
+            const store = this.get("store"),
+                _this = this;
 
             let ticket = this.get("ticket"),
                 client = this.get("client");
@@ -35,15 +36,16 @@ export default Ember.Component.extend({
             } else {
                 client = store.createRecord("client", {
                     firstname: this.get("clientName"),
-                    phone: this.get("phone"),
-                    password: "emptyPass123"
+                    phone: "+7(900)000-00-00",
+                    password: "emptyPass123",
+                    rpassword: "emptyPass123"
                 });
 
                 client
                     .save()
-                    .then(() => {
-                        ticket.set("client", client);                        
-                        this.save(ticket);
+                    .then((cl) => {
+                        ticket.set("client", cl);
+                        _this.save(ticket);
                     });
             }
 
@@ -57,6 +59,7 @@ export default Ember.Component.extend({
         ticket
             .save()
             .then(() => {
+                ticket = null;
                 _this.get("router").transitionTo('ticket');
             });
     }

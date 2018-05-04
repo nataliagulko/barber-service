@@ -15,7 +15,7 @@
 {{#if isNewClient}}            
     {{input type="text" 
     id="ticket-info__client-name"
-    value=clientName 
-    focus-out=(action "getClientName" clientName)
+    value=name 
+    focus-out=(action "setClientName" name)
     class="form-control" autofocus="autofocus"}}
 {{/if}}

@@ -4,6 +4,7 @@ import Ember from 'ember';
 export default DS.Model.extend({
     username: DS.attr(),
     password: DS.attr(),
+    rpassword: DS.attr(),
     email: DS.attr(),
     phone: DS.attr(),
     firstname: DS.attr(),

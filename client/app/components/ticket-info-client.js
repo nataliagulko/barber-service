@@ -7,12 +7,11 @@ export default Ember.Component.extend({
     client: Ember.computed.readOnly("ticketService.client"),
     activeStep: Ember.computed.readOnly("ticketService.activeStep"),
     isNewClient: Ember.computed.readOnly("ticketService.isNewClient"),
-    clientName: Ember.computed.readOnly("ticketService.isNewClient"),
 
     actions: {
-        getClientName: function (name) {
+        setClientName: function (name) {
             let ticketService = this.get("ticketService");
-            ticketService.getClientName(name);
+            ticketService.setClientName(name);
         }
     }
 });

@@ -14,7 +14,7 @@ export default Ember.Service.extend({
     duration: null,
     phone: "",
     client: null,
-    clientName: null,
+    clientName: "",
     isNewClient: false,
     activeStep: '#master-step',
     
@@ -279,7 +279,7 @@ export default Ember.Service.extend({
             });
     },
 
-    getClientName(name) {
+    setClientName(name) {
         this.set("clientName", name);
     }
 });

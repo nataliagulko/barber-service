@@ -65,17 +65,6 @@ class TicketAjaxController {
         if (data.type && data.type == "ticket" && relations.master && relations.client && relations.services && attrs.ticketDate) {
             User user = User.get(relations.client.data.id)
 
-            // if (!user.secondname && !user.firstname) {
-            //     if (attrs.firstname && attrs.secondname) {
-            //         user.setFirstname(attrs.firstname)
-            //         user.setSecondname(attrs.secondname)
-            //         user.save(flush: true)
-            //     } else {
-            //         render([errors: g.message(code: "ticket.fio.empty")] as JSON)
-            //         return
-            //     }
-            // }
-
             Ticket ticket = ticketsService.createTicket(user, attrs, relations)
             if (ticket) {
                 JSON.use('tickets') {
