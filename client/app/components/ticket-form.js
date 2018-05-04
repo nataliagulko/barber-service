@@ -36,7 +36,7 @@ export default Ember.Component.extend({
             } else {
                 client = store.createRecord("client", {
                     firstname: this.get("clientName"),
-                    phone: "+7(900)000-00-00",
+                    phone: this.get("phone"),
                     password: "emptyPass123",
                     rpassword: "emptyPass123"
                 });
@@ -59,7 +59,6 @@ export default Ember.Component.extend({
         ticket
             .save()
             .then(() => {
-                ticket = null;
                 _this.get("router").transitionTo('ticket');
             });
     }

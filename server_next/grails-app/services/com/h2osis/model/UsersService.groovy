@@ -40,7 +40,6 @@ class UsersService {
                 Role role = Role.findByAuthority(authority)
                 new UserRole(user: user, role: role).save(flush: true);
             }
-            //User.search().createIndexAndWait()
             return user
         } else {
             return messageSource.getMessage("user.double.phone", null, Locale.default)
