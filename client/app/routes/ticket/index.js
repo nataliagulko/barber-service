@@ -10,12 +10,12 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 		});
     },
 
-    activate(arg) {
-        this._super(...arguments);
+    // activate(arg) {
+    //     this._super(...arguments);
 
-        console.log("activate ", arg);
-        let notifications = this.get('notifications');
+    //     console.log("activate ", arg);
+    //     let notifications = this.get('notifications');
 
-        notifications.success('Запись на 5 мая 10:00', 'Запись добавлена');
-    },
+    //     notifications.success('Запись на 5 мая 10:00', 'Запись добавлена');
+    // },
 });

@@ -58,9 +58,8 @@ export default Ember.Component.extend({
 
         ticket
             .save()
-            .then((t) => {
-                console.log("save ", t);
-                _this.get("router").transitionTo('ticket', t);
+            .then(() => {
+                _this.get("router").transitionTo('ticket');
             });
     }
 });
