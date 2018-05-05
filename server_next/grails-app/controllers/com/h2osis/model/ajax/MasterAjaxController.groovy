@@ -442,6 +442,7 @@ class MasterAjaxController {
     }
 
     def payStatistic(){
+        println request.JSON.query
         def data = request.JSON.query
         if (data.id) {
             User user = User.get(data.id)
@@ -450,7 +451,7 @@ class MasterAjaxController {
             if (user) {
                 Date dateFrom = novaDateUtilService.getMasterTZDateTimeDDMMYYYY(data.dateFrom, user).toDate()
                 Date dateTo = novaDateUtilService.getMasterTZDateTimeDDMMYYYY(data.dateTo, user).toDate()
-                String ticketStatus = data.ticketStatus ? data.ticketStatus : TicketStatus.COMPLETED
+                String ticketStatus = data.ticketStatus ? data.ticketStatus : TicketStatus.ACCEPTED
                 def costAVG = Ticket.executeQuery("select avg(cost) from Ticket where master_id = $user and ticketDate between $dateFrom and $dateTo and status = $ticketStatus")
                 def costSUMM = Ticket.executeQuery("select sum(cost) from Ticket where master_id = $user and ticketDate between $dateFrom and $dateTo and status = $ticketStatus")
                 render([costAVG: costAVG?.get(0), costSUMM:costSUMM?.get(0)] as JSON)
