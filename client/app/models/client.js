@@ -16,6 +16,10 @@ export default DS.Model.extend({
     passwordExpired: DS.attr(),
     tickets: DS.hasMany('ticket'),
     fullname: Ember.computed('firstname', 'secondname', function() {
+        if (!this.get('secondname')) {
+            return this.get('firstname');  
+        }
+        
         return `${this.get('firstname')} ${this.get('secondname')}`;
     })
 });

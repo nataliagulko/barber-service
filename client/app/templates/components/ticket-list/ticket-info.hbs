@@ -23,7 +23,7 @@
                         <div class="form-group">
                             <label class="control-label col-md-4">Время:</label>
                             <label class="form-control-static col-md-6">
-                                {{moment-format event.ticketDate "Do MMMM"}} {{moment-format event.start "HH:mm"}}—{{moment-format event.end "HH:mm"}}
+                                {{moment-format event.ticketDate "Do MMMM"}} {{moment-format event.start "HH:mm"}}—{{moment-format event.end "HH:mm"}}, {{event.data.duration}} мин.
                             </label>
                         </div>
                         <div class="form-group">
@@ -32,6 +32,12 @@
                                 {{#each event.data.services as |service|}}
                                 <span class="ticket-info__service">{{service.name}}</span>
                                 {{/each}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Стоимость:</label>
+                            <label class="form-control-static col-md-6">
+                                {{event.data.cost}} ₽
                             </label>
                         </div>
                         <div class="form-group">
