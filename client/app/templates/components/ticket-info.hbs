@@ -6,13 +6,13 @@
 </div>
 <div class="portlet-body ticket-portlet-body">
     <div class="ticket-info">
-        {{ticket-info-master}}
-        {{ticket-info-services}}
-        {{ticket-info-cost}}        
-        {{ticket-info-date}}
+        {{ticket-info-master}} 
+        {{ticket-info-services}} 
+        {{ticket-info-cost}} 
+        {{ticket-info-date}} 
         {{ticket-info-client}}
-    </div>    
+    </div>
     <div class="ticket-submit-btn-wrapper">
-        {{ticket-form ticket=ticket}}
-    </div>            
+        <button type="button" class="btn btn-lg btn-success ticket-submit-btn" {{action "saveTicketRecord"}}>Записать</button>
+    </div>
 </div>

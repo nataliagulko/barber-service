@@ -285,13 +285,11 @@ export default Ember.Service.extend({
     _setTicketProperty(prop, value) {
         let ticket = this.get("ticket");
         ticket.set(prop, value);
-        console.log(`value of ${prop}`, value);
         this._validateTicketProperty(ticket, prop);
     },
 
     _validateTicketProperty(ticket, prop) {
         const isValid = ticket.get(`validations.attrs.${prop}.isValid`);
-        console.log(`isValid ${prop}`, isValid);
         console.log(`errors ${prop}`, ticket.get(`validations.attrs.${prop}.errors`));
     },
 
@@ -336,5 +334,9 @@ export default Ember.Service.extend({
             .then(() => {
                 _this.get("router").transitionTo('ticket');
             });
+    },
+
+    saveTicketRecord() {
+        this._setOrCreateClient();
     }
 });
