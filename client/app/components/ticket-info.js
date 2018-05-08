@@ -11,9 +11,9 @@ export default Ember.Component.extend({
     },
 
     actions: {
-        saveTicketRecord() {
+        saveTicket() {
             const ticketService = this.get("ticketService");
-            ticketService.saveTicketRecord();
+            ticketService.saveTicket();
         }
     }
 });

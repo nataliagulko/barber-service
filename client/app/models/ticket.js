@@ -6,7 +6,6 @@ const Validations = buildValidations({
 	ticketDate: [
 		validator('presence', true),
 		validator('date', {
-			presence: true,
 			after: moment().subtract(1, 'days'),
 			precision: 'day',
 			format: 'DD.MM.YYYY',
@@ -15,7 +14,6 @@ const Validations = buildValidations({
 	time: [
 		validator('presence', true),
 		validator('date', {
-			presence: true,
 			format: 'HH:mm',
 		})
 	],
@@ -28,7 +26,7 @@ const Validations = buildValidations({
 		gt: 0
 	}),
 	client: [
-		// validator('presence', true),
+		validator('presence', true),
 		validator('belongs-to')
 	],
 	master: [

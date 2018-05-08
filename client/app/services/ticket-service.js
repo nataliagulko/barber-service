@@ -15,7 +15,6 @@ export default Ember.Service.extend({
     duration: null,
     phone: "",
     client: null,
-    clientName: "",
     isNewClient: false,
     activeStep: '#master-step',
 
@@ -268,9 +267,10 @@ export default Ember.Service.extend({
         });
 
         client.then(
-            (c) => {
+            (cl) => {
                 _this.set("isNewClient", false);
-                _this.set("client", c);
+                _this.set("client", cl);
+                _this._setTicketProperty("client", cl);
             },
             () => {
                 _this.set("isNewClient", true);
@@ -278,8 +278,23 @@ export default Ember.Service.extend({
             });
     },
 
-    setClientName(name) {
-        this.set("clientName", name);
+    saveClient(name) {
+        const store = this.get("store"),
+            _this = this;
+
+        let client = store.createRecord("client", {
+            firstname: name,
+            phone: this.get("phone"),
+            password: "emptyPass123",
+            rpassword: "emptyPass123"
+        });
+
+        // need validate client too
+        client
+            .save()
+            .then((cl) => {
+                _this._setTicketProperty("client", cl);
+            });
     },
 
     _setTicketProperty(prop, value) {
@@ -289,8 +304,12 @@ export default Ember.Service.extend({
     },
 
     _validateTicketProperty(ticket, prop) {
-        const isValid = ticket.get(`validations.attrs.${prop}.isValid`);
-        console.log(`errors ${prop}`, ticket.get(`validations.attrs.${prop}.errors`));
+        const isInvalid = ticket.get(`validations.attrs.${prop}.isInvalid`);
+
+        if (isInvalid) {
+            //show error message
+            console.log(ticket.get(`validations.attrs.${prop}.errors`));
+        }
     },
 
     createTicketRecord() {
@@ -298,41 +317,14 @@ export default Ember.Service.extend({
         this.set("ticket", ticket);
     },
 
-    _setOrCreateClient() {
-        const _this = this,
-            store = this.get("store");
-
-        let client = this.get("client");
-
-        if (client) {
-            this._setTicketProperty("client", client);
-            this._saveTicket();
-        } else {
-            client = store.createRecord("client", {
-                firstname: this.get("clientName"),
-                phone: this.get("phone"),
-                password: "emptyPass123",
-                rpassword: "emptyPass123"
-            });
-
-            // need validate client too
-            client
-                .save()
-                .then((cl) => {
-                    _this._setTicketProperty("client", cl);
-                    _this._saveTicket();
-                });
-        }
-    },
-
-    _saveTicket() {
-        const ticket = this.get("ticket");
-        const _this = this;
+    saveTicket() {
+        const ticket = this.get("ticket"),
+            _this = this;
 
         ticket
             .validate()
             .then(({ validations }) => {
-                if (validations.get('isValid')) {
+                if (validations.get('isInvalid')) {
                     ticket
                         .save()
                         .then(() => {
@@ -340,9 +332,5 @@ export default Ember.Service.extend({
                         });
                 }
             });
-    },
-
-    saveTicketRecord() {
-        this._setOrCreateClient();
     }
 });

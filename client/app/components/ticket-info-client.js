@@ -9,9 +9,9 @@ export default Ember.Component.extend({
     isNewClient: Ember.computed.readOnly("ticketService.isNewClient"),
 
     actions: {
-        setClientName: function (name) {
+        saveClient: function (name) {
             let ticketService = this.get("ticketService");
-            ticketService.setClientName(name);
+            ticketService.saveClient(name);
         }
     }
 });
