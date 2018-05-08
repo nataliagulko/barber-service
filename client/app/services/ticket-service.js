@@ -5,6 +5,7 @@ export default Ember.Service.extend({
     store: Ember.inject.service("store"),
     pickadateService: Ember.inject.service("pickadate-service"),
     pickatimeService: Ember.inject.service("pickatime-service"),
+    ticket: null,
     selectedMaster: null,
     ticketDate: null,
     ticketTime: null,
@@ -17,7 +18,7 @@ export default Ember.Service.extend({
     clientName: "",
     isNewClient: false,
     activeStep: '#master-step',
-    
+
     changeStep(step) {
         this.set("activeStep", step);
 
@@ -32,32 +33,29 @@ export default Ember.Service.extend({
             isSameMaster = selectedMaster === master;
 
         if (selectedMaster && isSameMaster) {
-            this.set("selectedMaster", null);
+            this._setSelectedMaster(null);
             this.set("servicesByMaster", []);
 
             $('.ticket-info-master-top').addClass('hidden');
         }
         else if (selectedMaster && !isSameMaster) {
-            // this._setSelectedMaster(master);
-            this.set("selectedMaster", master);            
+            this._setSelectedMaster(master);
 
             $('.tile').each(function () {
                 $(this).removeClass('selected');
             });
         }
         else {
-            // this._setSelectedMaster(master);
-            this.set("selectedMaster", master);            
+            this._setSelectedMaster(master);
         }
 
         $(selectedItem).toggleClass('selected');
     },
 
-    // _setSelectedMaster(master) {
-    //     this.set("selectedMaster", master);
-    //    // this._getServicesByMaster(master);
-    //     // $('.ticket-info-master-top').removeClass('hidden');
-    // },
+    _setSelectedMaster(master) {
+        this.set("selectedMaster", master);
+        this._setTicketProperty("master", master);
+    },
 
     getServicesByMaster() {
         let store = this.get("store"),
@@ -245,7 +243,7 @@ export default Ember.Service.extend({
         let phone = this.get("phone");
 
         this.set("phone", phone.slice(0, -1)); //почему-то если написать phone.slice(0,-1) строкой выше и сюда передавать просто phone то оно не работает
-        this._resetClient();        
+        this._resetClient();
     },
 
     clearPhoneNumber() {
@@ -255,7 +253,7 @@ export default Ember.Service.extend({
 
     _resetClient() {
         this.set("client", null);
-        this.set("isNewClient", false);                        
+        this.set("isNewClient", false);
     },
 
     _getClient(phone) {
@@ -270,7 +268,7 @@ export default Ember.Service.extend({
 
         client.then(
             (c) => {
-                _this.set("isNewClient", false);                
+                _this.set("isNewClient", false);
                 _this.set("client", c);
             },
             () => {
@@ -281,5 +279,21 @@ export default Ember.Service.extend({
 
     setClientName(name) {
         this.set("clientName", name);
+    },
+
+    _setTicketProperty(prop, value) {
+        let ticket = this.get("ticket");
+        ticket.set(prop, value);
+        this._validateTicketProperty(ticket, prop);
+    },
+
+    _validateTicketProperty(ticket, prop) {
+        const isValid = ticket.get(`validations.attrs.${prop}.isValid`);
+        console.log("isValid", isValid);
+    },
+
+    createTicketRecord() {
+        const ticket = this.get("store").createRecord("ticket");
+        this.set("ticket", ticket);
     }
 });

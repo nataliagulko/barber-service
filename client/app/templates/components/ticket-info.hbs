@@ -5,31 +5,14 @@
     </div>
 </div>
 <div class="portlet-body ticket-portlet-body">
-    {{!-- <div class="info-top">
-        <!-- мастер -->
-        {{ticket-info-master-top}}
-
-        <!-- услуги -->
-        {{ticket-info-services-top}}
-
-        <!-- дата -->
-        {{ticket-info-date-top}}
-
-        <!-- время -->
-        {{ticket-info-time-top}}
-
-        <!-- телефон -->
-        {{ticket-info-client-top}}
-    </div> --}}
-
     <div class="ticket-info">
+        {{log ticket}}
         {{ticket-info-master}}
         {{ticket-info-services}}
         {{ticket-info-cost}}        
         {{ticket-info-date}}
         {{ticket-info-client}}
-    </div>
-    
+    </div>    
     <div class="ticket-submit-btn-wrapper">
         {{ticket-form ticket=ticket}}
     </div>            

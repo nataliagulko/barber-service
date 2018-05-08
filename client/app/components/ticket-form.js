@@ -4,7 +4,7 @@ export default Ember.Component.extend({
     // classNames: ["hidden"],
     store: Ember.inject.service("store"),
     ticketService: Ember.inject.service("ticket-service"),
-    selectedMaster: Ember.computed.readOnly("ticketService.selectedMaster"),
+    // selectedMaster: Ember.computed.readOnly("ticketService.selectedMaster"),
     selectedServices: Ember.computed.readOnly("ticketService.selectedServices"),
     ticketDate: Ember.computed.readOnly("ticketService.ticketDate"),
     ticketTime: Ember.computed.readOnly("ticketService.ticketTime"),
@@ -27,7 +27,7 @@ export default Ember.Component.extend({
             ticket.set("duration", this.get("duration"));
             ticket.set("cost", this.get("cost"));
 
-            ticket.set("master", this.get("selectedMaster"));
+            // ticket.set("master", this.get("selectedMaster"));
             ticket.set("services", this.get("selectedServices"));
 
             if (client) {
