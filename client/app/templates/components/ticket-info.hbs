@@ -12,8 +12,12 @@
         {{ticket-info-date}} 
         {{ticket-info-client}}
     </div>
+    {{!-- <ul class="alert alert-danger">
+        {{#each validationMessage as |message|}}
+            <li>{{message}}</li>
+        {{/each}}
+    </ul> --}}
     <div class="ticket-submit-btn-wrapper">
-        {{log "errors " (v-get ticket 'errors')}}
         <button type="button" class="btn btn-lg btn-success ticket-submit-btn" {{action "saveTicket"}} disabled={{v-get ticket 'isInvalid'}}>Записать</button>
     </div>
 </div>
