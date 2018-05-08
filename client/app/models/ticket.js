@@ -1,16 +1,16 @@
 import DS from 'ember-data';
+import moment from 'moment';
 import { validator, buildValidations } from 'ember-cp-validations';
 
 const Validations = buildValidations({
 	ticketDate: validator('date', {
 		presence: true,
-		after: 'now',
+		after: moment().subtract(1, 'days'),
 		precision: 'day',
-		format: 'dd.MM.YYYY',
+		format: 'DD.MM.YYYY',
 	}),
 	time: validator('date', {
 		presence: true,
-		after: 'now',
 		format: 'HH:mm',
 	}),
 	cost: validator('number', {

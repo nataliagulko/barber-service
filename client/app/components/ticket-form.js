@@ -5,11 +5,11 @@ export default Ember.Component.extend({
     store: Ember.inject.service("store"),
     ticketService: Ember.inject.service("ticket-service"),
     // selectedMaster: Ember.computed.readOnly("ticketService.selectedMaster"),
-    selectedServices: Ember.computed.readOnly("ticketService.selectedServices"),
-    ticketDate: Ember.computed.readOnly("ticketService.ticketDate"),
-    ticketTime: Ember.computed.readOnly("ticketService.ticketTime"),
-    duration: Ember.computed.readOnly("ticketService.duration"),
-    cost: Ember.computed.readOnly("ticketService.cost"),
+    // selectedServices: Ember.computed.readOnly("ticketService.selectedServices"),
+    // ticketDate: Ember.computed.readOnly("ticketService.ticketDate"),
+    // ticketTime: Ember.computed.readOnly("ticketService.ticketTime"),
+    // duration: Ember.computed.readOnly("ticketService.duration"),
+    // cost: Ember.computed.readOnly("ticketService.cost"),
     client: Ember.computed.readOnly("ticketService.client"),
     clientName: Ember.computed.readOnly("ticketService.clientName"),
     phone: Ember.computed.readOnly("ticketService.phone"),
@@ -22,13 +22,13 @@ export default Ember.Component.extend({
             let ticket = this.get("ticket"),
                 client = this.get("client");
 
-            ticket.set("ticketDate", this.get("ticketDate"));
-            ticket.set("time", this.get("ticketTime"));
-            ticket.set("duration", this.get("duration"));
-            ticket.set("cost", this.get("cost"));
+            // ticket.set("ticketDate", this.get("ticketDate"));
+            // ticket.set("time", this.get("ticketTime"));
+            // ticket.set("duration", this.get("duration"));
+            // ticket.set("cost", this.get("cost"));
 
             // ticket.set("master", this.get("selectedMaster"));
-            ticket.set("services", this.get("selectedServices"));
+            // ticket.set("services", this.get("selectedServices"));
 
             if (client) {
                 ticket.set("client", client);

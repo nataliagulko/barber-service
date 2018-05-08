@@ -92,9 +92,8 @@ export default Ember.Service.extend({
             $('.ticket-info-services-top').removeClass('hidden');
         }
 
-
+        this._setTicketProperty("services", selectedServices);
         this._calculateDurationAndCost();
-        // this._getHolidays();
 
         $(selectedItem).toggleClass('selected');
     },
@@ -109,7 +108,9 @@ export default Ember.Service.extend({
             totalDuration += item.get("time");
         });
         this.set("cost", totalCost);
+        this._setTicketProperty("cost", totalCost);
         this.set("duration", totalDuration);
+        this._setTicketProperty("duration", totalDuration);
     },
 
     getHolidays() {
@@ -156,8 +157,9 @@ export default Ember.Service.extend({
     },
 
     onTicketDateChange(selectedDate) {
-        let date = selectedDate;
+        const date = selectedDate;
         this.set("ticketDate", date);
+        this._setTicketProperty("ticketDate", date);
     },
 
     getTimeSlots() {
@@ -167,8 +169,6 @@ export default Ember.Service.extend({
             date = this.get("ticketDate"),
             _this = this,
             pickatimeService = this.get("pickatimeService");
-
-        // $('.ticket-info-date-top').removeClass('hidden');
 
         let slots = store.query("slot", {
             query: {
@@ -221,6 +221,7 @@ export default Ember.Service.extend({
     onTicketTimeChange(selectedTime) {
         $('.ticket-info-time-top').removeClass('hidden');
         this.set("ticketTime", selectedTime);
+        this._setTicketProperty("time", selectedTime);
     },
 
     inputPhone(value) {
@@ -284,16 +285,56 @@ export default Ember.Service.extend({
     _setTicketProperty(prop, value) {
         let ticket = this.get("ticket");
         ticket.set(prop, value);
+        console.log(`value of ${prop}`, value);
         this._validateTicketProperty(ticket, prop);
     },
 
     _validateTicketProperty(ticket, prop) {
         const isValid = ticket.get(`validations.attrs.${prop}.isValid`);
-        console.log("isValid", isValid);
+        console.log(`isValid ${prop}`, isValid);
+        console.log(`errors ${prop}`, ticket.get(`validations.attrs.${prop}.errors`));
     },
 
     createTicketRecord() {
         const ticket = this.get("store").createRecord("ticket");
         this.set("ticket", ticket);
+    },
+
+    _setOrCreateClient() {
+        const _this = this,
+            store = this.get("store");
+
+        let client = this.get("client");
+
+        if (client) {
+            this._setTicketProperty("client", client);
+            this._saveTicket();
+        } else {
+            client = store.createRecord("client", {
+                firstname: this.get("clientName"),
+                phone: this.get("phone"),
+                password: "emptyPass123",
+                rpassword: "emptyPass123"
+            });
+
+            // need validate client too
+            client
+                .save()
+                .then((cl) => {
+                    _this._setTicketProperty("client", cl);
+                    _this._saveTicket();
+                });
+        }
+    },
+
+    _saveTicket() {
+        const ticket = this.get("ticket");
+        const _this = this;
+
+        ticket
+            .save()
+            .then(() => {
+                _this.get("router").transitionTo('ticket');
+            });
     }
 });
