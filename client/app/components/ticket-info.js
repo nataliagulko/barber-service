@@ -8,7 +8,6 @@ export default Ember.Component.extend({
     didInsertElement() {
         const ticketService = this.get("ticketService");
         ticketService.createTicketRecord();
-        this.set("ticketRecord", this.get("ticket"));
     },
 
     actions: {
