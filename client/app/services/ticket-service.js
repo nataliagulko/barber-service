@@ -312,8 +312,7 @@ export default Ember.Service.extend({
         }
     },
 
-    createTicketRecord() {
-        const ticket = this.get("store").createRecord("ticket");
+    setTicketRecord(ticket) {
         this.set("ticket", ticket);
     },
 
@@ -324,10 +323,11 @@ export default Ember.Service.extend({
         ticket
             .validate()
             .then(({ validations }) => {
-                if (validations.get('isPropInvalid')) {
+                if (validations.get('isValid')) {
                     ticket
                         .save()
                         .then(() => {
+                            console.log('success save, but transition not working in service');
                             _this.get("router").transitionTo('ticket');
                         });
                 }

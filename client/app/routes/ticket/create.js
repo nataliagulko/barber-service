@@ -5,7 +5,7 @@ import RollbackAttributesMixin from 'barbers/mixins/rollback-attributes-mixin';
 export default Ember.Route.extend(AuthenticatedRouteMixin, RollbackAttributesMixin, {
     model() {
         return Ember.RSVP.hash({
-            // ticket: this.get('store').createRecord('ticket'),
+            ticket: this.get('store').createRecord('ticket'),
             masters: this.get('store').findAll('master')
         });
     },
