@@ -13,6 +13,6 @@
         {{ticket-info-client}}
     </div>
     <div class="ticket-submit-btn-wrapper">
-        <button type="button" class="btn btn-lg btn-success ticket-submit-btn" {{action "saveTicketRecord"}}>Записать</button>
+        <button type="button" class="btn btn-lg btn-success ticket-submit-btn" {{action "saveTicketRecord"}} disabled={{v-get ticket 'isInvalid'}}>Записать</button>
     </div>
 </div>

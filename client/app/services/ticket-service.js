@@ -330,9 +330,15 @@ export default Ember.Service.extend({
         const _this = this;
 
         ticket
-            .save()
-            .then(() => {
-                _this.get("router").transitionTo('ticket');
+            .validate()
+            .then(({ validations }) => {
+                if (validations.get('isValid')) {
+                    ticket
+                        .save()
+                        .then(() => {
+                            _this.get("router").transitionTo('ticket');
+                        });
+                }
             });
     },
 
