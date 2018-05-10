@@ -17,7 +17,7 @@ export default Ember.Service.extend({
     client: null,
     isNewClient: false,
     activeStep: '#master-step',
-    validationMessage: [],
+    validationMessage: null,
 
     changeStep(step) {
         this.set("activeStep", step);
@@ -306,9 +306,14 @@ export default Ember.Service.extend({
 
     _validateTicketProperty(ticket, prop) {
         const isPropInvalid = ticket.get(`validations.attrs.${prop}.isInvalid`);
+        let message, text;
+
+        this.set("validationMessage", message);
 
         if (isPropInvalid) {
-            this.set("validationMessage", ticket.get(`validations.attrs.${prop}.errors`));
+            message = ticket.get(`validations.attrs.${prop}.message`);
+            text = `${prop}: ${message}`;
+            this.set("validationMessage", text);
         }
     },
 
@@ -328,9 +333,10 @@ export default Ember.Service.extend({
                         .save()
                         .then(() => {
                             console.log('success save, but transition not working in service');
-                            _this.get("router").transitionTo('ticket');
+                            // _this.get("router").transitionTo('ticket');
                         });
                 }
+            }, () => {
             });
     }
 });
