@@ -31,7 +31,7 @@ class TicketAjaxController {
             Ticket ticket = Ticket.get(data.id)
             if (ticket) {
                 JSON.use('tickets') {
-                    render(ticket as JSON)
+                    render([data: ticket] as JSON)
                 }
             } else {
                 render([msg: g.message(code: "ticket.get.user.not.found")] as JSON)
@@ -103,9 +103,9 @@ class TicketAjaxController {
                             if (attrs.status) {
                                 ticketSMService.ticketStatusUpdate(ticket.id, attrs.status)
                             }
-                            Ticket.search().createIndexAndWait()
+                            // Ticket.search().createIndexAndWait()
 
-                            render([errors: 0] as JSON)
+                            render([data: ticket] as JSON)
                         } catch (Exception e) {
                             render([erorrs: e.toString()] as JSON)
                         }
