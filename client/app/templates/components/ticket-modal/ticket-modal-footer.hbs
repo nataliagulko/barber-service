@@ -1,17 +1,17 @@
 <div class="row">
     <div class="col-md-6">
-        {{#ticket-modal/ticket-modal-footer-btn class="btn-default pull-left" event=event}}
+        {{#ticket-modal/ticket-modal-footer-btn class="btn-default pull-left" event=event act="remove"}}
             <i class="glyphicon glyphicon-trash"></i>
             Удалить
         {{/ticket-modal/ticket-modal-footer-btn}}
     </div>
     <div class="col-md-6">
         {{#if (eq event.data.status "NEW")}}
-            {{#ticket-modal/ticket-modal-footer-btn class="btn-danger"}}
+            {{#ticket-modal/ticket-modal-footer-btn class="btn-danger" event=event act="reject"}}
                 <i class="glyphicon glyphicon-remove"></i>
                 Отклонить
             {{/ticket-modal/ticket-modal-footer-btn}}
-            {{#ticket-modal/ticket-modal-footer-btn class="btn-success"}}
+            {{#ticket-modal/ticket-modal-footer-btn class="btn-success" event=event act="accept"}}
                 <i class="glyphicon glyphicon-ok"></i>
                 Подтвердить
             {{/ticket-modal/ticket-modal-footer-btn}}
