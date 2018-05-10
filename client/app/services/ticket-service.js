@@ -269,13 +269,10 @@ export default Ember.Service.extend({
 
         client.then(
             (cl) => {
-                _this.set("isNewClient", false);
-                _this.set("client", cl);
-                _this._setTicketProperty("client", cl);
+                _this._setClient(cl, false);
             },
             () => {
-                _this.set("isNewClient", true);
-                _this.set("client", null);
+                _this._setClient(null, true);
             });
     },
 
@@ -294,8 +291,14 @@ export default Ember.Service.extend({
         client
             .save()
             .then((cl) => {
-                _this._setTicketProperty("client", cl);
+                _this._setClient(cl, false);
             });
+    },
+
+    _setClient(client, isNew) {
+        this.set("isNewClient", isNew);
+        this.set("client", client);
+        this._setTicketProperty("client", client);
     },
 
     _setTicketProperty(prop, value) {
