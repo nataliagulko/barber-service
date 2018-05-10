@@ -43,18 +43,14 @@
                         <div class="form-group">
                             <label class="control-label col-md-4">Комментарий:</label>
                             <label class="form-control-static col-md-6">
-                                {{#if event.data.comment}}
-                                    {{event.data.comment}}
-                                {{else}}
-                                    — 
-                                {{/if}}
+                                {{#if event.data.comment}} {{event.data.comment}} {{else}} — {{/if}}
                             </label>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                {{ticket-modal/ticket-modal-footer}}
             </div>
         </div>
     </div>
