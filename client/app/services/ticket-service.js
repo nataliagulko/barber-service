@@ -3,6 +3,7 @@ import moment from 'moment';
 
 export default Ember.Service.extend({
     store: Ember.inject.service("store"),
+    routing: Ember.inject.service('-routing'),
     pickadateService: Ember.inject.service("pickadate-service"),
     pickatimeService: Ember.inject.service("pickatime-service"),
     ticket: null,
@@ -227,11 +228,12 @@ export default Ember.Service.extend({
     inputPhone(value) {
         let phone = this.get("phone");
 
-        const phoneLength = 10;
+        const phoneLength = 16;
 
         //todo подумать как сделать без двух if
         if (phone.length < phoneLength) {
             phone += value;
+            phone = this._formatPhone(phone);
             this.set("phone", phone);
         }
 
@@ -240,10 +242,37 @@ export default Ember.Service.extend({
         }
     },
 
+    _formatPhone(phone) {
+        phone = this._clearPhoneMask(phone);
+
+        phone = phone
+            .replace(/(^[^7-8])/, "+7$1")
+            .replace(/(^[7-8])/, "+7")
+            .replace(/(\+7)(\d{1,3})/, "$1($2)")
+            .replace(/(\+7\(\d{3}\)\d{3})(\d{1})/, "$1-$2")
+            .replace(/(\+7\(\d{3}\)\d{3}-\d{2})(\d{1})/, "$1-$2");
+
+        return phone;
+    },
+
+    _clearPhoneMask(phone) {
+        phone = phone
+            .replace(/\+/, '')
+            .replace(/-/g, '')
+            .replace(/\(/, '')
+            .replace(/\)/, '');
+
+        return phone;
+    },
+
     removeLastNumber() {
         let phone = this.get("phone");
+        phone = this._clearPhoneMask(phone);
 
-        this.set("phone", phone.slice(0, -1)); //почему-то если написать phone.slice(0,-1) строкой выше и сюда передавать просто phone то оно не работает
+        phone = phone.slice(0, -1);
+        phone = this._formatPhone(phone, "##(###)###-##-##");
+
+        this.set("phone", phone); //почему-то если написать phone.slice(0,-1) строкой выше и сюда передавать просто phone то оно не работает
         this._resetClient();
     },
 
@@ -336,7 +365,7 @@ export default Ember.Service.extend({
                         .save()
                         .then(() => {
                             console.log('success save, but transition not working in service');
-                            // _this.get("router").transitionTo('ticket');
+                            _this.get("routing").transitionTo('ticket');
                         });
                 }
             }, () => {
