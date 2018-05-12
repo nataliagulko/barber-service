@@ -52,7 +52,7 @@ export default Ember.Component.extend({
 
         showTicketInfo: function (event) {
             this.set("selectedEvent", event);
-            this.$("#ticket-info").modal('show');
+            this.$("#ticket-modal").modal('show');
         }
     },
 
