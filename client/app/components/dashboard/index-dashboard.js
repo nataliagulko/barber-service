@@ -9,33 +9,48 @@ export default Ember.Component.extend({
         this.send("getStatistic");
     },
 
-    actions: {
-        getStatistic: function () {
-            let token;
+    getAuthorizedStatistic: function (query, methodName) {
+        let token;
 
-            this.get("session").authorize('authorizer:token', (headerName, headerValue) => {
-                token = headerValue;
-            });
+        this.get("session").authorize('authorizer:token', (headerName, headerValue) => {
+            token = headerValue;
+        });
 
-            let query = {
-                query: {
-                    dateFrom: "10.04.2018",
-                    dateTo: "05.05.2018"
-                }
-            };
-
+        return new Ember.RSVP.Promise(function (resolve, reject) {
             $.post({
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader('Authorization', token);
                 },
-                url: config.host + '/masterAjax/payStatistic',
-                data: JSON.stringify(query)
-            }).then((response) => {
-                console.log(response);
-                //this.set("costAvg", response.costAVG);
-            }, () => {
-
+                url: `${config.host}/${methodName}`,
+                data: JSON.stringify(query),
+                contentType: 'application/json; charset=utf-8',
+                mimeType: 'application/json',
+            }).then(function (data) {
+                resolve(data);
+            }, function (jqXHR) {
+                reject(jqXHR);
             });
+        });
+    },
+
+    actions: {
+        getStatistic: function () {
+            let query = {
+                query: {
+                    id: "1",
+                    dateFrom: "12.04.2018",
+                    dateTo: "12.05.2018"
+                }
+            };
+
+            this.getAuthorizedStatistic(query, 'masterAjax/payStatistic')
+                .then((data) => {
+                    console.log(data);
+                });
+            this.getAuthorizedStatistic(query, 'masterAjax/clientStatistic')
+                .then((data) => {
+                    console.log(data);
+                });
         }
     }
 });

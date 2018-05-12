@@ -425,7 +425,7 @@ class MasterAjaxController {
             user = user == null ?
                     User.get(springSecurityService.principal.id) : user
             if (user) {
-                def result = Ticket.executeQuery("select user from Ticket where master_id = $user group by user_id ")
+                def result = Ticket.executeQuery("select user from Ticket where master_id = $user and type = 'HEAD' group by user_id ")
                 JSON.use('clients') {
                     if(data.noUserList){
                         render([cnt: result?.size()] as JSON)
