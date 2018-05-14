@@ -1,8 +1,8 @@
 <div class="master-schedule__days">
     <ul class="master-schedule__days-list">
         {{#each daysOfWeek as |dayOfWeek|}}
-        <li class="master-schedule__day-of-week">
-            <button class="btn btn-default master-schedule__btn" onclick={{action 'onTimeButtonClick' dayOfWeek}}>
+        <li class="master-schedule__days">
+            <button class="btn btn-default master-schedule__day-of-week master-schedule__day-of-week_{{dayOfWeek}}" onclick={{action 'onDaySelect' dayOfWeek}}>
                 {{moment-format dayOfWeek "ddd" "d"}}
             </button>
         </li>
@@ -10,11 +10,20 @@
     </ul>
 </div>
 <div class="master-schedule__time">
-    {{#if isWorkDay}}
-        <input id="master-schedule__time-picker" class="timepicker" onchange={{action 'onTimeChange' value='target.value'}}/>
-    {{else}}
-        <div class="alert alert-info">
+    {{#if isDayEmpty}}
+        <div class="alert alert-warning">
             Рабочее время не настроено.
         </div>
     {{/if}}
+
+    {{#if currentWorkTimes}}
+        <div class="alert alert-info">
+            Текущее рабочее время: 
+            {{#each currentWorkTimes as |time|}}
+                <div>{{time.timeRange}}</div>
+            {{/each}}
+        </div>
+    {{/if}}
+    
+    <input id="master-schedule__time-picker" class="timepicker" onchange={{action 'onTimeChange' value='target.value' }}/>
 </div>

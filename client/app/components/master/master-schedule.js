@@ -6,52 +6,47 @@ export default Ember.Component.extend({
     store: Ember.inject.service("store"),
     pickatimeService: Ember.inject.service("pickatime-service"),
     daysOfWeek: [1, 2, 3, 4, 5, 6, 0],
-    isWorkDay: true,
+    currentWorkTimes: [],
+    isDayEmpty: false,
 
-    _setTargetButtonActive: function (e) {
-        Ember.$(".master-schedule__btn").removeClass('active');
-        Ember.$(e.target).addClass("active");
+    didInsertElement() {
+        this.send("onDaySelect", 1);
+    },
+
+    _setTargetButtonActive: function (day) {
+        Ember.$(".master-schedule__day-of-week").removeClass('active');
+        Ember.$(`.master-schedule__day-of-week_${day}`).addClass("active");
     },
 
     _toggleTimePicker: function (workTimesByDay) {
         const pickatimeService = this.get("pickatimeService"),
             pickerSelector = "#master-schedule__time-picker";
 
-        if (workTimesByDay && workTimesByDay.length) {
-            let rangeArr = [];
-            this.set("isWorkDay", true);
-
-            pickatimeService.init();
-            pickatimeService.set(pickerSelector, "interval", 15);
-            pickatimeService.set(pickerSelector, "min", [8, 0]);
-            pickatimeService.set(pickerSelector, "max", [20, 0]);
-
-            workTimesByDay.forEach(function (workTime) {
-                Ember.$(".picker__list-item").removeClass("bg-blue");
-
-                pickatimeService.on(pickerSelector, "render", function () {
-                    let btnsFrom = `[aria-label="${workTime.get("timeFrom")}"]`;
-                    let btnsTo = `[aria-label="${workTime.get("timeTo")}"]`;
-
-                    Ember.$(btnsFrom).nextUntil(btnsTo).addClass("bg-blue");
-                });
-            });
-        } else {
-            pickatimeService.stop(pickerSelector);
-            this.set("isWorkDay", false);
-        }
+        pickatimeService.stop(pickerSelector);
+        pickatimeService.init();
+        pickatimeService.set(pickerSelector, "interval", 15);
+        pickatimeService.set(pickerSelector, "min", [8, 0]);
+        pickatimeService.set(pickerSelector, "max", [20, 0]);
     },
 
     actions: {
-        onTimeButtonClick: function (day, e) {
+        onDaySelect: function (day) {
             const workTimes = this.get("workTimes").toArray();
 
             let workTimesByDay = _.filter(workTimes, function (workTime) {
                 return workTime.get("dayOfWeek") === day;
             });
 
+            if (workTimesByDay && workTimesByDay.length) {
+                this.set("isDayEmpty", false);
+                this.set("currentWorkTimes", workTimesByDay);
+            } else {
+                this.set("isDayEmpty", true);
+                this.set("currentWorkTimes", []);
+            }
+
             this._toggleTimePicker(workTimesByDay);
-            this._setTargetButtonActive(e);
+            this._setTargetButtonActive(day);
         },
 
         onTimeChange: function (time) {
