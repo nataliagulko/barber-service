@@ -6,6 +6,8 @@ export default Ember.Service.extend({
     routing: Ember.inject.service('-routing'),
     pickadateService: Ember.inject.service("pickadate-service"),
     pickatimeService: Ember.inject.service("pickatime-service"),
+    notification: Ember.inject.service("notification-service"),
+
     ticket: null,
     selectedMaster: null,
     ticketDate: null,
@@ -364,8 +366,12 @@ export default Ember.Service.extend({
                     ticket
                         .save()
                         .then(() => {
-                            console.log('success save, but transition not working in service');
+                            const ticketDate = moment(ticket.get("ticketDate")).format("Do MMMM");
+                            let message = `Запись ${ticketDate} ${ticket.get("time")} создана`;
+
                             _this.get("routing").transitionTo('ticket');
+                            _this.get("notification").showInfoMessage(message);
+                            _this.set("ticket", null);
                         });
                 }
             }, () => {

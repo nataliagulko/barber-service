@@ -1,9 +1,9 @@
 import Ember from 'ember';
+import moment from 'moment';
 import config from 'barbers/config/environment';
 
 export default Ember.Component.extend({
     session: Ember.inject.service(),
-    costAvg: "cost avg",
 
     didInsertElement() {
         this.send("getStatistic");
@@ -35,21 +35,27 @@ export default Ember.Component.extend({
 
     actions: {
         getStatistic: function () {
+            let now = moment().format("DD.MM.YYYY"),
+                monthAgo = moment().subtract(1, 'months').format("DD.MM.YYYY");
+
             let query = {
                 query: {
                     id: "1",
-                    dateFrom: "12.04.2018",
-                    dateTo: "12.05.2018"
+                    dateFrom: monthAgo,
+                    dateTo: now
                 }
             };
 
             this.getAuthorizedStatistic(query, 'masterAjax/payStatistic')
                 .then((data) => {
                     console.log(data);
+                    this.set("costAvg", data.costAVG);
+                    this.set("costSUMM", data.costSUMM);                    
                 });
             this.getAuthorizedStatistic(query, 'masterAjax/clientStatistic')
                 .then((data) => {
                     console.log(data);
+                    // this.set("cost", data.costAVG);                    
                 });
         }
     }
