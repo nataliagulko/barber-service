@@ -3,8 +3,12 @@ import moment from 'moment';
 
 export default Ember.Service.extend({
     store: Ember.inject.service("store"),
+    routing: Ember.inject.service('-routing'),
     pickadateService: Ember.inject.service("pickadate-service"),
     pickatimeService: Ember.inject.service("pickatime-service"),
+    notification: Ember.inject.service("notification-service"),
+
+    ticket: null,
     selectedMaster: null,
     ticketDate: null,
     ticketTime: null,
@@ -14,10 +18,10 @@ export default Ember.Service.extend({
     duration: null,
     phone: "",
     client: null,
-    clientName: "",
     isNewClient: false,
     activeStep: '#master-step',
-    
+    validationMessage: null,
+
     changeStep(step) {
         this.set("activeStep", step);
 
@@ -32,32 +36,29 @@ export default Ember.Service.extend({
             isSameMaster = selectedMaster === master;
 
         if (selectedMaster && isSameMaster) {
-            this.set("selectedMaster", null);
+            this._setSelectedMaster(null);
             this.set("servicesByMaster", []);
 
             $('.ticket-info-master-top').addClass('hidden');
         }
         else if (selectedMaster && !isSameMaster) {
-            // this._setSelectedMaster(master);
-            this.set("selectedMaster", master);            
+            this._setSelectedMaster(master);
 
             $('.tile').each(function () {
                 $(this).removeClass('selected');
             });
         }
         else {
-            // this._setSelectedMaster(master);
-            this.set("selectedMaster", master);            
+            this._setSelectedMaster(master);
         }
 
         $(selectedItem).toggleClass('selected');
     },
 
-    // _setSelectedMaster(master) {
-    //     this.set("selectedMaster", master);
-    //    // this._getServicesByMaster(master);
-    //     // $('.ticket-info-master-top').removeClass('hidden');
-    // },
+    _setSelectedMaster(master) {
+        this.set("selectedMaster", master);
+        this._setTicketProperty("master", master);
+    },
 
     getServicesByMaster() {
         let store = this.get("store"),
@@ -94,9 +95,8 @@ export default Ember.Service.extend({
             $('.ticket-info-services-top').removeClass('hidden');
         }
 
-
+        this._setTicketProperty("services", selectedServices);
         this._calculateDurationAndCost();
-        // this._getHolidays();
 
         $(selectedItem).toggleClass('selected');
     },
@@ -111,7 +111,9 @@ export default Ember.Service.extend({
             totalDuration += item.get("time");
         });
         this.set("cost", totalCost);
+        this._setTicketProperty("cost", totalCost);
         this.set("duration", totalDuration);
+        this._setTicketProperty("duration", totalDuration);
     },
 
     getHolidays() {
@@ -158,8 +160,9 @@ export default Ember.Service.extend({
     },
 
     onTicketDateChange(selectedDate) {
-        let date = selectedDate;
+        const date = selectedDate;
         this.set("ticketDate", date);
+        this._setTicketProperty("ticketDate", date);
     },
 
     getTimeSlots() {
@@ -169,8 +172,6 @@ export default Ember.Service.extend({
             date = this.get("ticketDate"),
             _this = this,
             pickatimeService = this.get("pickatimeService");
-
-        // $('.ticket-info-date-top').removeClass('hidden');
 
         let slots = store.query("slot", {
             query: {
@@ -223,16 +224,18 @@ export default Ember.Service.extend({
     onTicketTimeChange(selectedTime) {
         $('.ticket-info-time-top').removeClass('hidden');
         this.set("ticketTime", selectedTime);
+        this._setTicketProperty("time", selectedTime);
     },
 
     inputPhone(value) {
         let phone = this.get("phone");
 
-        const phoneLength = 10;
+        const phoneLength = 16;
 
         //todo подумать как сделать без двух if
         if (phone.length < phoneLength) {
             phone += value;
+            phone = this._formatPhone(phone);
             this.set("phone", phone);
         }
 
@@ -241,11 +244,38 @@ export default Ember.Service.extend({
         }
     },
 
+    _formatPhone(phone) {
+        phone = this._clearPhoneMask(phone);
+
+        phone = phone
+            .replace(/(^[^7-8])/, "+7$1")
+            .replace(/(^[7-8])/, "+7")
+            .replace(/(\+7)(\d{1,3})/, "$1($2)")
+            .replace(/(\+7\(\d{3}\)\d{3})(\d{1})/, "$1-$2")
+            .replace(/(\+7\(\d{3}\)\d{3}-\d{2})(\d{1})/, "$1-$2");
+
+        return phone;
+    },
+
+    _clearPhoneMask(phone) {
+        phone = phone
+            .replace(/\+/, '')
+            .replace(/-/g, '')
+            .replace(/\(/, '')
+            .replace(/\)/, '');
+
+        return phone;
+    },
+
     removeLastNumber() {
         let phone = this.get("phone");
+        phone = this._clearPhoneMask(phone);
 
-        this.set("phone", phone.slice(0, -1)); //почему-то если написать phone.slice(0,-1) строкой выше и сюда передавать просто phone то оно не работает
-        this._resetClient();        
+        phone = phone.slice(0, -1);
+        phone = this._formatPhone(phone, "##(###)###-##-##");
+
+        this.set("phone", phone); //почему-то если написать phone.slice(0,-1) строкой выше и сюда передавать просто phone то оно не работает
+        this._resetClient();
     },
 
     clearPhoneNumber() {
@@ -255,7 +285,7 @@ export default Ember.Service.extend({
 
     _resetClient() {
         this.set("client", null);
-        this.set("isNewClient", false);                        
+        this.set("isNewClient", false);
     },
 
     _getClient(phone) {
@@ -269,17 +299,82 @@ export default Ember.Service.extend({
         });
 
         client.then(
-            (c) => {
-                _this.set("isNewClient", false);                
-                _this.set("client", c);
+            (cl) => {
+                _this._setClient(cl, false);
             },
             () => {
-                _this.set("isNewClient", true);
-                _this.set("client", null);
+                _this._setClient(null, true);
             });
     },
 
-    setClientName(name) {
-        this.set("clientName", name);
+    saveClient(name) {
+        const store = this.get("store"),
+            _this = this;
+
+        let client = store.createRecord("client", {
+            firstname: name,
+            phone: this.get("phone"),
+            password: "emptyPass123",
+            rpassword: "emptyPass123"
+        });
+
+        // need validate client too
+        client
+            .save()
+            .then((cl) => {
+                _this._setClient(cl, false);
+            });
+    },
+
+    _setClient(client, isNew) {
+        this.set("isNewClient", isNew);
+        this.set("client", client);
+        this._setTicketProperty("client", client);
+    },
+
+    _setTicketProperty(prop, value) {
+        let ticket = this.get("ticket");
+        ticket.set(prop, value);
+        this._validateTicketProperty(ticket, prop);
+    },
+
+    _validateTicketProperty(ticket, prop) {
+        const isPropInvalid = ticket.get(`validations.attrs.${prop}.isInvalid`);
+        let message, text;
+
+        this.set("validationMessage", message);
+
+        if (isPropInvalid) {
+            message = ticket.get(`validations.attrs.${prop}.message`);
+            text = `${prop}: ${message}`;
+            this.set("validationMessage", text);
+        }
+    },
+
+    setTicketRecord(ticket) {
+        this.set("ticket", ticket);
+    },
+
+    saveTicket() {
+        const ticket = this.get("ticket"),
+            _this = this;
+
+        ticket
+            .validate()
+            .then(({ validations }) => {
+                if (validations.get('isValid')) {
+                    ticket
+                        .save()
+                        .then(() => {
+                            const ticketDate = moment(ticket.get("ticketDate")).format("Do MMMM");
+                            let message = `Запись ${ticketDate} ${ticket.get("time")} создана`;
+
+                            _this.get("routing").transitionTo('ticket');
+                            _this.get("notification").showInfoMessage(message);
+                            _this.set("ticket", null);
+                        });
+                }
+            }, () => {
+            });
     }
 });

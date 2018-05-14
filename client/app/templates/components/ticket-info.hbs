@@ -5,32 +5,21 @@
     </div>
 </div>
 <div class="portlet-body ticket-portlet-body">
-    {{!-- <div class="info-top">
-        <!-- мастер -->
-        {{ticket-info-master-top}}
-
-        <!-- услуги -->
-        {{ticket-info-services-top}}
-
-        <!-- дата -->
-        {{ticket-info-date-top}}
-
-        <!-- время -->
-        {{ticket-info-time-top}}
-
-        <!-- телефон -->
-        {{ticket-info-client-top}}
-    </div> --}}
-
     <div class="ticket-info">
-        {{ticket-info-master}}
-        {{ticket-info-services}}
-        {{ticket-info-cost}}        
-        {{ticket-info-date}}
+        {{ticket-info-master}} 
+        {{ticket-info-services}} 
+        {{ticket-info-cost}} 
+        {{ticket-info-date}} 
         {{ticket-info-client}}
     </div>
-    
-    <div class="ticket-submit-btn-wrapper">
-        {{ticket-form ticket=ticket}}
-    </div>            
+    <div class="errors">
+        {{#if validationMessage}}
+            <div class="error">
+                {{validationMessage}}
+            </div>
+        {{/if}}
+    </div>
+    <div class="ticket-submit-btn-wrapper text-center">
+        <button type="button" class="btn btn-lg btn-success ticket-submit-btn" {{action "saveTicket"}} disabled={{v-get ticket 'isInvalid'}}>Записать</button>
+    </div>
 </div>

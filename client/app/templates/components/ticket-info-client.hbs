@@ -2,20 +2,21 @@
     <div>
         <i class="icon-call-end font-red-sunglo margin-right-10"></i>
     </div>
-    <div class="ticket-info-client__phone" mask='+7(999)999-99-99'>+7{{phone}}</div>
+    <div class="ticket-info-client__phone">{{phone}}</div>
 </div>
 
 <div class="ticket-info__item ticket-info-client {{if client.id "animate-from-top" ""}}">
     <div>
         <i class="icon-user font-red-sunglo margin-right-10"></i>
     </div>
-    <div>{{client.firstname}} {{client.secondname}}</div>
+    <div>{{client.fullname}}</div>
 </div>
 
 {{#if isNewClient}}            
-    {{input type="text" 
-    id="ticket-info__client-name"
-    value=name 
-    focus-out=(action "setClientName" name)
-    class="form-control" autofocus="autofocus"}}
+    <div class="input-group">
+        {{input type="text" value=name class="form-control" autofocus="autofocus"}}
+        <span class="input-group-btn">
+            <button class="btn btn-default" type="button" {{action "saveClient" name}}>Сохранить</button>
+        </span>
+    </div>
 {{/if}}
