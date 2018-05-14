@@ -1,19 +1,20 @@
 <div class="master-schedule__days">
     <ul class="master-schedule__days-list">
-        {{#each-in groupedWorkTimes as |dayOfWeek workTimes|}}
+        {{#each daysOfWeek as |dayOfWeek|}}
         <li class="master-schedule__day-of-week">
-            <div class="master-schedule__day-title">{{moment-format dayOfWeek "dddd" "d"}}</div>
-            {{#each workTimes as |workTime|}}
-                <div class="master-schedule__time-btn-wrapper">
-                    <button class="btn btn-default" onclick={{action 'onTimeButtonClick' workTime}}>
-                        {{workTime.timeRange}}
-                    </button>
-                </div>
-            {{/each}}
+            <button class="btn btn-default master-schedule__btn" onclick={{action 'onTimeButtonClick' dayOfWeek}}>
+                {{moment-format dayOfWeek "ddd" "d"}}
+            </button>
         </li>
-        {{/each-in}}
+        {{/each}}
     </ul>
 </div>
 <div class="master-schedule__time">
-	<input id="master-schedule__time-picker" class="timepicker"/>
+    {{#if isWorkDay}}
+        <input id="master-schedule__time-picker" class="timepicker" />
+    {{else}}
+        <div class="alert alert-info">
+            Рабочее время не настроено.
+        </div>
+    {{/if}}
 </div>
