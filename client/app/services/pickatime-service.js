@@ -32,5 +32,10 @@ export default Ember.Service.extend({
 	stop(selector) {
 		var picker = $(selector).pickatime('picker');
 		picker.stop();
+	},
+	
+	render(selector) {
+		var picker = $(selector).pickatime('picker');
+		picker.render();
 	}
 });

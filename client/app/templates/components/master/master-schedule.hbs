@@ -11,7 +11,7 @@
 </div>
 <div class="master-schedule__time">
     {{#if isWorkDay}}
-        <input id="master-schedule__time-picker" class="timepicker" />
+        <input id="master-schedule__time-picker" class="timepicker" onchange={{action 'onTimeChange' value='target.value'}}/>
     {{else}}
         <div class="alert alert-info">
             Рабочее время не настроено.

@@ -19,25 +19,23 @@ export default Ember.Component.extend({
 
         if (workTimesByDay && workTimesByDay.length) {
             let rangeArr = [];
-
             this.set("isWorkDay", true);
 
-            workTimesByDay.forEach(function (workTime) {
-                const timeFrom = workTime.get("timeFrom").split(":"),
-                    timeTo = workTime.get("timeTo").split(":");
-
-                rangeArr.push({
-                    "from": [timeFrom[0], timeFrom[1]],
-                    "to": [timeTo[0], timeTo[1]]
-                });
-            });
-            
             pickatimeService.init();
-            pickatimeService.set(pickerSelector, "disable", false);
             pickatimeService.set(pickerSelector, "interval", 15);
             pickatimeService.set(pickerSelector, "min", [8, 0]);
             pickatimeService.set(pickerSelector, "max", [20, 0]);
-            pickatimeService.set(pickerSelector, "disable", rangeArr);
+
+            workTimesByDay.forEach(function (workTime) {
+                Ember.$(".picker__list-item").removeClass("bg-blue");
+
+                pickatimeService.on(pickerSelector, "render", function () {
+                    let btnsFrom = `[aria-label="${workTime.get("timeFrom")}"]`;
+                    let btnsTo = `[aria-label="${workTime.get("timeTo")}"]`;
+
+                    Ember.$(btnsFrom).nextUntil(btnsTo).addClass("bg-blue");
+                });
+            });
         } else {
             pickatimeService.stop(pickerSelector);
             this.set("isWorkDay", false);
@@ -54,6 +52,10 @@ export default Ember.Component.extend({
 
             this._toggleTimePicker(workTimesByDay);
             this._setTargetButtonActive(e);
+        },
+
+        onTimeChange: function (time) {
+            console.log(time);
         }
     }
 });
