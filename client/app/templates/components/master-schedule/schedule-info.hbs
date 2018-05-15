@@ -1,13 +1,28 @@
  {{#if isDayEmpty}}
 <div class="alert alert-warning">
-    Рабочее время не настроено.
+    <div class="row">
+        <div class="col-md-7">
+            Рабочее время не настроено.            
+        </div>
+        <div class="col-md-5">
+            {{yield}}
+        </div>
+    </div>
 </div>
 {{/if}}
 
 {{#if currentWorkTimes}}
 <div class="alert alert-info">
-    Текущее рабочее время: {{#each currentWorkTimes as |time|}}
-    <div>{{time.timeRange}}</div>
-    {{/each}}
+    <div class="row">
+        <div class="col-md-7">
+            Текущее рабочее время: 
+            {{#each currentWorkTimes as |time|}}
+                <div>{{time.timeRange}}</div>
+            {{/each}}
+        </div>
+        <div class="col-md-5">
+            {{yield}}
+        </div>
+    </div>
 </div>
 {{/if}}
