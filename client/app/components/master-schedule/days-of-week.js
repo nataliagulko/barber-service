@@ -1,4 +1,6 @@
 import Ember from 'ember';
+import _ from 'lodash';
+import moment from 'moment';
 
 export default Ember.Component.extend({
     classNames: ['master-schedule__days'],
@@ -12,9 +14,27 @@ export default Ember.Component.extend({
         Ember.$(`.master-schedule__day-of-week_${day}`).addClass("active");
     },
 
+    _converTimeToDecimal: function (time) {
+        let timeAr = time.split(":");
+        let hours = Number(timeAr[0]);
+        let decimalPart = timeAr[1] * 60 / 3600;
+
+        return parseFloat(`${hours}.${decimalPart}`).toFixed(2);
+    },
+
+    _convertDecimalToTime: function (float) {
+        let floatAr = float.split(".");
+        let hours = floatAr[0];
+        let minutes = floatAr[1] * 3600 / 60;
+        minutes = moment(minutes).format("mm");
+
+        return `${hours}:${minutes}`;
+    },
+
     actions: {
         onDaySelect: function (day) {
-            const workTimes = this.get("workTimes").toArray();
+            const workTimes = this.get("workTimes").toArray(),
+            _this = this;
 
             let workTimesByDay = _.filter(workTimes, function (workTime) {
                 return workTime.get("dayOfWeek") === day;

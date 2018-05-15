@@ -1,10 +1,10 @@
  {{#if isDayEmpty}}
 <div class="alert alert-warning">
     <div class="row">
-        <div class="col-md-7">
+        <div class="col-md-8">
             Рабочее время не настроено.            
         </div>
-        <div class="col-md-5">
+        <div class="col-md-4">
             {{yield}}
         </div>
     </div>
@@ -14,13 +14,13 @@
 {{#if currentWorkTimes}}
 <div class="alert alert-info">
     <div class="row">
-        <div class="col-md-7">
+        <div class="col-md-8">
             Текущее рабочее время: 
             {{#each currentWorkTimes as |time|}}
                 <div>{{time.timeRange}}</div>
             {{/each}}
         </div>
-        <div class="col-md-5">
+        <div class="col-md-4">
             {{yield}}
         </div>
     </div>
