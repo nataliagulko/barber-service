@@ -29,7 +29,7 @@
     {{#each times as |time|}}
     {{log "now" time.now}}
     <div class="progress-bar {{time.css}}" style="width: {{time.now}}%">
-        {{time.now}}%
+        {{time.range}}
     </div>
     {{/each}}
 </div>

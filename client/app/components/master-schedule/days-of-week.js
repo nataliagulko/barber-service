@@ -38,34 +38,35 @@ export default Ember.Component.extend({
         const diff = max - min;
 
         let times = [];
+        let _temp = null;
 
         workTimes.forEach((wt, ind) => {
             let timeFrom = _this._converTimeToDecimal(wt.get("timeFrom"));
             let timeTo = _this._converTimeToDecimal(wt.get("timeTo"));
-            let previousVal = 0;
 
             console.log("*** ind ***", ind);
 
             if (ind === 0) {
-                times.push(_this._createInterval(min - timeFrom, min, diff));
-                times.push(_this._createInterval(timeTo - timeFrom, min, diff));
-            } else if (ind % 2) {
-                times.push(_this._createInterval(timeFrom - timeTo, min, diff));
+                times.push(_this._createInterval(timeFrom - min, min, diff, wt.get("timeRange"), "progress-bar-empty"));
+                times.push(_this._createInterval(timeTo - timeFrom, min, diff, wt.get("timeRange")));
+                _temp = timeTo;
             } else {
-                times.push(_this._createInterval(timeTo - timeFrom, min, diff));
+                console.log("_temp", _temp);
+                times.push(_this._createInterval(timeFrom - _temp, min, diff, wt.get("timeRange"), "progress-bar-empty"));
+                times.push(_this._createInterval(timeTo - timeFrom, min, diff, wt.get("timeRange")));
+                _temp = timeTo;
             }
         });
 
         this.set("times", times);
     },
 
-    _createInterval: function (countOfHours, min, diff, cssClass) {
+    _createInterval: function (countOfHours, min, diff, range, cssClass) {
         let now = parseFloat(countOfHours / diff * 100).toFixed(0);
         let css = cssClass || "progress-bar-info";
-        console.log("countOfHours", countOfHours);
-        console.log("now", now);
+        range = cssClass ? null : range;
 
-        let interval = { now, css };
+        let interval = { now, css, range };
 
         return interval;
     },
