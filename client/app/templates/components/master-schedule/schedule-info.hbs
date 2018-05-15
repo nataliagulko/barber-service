@@ -1,0 +1,13 @@
+ {{#if isDayEmpty}}
+<div class="alert alert-warning">
+    Рабочее время не настроено.
+</div>
+{{/if}}
+
+{{#if currentWorkTimes}}
+<div class="alert alert-info">
+    Текущее рабочее время: {{#each currentWorkTimes as |time|}}
+    <div>{{time.timeRange}}</div>
+    {{/each}}
+</div>
+{{/if}}

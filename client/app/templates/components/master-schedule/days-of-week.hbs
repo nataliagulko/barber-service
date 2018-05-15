@@ -1,0 +1,10 @@
+<ul class="master-schedule__days-list">
+    {{#each daysOfWeek as |dayOfWeek|}}
+    <li class="master-schedule__days">
+        <button class="btn btn-default master-schedule__day-of-week master-schedule__day-of-week_{{dayOfWeek}}" onclick={{action
+            'onDaySelect' dayOfWeek}}>
+            {{moment-format dayOfWeek "ddd" "d"}}
+        </button>
+    </li>
+    {{/each}}
+</ul>
