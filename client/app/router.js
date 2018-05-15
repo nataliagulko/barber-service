@@ -18,7 +18,7 @@ Router.map(function() {
   this.route('master', function() {
     this.route('create');
     this.route('edit', { path: '/edit/:id' });
-    this.route('worktime', { path: '/worktime/:id' });
+    this.route('worktime', { path: ':id/worktime' });
   });
   this.route('not-found', { path: '/*path' });
   this.route('service-group', function() {
