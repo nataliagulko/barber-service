@@ -2,10 +2,21 @@
     <div class="portlet-title">
         <div class="caption font-dark">
             <i class="icon-clock font-green-sharp "></i>
-            <span class="caption-subject bold uppercase">{{moment-format selectedDayOfWeek "dddd" "d"}}</span>
+            <span class="caption-subject">{{moment-format selectedDayOfWeek "dddd" "d"}}</span>
         </div>
     </div>
     <div class="portlet-body form">
+        <div class="note note-info">
+            {{!-- <h4 class="block">Info! Some Header Goes Here</h4> --}}
+            <p>{{message}}</p>
+        </div>
         <input id="master-schedule__time-picker" class="timepicker" onchange={{action 'onTimeChange' value='target.value' }}/>
+        <div class="form-actions">
+            <div class="row">
+                <div class="col-md-offset-6 col-md-6">
+                    <button type="submit" class="btn btn-success pull-right" {{action "saveWorkTimes"}}>Сохранить</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

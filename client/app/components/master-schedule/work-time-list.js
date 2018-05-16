@@ -100,15 +100,13 @@ export default Ember.Component.extend({
             this.set("times", times);
         },
 
-        setTimeByDay: function (day, times) {
+        setTimeByDay: function (day) {
             const pickatimeService = this.get("pickatimeService"),
                 pickerSelector = "#master-schedule__time-picker";
 
             this.set("selectedDayOfWeek", day);
             Ember.$(".master-schedule__time").removeClass("hidden");
 
-            // pickatimeService.stop(pickerSelector);
-            // pickatimeService.init();
             pickatimeService.set(pickerSelector, "interval", 15);
             pickatimeService.set(pickerSelector, "min", [8, 0]);
             pickatimeService.set(pickerSelector, "max", [20, 0]);
