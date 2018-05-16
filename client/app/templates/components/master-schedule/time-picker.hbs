@@ -1,1 +1,11 @@
-<input id="master-schedule__time-picker" class="timepicker" onchange={{action 'onTimeChange' value='target.value' }}/>
+<div class="portlet light bordered">
+    <div class="portlet-title">
+        <div class="caption font-dark">
+            <i class="icon-clock font-green-sharp "></i>
+            <span class="caption-subject bold uppercase">{{moment-format selectedDayOfWeek "dddd" "d"}}</span>
+        </div>
+    </div>
+    <div class="portlet-body form">
+        <input id="master-schedule__time-picker" class="timepicker" onchange={{action 'onTimeChange' value='target.value' }}/>
+    </div>
+</div>

@@ -1,2 +1,17 @@
-{{master-schedule/time-picker}}
-{{master-schedule/work-time-list workTimes=workTimes}}
+<div class="row">
+    <div class="col-md-6">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption font-dark">
+                    <i class="icon-clock font-green-sharp "></i>
+                    <span class="caption-subject bold uppercase">{{master.fullname}}</span>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                {{master-schedule/work-time-list workTimes=workTimes selectedDayOfWeek=selectedDayOfWeek}}
+            </div>
+        </div>
+    </div>
+
+    {{master-schedule/time-picker selectedDayOfWeek=selectedDayOfWeek}}
+</div>
