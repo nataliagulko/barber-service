@@ -1,1 +1,5 @@
-{{yield}}
+ {{#each times as |time|}}
+<div class="progress-bar {{time.css}}" style="width: {{time.now}}%">
+    {{time.range}}
+</div>
+{{/each}}

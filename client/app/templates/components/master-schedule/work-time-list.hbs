@@ -2,13 +2,7 @@
 <div>{{moment-format dayOfWeek "dddd" "d"}}</div>
 <div class="row">
     <div class="col-md-10">
-        <div class="progress">
-            {{#each times as |time|}}
-            <div class="progress-bar {{time.css}}" style="width: {{time.now}}%">
-                {{time.range}}
-            </div>
-            {{/each}}
-        </div>
+        {{master-schedule/work-time-item times=times}}
     </div>
     <div class="col-md-2">
         <button class="btn btn-default pull-right">
