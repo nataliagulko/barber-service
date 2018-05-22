@@ -7,7 +7,7 @@ module.exports = function (environment) {
         rootURL: '/',
         locationType: 'auto',
         //host: 'https://service4barbers-h2osis.rhcloud.com',
-        host: 'http://localhost:8080',
+        host: 'http://185.98.87.199:8080',
         EmberENV: {
             FEATURES: {
                 // Here you can enable experimental features on an ember canary build
