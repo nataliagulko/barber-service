@@ -82,7 +82,7 @@ class TicketAjaxController {
     def update() {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             def data = request.JSON.data
             def attrs = data.attributes
             if (data.id) {
@@ -122,7 +122,7 @@ class TicketAjaxController {
     def getTicketTransitions() {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             def data = request.JSON.data
             if (data.id) {
                 Ticket ticket = Ticket.get(data.id)
@@ -140,7 +140,7 @@ class TicketAjaxController {
     def delete() {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             def data = request.JSON.data
             if (data.id) {
                 Ticket ticket = Ticket.get(data.id)
@@ -375,7 +375,7 @@ class TicketAjaxController {
         if (data.id && data.time) {
             def principal = springSecurityService.principal
             User user = User.get(principal.id)
-            if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
+            if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
                 try {
                     slotsService.shiftTickets(Long.parseLong(data.id), user,Long.parseLong(data.time))
                     render([data: "0"] as JSON)

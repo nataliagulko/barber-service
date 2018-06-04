@@ -1,5 +1,6 @@
 package com.h2osis.utils
 
+import com.h2osis.constant.AuthKeys
 import grails.plugin.springsecurity.SpringSecurityUtils
 
 /**
@@ -7,17 +8,17 @@ import grails.plugin.springsecurity.SpringSecurityUtils
  */
 class BarberUtils {
 
-    static def adminUrl = "/ticket/"
+    static def masterUrl = "/ticket/"
     static def userUrl = "/main/"
 
    static String determRedirectUrl() {
 
-        boolean hasAdmin = SpringSecurityUtils.ifAllGranted("ROLE_ADMIN")
-        boolean hasUser = SpringSecurityUtils.ifAllGranted("ROLE_USER")
+        boolean hasMaster = SpringSecurityUtils.ifAllGranted(AuthKeys.MASTER) || SpringSecurityUtils.ifAllGranted(AuthKeys.SUPER_MASTER)
+        boolean hasClient= SpringSecurityUtils.ifAllGranted(AuthKeys.CLIENT)
 
-        if (hasAdmin) {
-            return adminUrl;
-        } else if (hasUser) {
+        if (hasMaster) {
+            return masterUrl;
+        } else if (hasClient) {
             return userUrl
         } else {
             return null
