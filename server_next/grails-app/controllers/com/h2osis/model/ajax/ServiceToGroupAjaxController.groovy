@@ -19,7 +19,7 @@ class ServiceToGroupAjaxController {
         def errors = []
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             def data = request.JSON.data
             def attrs = data.attributes
             def relations = data.relationships
@@ -53,7 +53,7 @@ class ServiceToGroupAjaxController {
         def errors = []
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             def data = request.JSON.data
             def attrs = data.attributes
             def relations = data.relationships
@@ -177,7 +177,7 @@ class ServiceToGroupAjaxController {
     def destroy() {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             def data = request.JSON.data
             if (data.type && data.id) {
                 ServiceToGroup serviceToGroup = ServiceToGroup.get(data.id)

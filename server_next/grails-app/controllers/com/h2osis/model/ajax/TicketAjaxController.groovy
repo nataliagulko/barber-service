@@ -3,6 +3,7 @@ package com.h2osis.model.ajax
 import com.h2osis.auth.Role
 import com.h2osis.auth.User
 import com.h2osis.constant.AuthKeys
+import com.h2osis.constant.TicketStatus
 import com.h2osis.constant.TicketType
 import com.h2osis.model.Service
 import com.h2osis.model.Ticket
@@ -82,7 +83,7 @@ class TicketAjaxController {
     def update() {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             def data = request.JSON.data
             def attrs = data.attributes
             if (data.id) {
@@ -122,7 +123,7 @@ class TicketAjaxController {
     def getTicketTransitions() {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             def data = request.JSON.data
             if (data.id) {
                 Ticket ticket = Ticket.get(data.id)
@@ -140,13 +141,33 @@ class TicketAjaxController {
     def delete() {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             def data = request.JSON.data
             if (data.id) {
                 Ticket ticket = Ticket.get(data.id)
                 if (ticket) {
                     ticket.delete(flush: true)
-                    Ticket.search().createIndexAndWait()
+                    render([erorrs: 0] as JSON)
+                } else {
+                    render([erorrs: g.message(code: "ticket.get.user.not.found")] as JSON)
+                }
+            } else {
+                render([erorrs: g.message(code: "ticket.get.id.null")] as JSON)
+            }
+        } else {
+            render([erorrs: g.message(code: "ticket.delete.not.admin")] as JSON)
+        }
+    }
+
+    def destroy() {
+        def principal = springSecurityService.principal
+        User user = User.get(principal.id)
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
+            def data = request.JSON.data
+            if (data.id) {
+                Ticket ticket = Ticket.get(data.id)
+                if (ticket) {
+                    ticketsService.destroyTicket(ticket)
                     render([erorrs: 0] as JSON)
                 } else {
                     render([erorrs: g.message(code: "ticket.get.user.not.found")] as JSON)
@@ -165,6 +186,13 @@ class TicketAjaxController {
         def errors = []
 
         List<Ticket> ticketList = Ticket.createCriteria().list(offset: query.offset) {
+
+            if(query.status){
+                String status = query.status
+                eq('status', status.toUpperCase(new Locale("RU")))
+            }else {
+                ne('status', TicketStatus.DELETED)
+            }
 
             if (query.user) {
                 eq('user', User.get(query.user))
@@ -375,7 +403,7 @@ class TicketAjaxController {
         if (data.id && data.time) {
             def principal = springSecurityService.principal
             User user = User.get(principal.id)
-            if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
+            if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
                 try {
                     slotsService.shiftTickets(Long.parseLong(data.id), user,Long.parseLong(data.time))
                     render([data: "0"] as JSON)

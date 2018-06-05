@@ -1,5 +1,8 @@
 package com.h2osis.auth
 
+import com.h2osis.constant.AuthKeys
+import com.h2osis.model.Business
+
 class User {
 
     transient springSecurityService
@@ -22,7 +25,8 @@ class User {
     boolean passwordExpired
 
     static hasMany = [oAuthIDs: OAuthID, masters: User]
-    static transients = ['springSecurityService', 'masters']
+    static hasOne = [business: Business, role: Role]
+    static transients = ['springSecurityService', 'masters', 'business', 'role']
 
     static constraints = {
         phone blank: false, nullable: false, unique: true, widget: "phone"
@@ -74,24 +78,47 @@ class User {
     }
 
     String toString() {
-        if(firstname!=null && secondname != null){
+        if (firstname != null && secondname != null) {
             return firstname.concat(' ').concat(secondname)
-        }else {
+        } else {
             return phone
         }
     }
 
-    static def getMasters(){
+    static def getMasters() {
         Set<UserRole> userRoleSet = UserRole.findAllByRole(Role.findByAuthority("ROLE_ADMIN"))
         if (userRoleSet) {
             return userRoleSet.user
-        }else {
+        } else {
             return null
         }
     }
 
     def getMasterTZAct() {
-        return this.masterTZ?this.masterTZ:"Asia/Baghdad"
+        return this.masterTZ ? this.masterTZ : "Asia/Baghdad"
+    }
+
+    def getRole() {
+        if (this.authorities != null && !this.authorities.isEmpty() && (this.authorities.authority.contains(AuthKeys.CLIENT) ||
+                this.authorities.authority.contains(AuthKeys.MASTER) ||
+                this.authorities.authority.contains(AuthKeys.SUPER_MASTER))) {
+            return Role.findAllByAuthority(this.authorities.toList().get(0).authority)
+        } else {
+            return null
+        }
+    }
+
+    def getBusiness() {
+        List<Business> userOrgs = Business.createCriteria().list() {
+            masters {
+                eq('id', this.id)
+            }
+        }
+        if(userOrgs!=null && !userOrgs.isEmpty()){
+            return userOrgs.first()
+        }else {
+            return null
+        }
     }
 
 }

@@ -3,7 +3,6 @@ package com.h2osis.model.ajax
 import com.h2osis.auth.Role
 import com.h2osis.auth.User
 import com.h2osis.constant.AuthKeys
-import com.h2osis.model.Holiday
 import com.h2osis.model.Service
 import com.h2osis.model.WorkTime
 import com.h2osis.utils.NovaDateUtilService
@@ -11,7 +10,6 @@ import com.h2osis.utils.SlotsService
 import grails.converters.JSON
 import grails.transaction.Transactional
 import org.joda.time.DateTime
-import org.joda.time.LocalDate
 
 class WorkTimeAjaxController {
 
@@ -24,7 +22,7 @@ class WorkTimeAjaxController {
         def errors = []
         def principal = springSecurityService.principal
         User currentUser = User.get(principal.id)
-        if (currentUser.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
+        if (currentUser.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             def data = request.JSON.data
             def attrs = data.attributes
             def master = data.relationships.master.data
@@ -105,7 +103,7 @@ class WorkTimeAjaxController {
         def errors = []
         def principal = springSecurityService.principal
         User currentUser = User.get(principal.id)
-        if (currentUser.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
+        if (currentUser.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             def data = request.JSON.data
             def attrs = data.attributes
             def master = data.relationships.master.data
@@ -165,7 +163,7 @@ class WorkTimeAjaxController {
     def delete() {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             if (params.id) {
                 WorkTime workTime = WorkTime.get(params.id)
                 if (workTime) {

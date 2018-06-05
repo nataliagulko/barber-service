@@ -5,7 +5,8 @@ package com.h2osis.constant
  * Date: 11.08.16
  */
 interface AuthKeys {
-    String ADMIN = "ROLE_ADMIN"
-    String USER = "ROLE_USER"
+    String MASTER = "ROLE_ADMIN"
+    String CLIENT = "ROLE_USER"
+    String SUPER_MASTER = "SUPER_MASTER"
     String ROOT = "ROLE_ROOT"
 }

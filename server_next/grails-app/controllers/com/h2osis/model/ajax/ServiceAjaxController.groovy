@@ -75,7 +75,7 @@ class ServiceAjaxController {
         def errors = []
         def principal = springSecurityService.principal
         User currentUser = User.get(principal.id)
-        if (currentUser.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
+        if (currentUser.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             def data = request.JSON.data
             def attrs = data.attributes
             if (data.type && data.type == "service" && attrs.name && attrs.cost && attrs.time) {
@@ -113,7 +113,7 @@ class ServiceAjaxController {
     def update() {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             def data = request.JSON.data
             def attrs = data.attributes
             if (data.id) {
@@ -158,7 +158,7 @@ class ServiceAjaxController {
     def destroy() {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             def data = request.JSON.data
             if (data.type && data.id) {
                 Service service = Service.get(data.id)

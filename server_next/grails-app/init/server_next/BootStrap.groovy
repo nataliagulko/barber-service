@@ -34,15 +34,16 @@ class BootStrap {
         }
 
         if (!Role.count()) {
-            new Role(authority: AuthKeys.ADMIN, description: "admin").save(flush: true)
-            new Role(authority: AuthKeys.USER, description: "user").save(flush: true)
+            new Role(authority: AuthKeys.MASTER, description: "admin").save(flush: true)
+            new Role(authority: AuthKeys.CLIENT, description: "user").save(flush: true)
             new Role(authority: AuthKeys.ROOT, description: "root").save(flush: true)
+            new Role(authority: AuthKeys.SUPER_MASTER, description: "super_master").save(flush: true)
         }
 
         if (Environment.current == Environment.PRODUCTION) {
             if (!User.count() && !UserRole.count()) {
                 User user = new User(username: "shustikov.s", password: "Barber161006", email: "b.barberovic@gmail.com", phone: "+7(922)277-03-00").save(flush: true)
-                Role role = Role.findByAuthority(AuthKeys.ADMIN)
+                Role role = Role.findByAuthority(AuthKeys.MASTER)
                 new UserRole(user: user, role: role).save(flush: true)
             }
 
@@ -55,7 +56,7 @@ class BootStrap {
 
             if (!User.count()) {
                 User user = new User(username: "nnogieva", password: "123", email: "sokolovep@gmail.com", firstname: "natalya", secondname: "nogieva", phone: "+7(904)238-79-70").save(flush: true)
-                Role role = Role.findByAuthority(AuthKeys.ADMIN)
+                Role role = Role.findByAuthority(AuthKeys.MASTER)
                 new UserRole(user: user, role: role).save(flush: true)
 
                 User testMaster = new User(username: "master", password: "123", email: "sokolovep@gmail.com", fio: "fio", phone: "+7(912)114-79-90").save(flush: true)
@@ -144,6 +145,8 @@ class BootStrap {
                 attrs['username'] = it.username
                 attrs['email'] = it.email
                 attrs['masterTZ'] = it.masterTZ
+                attrs['role'] = it.role.authority
+                attrs['business'] = it.business.name
                 returnArray['attributes'] = attrs
                 return returnArray
             }

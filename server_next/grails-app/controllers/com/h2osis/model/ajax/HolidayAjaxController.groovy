@@ -25,7 +25,7 @@ class HolidayAjaxController {
         def errors = []
         def principal = springSecurityService.principal
         User currentUser = User.get(principal.id)
-        if (currentUser.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
+        if (currentUser.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             def data = request.JSON.data
             def attrs = data.attributes
             def master = data.relationships.master.data
@@ -111,7 +111,7 @@ class HolidayAjaxController {
         def errors = []
         def principal = springSecurityService.principal
         User currentUser = User.get(principal.id)
-        if (currentUser.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
+        if (currentUser.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             def data = request.JSON.data
             def attrs = data.attributes
             def master = data.relationships.master.data
