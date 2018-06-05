@@ -3,6 +3,7 @@ package com.h2osis.model.ajax
 import com.h2osis.auth.Role
 import com.h2osis.auth.User
 import com.h2osis.constant.AuthKeys
+import com.h2osis.constant.TicketStatus
 import com.h2osis.constant.TicketType
 import com.h2osis.model.Service
 import com.h2osis.model.Ticket
@@ -185,6 +186,13 @@ class TicketAjaxController {
         def errors = []
 
         List<Ticket> ticketList = Ticket.createCriteria().list(offset: query.offset) {
+
+            if(query.status){
+                String status = query.status
+                eq('status', status.toUpperCase(new Locale("RU")))
+            }else {
+                ne('status', TicketStatus.DELETED)
+            }
 
             if (query.user) {
                 eq('user', User.get(query.user))
