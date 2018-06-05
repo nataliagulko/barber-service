@@ -4,7 +4,7 @@ import com.h2osis.auth.User
 import com.h2osis.constant.TicketStatus
 import com.h2osis.constant.TicketType
 import com.h2osis.utils.NovaDateUtilService
-import grails.transaction.Transactional
+import grails.gorm.transactions.Transactional
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 
@@ -49,5 +49,14 @@ class TicketsService {
 
         ticketSMService.ticketStatusUpdate(ticket.id, TicketStatus.NEW)
         return ticket
+    }
+
+    def destroyTicket(Ticket ticket){
+        if(ticket){
+            ticket.setStatus(TicketStatus.DELETED)
+            ticket.save(flush:true)
+            ticket.updateStatuses(true)
+            ticketSMService.ticketStatusUpdate(ticket.id, TicketStatus.DELETED)
+        }
     }
 }

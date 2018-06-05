@@ -98,9 +98,13 @@ class Ticket {
     }
 
     def updateStatuses(){
-        Ticket.findAllByGuid(this.guid)?.each {
+        updateStatuses(false)
+    }
+
+    def updateStatuses(Boolean doFlush){
+        this.getSubTickets()?.each {it->
             it.setStatus(this.status)
-            it.save()
+            it.save(flush:doFlush)
         }
     }
 

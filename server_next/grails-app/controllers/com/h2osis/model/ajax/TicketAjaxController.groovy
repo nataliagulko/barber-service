@@ -146,7 +146,27 @@ class TicketAjaxController {
                 Ticket ticket = Ticket.get(data.id)
                 if (ticket) {
                     ticket.delete(flush: true)
-                    Ticket.search().createIndexAndWait()
+                    render([erorrs: 0] as JSON)
+                } else {
+                    render([erorrs: g.message(code: "ticket.get.user.not.found")] as JSON)
+                }
+            } else {
+                render([erorrs: g.message(code: "ticket.get.id.null")] as JSON)
+            }
+        } else {
+            render([erorrs: g.message(code: "ticket.delete.not.admin")] as JSON)
+        }
+    }
+
+    def destroy() {
+        def principal = springSecurityService.principal
+        User user = User.get(principal.id)
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
+            def data = request.JSON.data
+            if (data.id) {
+                Ticket ticket = Ticket.get(data.id)
+                if (ticket) {
+                    ticketsService.destroyTicket(ticket)
                     render([erorrs: 0] as JSON)
                 } else {
                     render([erorrs: g.message(code: "ticket.get.user.not.found")] as JSON)
