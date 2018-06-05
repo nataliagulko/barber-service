@@ -145,6 +145,8 @@ class BootStrap {
                 attrs['username'] = it.username
                 attrs['email'] = it.email
                 attrs['masterTZ'] = it.masterTZ
+                attrs['role'] = it.role.authority
+                attrs['business'] = it.business.name
                 returnArray['attributes'] = attrs
                 return returnArray
             }
