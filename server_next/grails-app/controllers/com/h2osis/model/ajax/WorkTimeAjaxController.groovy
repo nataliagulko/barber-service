@@ -109,7 +109,7 @@ class WorkTimeAjaxController {
             def data = request.JSON.data
             def attrs = data.attributes
             def master = data.relationships.master.data
-            if (data.type && data.type == "workTime"
+            if (data.type && data.type == "work-time"
                     && data.relationships.master.data.id
                     && attrs.timeFrom
                     && attrs.timeTo
@@ -131,7 +131,6 @@ class WorkTimeAjaxController {
                 if (user) {
                     workTime.setMaster(user)
                     workTime.save(flush: true)
-                    Service.search().createIndexAndWait()
                     JSON.use('worktimes') {
                         render([data: workTime] as JSON)
                     }

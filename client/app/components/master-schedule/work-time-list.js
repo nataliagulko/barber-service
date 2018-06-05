@@ -101,8 +101,8 @@ export default Ember.Component.extend({
         },
 
         setTimeByDay: function (day) {
-            const pickatimeService = this.get("pickatimeService"),
-                pickerSelector = "#master-schedule__time-picker";
+            const pickatimeService = this.get("pickatimeService");
+            const pickerSelector = "#master-schedule__time-picker";
 
             this.set("selectedDayOfWeek", day);
             Ember.$(".master-schedule__time").removeClass("hidden");
