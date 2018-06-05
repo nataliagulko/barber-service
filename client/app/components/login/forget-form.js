@@ -3,31 +3,8 @@ import config from 'barbers/config/environment';
 
 export default Ember.Component.extend({
 	classNames: ['forget-form'],
-	validateService: Ember.inject.service("validate-service"),
 	toast: Ember.inject.service(),
 	isCodeSent: false,
-
-	didInsertElement: function() {
-		var validateService = this.get('validateService'),
-			options = {
-				rules: {
-					phone: 'required',
-					pass: {
-						required: true,
-						minlength: 6,
-						maxlength: 20
-					},
-					rpass: {
-						required: true,
-						minlength: 6,
-						maxlength: 20,
-						equalTo: "#pass"
-					}
-				}
-			};
-
-		validateService.validateForm('#forget-form', options);
-	},
 
 	actions: {
 		showLoginForm: function() {
