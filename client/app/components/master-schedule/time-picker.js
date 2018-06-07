@@ -28,8 +28,6 @@ export default Ember.Component.extend({
             to: [timeTo[0], timeTo[1]]
         };
 
-        console.log(disabledRange);
-
         pickatimeService.set(pickerSelector, "disable", [disabledRange]);
     },
 

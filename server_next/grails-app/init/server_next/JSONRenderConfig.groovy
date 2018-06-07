@@ -38,7 +38,7 @@ class JSONRenderConfig {
             it.registerObjectMarshaller(WorkTime) {
                 def returnArray = [:]
                 returnArray['id'] = it.id
-                returnArray['type'] = 'workTime'
+                returnArray['type'] = 'work-time'
 
                 def attrs = [:]
                 attrs['timeFrom'] = it.timeFrom
