@@ -1,0 +1,9 @@
+.work-time-item {
+    &__progress-bar {
+        cursor: pointer;
+
+        &_empty {
+            cursor: default;
+        }
+    }
+}

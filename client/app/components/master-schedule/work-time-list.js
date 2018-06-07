@@ -32,27 +32,26 @@ export default Ember.Component.extend({
         let timeTo = this.converTimeToDecimal(wt.get("timeTo"));
         let timeRange = wt.get("timeRange");
         let dayOfWeek = wt.get("dayOfWeek");
+        let id = wt.get("id");
 
         if (ind === 0) {
             // на первом шаге надо вычислить начальную точку timeFrom - min
-            times.push(this.createInterval(timeFrom - min, min, diff, timeRange, dayOfWeek, "progress-bar-empty"));
-            times.push(this.createInterval(timeTo - timeFrom, min, diff, timeRange, dayOfWeek));
+            times.push(this.createInterval(null, timeFrom - min, min, diff, timeRange, dayOfWeek));
+            times.push(this.createInterval(id, timeTo - timeFrom, min, diff, timeRange, dayOfWeek));
             savedTimeValue = timeTo;
         } else {
-            times.push(this.createInterval(timeFrom - savedTimeValue, min, diff, timeRange, dayOfWeek, "progress-bar-empty"));
-            times.push(this.createInterval(timeTo - timeFrom, min, diff, timeRange, dayOfWeek));
+            times.push(this.createInterval(null, timeFrom - savedTimeValue, min, diff, timeRange, dayOfWeek));
+            times.push(this.createInterval(id, timeTo - timeFrom, min, diff, timeRange, dayOfWeek));
             savedTimeValue = timeTo;
         }
 
         return savedTimeValue;
     },
 
-    createInterval: function (countOfHours, min, diff, range, dayOfWeek, cssClass) {
+    createInterval: function (id, countOfHours, min, diff, range, dayOfWeek) {
         let now = Math.round(countOfHours / diff * 100);
-        let css = cssClass || "progress-bar-info";
-        range = cssClass ? null : range;
 
-        let interval = { now, css, range, dayOfWeek };
+        let interval = { id, now, range, dayOfWeek };
 
         return interval;
     },
@@ -82,7 +81,7 @@ export default Ember.Component.extend({
             let d = _.find(workTimesAr, _.iteratee(['data.dayOfWeek', day]));
 
             if (typeof d === "undefined") {
-                times.push(_this.createInterval(0, 0, 1, null, day, "progress-bar-empty"));
+                times.push(_this.createInterval(null, 0, 0, 1, null, day));
             }
         });
     },

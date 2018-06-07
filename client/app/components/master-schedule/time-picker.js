@@ -3,10 +3,10 @@ import Ember from 'ember';
 export default Ember.Component.extend({
     classNames: ['master-schedule__time', 'col-md-6', 'hidden'],
     store: Ember.inject.service(),
-    message: "Выберите время начала",
-    workTimeRecord: null,
     pickatimeService: Ember.inject.service("pickatime-service"),
     notification: Ember.inject.service("notification-service"),
+    message: "Выберите время начала",
+    workTimeRecord: null,
 
     createWorkTimeRecord: function (time) {
         let record = this.get("store").createRecord("workTime");
@@ -18,16 +18,19 @@ export default Ember.Component.extend({
         this.set("workTimeRecord", record);
     },
 
-    disableTimePicker: function (time) {
+    disableTimePicker: function (record) {
         const pickatimeService = this.get("pickatimeService");
         const pickerSelector = "#master-schedule__time-picker";
-        const timeAr = time.split(":");
-        const hours = timeAr[0];
-        const minutes = timeAr[1];
+        const timeFrom = record.get("timeFrom").split(":");
+        const timeTo = record.get("timeTo").split(":");
+        const disabledRange = {
+            from: [timeFrom[0], timeFrom[1]],
+            to: [timeTo[0], timeTo[1]]
+        };
 
-        console.log(time);
+        console.log(disabledRange);
 
-        pickatimeService.set(pickerSelector, "disable", [hours, minutes]);
+        pickatimeService.set(pickerSelector, "disable", [disabledRange]);
     },
 
     actions: {
@@ -38,6 +41,7 @@ export default Ember.Component.extend({
                 if (record) {
                     if (!record.get("timeTo") && time > record.get("timeFrom")) {
                         record.set("timeTo", time);
+                        this.disableTimePicker(record);
                         this.set("message", "Нажмите Сохранить для добавления периода");
                     } else {
                         this.set("message", "Дата окончания должна быть больше даты начала");
