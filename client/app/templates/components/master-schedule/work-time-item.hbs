@@ -1,9 +1,12 @@
  {{#each times as |time|}}
     {{#if time.id}}
-        <div class="work-time-item__progress-bar progress-bar progress-bar-info" style="width: {{time.now}}%" {{action "selectWorkTime" time.id}}>
+        <div class="work-time-item__progress-bar progress-bar progress-bar-info" style={{time.style}}>
             {{time.range}}
+            <div class="work-time-item__remove" {{action "removeWorkTime" time.id}}>
+                <i class="fa fa-trash text-danger"></i>
+            </div>
         </div>
     {{else}}
-        <div class="work-time-item__progress-bar work-time-item__progress-bar_empty progress-bar progress-bar-empty" style="width: {{time.now}}%"></div>
+        <div class="work-time-item__progress-bar work-time-item__progress-bar_empty progress-bar progress-bar-empty" style={{time.style}}></div>
     {{/if}}
 {{/each}}

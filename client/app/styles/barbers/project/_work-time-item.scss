@@ -1,9 +1,16 @@
 .work-time-item {
     &__progress-bar {
-        cursor: pointer;
+        position: relative;
 
         &_empty {
             cursor: default;
         }
+    }
+
+    &__remove {
+        position: absolute;
+        right: 8px;
+        top: 0;
+        cursor: pointer;
     }
 }

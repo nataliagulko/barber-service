@@ -1,7 +1,7 @@
-import Ember from 'ember';
+import EmberRouter from '@ember/routing/router';
 import config from './config/environment';
 
-const Router = Ember.Router.extend({
+const Router = EmberRouter.extend({
   location: config.locationType,
   rootURL: config.rootURL
 });
@@ -17,8 +17,8 @@ Router.map(function() {
   });
   this.route('master', function() {
     this.route('create');
-    this.route('edit', { path: '/edit/:id' });
-    this.route('worktime', { path: ':id/worktime' });
+    this.route('edit', { path: '/edit/:master_id' });
+    this.route('worktime', { path: '/:master_id/worktime' });
   });
   this.route('not-found', { path: '/*path' });
   this.route('service-group', function() {

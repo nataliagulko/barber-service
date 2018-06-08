@@ -1,9 +1,12 @@
-import Ember from 'ember';
-import _ from 'lodash';
+import $ from 'jquery';
 import moment from 'moment';
+import _ from 'lodash';
+import Component from '@ember/component';
+import { inject} from '@ember/service';
+import { htmlSafe } from '@ember/string';
 
-export default Ember.Component.extend({
-    pickatimeService: Ember.inject.service("pickatime-service"),
+export default Component.extend({
+    pickatimeService: inject("pickatime-service"),
 
     didInsertElement() {
         let workTimes = this.get("workTimes");
@@ -51,7 +54,12 @@ export default Ember.Component.extend({
     createInterval: function (id, countOfHours, min, diff, range, dayOfWeek) {
         let now = Math.round(countOfHours / diff * 100);
 
-        let interval = { id, now, range, dayOfWeek };
+        let interval = {
+            id,
+            range,
+            dayOfWeek,
+            style: htmlSafe(`width: ${now}%`)
+        };
 
         return interval;
     },
@@ -104,7 +112,7 @@ export default Ember.Component.extend({
             const pickerSelector = "#master-schedule__time-picker";
 
             this.set("selectedDayOfWeek", day);
-            Ember.$(".master-schedule__time").removeClass("hidden");
+            $(".master-schedule__time").removeClass("hidden");
 
             pickatimeService.set(pickerSelector, "interval", 15);
             pickatimeService.set(pickerSelector, "min", [8, 0]);
