@@ -53,6 +53,7 @@
     "ember-source": "^2.11.0",
     "ember-toastr": "1.7.0",
     "ember-truth-helpers": "^2.0.0",
+    "eslint": "^4.19.1",
     "eslint-plugin-ember": "^5.1.0",
     "loader.js": "^4.0.10",
     "phantomjs": "^2.1.7",
