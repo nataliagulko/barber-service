@@ -1,11 +1,11 @@
-import Ember from 'ember';
+import Component from '@ember/component';
 
-export default Ember.Component.extend({
+export default Component.extend({
     classNames: ["progress"],
 
     actions: {
         selectWorkTime: function(id) {
-            console.log(id);
+            this.set("id", id);
         }
     }
 });

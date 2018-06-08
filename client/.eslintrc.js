@@ -1,4 +1,5 @@
 // .eslintrc.js
+/*jshint node:true*/
 module.exports = {
   plugins: [
     'ember'
