@@ -6,7 +6,6 @@ import com.h2osis.constant.AuthKeys
 import com.h2osis.model.Service
 import com.h2osis.model.ServiceGroup
 import com.h2osis.model.ServiceToGroup
-import com.h2osis.model.Ticket
 import grails.converters.JSON
 import grails.transaction.Transactional
 
@@ -20,7 +19,7 @@ class ServiceGroupAjaxController {
         def errors = []
         def principal = springSecurityService.principal
         User currentUser = User.get(principal.id)
-        if (currentUser.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
+        if (currentUser.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             def data = request.JSON.data
             def attrs = data.attributes
             if (data.type && data.type == "service-group" && attrs.name && attrs.cost && attrs.time) {
@@ -59,7 +58,7 @@ class ServiceGroupAjaxController {
         def errors = []
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             def data = request.JSON.data
             def attrs = data.attributes
             if (data.type && data.type == "service-group") {
@@ -186,7 +185,7 @@ class ServiceGroupAjaxController {
     def destroy() {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.ADMIN).authority)) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             def data = request.JSON.data
             if (data.type && data.id) {
                 ServiceGroup serviceGroup = ServiceGroup.get(data.id)
