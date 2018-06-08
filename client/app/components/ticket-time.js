@@ -1,11 +1,13 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { inject } from '@ember/service';
+import { readOnly } from '@ember/object/computed';
 
-export default Ember.Component.extend({
+export default Component.extend({
 	// classNames: ['portlet', 'light', 'bordered', 'right-panel'],
 	// elementId: 'ticket-time',
 	tagName: '',
-	ticketService: Ember.inject.service("ticket-service"),
-	activeStep: Ember.computed.readOnly("ticketService.activeStep"),
+	ticketService: inject.service("ticket-service"),
+	activeStep: readOnly("ticketService.activeStep"),
 
 	actions: {
 		onTicketTimeChange: function (selectedTime) {
@@ -13,4 +15,4 @@ export default Ember.Component.extend({
 			ticketService.onTicketTimeChange(selectedTime);
 		}
 	}
-})
+});
