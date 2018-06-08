@@ -1,13 +1,11 @@
-<div class="portlet-title">
-    <div class="caption">
-        <i class="icon-calendar font-red-sunglo"></i>
-        <span class="caption-subject font-red-sunglo">Дата</span>
+<div id="ticket-date" class="portlet light bordered right-panel {{if (not-eq activeStep "#date-step") "hidden"}}">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="icon-calendar font-red-sunglo"></i>
+            <span class="caption-subject font-red-sunglo">Выбор даты</span>
+        </div>
     </div>
-    <div class="actions">
-        {{ticket-direction-btn direction="left" elemSelector="#ticket-services" stepSelector="#services-step"}}
-        {{ticket-direction-btn direction="right" elemSelector="#ticket-time" stepSelector="#time-step"}}
+    <div class="portlet-body ticket-portlet-body">
+        <input id="ticket-date-picker" class="datepicker" onchange={{action 'onTicketDateChange' value='target.value'}}/>
     </div>
-</div>
-<div class="portlet-body ticket-portlet-body">
-	<input id="ticket-date-picker" class="datepicker" onchange={{action 'onTicketDateChange' value='target.value'}}/>
 </div>

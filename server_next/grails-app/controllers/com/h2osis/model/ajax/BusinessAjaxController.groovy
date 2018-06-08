@@ -30,7 +30,7 @@ class BusinessAjaxController {
     def create() {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             if (params.name && params.inn) {
                 Business business = new Service(name: params.name, in: params.inn)
                 business.save(flush: true)
@@ -47,7 +47,7 @@ class BusinessAjaxController {
     def delete() {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             if (params.id) {
                 Business business = Business.get(params.id)
                 if (business) {

@@ -1,7 +1,11 @@
-<div class="ticket-info-bottom ticket-info-date hidden">
+ {{!-- {{#if ticketDate}} --}}
+<div class="ticket-info__item ticket-info-date {{if ticketDate "animate-from-top" ""}}">
     <div>
         <i class="icon-calendar font-red-sunglo margin-right-10"></i>
     </div>
-    <div class="ticket-info-bottom__text">{{moment-format ticketDate 'Do MMMM YYYY' 'DD.MM.YYYY' allow-empty=true}}</div>
+    <div>
+        {{moment-format ticketDate 'Do MMMM YYYY' 'DD.MM.YYYY' allow-empty=true}},
+        <span class="{{if ticketTime "animate-from-top" ""}}">{{ticketTime}}</span>
+    </div>
 </div>
-{{yield}}
+{{!-- {{/if}} --}}

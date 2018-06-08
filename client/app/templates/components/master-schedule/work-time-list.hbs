@@ -1,0 +1,13 @@
+ {{#each-in times as |dayOfWeek times|}}
+<div class="row">
+    <div class="col-md-1">{{moment-format dayOfWeek "ddd" "d"}}</div>
+    <div class="col-md-9">
+        {{master-schedule/work-time-item times=times}}
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-default pull-right" {{action "setTimeByDay" dayOfWeek}}>
+            <i class="fa fa-cog"></i>
+        </button>
+    </div>
+</div>
+{{/each-in}}

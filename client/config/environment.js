@@ -1,13 +1,13 @@
 /* jshint node: true */
 
-module.exports = function(environment) {
+module.exports = function (environment) {
     var ENV = {
         modulePrefix: 'barbers',
         environment: environment,
         rootURL: '/',
         locationType: 'auto',
         //host: 'https://service4barbers-h2osis.rhcloud.com',
-        host: 'http://localhost:8090/nova',
+        host: 'http://localhost:8080',
         EmberENV: {
             FEATURES: {
                 // Here you can enable experimental features on an ember canary build
@@ -34,6 +34,8 @@ module.exports = function(environment) {
         crossOriginWhitelist: [ENV.host],
         authorizationPrefix: 'Bearer ',
         authorizationHeaderName: 'Authorization',
+        refreshAccessTokens: true,
+        refreshLeeway: 3600
     };
 
     ENV['ember-toastr'] = {
@@ -54,10 +56,19 @@ module.exports = function(environment) {
             showMethod: 'fadeIn',
             hideMethod: 'fadeOut'
         }
-    }
+    };
 
     ENV['ember-cli-uuid'] = {
         defaultUUID: false
+    };
+
+    ENV['emberFullCalendar'] = {
+        includeLocales: ['ru'],
+        includeScheduler: true
+    };
+
+    ENV['moment'] = {
+        includeLocales: ['ru']
     }
 
     if (environment === 'development') {

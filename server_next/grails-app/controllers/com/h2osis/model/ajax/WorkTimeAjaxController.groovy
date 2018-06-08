@@ -3,25 +3,26 @@ package com.h2osis.model.ajax
 import com.h2osis.auth.Role
 import com.h2osis.auth.User
 import com.h2osis.constant.AuthKeys
-import com.h2osis.model.Holiday
 import com.h2osis.model.Service
 import com.h2osis.model.WorkTime
+import com.h2osis.utils.NovaDateUtilService
 import com.h2osis.utils.SlotsService
 import grails.converters.JSON
 import grails.transaction.Transactional
-import org.joda.time.LocalDate
+import org.joda.time.DateTime
 
 class WorkTimeAjaxController {
 
     def springSecurityService
     SlotsService slotsService
+    NovaDateUtilService novaDateUtilService
     static allowedMethods = [choose: ['POST', 'GET']]
 
     def update() {
         def errors = []
         def principal = springSecurityService.principal
         User currentUser = User.get(principal.id)
-        if (currentUser.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+        if (currentUser.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             def data = request.JSON.data
             def attrs = data.attributes
             def master = data.relationships.master.data
@@ -30,8 +31,17 @@ class WorkTimeAjaxController {
                 WorkTime workTime = WorkTime.get(data.id)
                 workTime.setTimeFrom(attrs.timeFrom)
                 workTime.setTimeTo(attrs.timeTo)
-                workTime.setDayOfWeek(attrs.dayOfWeek instanceof String ? Integer.parseInt(attrs.dayOfWeek) : attrs.dayOfWeek)
+
                 User user = User.get(master.id)
+                if(attrs.dateFrom || attrs.dateTo) {
+                    DateTime dateFrom = novaDateUtilService.getMasterTZDateTimeDDMMYYYY(attrs.dateFrom, user)
+                    DateTime dateTo = novaDateUtilService.getMasterTZDateTimeDDMMYYYY(attrs.dateTo, user)
+                    workTime.setDateFrom(dateFrom.toDate())
+                    workTime.setDateTo(dateTo.toDate())
+                }
+
+                workTime.setDayOfWeek(attrs.dayOfWeek instanceof String ? Integer.parseInt(attrs.dayOfWeek) : attrs.dayOfWeek)
+
                 if (user) {
                     workTime.setMaster(user)
                     workTime.save(flush: true)
@@ -93,11 +103,11 @@ class WorkTimeAjaxController {
         def errors = []
         def principal = springSecurityService.principal
         User currentUser = User.get(principal.id)
-        if (currentUser.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+        if (currentUser.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             def data = request.JSON.data
             def attrs = data.attributes
             def master = data.relationships.master.data
-            if (data.type && data.type == "workTime"
+            if (data.type && data.type == "work-time"
                     && data.relationships.master.data.id
                     && attrs.timeFrom
                     && attrs.timeTo
@@ -105,12 +115,20 @@ class WorkTimeAjaxController {
                 WorkTime workTime = new WorkTime()
                 workTime.setTimeFrom(attrs.timeFrom)
                 workTime.setTimeTo(attrs.timeTo)
-                workTime.setDayOfWeek(attrs.dayOfWeek instanceof String ? Integer.parseInt(attrs.dayOfWeek) : attrs.dayOfWeek)
+
                 User user = User.get(master.id)
+                if(attrs.dateFrom || attrs.dateTo) {
+                    DateTime dateFrom = novaDateUtilService.getMasterTZDateTimeDDMMYYYY(attrs.dateFrom, user)
+                    DateTime dateTo = novaDateUtilService.getMasterTZDateTimeDDMMYYYY(attrs.dateTo, user)
+                    workTime.setDateFrom(dateFrom.toDate())
+                    workTime.setDateTo(dateTo.toDate())
+                }
+
+                workTime.setDayOfWeek(attrs.dayOfWeek instanceof String ? Integer.parseInt(attrs.dayOfWeek) : attrs.dayOfWeek)
+
                 if (user) {
                     workTime.setMaster(user)
                     workTime.save(flush: true)
-                    Service.search().createIndexAndWait()
                     JSON.use('worktimes') {
                         render([data: workTime] as JSON)
                     }
@@ -144,7 +162,7 @@ class WorkTimeAjaxController {
     def delete() {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             if (params.id) {
                 WorkTime workTime = WorkTime.get(params.id)
                 if (workTime) {
@@ -158,29 +176,6 @@ class WorkTimeAjaxController {
             }
         } else {
             render([msg: g.message(code: "worktime.delete.not.admin")] as JSON)
-        }
-    }
-
-    def getSlots() {
-        if (params.time && params.date && params.id) {
-            User master = User.get(params.id)
-            List<Map<String, String>> response = slotsService.getSlots(master.id, params.getLong("time"),
-                    new LocalDate(params.getDate("date", "dd.MM.yyyy").time), params.currentId ? Long.parseLong(params.currentId) : null)
-            render(response as JSON)
-        } else {
-            render([msg: g.message(code: "slots.not.found")] as JSON)
-        }
-    }
-
-    def getSlotsInvert() {
-        def data = request.JSON.query
-        if (data.time && data.date && data.id) {
-            User master = User.get(data.id)
-            List<Map<String, String>> response = slotsService.getSlotsInvert(master.id, data.getLong("time"),
-                    new LocalDate(Date.parse("dd.MM.yyyy", data.date).time), data.currentId ? Long.parseLong(data.currentId) : null)
-            render(response as JSON)
-        } else {
-            render([msg: g.message(code: "slots.not.found")] as JSON)
         }
     }
 

@@ -25,7 +25,7 @@ class HolidayAjaxController {
         def errors = []
         def principal = springSecurityService.principal
         User currentUser = User.get(principal.id)
-        if (currentUser.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+        if (currentUser.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             def data = request.JSON.data
             def attrs = data.attributes
             def master = data.relationships.master.data
@@ -111,7 +111,7 @@ class HolidayAjaxController {
         def errors = []
         def principal = springSecurityService.principal
         User currentUser = User.get(principal.id)
-        if (currentUser.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+        if (currentUser.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             def data = request.JSON.data
             def attrs = data.attributes
             def master = data.relationships.master.data
@@ -177,9 +177,12 @@ class HolidayAjaxController {
                 Set<Integer> nonWorkDays = workDays ? [0, 1, 2, 3, 4, 5, 6].minus(workDays) : [0, 1, 2, 3, 4, 5, 6]
                 nonWorkDays.each { it++ }
 
+                DateTime dateTimeCurrent = novaDateUtilService.getMasterTZDateTime(new DateTime(), user)
                 List<Holiday> holidays =
-                        Holiday.findAllByMasterAndCommentNotEqual(user, "maxTime", [sort: 'dateFrom'])?.plus(
-                                Holiday.findAllByMasterAndCommentAndMaxTimeLessThan(user, "maxTime", query.time ? query.time : slotsService.getDuration(1L),
+                        Holiday.findAllByMasterAndCommentNotEqualAndDateToGreaterThan(user, "maxTime", dateTimeCurrent, [sort: 'dateFrom'])?.plus(
+                                Holiday.findAllByMasterAndCommentAndMaxTimeLessThanAndDateToGreaterThan(user,
+                                        "maxTime", query.time ? query.time : slotsService.getDuration(1L),
+                                        dateTimeCurrent,
                                         [sort: 'dateFrom']))?.sort { a, b -> a.dateFrom <=> b.dateFrom }
                 holidays?.each {
                     it.master.setPassword(null)

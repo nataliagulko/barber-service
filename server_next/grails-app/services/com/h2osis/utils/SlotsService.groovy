@@ -5,6 +5,7 @@ import com.h2osis.constant.TicketStatus
 import com.h2osis.constant.TicketType
 import com.h2osis.model.Holiday
 import com.h2osis.model.Service
+import com.h2osis.model.Slot
 import com.h2osis.model.Ticket
 import com.h2osis.model.UserBlockFact
 import com.h2osis.model.WorkTime
@@ -137,7 +138,16 @@ class SlotsService {
 
     def getSlots(Long master, Long time, LocalDate date, Long currId, String timeZone) {
         User ticketsMaster = User.get(master)
-        List<WorkTime> workTimes = WorkTime.findAllByDayOfWeekAndMaster(date.getDayOfWeek(), ticketsMaster, [sort: 'timeFrom'])
+        List<WorkTime> workTimes = WorkTime.findAllByDayOfWeekAndMasterAndDateFromIsNullAndDateToIsNull(date.getDayOfWeek(), ticketsMaster, [sort: 'timeFrom'])
+        List<WorkTime> workTimesOnDate = WorkTime.findAllByDayOfWeekAndMasterAndDateFromLessThanAndDateToGreaterThan(
+                date.getDayOfWeek(),
+                ticketsMaster,
+                date.toDateTime(new LocalTime(12,0,0,0)).toDate(),
+                date.toDateTime(new LocalTime(12,0,0,0)).toDate(),
+                ticketsMaster, [sort: 'timeFrom'])
+
+
+        workTimes = workTimes?.isEmpty() ? workTimes.plus(workTimesOnDate ? workTimesOnDate : new ArrayList<WorkTime>()) : workTimes
 
         DateTime dt1 = date.toDateTime(new LocalTime("00:00"))
         DateTime dt2 = dt1.withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59)
@@ -492,6 +502,22 @@ class SlotsService {
             return e.toString()
         }
         return null
+    }
+
+    def getSlotDomains(List<Map<String, String>> slotMap, User master, Date slotDate) {
+        List<Slot> response = new ArrayList<Slot>()
+        Long i = 1L
+        slotMap?.each {
+            Slot slotEntry = new Slot()
+            slotEntry.setStart(it['start'])
+            slotEntry.setEnd(it['end'])
+            slotEntry.setMaster(master)
+            slotEntry.setSlotDate(slotDate)
+            slotEntry.setId(i)
+            i++
+            response.add(slotEntry)
+        }
+        return response
     }
 
 }

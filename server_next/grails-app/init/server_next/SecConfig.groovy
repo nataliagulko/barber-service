@@ -28,7 +28,9 @@ class SecConfig {
                 '/masterAjax/list',
                 '/clientAjax/list',
                 '/userAjax/create',
-                '/clientAjax/create']) {
+                '/clientAjax/create',
+                '/ticketAjax/create',
+                '/slotAjax/**']) {
             new NovaRequestMap(url: url, configAttribute: 'permitAll').save(flush: true)
         }
 
@@ -101,6 +103,8 @@ class SecConfig {
                 '/masterAjax/destroy',
                 '/masterAjax/blockUser',
                 '/masterAjax/unBlockUser',
+                '/masterAjax/clientStatistic',
+                '/masterAjax/payStatistic',
         ]) {
             new NovaRequestMap(url: url, configAttribute: "ROLE_ADMIN").save(flush: true)
         }

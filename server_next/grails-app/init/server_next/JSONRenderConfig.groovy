@@ -1,6 +1,7 @@
 package server_next
 
 import com.h2osis.model.Holiday
+import com.h2osis.model.Slot
 import com.h2osis.model.WorkTime
 import grails.converters.JSON
 
@@ -18,13 +19,13 @@ class JSONRenderConfig {
                 def attrs = [:]
                 attrs['dateFrom'] = it.dateFrom
                 attrs['dateTo'] = it.dateTo
-                attrs['master'] = it.master
                 attrs['comment'] = it.comment
 
                 def relationships = [:]
-                def mastersDetails = [:]
-                mastersDetails['data'] = it.master
-                relationships['masters'] = mastersDetails
+                def masterDetails = [:]
+                masterDetails['id'] = it.master.id
+                masterDetails['type'] = 'master'
+                relationships['masters'] = masterDetails
 
                 returnArray['relationships'] = relationships
                 returnArray['attributes'] = attrs
@@ -37,18 +38,43 @@ class JSONRenderConfig {
             it.registerObjectMarshaller(WorkTime) {
                 def returnArray = [:]
                 returnArray['id'] = it.id
-                returnArray['type'] = 'workTime'
+                returnArray['type'] = 'work-time'
 
                 def attrs = [:]
                 attrs['timeFrom'] = it.timeFrom
                 attrs['timeTo'] = it.timeTo
-                attrs['master'] = it.master
                 attrs['dayOfWeek'] = it.dayOfWeek
 
                 def relationships = [:]
-                def mastersDetails = [:]
-                mastersDetails['data'] = it.master
-                relationships['masters'] = mastersDetails
+
+                def masterDetails = [:]
+                masterDetails['id'] = it.master.id
+                masterDetails['type'] = 'master'
+                relationships['master'] = masterDetails
+
+                returnArray['relationships'] = relationships
+                returnArray['attributes'] = attrs
+                return returnArray
+            }
+        }
+
+        JSON.createNamedConfig('slots') {
+            it.registerObjectMarshaller(Slot) {
+                def returnArray = [:]
+                returnArray['id'] = it.id
+                returnArray['type'] = 'slot'
+
+                def attrs = [:]
+                attrs['start'] = it.start
+                attrs['end'] = it.end
+                attrs['slotDate'] = it.slotDate
+
+                def relationships = [:]
+
+                def masterDetails = [:]
+                masterDetails['id'] = it.master.id
+                masterDetails['type'] = 'master'
+                relationships['master'] = masterDetails
 
                 returnArray['relationships'] = relationships
                 returnArray['attributes'] = attrs

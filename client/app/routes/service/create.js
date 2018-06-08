@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
+import RollbackAttributesMixin from 'barbers/mixins/rollback-attributes-mixin';
 
-export default Ember.Route.extend(AuthenticatedRouteMixin, {
+export default Ember.Route.extend(AuthenticatedRouteMixin, RollbackAttributesMixin, {
 	model() {
 		const store = this.get('store');
 
@@ -17,14 +18,11 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 		});
 	},
 
-	deactivate: function () {
+	deactivate() {
 		this._super(...arguments);
 
-		const model = this.modelFor(this.routeName),
-			serviceRecord = model.service,
-			serviceGroupRecord = model.serviceGroup;
-
-		serviceRecord.rollbackAttributes();
-		serviceGroupRecord.rollbackAttributes();		
+		const model = this.modelFor(this.routeName);
+		this.rollback(model.service);
+		this.rollback(model.serviceGroup);
 	}
 });

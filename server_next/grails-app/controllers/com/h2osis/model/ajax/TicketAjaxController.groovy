@@ -3,6 +3,7 @@ package com.h2osis.model.ajax
 import com.h2osis.auth.Role
 import com.h2osis.auth.User
 import com.h2osis.constant.AuthKeys
+import com.h2osis.constant.TicketStatus
 import com.h2osis.constant.TicketType
 import com.h2osis.model.Service
 import com.h2osis.model.Ticket
@@ -31,7 +32,7 @@ class TicketAjaxController {
             Ticket ticket = Ticket.get(data.id)
             if (ticket) {
                 JSON.use('tickets') {
-                    render(ticket as JSON)
+                    render([data: ticket] as JSON)
                 }
             } else {
                 render([msg: g.message(code: "ticket.get.user.not.found")] as JSON)
@@ -61,22 +62,11 @@ class TicketAjaxController {
     def create() {
         def data = request.JSON.data
         def attrs = data.attributes
-        if (data.type && data.type == "ticket" && attrs.master && attrs.services && attrs.date) {
-            def principal = springSecurityService.principal
-            User user = User.get(principal.id)
+        def relations = data.relationships
+        if (data.type && data.type == "ticket" && relations.master && relations.client && relations.services && attrs.ticketDate) {
+            User user = User.get(relations.client.data.id)
 
-            if (!user.secondname && !user.firstname) {
-                if (attrs.firstname && attrs.secondname) {
-                    user.setFirstname(attrs.firstname)
-                    user.setSecondname(attrs.secondname)
-                    user.save(flush: true)
-                } else {
-                    render([errors: g.message(code: "ticket.fio.empty")] as JSON)
-                    return
-                }
-            }
-
-            Ticket ticket = ticketsService.createTicket(user, attrs)
+            Ticket ticket = ticketsService.createTicket(user, attrs, relations)
             if (ticket) {
                 JSON.use('tickets') {
                     render([data: ticket] as JSON)
@@ -93,7 +83,7 @@ class TicketAjaxController {
     def update() {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             def data = request.JSON.data
             def attrs = data.attributes
             if (data.id) {
@@ -114,9 +104,9 @@ class TicketAjaxController {
                             if (attrs.status) {
                                 ticketSMService.ticketStatusUpdate(ticket.id, attrs.status)
                             }
-                            Ticket.search().createIndexAndWait()
+                            // Ticket.search().createIndexAndWait()
 
-                            render([errors: 0] as JSON)
+                            render([data: ticket] as JSON)
                         } catch (Exception e) {
                             render([erorrs: e.toString()] as JSON)
                         }
@@ -133,7 +123,7 @@ class TicketAjaxController {
     def getTicketTransitions() {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             def data = request.JSON.data
             if (data.id) {
                 Ticket ticket = Ticket.get(data.id)
@@ -151,13 +141,33 @@ class TicketAjaxController {
     def delete() {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             def data = request.JSON.data
             if (data.id) {
                 Ticket ticket = Ticket.get(data.id)
                 if (ticket) {
                     ticket.delete(flush: true)
-                    Ticket.search().createIndexAndWait()
+                    render([erorrs: 0] as JSON)
+                } else {
+                    render([erorrs: g.message(code: "ticket.get.user.not.found")] as JSON)
+                }
+            } else {
+                render([erorrs: g.message(code: "ticket.get.id.null")] as JSON)
+            }
+        } else {
+            render([erorrs: g.message(code: "ticket.delete.not.admin")] as JSON)
+        }
+    }
+
+    def destroy() {
+        def principal = springSecurityService.principal
+        User user = User.get(principal.id)
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
+            def data = request.JSON.data
+            if (data.id) {
+                Ticket ticket = Ticket.get(data.id)
+                if (ticket) {
+                    ticketsService.destroyTicket(ticket)
                     render([erorrs: 0] as JSON)
                 } else {
                     render([erorrs: g.message(code: "ticket.get.user.not.found")] as JSON)
@@ -172,55 +182,50 @@ class TicketAjaxController {
 
     def list() {
         def data = request.JSON.data
-        def attrs = data.attributes
+        def query = request.JSON.query
+        def errors = []
 
+        List<Ticket> ticketList = Ticket.createCriteria().list(offset: query.offset) {
 
-        List<Ticket> ticketList = Ticket.createCriteria().list(offset: data.offset) {
-
-            if (attrs.user) {
-                eq('user', User.get(attrs.user))
+            if(query.status){
+                String status = query.status
+                eq('status', status.toUpperCase(new Locale("RU")))
+            }else {
+                ne('status', TicketStatus.DELETED)
             }
 
-            if (attrs.master) {
-                eq('master', User.get(attrs.user))
+            if (query.user) {
+                eq('user', User.get(query.user))
             }
 
-            if (attrs.service) {
-                eq('service', Service.get(attrs.user))
+            if (query.master) {
+                eq('master', User.get(query.user))
             }
 
-            if (attrs.date) {
-                eq('ticketDate', attrs.getDate("date"))
+            if (query.service) {
+                eq('service', Service.get(query.user))
             }
 
-            if (attrs.dateFrom) {
-                ge('ticketDate', attrs.getDate("dateFrom"))
-            }
-
-            if (attrs.dateTo) {
-                le('ticketDate', attrs.getDate("dateTo"))
-            }
-
-            if (attrs.onlyHead) {
+            if (query.onlyHead) {
                 eq('type', TicketType.HEAD)
             }
 
-            if (attrs.onlySub) {
+            if (query.onlySub) {
                 eq('type', TicketType.SUB)
             }
 
-            if (data.max) {
-                def max = Integer.parseInt(data.max)
+            if (query.max) {
+                def max = Integer.parseInt(query.max)
                 maxResults(max)
             }
 
-            if (attrs.ticketDate) {
-                DateTime dt1 = new DateTime(Date.parse("dd.MM.yyyy", attrs.ticketDate)).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0)
+            if (query.ticketDate) {
+                DateTime dt1 = new DateTime(Date.parse("dd.MM.yyyy", query.ticketDate)).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0)
                 DateTime dt2 = dt1.withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59)
                 between('ticketDate', dt1.toDate(), dt2.toDate())
             }
-            if (attrs.ticketDatePeriod) {
-                List<String> dates = attrs.ticketDatePeriod.split('-')
+            if (query.ticketDatePeriod) {
+                List<String> dates = query.ticketDatePeriod.split('-')
                 if (dates.size() == 2) {
                     DateTime dt1 = new DateTime(Date.parse("dd.MM.yyyy", dates.get(0))).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0)
                     DateTime dt2 = new DateTime(Date.parse("dd.MM.yyyy", dates.get(1))).withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59)
@@ -228,9 +233,9 @@ class TicketAjaxController {
                 }
             }
 
-            if (attrs.ticketDateFrom && attrs.ticketDateTo) {
-                DateTime dt1 = new DateTime(Date.parse("dd.MM.yyyy", attrs.ticketDateFrom)).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0)
-                DateTime dt2 = new DateTime(Date.parse("dd.MM.yyyy", attrs.ticketDateTo)).withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59)
+            if (query.ticketDateFrom && query.ticketDateTo) {
+                DateTime dt1 = new DateTime(Date.parse("dd.MM.yyyy", query.ticketDateFrom)).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0)
+                DateTime dt2 = new DateTime(Date.parse("dd.MM.yyyy", query.ticketDateTo)).withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59)
                 between('ticketDate', dt1.toDate(), dt2.toDate())
             }
 
@@ -247,7 +252,15 @@ class TicketAjaxController {
                 render([data: ticketList] as JSON)
             }
         } else {
-            render([erorrs: g.message(code: "ticket.fine.not.found")] as JSON)
+            errors.add([
+                    "status": 422,
+                    "detail": g.message(code: "ticket.fine.not.found"),
+                    "source": [
+                            "pointer": "data"
+                    ]
+            ])
+            response.status = 422
+            render([errors: errors] as JSON)
         }
     }
 
@@ -390,7 +403,7 @@ class TicketAjaxController {
         if (data.id && data.time) {
             def principal = springSecurityService.principal
             User user = User.get(principal.id)
-            if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+            if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
                 try {
                     slotsService.shiftTickets(Long.parseLong(data.id), user,Long.parseLong(data.time))
                     render([data: "0"] as JSON)

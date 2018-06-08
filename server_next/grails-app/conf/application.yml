@@ -98,13 +98,15 @@ dataSource:
     jmxExport: true
     driverClassName: com.mysql.cj.jdbc.Driver
 #    driverClassName: org.h2.Driver
+    dbCreate: update
     username: root
-    password: 2Q5xnx
+    password: Repgat39
+    
 
 environments:
     development:
         dataSource:
-            dbCreate: create-drop
+            dbCreate: update
 #            url: jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
             url: jdbc:mysql://localhost:3306/nova?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Europe/Moscow&useSSL=false
 
@@ -114,8 +116,8 @@ environments:
             url: jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
     production:
         dataSource:
-            dbCreate: none
-            url: jdbc:h2:./prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+            dbCreate: update
+            url: jdbc:mysql://localhost:3306/nova?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Europe/Moscow&useSSL=false
             properties:
                 jmxEnabled: true
                 initialSize: 5
@@ -134,3 +136,13 @@ environments:
                 testOnReturn: false
                 jdbcInterceptors: ConnectionState
                 defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
+        server:
+            port: 8443                                             # The port to listen on
+            ssl:
+                enabled: true                                      # Activate HTTPS mode on the server port
+                key-store: sslstore     # e.g. /etc/tomcat7/keystore/tomcat.keystore
+                key-store-password: ijbjxzzi      # e.g. changeit
+                key-alias: tomcat                        # e.g. tomcat
+                key-password: ijbjxzzi
+
+

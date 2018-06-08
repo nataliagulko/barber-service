@@ -1,10 +1,12 @@
-<div class="ticket-info-bottom ticket-info-services hidden">
-    <div>
-        <i class="icon-bag font-red-sunglo margin-right-10"></i>
+{{!-- {{#if selectedServices}} --}}
+    <div class="ticket-info__item ticket-info-services {{if selectedServices "animate-from-top" ""}}">
+        <div>
+            <i class="icon-bag font-red-sunglo margin-right-10"></i>
+        </div>
+        <div>
+            {{#each selectedServices as |selectedService|}}
+                <div class="animate-from-top">{{selectedService.name}}</div>
+            {{/each}}
+        </div>
     </div>
-    <div class="ticket-info-bottom__text">
-        {{#each selectedServices as |selectedService|}}
-            <span>{{selectedService.name}}, </span>
-        {{/each}}
-    </div>
-</div>
+{{!-- {{/if}} --}}

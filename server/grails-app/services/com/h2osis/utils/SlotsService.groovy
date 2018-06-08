@@ -87,31 +87,38 @@ class SlotsService {
     def getSlotsInvert(Long master, Long time, LocalDate date, Long currId) {
         List<Map<String, String>> normalSlots = getSlots(master, time, date, currId)
         List<Map<String, String>> response = new ArrayList<Map<String, String>>()
+        List<WorkTime> workTimes = new ArrayList()
 
         String newSlotStart = new LocalDate(date).toLocalDateTime(new LocalTime("00:00")).toDate().format("yyyy-MM-dd HH:mm:ss")
 
         if (normalSlots) {
+            println "normal slots"
             for (Map<String, String> item : normalSlots) {
                 Map<String, Date> freePeriod = new HashMap<String, Date>()
-                freePeriod.put("start", newSlotStart)
-                freePeriod.put("end", item.get("start"))
+                freePeriod.put("timeFrom", newSlotStart)
+                freePeriod.put("timeTo", item.get("timeFrom"))
                 response.add(freePeriod)
-                newSlotStart = item.get("end")
+                newSlotStart = item.get("timeTo")
             }
 
             Map<String, Date> freePeriod = new HashMap<String, Date>()
-            freePeriod.put("start", newSlotStart)
-            freePeriod.put("end", new LocalDate(date).toLocalDateTime(new LocalTime("23:59")).toDate().format("yyyy-MM-dd HH:mm:ss"))
+            freePeriod.put("timeFrom", newSlotStart)
+            freePeriod.put("timeTo", new LocalDate(date).toLocalDateTime(new LocalTime("23:59")).toDate().format("yyyy-MM-dd HH:mm:ss"))
             response.add(freePeriod)
 
         } else {
+            println "invert slots"
             Map<String, String> period = new HashMap<String, Date>()
-            period.put("start", new LocalDate(date).toLocalDateTime(new LocalTime("00:00")).toDate().format("yyyy-MM-dd HH:mm:ss"))
-            period.put("end",
-                    new LocalDate(date).toLocalDateTime(new LocalTime("23:59:59")).toDate().format("yyyy-MM-dd HH:mm:ss"))
+            def timeFrom = new LocalDate(date).toLocalDateTime(new LocalTime("00:00")).toDate().format("yyyy-MM-dd HH:mm:ss")
+            def timeTo = new LocalDate(date).toLocalDateTime(new LocalTime("23:59:59")).toDate().format("yyyy-MM-dd HH:mm:ss")
             response.add(period)
+
+            WorkTime workTime = new WorkTime()
+            workTime.setTimeFrom(timeFrom)
+            workTime.setTimeTo(timeTo)
+            workTimes.add(workTime)
         }
-        return response
+        return workTimes
     }
 
     def changeTimeZone(Date source, String timeZone) {

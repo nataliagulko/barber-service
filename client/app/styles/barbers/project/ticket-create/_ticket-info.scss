@@ -1,0 +1,13 @@
+.ticket-info {
+	font-size: 16px;
+
+	&__item {
+		margin-bottom: 10px;
+		opacity: 0;
+
+		&>div {
+			display: table-cell;
+			vertical-align: top;
+    	}
+	}
+}

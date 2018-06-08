@@ -1,0 +1,27 @@
+// event new
+// event accepted
+// event rejected
+// event canceled
+// event completed
+
+.ticket-calendar {
+    &__event {
+        border: 1px solid #fff !important;
+
+        &_new {
+            background: #5c9bd1 !important;
+        }
+
+        &_accepted {
+            background: #36d7b7 !important;
+        }
+
+        &_canceled {
+            background: #f7ca18 !important;
+        }
+
+        &_rejected {
+            background: #e08283 !important;
+        }
+    }
+}

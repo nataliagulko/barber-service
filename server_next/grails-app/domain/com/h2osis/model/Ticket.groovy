@@ -6,11 +6,10 @@ import com.h2osis.sm.SMObjectType
 import org.joda.time.DateTime
 import org.joda.time.LocalTime
 
-import java.time.LocalDate
-
 class Ticket {
 
-    transient slotsService, SMManagerService
+    def slotsService
+    def SMManagerService
 
 
     User user // клиент
@@ -37,6 +36,7 @@ class Ticket {
         type defaultValue: "'HEAD'"
         user lazy: false
         services lazy: false
+        autowire true
     }
 
     static constraints = {
@@ -98,9 +98,13 @@ class Ticket {
     }
 
     def updateStatuses(){
-        Ticket.findAllByGuid(this.guid)?.each {
+        updateStatuses(false)
+    }
+
+    def updateStatuses(Boolean doFlush){
+        this.getSubTickets()?.each {it->
             it.setStatus(this.status)
-            it.save()
+            it.save(flush:doFlush)
         }
     }
 

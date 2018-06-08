@@ -10,6 +10,7 @@ import com.h2osis.model.UserBlockFact
 import com.h2osis.model.UsersService
 import com.h2osis.model.WorkTime
 import com.h2osis.utils.BarberSecurityService
+import com.h2osis.utils.NovaUtilsService
 import com.h2osis.utils.SearchService
 import grails.converters.JSON
 import grails.transaction.Transactional
@@ -20,35 +21,61 @@ class ClientAjaxController {
     def springSecurityService
     BarberSecurityService barberSecurityService
     UsersService usersService
+    NovaUtilsService novaUtilsService
     static allowedMethods = [choose: ['POST', 'GET']]
 
     def create() {
         def data = request.JSON.data
         def attrs = data.attributes
+        def errors = []
         if (attrs.phone && attrs.password && attrs.rpassword) {
             if (attrs.password.equals(attrs.rpassword)) {
                 def result = usersService.createUser(attrs)
                 if (result instanceof User) {
                     //result.setPassword(null)
-                    Role role = Role.findByAuthority(AuthKeys.USER)
+                    Role role = Role.findByAuthority(AuthKeys.CLIENT)
                     new UserRole(user: result, role: role).save(flush: true);
                     JSON.use('clients') {
                         render([data: result] as JSON)
                     }
                 } else {
-                    render([errors: { result }] as JSON)
+                    errors.add([
+                        "status": 422,
+                        "detail": "wrong user data",
+                        "source": [
+                                "pointer": "data"
+                        ]
+                    ])
+                    response.status = 422
+                    render([errors: errors] as JSON)
                 }
             } else {
-                render([errors: { g.message(code: "auth.reg.pass2.fail") }] as JSON)
+                errors.add([
+                        "status": 422,
+                        "detail": g.message(code: "user.get.user.by.phone.not.found"),
+                        "source": [
+                                "pointer": "data"
+                        ]
+                    ])
+                response.status = 422
+                render([errors: errors] as JSON)
             }
         } else {
-            render([errors: { g.message(code: "user.phone.and.pass.null") }] as JSON)
+            errors.add([
+                        "status": 422,
+                        "detail": g.message(code: "user.phone.and.pass.null"),
+                        "source": [
+                                "pointer": "data"
+                        ]
+                    ])
+            response.status = 422
+            render([errors: errors] as JSON)
         }
     }
 
     def get() {
         def data = request.JSON.data
-        if (data.id) {
+        if (data && data.id) {
             User user = User.get(data.id)
             if (user) {
                 user.setPassword(null)
@@ -60,7 +87,34 @@ class ClientAjaxController {
                 render([errors: { g.message(code: "user.get.user.not.found") }] as JSON)
             }
         } else {
-            render([errors: { g.message(code: "user.get.id.null") }] as JSON)
+            def query = request.JSON.query
+            def errors = []
+            if(query && query.phone) {
+                User user = User.findByPhone(query.phone)
+                if(!user){
+                    user = User.findByPhone(novaUtilsService.getFullPhone(query.phone))
+                }
+                if (user) {
+                    user.setPassword(null)
+                    JSON.use('clients') {
+                        render([data: user] as JSON)
+                    }
+                } else {
+                    // render([errors:
+                                    // novaUtilsService.getErrorsSingleArrayJSON(g.message(code: "user.get.user.by.phone.not.found"))] as JSON)
+                    errors.add([
+                        "status": 422,
+                        "detail": g.message(code: "user.get.user.by.phone.not.found"),
+                        "source": [
+                                "pointer": "data"
+                        ]
+                    ])
+                    response.status = 422
+                    render([errors: errors] as JSON)
+                }
+            }else {
+                render([errors: novaUtilsService.getErrorsSingleArrayJSON(g.message(code: "user.get.id.null"))] as JSON)
+            }
         }
     }
 
@@ -113,7 +167,7 @@ class ClientAjaxController {
     def block() {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
-        if (user.authorities.contains(Role.findByAuthority(AuthKeys.ADMIN))) {
+        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             if (params.id) {
                 User blockingUser = User.get(params.id)
                 if (blockingUser) {
@@ -302,7 +356,7 @@ class ClientAjaxController {
 
                     }
                 }
-                String authority = params.masterRole ? AuthKeys.ADMIN : (params.userRole ? AuthKeys.USER : null)
+                String authority = params.masterRole ? AuthKeys.MASTER : (params.userRole ? AuthKeys.CLIENT : null)
                 if (authority) {
                     Role role = Role.findByAuthority(authority)
                     new UserRole(user: user, role: role).save(flush: true);

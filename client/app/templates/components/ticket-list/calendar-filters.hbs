@@ -1,0 +1,31 @@
+<div class="portlet light portlet-fit bordered">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="icon-magnifier font-green"></i>
+            <span class="caption-subject font-green sbold uppercase">Поиск</span>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div class="form-horizontal">
+            <div class="form-body">
+                <div class="form-group">
+                    <label class="control-label col-md-2">Статус записи</label>
+                    <div class="col-md-10">
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-default active" onclick={{action "filterEventsByStatus" "all"}}>
+                                <input class="toggle" type="radio">Все
+                            </label>
+                            {{#each ticketStatuses as |status|}}
+                                <label class="btn btn-default" onclick={{action "filterEventsByStatus" status.alias}}>
+                                    <i class="fa fa-circle {{status.fontClass}}"></i>
+                                    <input class="toggle" type="radio">{{status.text}}
+                                </label>
+                            {{/each}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
