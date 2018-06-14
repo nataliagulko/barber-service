@@ -78,22 +78,19 @@ export default Component.extend({
         return times;
     },
 
-    _removeWorkTime: function (item) {
+    _removeWorkTimes: function (item) {
         const store = this.get("store");
-        const router = this.get("router");
 
         item.ids.forEach(id => {
             store.findRecord("workTime", id, { backgroundReload: false })
                 .then((record) => {
                     record.destroyRecord();
-                    router.transitionTo("master");
                 });
         });
     },
 
     _saveTwoWorkTimes: function (item) {
         const store = this.get("store");
-        const router = this.get("router");
         const master = this.get("master");
 
         store.createRecord("workTime", {
@@ -110,16 +107,12 @@ export default Component.extend({
                     dayOfWeek: item.dayOfWeek,
                     master
                 })
-                    .save()
-                    .then(() => {
-                        router.transitionTo("master");
-                    });
+                    .save();
             });
     },
 
     _saveOneWorkTime: function (item) {
         const store = this.get("store");
-        const router = this.get("router");
         const master = this.get("master");
 
         store.createRecord("workTime", {
@@ -128,24 +121,37 @@ export default Component.extend({
             dayOfWeek: item.dayOfWeek,
             master
         })
-            .save()
-            .then(() => {
-                router.transitionTo("master");
-            });
+            .save();
+    },
+
+    _updateWorkTimes: function (item) {
+        this._removeWorkTimes(item);
+        if (item.lunchEnd && item.lunchStart) {
+            this._saveTwoWorkTimes(item);
+        } else {
+            this._saveOneWorkTime(item);
+        }
     },
 
     _saveChangedWorkTimes: function (changedWorkTimes) {
+        const _this = this;
+        const router = this.get("router");
+
         _.forEach(changedWorkTimes, function (item) {
             if (!item.checked && item.ids.length > 0) {
-                this._removeWorkTime(item);
+                _this._removeWorkTimes(item);
             } else if (item.checked && !item.ids) {
                 if (item.lunchEnd && item.lunchStart) {
-                    this._saveTwoWorkTimes(item);
+                    _this._saveTwoWorkTimes(item);
                 } else {
-                    this._saveOneWorkTime(item);
+                    _this._saveOneWorkTime(item);
                 }
+            } else if (item.checked && item.ids) {
+                _this._updateWorkTimes(item);
             }
         });
+
+        router.transitionTo("master");
     },
 
     actions: {
