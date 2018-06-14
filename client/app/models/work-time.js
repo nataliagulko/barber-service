@@ -1,5 +1,5 @@
 import DS from 'ember-data';
-import Ember from 'ember';
+import { computed } from '@ember/object';
 import { validator, buildValidations } from 'ember-cp-validations';
 
 const Validations = buildValidations({
@@ -21,7 +21,7 @@ export default DS.Model.extend(Validations, {
 	dateFrom: DS.attr(),
 	dateTo: DS.attr(),
 	master: DS.belongsTo('master'),
-	timeRange: Ember.computed('timeFrom', 'timeTo', function () {
+	timeRange: computed('timeFrom', 'timeTo', function () {
 		return `${this.get('timeFrom')}—${this.get('timeTo')}`;
 	})
 });

@@ -115,13 +115,22 @@ export default Component.extend({
         const store = this.get("store");
         const master = this.get("master");
 
-        store.createRecord("workTime", {
-            timeFrom: item.start,
-            timeTo: item.end,
-            dayOfWeek: item.dayOfWeek,
-            master
-        })
-            .save();
+        const record = store.createRecord("workTime", {
+                timeFrom: item.start,
+                timeTo: item.end,
+                dayOfWeek: item.dayOfWeek,
+                master
+            });
+
+        record
+            .validate()
+            .then(({ validations }) => {
+                if (validations.get('isValid')) {
+                    record.save();
+                } else {
+                    this.set("errors", validations.get("errors"));
+                }
+            });
     },
 
     _updateWorkTimes: function (item) {
@@ -135,7 +144,7 @@ export default Component.extend({
 
     _saveChangedWorkTimes: function (changedWorkTimes) {
         const _this = this;
-        const router = this.get("router");
+        // const router = this.get("router");
 
         _.forEach(changedWorkTimes, function (item) {
             if (!item.checked && item.ids.length > 0) {
@@ -151,7 +160,7 @@ export default Component.extend({
             }
         });
 
-        router.transitionTo("master");
+        // router.transitionTo("master");
     },
 
     actions: {
