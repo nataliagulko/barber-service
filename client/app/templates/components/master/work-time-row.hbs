@@ -1,18 +1,15 @@
-<form class="form-inline">
-    <div class="form-group work-time-row__group">
-        <label class="mt-checkbox">
-            {{moment-format dayOfWeek "ddd" "d"}}
-            {{input type="checkbox"}}
-            <span></span>
-        </label>
-    </div>
-    <div class="form-group work-time-row__group">
-        <input type="text" class="form-control work-time-row__input" placeholder="10:00" value={{workTime.start}}> —
-        <input type="text" class="form-control work-time-row__input" placeholder="10:00" value={{workTime.end}}>
-    </div>
-    <div class="form-group work-time-row__group">
-        пер.
-        <input type="text" class="form-control work-time-row__input" placeholder="10:00" value={{workTime.lunchStart}}> —
-        <input type="text" class="form-control work-time-row__input" placeholder="10:00" value={{workTime.lunchEnd}}>
-    </div>
-</form>
+<div class="form-group work-time-row__group">
+    <label class="mt-checkbox">
+        {{moment-format workTime.dayOfWeek "ddd" "d"}} {{input type="checkbox" checked=workTime.checked}}
+        <span></span>
+    </label>
+</div>
+<div class="form-group work-time-row__group">
+    <input type="text" class="form-control work-time-row__input" placeholder="10:00" value={{workTime.start}}> —
+    <input type="text" class="form-control work-time-row__input" placeholder="10:00" value={{workTime.end}}>
+</div>
+<div class="form-group work-time-row__group">
+    пер.
+    <input type="text" class="form-control work-time-row__input" placeholder="10:00" value={{workTime.lunchStart}}> —
+    <input type="text" class="form-control work-time-row__input" placeholder="10:00" value={{workTime.lunchEnd}}>
+</div>
