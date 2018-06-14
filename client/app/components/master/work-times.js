@@ -9,15 +9,15 @@ export default Component.extend({
         const workTimes = this.get("workTimes").toArray();
         let jointWorkTimes = [];
 
-        const workingDays = this.buildWordingDays(workTimes);
-        const weekend = this.buildWeekend(workTimes);
+        const workingDays = this._buildWordingDays(workTimes);
+        const weekend = this._buildWeekend(workTimes);
         jointWorkTimes = workingDays.concat(weekend);
 
         jointWorkTimes = _.sortBy(jointWorkTimes, "dayOfWeek");
         this.set("jointWorkTimes", jointWorkTimes);
     },
 
-    buildWordingDays: function (workTimes) {
+    _buildWordingDays: function (workTimes) {
         const times = [];
         const workTimesByDayOfWeek = _.groupBy(workTimes, "data.dayOfWeek");
 
@@ -54,7 +54,7 @@ export default Component.extend({
         return times;
     },
 
-    buildWeekend: function (workTimes) {
+    _buildWeekend: function (workTimes) {
         let daysOfWeek = [0, 1, 2, 3, 4, 5, 6];
         const times = [];
 
@@ -78,54 +78,71 @@ export default Component.extend({
         return times;
     },
 
-    saveChangedWorkTimes: function (changedWorkTimes) {
+    _removeWorkTime: function (item) {
+        const store = this.get("store");
+        const router = this.get("router");
+
+        item.ids.forEach(id => {
+            store.findRecord("workTime", id, { backgroundReload: false })
+                .then((record) => {
+                    record.destroyRecord();
+                    router.transitionTo("master");
+                });
+        });
+    },
+
+    _saveTwoWorkTimes: function (item) {
         const store = this.get("store");
         const router = this.get("router");
         const master = this.get("master");
 
+        store.createRecord("workTime", {
+            timeFrom: item.start,
+            timeTo: item.lunchStart,
+            dayOfWeek: item.dayOfWeek,
+            master
+        })
+            .save()
+            .then(() => {
+                store.createRecord("workTime", {
+                    timeFrom: item.lunchEnd,
+                    timeTo: item.end,
+                    dayOfWeek: item.dayOfWeek,
+                    master
+                })
+                    .save()
+                    .then(() => {
+                        router.transitionTo("master");
+                    });
+            });
+    },
+
+    _saveOneWorkTime: function (item) {
+        const store = this.get("store");
+        const router = this.get("router");
+        const master = this.get("master");
+
+        store.createRecord("workTime", {
+            timeFrom: item.start,
+            timeTo: item.end,
+            dayOfWeek: item.dayOfWeek,
+            master
+        })
+            .save()
+            .then(() => {
+                router.transitionTo("master");
+            });
+    },
+
+    _saveChangedWorkTimes: function (changedWorkTimes) {
         _.forEach(changedWorkTimes, function (item) {
             if (!item.checked && item.ids.length > 0) {
-                item.ids.forEach(id => {
-                    store.findRecord("workTime", id, { backgroundReload: false })
-                        .then((record) => {
-                            record.destroyRecord();
-                            router.transitionTo("master");
-                        });
-                });
+                this._removeWorkTime(item);
             } else if (item.checked && !item.ids) {
                 if (item.lunchEnd && item.lunchStart) {
-                    // two work times
-                    store.createRecord("workTime", {
-                        timeFrom: item.start,
-                        timeTo: item.lunchStart,
-                        dayOfWeek: item.dayOfWeek,
-                        master
-                    })
-                        .save()
-                        .then(() => {
-                            store.createRecord("workTime", {
-                                timeFrom: item.lunchEnd,
-                                timeTo: item.end,
-                                dayOfWeek: item.dayOfWeek,
-                                master
-                            })
-                                .save()
-                                .then(() => {
-                                    router.transitionTo("master");
-                                });
-                        });
+                    this._saveTwoWorkTimes(item);
                 } else {
-                    // one work times
-                    store.createRecord("workTime", {
-                        timeFrom: item.start,
-                        timeTo: item.end,
-                        dayOfWeek: item.dayOfWeek,
-                        master
-                    })
-                        .save()
-                        .then(() => {
-                            router.transitionTo("master");
-                        });
+                    this._saveOneWorkTime(item);
                 }
             }
         });
@@ -134,10 +151,10 @@ export default Component.extend({
     actions: {
         saveWorkTimes: function () {
             const jointWorkTimes = this.get("jointWorkTimes");
-
             const changedWorkTimes = _.filter(jointWorkTimes, { "wasChanged": true });
+
             if (changedWorkTimes.length) {
-                this.saveChangedWorkTimes(changedWorkTimes);
+                this._saveChangedWorkTimes(changedWorkTimes);
             } else {
                 this.get("router").transitionTo("master");
             }
