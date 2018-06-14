@@ -8,7 +8,7 @@
                 </div>
             </div>
             <div class="portlet-body form">
-                {{#each-in workTimesByDayOfWeek as |dayOfWeek workTimes|}}
+                {{#each-in modifiedWorkTimes as |dayOfWeek workTimes|}}
                     {{#each workTimes as |workTime|}}
                         {{master/work-time-row dayOfWeek=dayOfWeek workTime=workTime}}
                     {{/each}}
