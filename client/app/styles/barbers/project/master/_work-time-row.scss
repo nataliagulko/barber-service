@@ -1,0 +1,11 @@
+.work-time-row {
+    &__input {
+        width: 63px !important;
+    }
+
+    &__group {
+        &:last-of-type {
+            margin-left: 15px;
+        }
+    }
+}
