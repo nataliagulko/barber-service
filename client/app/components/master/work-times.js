@@ -4,16 +4,16 @@ import _ from 'lodash';
 export default Component.extend({
     didInsertElement() {
         const workTimes = this.get("workTimes").toArray();
-        let modifiedWorkTimes = [];
-        
+        let jointWorkTimes = [];
+
         const workingDays = this.buildWordingDays(workTimes);
         const weekend = this.buildWeekend(workTimes);
-        modifiedWorkTimes = workingDays.concat(weekend);
-        
-        modifiedWorkTimes = _.sortBy(modifiedWorkTimes, "dayOfWeek");
-        this.set("modifiedWorkTimes", modifiedWorkTimes);
+        jointWorkTimes = workingDays.concat(weekend);
+
+        jointWorkTimes = _.sortBy(jointWorkTimes, "dayOfWeek");
+        this.set("jointWorkTimes", jointWorkTimes);
     },
-    
+
     buildWordingDays: function (workTimes) {
         const times = [];
         const workTimesByDayOfWeek = _.groupBy(workTimes, "data.dayOfWeek");
@@ -22,19 +22,23 @@ export default Component.extend({
             let item;
 
             if (workTime.length > 1) {
-                const dayOfWeek = workTime[0].get("dayOfWeek");
-                const start = workTime[0].get("timeFrom");
-                const lunchStart = workTime[0].get("timeTo");
-                const lunchEnd = workTime[1].get("timeFrom");
-                const end = workTime[1].get("timeTo");
-                item = { dayOfWeek, start, end, lunchStart, lunchEnd, checked: true };
+                item = {
+                    dayOfWeek: workTime[0].get("dayOfWeek"),
+                    start: workTime[0].get("timeFrom"),
+                    end: workTime[1].get("timeTo"),
+                    lunchStart: workTime[0].get("timeTo"),
+                    lunchEnd: workTime[1].get("timeFrom"),
+                    checked: true
+                };
             } else {
-                const dayOfWeek = workTime[0].get("dayOfWeek");
-                const start = workTime[0].get("timeFrom");
-                const end = workTime[0].get("timeTo");
-                const lunchStart = null;
-                const lunchEnd = null;
-                item = { dayOfWeek, start, end, lunchStart, lunchEnd, checked: true };
+                item = {
+                    dayOfWeek: workTime[0].get("dayOfWeek"),
+                    start: workTime[0].get("timeFrom"),
+                    end: workTime[0].get("timeTo"),
+                    lunchStart: null,
+                    lunchEnd: null,
+                    checked: true
+                };
             }
 
             times.push(item);
@@ -51,7 +55,14 @@ export default Component.extend({
             let dayOfWeek = _.find(workTimes, _.iteratee(['data.dayOfWeek', day]));
 
             if (typeof dayOfWeek === "undefined") {
-                times.push({  dayOfWeek: day, start: null, end: null, lunchStart: null, lunchEnd: null, checked: false });
+                times.push({
+                    dayOfWeek: day,
+                    start: null,
+                    end: null,
+                    lunchStart: null,
+                    lunchEnd: null,
+                    checked: false
+                });
             }
         });
 

@@ -7,10 +7,17 @@
                     <span class="caption-subject bold uppercase">{{master.fullname}}</span>
                 </div>
             </div>
-        <div class="portlet-body form">
-                {{#each modifiedWorkTimes as |workTime|}}
+            <div class="portlet-body form">
+                {{#each jointWorkTimes as |workTime|}}
                     {{master/work-time-row workTime=workTime}}
                 {{/each}}
+                <div class="form-actions">
+                    <div class="row">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="submit" class="btn btn-success">Сохранить</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
