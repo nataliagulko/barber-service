@@ -24,6 +24,10 @@ Router.map(function() {
   this.route('service-group', function() {
     this.route('edit', { path: '/edit/:id' });
   });
+
+  this.route('business', function() {
+    this.route('create');
+  });
 });
 
 export default Router;
