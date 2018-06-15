@@ -1,6 +1,5 @@
 import Component from '@ember/component';
 import { inject } from '@ember/service';
-import $ from 'jQuery';
 
 export default Component.extend({
     classNames: ['login-form'],
@@ -12,11 +11,6 @@ export default Component.extend({
                 authenticator = 'authenticator:token';
 
             this.get('session').authenticate(authenticator, credentials);
-        },
-
-        showForgetForm: function () {
-            $('#login-form').hide();
-            $('.forget-form').show();
         }
     }
 

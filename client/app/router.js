@@ -7,7 +7,6 @@ const Router = EmberRouter.extend({
 });
 
 Router.map(function() {
-  this.route('login');
   this.route('ticket', function() {
     this.route('create');
   });
@@ -28,6 +27,10 @@ Router.map(function() {
   this.route('business', function() {
     this.route('create');
   });
+  this.route('login', function() {
+    this.route('forget');
+  });
+  this.route('authenticated');
 });
 
 export default Router;

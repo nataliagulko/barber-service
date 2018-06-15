@@ -10,6 +10,8 @@
     </div>
     <div class="form-actions">
         <button type="submit" class="btn green uppercase">Войти</button>
-        <a href="javascript:;" id="forget-password" class="forget-password">Восстановить доступ</a>
+        {{#link-to "login.forget" class="forget-password"}}
+            Восстановить доступ
+        {{/link-to}}
     </div>
 </form>
