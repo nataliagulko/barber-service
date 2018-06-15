@@ -6,31 +6,50 @@ const Router = EmberRouter.extend({
   rootURL: config.rootURL
 });
 
-Router.map(function() {
-  this.route('ticket', function() {
+Router.map(function () {
+  this.route('ticket', function () {
     this.route('create');
   });
-  this.route('service', function() {
+  this.route('service', function () {
     this.route('create');
     this.route('edit', { path: '/edit/:id' });
   });
-  this.route('master', function() {
+  this.route('master', function () {
     this.route('create');
     this.route('edit', { path: '/edit/:master_id' });
     this.route('work-time', { path: '/:master_id/work-time' });
   });
   this.route('not-found', { path: '/*path' });
-  this.route('service-group', function() {
+  this.route('service-group', function () {
     this.route('edit', { path: '/edit/:id' });
   });
 
-  this.route('business', function() {
+  this.route('business', function () {
     this.route('create');
   });
-  this.route('login', function() {
+  this.route('login', function () {
     this.route('forget');
   });
-  this.route('authenticated');
+  this.route('authenticated', { page: '' }, function () {
+    this.route('ticket', function () {
+      this.route('create');
+    });
+    this.route('service', function () {
+      this.route('create');
+      this.route('edit', { path: '/edit/:id' });
+    });
+    this.route('master', function() {
+      this.route('create');
+      this.route('edit', { path: '/edit/:master_id' });
+      this.route('work-time', { path: '/:master_id/work-time' });
+    });
+    this.route('service-group', function() {
+      this.route('edit', { path: '/edit/:id' });
+    });
+    this.route('business', function() {
+      this.route('create');
+    });
+  });
 });
 
 export default Router;
