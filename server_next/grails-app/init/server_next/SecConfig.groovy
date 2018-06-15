@@ -1,6 +1,7 @@
 package server_next
 
 import com.h2osis.auth.NovaRequestMap
+import com.h2osis.constant.AuthKeys
 
 class SecConfig {
 
@@ -76,7 +77,7 @@ class SecConfig {
                 '/masterAjax/getHolidaysJson',
                 '/masterAjax/saveByPhone'
         ]) {
-            new NovaRequestMap(url: url, configAttribute: ["ROLE_ADMIN", "ROLE_USER"]).save(flush: true)
+            new NovaRequestMap(url: url, configAttribute: [AuthKeys.MASTER, AuthKeys.CLIENT, AuthKeys.SUPER_MASTER]).save(flush: true)
         }
 
         for (String url in [
@@ -106,7 +107,7 @@ class SecConfig {
                 '/masterAjax/clientStatistic',
                 '/masterAjax/payStatistic',
         ]) {
-            new NovaRequestMap(url: url, configAttribute: "ROLE_ADMIN").save(flush: true)
+            new NovaRequestMap(url: url, configAttribute: [AuthKeys.MASTER, AuthKeys.SUPER_MASTER]).save(flush: true)
         }
     }
 }
