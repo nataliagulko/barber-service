@@ -1,1 +1,15 @@
-{{outlet}}
+<div class="row">
+	<div class="col-md-6">
+		<div class="portlet light bordered">
+			<div class="portlet-title">
+				<div class="caption font-dark">
+					<i class="icon-users font-green-sharp "></i>
+					<span class="caption-subject bold uppercase">{{model.fullname}}</span>
+				</div>
+			</div>
+			<div class="portlet-body form">
+				{{master/master-form master=model}}
+			</div>
+		</div>
+	</div>
+</div>
