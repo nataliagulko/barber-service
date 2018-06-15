@@ -1,16 +1,1 @@
-{{#if session.isAuthenticated}} 
-    {{page-header}}
-    <div class="clearfix"></div>
-    <div class="page-container">
-        {{sidebar-menu}}
-        <div class="page-content-wrapper">
-            <div class="page-content">
-                {{outlet}}
-                <div class="overlay" style="display: none;"></div>
-            </div>
-        </div>
-    </div>
-    {{page-footer}} 
-{{else}}
-    {{outlet}}
-{{/if}}
+{{outlet}}
