@@ -11,7 +11,7 @@ Router.map(function () {
   this.route('login', function () {
     this.route('forget');
   });
-  this.route('authenticated', { page: '' }, function () {
+  this.route('authenticated', { page: '/' }, function () {
     this.route('ticket', function () {
       this.route('create');
     });
