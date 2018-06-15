@@ -3,11 +3,21 @@ import { computed } from '@ember/object';
 import { validator, buildValidations } from 'ember-cp-validations';
 
 const Validations = buildValidations({
-	timeFrom: validator('presence', true),
+	timeFrom: [
+		validator('presence', true),
+		validator('date', {
+			precision: 'hour',
+			format: 'HH:mm',
+		})
+	],
 	timeTo: [
 		validator('presence', true),
 		validator('dependent', {
 			on: ['timeFrom']
+		}),
+		validator('date', {
+			precision: 'hour',
+			format: 'HH:mm',
 		})
 	],
 	dayOfWeek: validator('presence', true),

@@ -78,55 +78,83 @@ export default Component.extend({
         return times;
     },
 
-    _removeWorkTimes: function (item) {
+    _removeWorkTimes: function (item, needTransition = false) {
+        const router = this.get("router");
         const store = this.get("store");
 
         item.ids.forEach(id => {
             store.findRecord("workTime", id, { backgroundReload: false })
                 .then((record) => {
                     record.destroyRecord();
+                    if (needTransition) {
+                        router.transitionTo("master");
+                    }
                 });
         });
     },
 
     _saveTwoWorkTimes: function (item) {
+        const router = this.get("router");
         const store = this.get("store");
         const master = this.get("master");
 
-        store.createRecord("workTime", {
+        const record1 = store.createRecord("workTime", {
             timeFrom: item.start,
             timeTo: item.lunchStart,
             dayOfWeek: item.dayOfWeek,
             master
-        })
-            .save()
-            .then(() => {
-                store.createRecord("workTime", {
-                    timeFrom: item.lunchEnd,
-                    timeTo: item.end,
-                    dayOfWeek: item.dayOfWeek,
-                    master
-                })
-                    .save();
+        });
+
+        const record2 = store.createRecord("workTime", {
+            timeFrom: item.lunchEnd,
+            timeTo: item.end,
+            dayOfWeek: item.dayOfWeek,
+            master
+        });
+
+        record1
+            .validate()
+            .then(({ validations }) => {
+                if (validations.get('isValid')) {
+                    record1.save()
+                        .then(() => {
+                            record2
+                                .validate()
+                                .then(({ validations }) => {
+                                    if (validations.get('isValid')) {
+                                        record2.save()
+                                            .then(() => {
+                                                router.transitionTo("master");
+                                            });
+                                    } else {
+                                        this.set("errors", validations.get("errors"));
+                                    }
+                                });
+                        });
+                } else {
+                    this.set("errors", validations.get("errors"));
+                }
             });
     },
 
     _saveOneWorkTime: function (item) {
+        const router = this.get("router");
         const store = this.get("store");
         const master = this.get("master");
 
         const record = store.createRecord("workTime", {
-                timeFrom: item.start,
-                timeTo: item.end,
-                dayOfWeek: item.dayOfWeek,
-                master
-            });
+            timeFrom: item.start,
+            timeTo: item.end,
+            dayOfWeek: item.dayOfWeek,
+            master
+        });
 
         record
             .validate()
             .then(({ validations }) => {
                 if (validations.get('isValid')) {
                     record.save();
+                    router.transitionTo("master");
                 } else {
                     this.set("errors", validations.get("errors"));
                 }
@@ -144,13 +172,12 @@ export default Component.extend({
 
     _saveChangedWorkTimes: function (changedWorkTimes) {
         const _this = this;
-        // const router = this.get("router");
 
         _.forEach(changedWorkTimes, function (item) {
             if (!item.checked && item.ids.length > 0) {
-                _this._removeWorkTimes(item);
+                _this._removeWorkTimes(item, true);
             } else if (item.checked && !item.ids) {
-                if (item.lunchEnd && item.lunchStart) {
+                if (item.lunchEnd || item.lunchStart) {
                     _this._saveTwoWorkTimes(item);
                 } else {
                     _this._saveOneWorkTime(item);
@@ -159,8 +186,6 @@ export default Component.extend({
                 _this._updateWorkTimes(item);
             }
         });
-
-        // router.transitionTo("master");
     },
 
     actions: {
