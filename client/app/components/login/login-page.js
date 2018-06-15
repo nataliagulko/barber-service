@@ -1,18 +1,5 @@
-/* globals $ */
-import Ember from 'ember';
+import Component from '@ember/component';
 
-export default Ember.Component.extend({
+export default Component.extend({
 	classNames: ["login"],
-
-	didInsertElement: function() {
-		$(".login").backstretch([
-			"/img/bg/1.jpg",
-			"/img/bg/2.jpg",
-			"/img/bg/3.jpg",
-			"/img/bg/4.jpg"
-		], {
-			fade: 1000,
-			duration: 8000
-		});
-	}
 });

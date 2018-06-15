@@ -1,23 +1,20 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { inject } from '@ember/service';
+import $ from 'jQuery';
 
-export default Ember.Component.extend({
+export default Component.extend({
     classNames: ['login-form'],
-    session: Ember.inject.service(),
+    session: inject(),
 
     actions: {
-        authenticate: function() {
+        authenticate: function () {
             var credentials = this.getProperties('identification', 'password'),
                 authenticator = 'authenticator:token';
 
             this.get('session').authenticate(authenticator, credentials);
         },
 
-        showRegisterForm: function() {
-            $('#login-form').hide();
-            $('.register-form').show();
-        },
-
-        showForgetForm: function() {
+        showForgetForm: function () {
             $('#login-form').hide();
             $('.forget-form').show();
         }
