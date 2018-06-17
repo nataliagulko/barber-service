@@ -1,23 +1,24 @@
-import Ember from 'ember';
+import $ from 'jquery';
+import Component from '@ember/component';
+import { inject } from '@ember/service';
 import config from 'barbers/config/environment';
 
-export default Ember.Component.extend({
+export default Component.extend({
+	tagName: 'form',
 	classNames: ['forget-form'],
-	toast: Ember.inject.service(),
+	notification: inject("notification-service"),
+	phoneMask: ['+', '7', '(', /[1-9]/, /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/],
 	isCodeSent: false,
 
 	actions: {
-		showLoginForm: function() {
-			$("#forget-form")[0].reset();
-			$('.forget-form').hide();
-			$('#login-form').show();
+		showLogin: function () {
+			this.set("isLoginShown", true);
 		},
 
-		sumbitCode: function() {
-			var params = $("#forget-form").serialize(),
-				toast = this.get('toast'),
-				options = {};
-				
+		sumbitCode: function () {
+			const params = $(".forget-form").serialize();
+			const notification = this.get('notification');
+
 			this.set('isCodeSent', true);
 
 			$.post({
@@ -26,29 +27,10 @@ export default Ember.Component.extend({
 			}).then((response) => {
 
 				if (!response.error) {
-					$("#requestId").val(response.id);
-					console.log(response.code);
+					this.set("code", response.id);
+					notification.showInfoMessage(response.code);
 				} else {
-					toast.error(response.error, '', options);
-				}
-			});
-		},
-
-		checkCode: function() {
-			var params = $("#forget-form").serialize(),
-				toast = this.get('toast'),
-				options = {};
-
-			$.post({
-				url: config.host + '/register/submitChangePassRequest',
-				data: params
-			}).then((response) => {
-
-				if (!response.error) {
-					$("#forget-form")[0].reset();
-					this.send('showLoginForm');
-				} else {
-					toast.error(response.error, '', options);
+					notification.showErrorMessage(response.error);
 				}
 			});
 		}
