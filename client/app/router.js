@@ -8,12 +8,7 @@ const Router = EmberRouter.extend({
 
 Router.map(function () {
   this.route('not-found', { path: '/*path' });
-  this.route('login', function () {
-    this.route('forget');
-  });
-  this.route('business', function () {
-    this.route('create');
-  });
+  this.route('login');
   this.route('authenticated', { page: '/' }, function () {
     this.route('ticket', function () {
       this.route('create');
@@ -31,6 +26,7 @@ Router.map(function () {
       this.route('edit', { path: '/edit/:id' });
     });
   });
+  this.route('registration');
 });
 
 export default Router;
