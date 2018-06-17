@@ -48,13 +48,11 @@ export default Ember.Component.extend({
 
             this.getAuthorizedStatistic(query, 'masterAjax/payStatistic')
                 .then((data) => {
-                    console.log(data);
                     this.set("costAvg", data.costAVG);
                     this.set("costSUMM", data.costSUMM);                    
                 });
             this.getAuthorizedStatistic(query, 'masterAjax/clientStatistic')
                 .then((data) => {
-                    console.log(data);
                     // this.set("cost", data.costAVG);                    
                 });
         }

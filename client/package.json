@@ -51,6 +51,8 @@
     "ember-simple-auth-token": "2.1.0",
     "ember-sortable": "^1.10.0",
     "ember-source": "^2.11.0",
+    "ember-text-mask": "^6.1.2",
+    "ember-text-mask-addons": "^5.0.1",
     "ember-toastr": "1.7.0",
     "ember-truth-helpers": "^2.0.0",
     "eslint": "^4.19.1",
