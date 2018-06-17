@@ -11,7 +11,11 @@ export default Component.extend({
                 authenticator = 'authenticator:token';
 
             this.get('session').authenticate(authenticator, credentials);
-        }
+        },
+        
+        showForgetPassword: function () {
+            this.set("isLoginShown", false);
+        },
     }
 
 });
