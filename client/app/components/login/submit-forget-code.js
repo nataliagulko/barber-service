@@ -8,7 +8,7 @@ export default Component.extend({
 
     actions: {
         checkCode: function () {
-            var params = $(".forget-form").serialize()
+            const params = $(".forget-form").serialize()
             const notification = this.get('notification');
 
             $.post({
@@ -17,6 +17,7 @@ export default Component.extend({
             }).then((response) => {
                 if (!response.error) {
                     this.set('isLoginShown', true);
+                    notification.showInfoMessage(`Доступ восстановлен`);
                 } else {
                     notification.showErrorMessage(response.error);
                 }

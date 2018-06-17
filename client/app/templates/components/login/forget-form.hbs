@@ -2,30 +2,29 @@
 <div class="form-group">
     <div class="input-icon">
         <i class="fa fa-mobile"></i>
-        {{masked-input mask=phoneMask class="form-control placeholder-no-fix" placeholder='Телефон'
-        type="tel" autofocus="autofocus" disabled=isCodeSent name="phone"}}
-    </div>
-</div>
-<div class="form-group">
-    <div class="input-icon">
-        <i class="fa fa-lock"></i>
-        {{input id="pass" class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Введите новый пароль"
-        name="pass" disabled=isCodeSent}}
-    </div>
-</div>
-<div class="form-group">
-    <div class="input-icon">
-        <i class="fa fa-check"></i>
-        {{input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Повторите пароль" name="rpass"
-        disabled=isCodeSent}}
+        {{masked-input mask=phoneMask class="form-control placeholder-no-fix" placeholder='Телефон' type="tel" autofocus="autofocus"
+        disabled=isCodeSent name="phone"}}
     </div>
 </div>
 
-{{#if isCodeSent}} 
-    {{login/submit-forget-code code=code isLoginShown=isLoginShown}}
-{{else}}
+{{#unless isCodeSent}}
+    <div class="form-group">
+        <div class="input-icon">
+            <i class="fa fa-lock"></i>
+            {{input id="pass" class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Введите новый пароль"
+            name="pass"}}
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-icon">
+            <i class="fa fa-check"></i>
+            {{input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Повторите пароль" name="rpass"}}
+        </div>
+    </div>
     <div class="form-actions">
         <button type="button" class="btn green btn-outline" {{action 'showLogin'}}>Назад</button>
         <button type="submit" class="btn btn-success uppercase pull-right" {{action 'sumbitCode'}}>Получить код</button>
     </div>
-{{/if}}
+{{else}}
+    {{login/submit-forget-code code=code isLoginShown=isLoginShown}} 
+{{/unless}}
