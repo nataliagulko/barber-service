@@ -40,7 +40,6 @@ module.exports = function(defaults) {
   app.import("vendor/plugins/jquery-slimscroll/jquery.slimscroll.js");
   app.import("vendor/plugins/jquery.blockui.min.js");
   app.import("vendor/plugins/bootstrap-switch/js/bootstrap-switch.js");
-  app.import("vendor/plugins/backstretch/jquery.backstretch.js");
   app.import("vendor/plugins/pickadate/lib/picker.js");
   app.import("vendor/plugins/pickadate/lib/picker.date.js");
   app.import("vendor/plugins/pickadate/lib/picker.time.js");

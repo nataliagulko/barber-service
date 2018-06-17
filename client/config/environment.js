@@ -27,6 +27,7 @@ module.exports = function (environment) {
 
     ENV['ember-simple-auth'] = {
         authorizer: 'authorizer:token',
+        routeAfterAuthentication: 'authenticated'
     };
     ENV['ember-simple-auth-token'] = {
         tokenPropertyName: 'access_token',

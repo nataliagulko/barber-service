@@ -1,15 +1,16 @@
-import Ember from 'ember';
+import Route from '@ember/routing/route';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
+import $ from 'jquery';
 
-export default Ember.Route.extend(ApplicationRouteMixin, {
-	session: Ember.inject.service('session'),
-
+export default Route.extend(ApplicationRouteMixin, {
 	init() {
+		this._super(...arguments);
+
 		$(document)
 			.ajaxSend(() => {
-				Ember.$(".overlay").show();
+				$(".overlay").show();
 			}).ajaxComplete(() => {
-				Ember.$(".overlay").hide();
+				$(".overlay").hide();
 			});
 	}
 });

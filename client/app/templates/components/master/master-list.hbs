@@ -14,10 +14,10 @@
 				<td>{{master.phone}}</td>
 				<td>{{master.email}}</td>
 				<td class="text-right">
-					{{#link-to "master.work-time" master.id class="btn btn-default"}}
+					{{#link-to "authenticated.master.work-time" master.id class="btn btn-default"}}
 						<i class="fa fa-clock-o"></i>
 					{{/link-to}}
-					{{#link-to "master.edit" master.id class="btn btn-default"}}
+					{{#link-to "authenticated.master.edit" master.id class="btn btn-default"}}
 						<i class="fa fa-pencil"></i>
 					{{/link-to}}
 					 <button type="button" class="btn btn-danger" {{action 'delete' master.id}}>
