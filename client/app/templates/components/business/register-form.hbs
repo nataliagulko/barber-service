@@ -15,10 +15,10 @@
 </div>
 <div class="form-group">
     <label class="control-label visible-ie8 visible-ie9">Телефон</label>
-    {{input class="form-control placeholder-no-fix" placeholder="Телефон" value=master.phone}}
+    {{masked-input mask=phoneMask class="form-control placeholder-no-fix" placeholder='Телефон' type="tel" value=master.phone}}
 </div>
 <div class="form-group">
-    <label class="control-label visible-ie8 visible-ie9">Новый пароль</label>
+    <label class="control-label visible-ie8 visible-ie9">Пароль</label>
     {{input class="form-control placeholder-no-fix" placeholder="Новый пароль" type="password" value=master.password}}
 </div>
 <div class="form-group margin-top-20 margin-bottom-20">
