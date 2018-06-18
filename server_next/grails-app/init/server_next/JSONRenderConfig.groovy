@@ -1,5 +1,6 @@
 package server_next
 
+import com.h2osis.model.Business
 import com.h2osis.model.Holiday
 import com.h2osis.model.Slot
 import com.h2osis.model.WorkTime
@@ -75,6 +76,35 @@ class JSONRenderConfig {
                 masterDetails['id'] = it.master.id
                 masterDetails['type'] = 'master'
                 relationships['master'] = masterDetails
+
+                returnArray['relationships'] = relationships
+                returnArray['attributes'] = attrs
+                return returnArray
+            }
+        }
+
+        JSON.createNamedConfig('business') {
+            it.registerObjectMarshaller(Business) {
+                def returnArray = [:]
+                returnArray['id'] = it.id
+                returnArray['type'] = 'business'
+
+                def attrs = [:]
+
+                attrs['name'] = it.name
+                attrs['inn'] = it.inn
+                attrs['description'] = it.description
+                attrs['phone'] = it.phone
+                attrs['address'] = it.address
+                attrs['email'] = it.email
+                attrs['mode'] = it.mode
+
+                def relationships = [:]
+
+//                def masterDetails = [:]
+//                masterDetails['id'] = it.masters.id
+//                masterDetails['type'] = 'master'
+//                relationships['master'] = masterDetails
 
                 returnArray['relationships'] = relationships
                 returnArray['attributes'] = attrs
