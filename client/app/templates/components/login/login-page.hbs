@@ -1,12 +1,11 @@
-<!-- BEGIN LOGO -->
 <div class="logo">
     <img src="/img/nova-logo-light.svg" alt="" />
 </div>
-<!-- END LOGO -->
-<!-- BEGIN LOGIN -->
 <div class="content">
-    <!-- BEGIN LOGIN FORM -->
-    {{login/login-form}}
-    <!-- END LOGIN FORM -->
+    {{#if isLoginShown}}
+        {{login/login-form isLoginShown=isLoginShown}}
+    {{else}}
+        {{login/forget-form isLoginShown=isLoginShown}}
+    {{/if}}
 </div>
-<!-- END LOGIN -->
+<div class="copyright"> {{moment-format now 'YYYY'}} © Nova </div>

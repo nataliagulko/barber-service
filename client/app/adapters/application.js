@@ -1,18 +1,18 @@
 import DS from 'ember-data';
 import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 import config from '../config/environment';
-import Ember from 'ember';
+import { singularize } from 'ember-inflector';
+import { camelize } from '@ember/string';
+import rsvp from 'rsvp';
+import $ from 'jquery';
 
 export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
 	authorizer: 'authorizer:token',
 	host: config.host,
-	headers: {
-		withCredentials: true
-	},
 
 	pathForType: function (type) {
-		let camelized = Ember.String.camelize(type);
-		return Ember.String.singularize(camelized);
+		let camelized = camelize(type);
+		return singularize(camelized);
 	},
 
 	findAll: function (store, type) {
@@ -76,15 +76,15 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
 	}
 });
 
-export default function authorizedAjax(session, url, data) {
+export function authorizedAjax(session, url, data) {
 	let token;
 
 	session.authorize('authorizer:token', (headerName, headerValue) => {
 		token = headerValue;
 	});
 
-	return new Ember.RSVP.Promise(function (resolve, reject) {
-		Ember.$.ajax({
+	return new rsvp.Promise(function (resolve, reject) {
+		$.ajax({
 			beforeSend: function (xhr) {
 				xhr.setRequestHeader('Authorization', token);
 			},

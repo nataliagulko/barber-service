@@ -1,39 +1,21 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { inject } from '@ember/service';
 
-export default Ember.Component.extend({
-    classNames: ['login-form'],
-    session: Ember.inject.service(),
-    validateService: Ember.inject.service("validate-service"),
-
-    didInsertElement: function() {
-        var validateService = this.get('validateService'),
-            options = {
-                rules: {
-                    identification: 'required',
-                    password: 'required'
-                }
-            };
-
-        validateService.validateForm('#login-form', options);
-    },
+export default Component.extend({
+    session: inject(),
+    phoneMask: ['+', '7', '(', /[1-9]/, /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/],
 
     actions: {
-        authenticate: function() {
+        authenticate: function () {
             var credentials = this.getProperties('identification', 'password'),
                 authenticator = 'authenticator:token';
 
             this.get('session').authenticate(authenticator, credentials);
         },
-
-        showRegisterForm: function() {
-            $('#login-form').hide();
-            $('.register-form').show();
+        
+        showForgetPassword: function () {
+            this.set("isLoginShown", false);
         },
-
-        showForgetForm: function() {
-            $('#login-form').hide();
-            $('.forget-form').show();
-        }
     }
 
 });

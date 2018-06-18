@@ -38,7 +38,7 @@ class JSONRenderConfig {
             it.registerObjectMarshaller(WorkTime) {
                 def returnArray = [:]
                 returnArray['id'] = it.id
-                returnArray['type'] = 'workTime'
+                returnArray['type'] = 'work-time'
 
                 def attrs = [:]
                 attrs['timeFrom'] = it.timeFrom
@@ -50,7 +50,7 @@ class JSONRenderConfig {
                 def masterDetails = [:]
                 masterDetails['id'] = it.master.id
                 masterDetails['type'] = 'master'
-                relationships['masters'] = masterDetails
+                relationships['master'] = masterDetails
 
                 returnArray['relationships'] = relationships
                 returnArray['attributes'] = attrs
@@ -68,14 +68,13 @@ class JSONRenderConfig {
                 attrs['start'] = it.start
                 attrs['end'] = it.end
                 attrs['slotDate'] = it.slotDate
-                attrs['master'] = it.master
 
                 def relationships = [:]
 
                 def masterDetails = [:]
                 masterDetails['id'] = it.master.id
                 masterDetails['type'] = 'master'
-                relationships['masters'] = masterDetails
+                relationships['master'] = masterDetails
 
                 returnArray['relationships'] = relationships
                 returnArray['attributes'] = attrs
