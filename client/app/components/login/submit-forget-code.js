@@ -8,7 +8,7 @@ export default Component.extend({
 
     actions: {
         checkCode: function () {
-            const params = $(".forget-form").serialize()
+            const params = $(".forget-form").serialize();
             const notification = this.get('notification');
 
             $.post({

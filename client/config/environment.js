@@ -71,7 +71,11 @@ module.exports = function (environment) {
 
     ENV['moment'] = {
         includeLocales: ['ru']
-    }
+    };
+
+    ENV['i18n'] = {
+        defaultLocale: 'ru'
+    };
 
     if (environment === 'development') {
         // ENV.APP.LOG_RESOLVER = true;

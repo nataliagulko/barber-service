@@ -42,6 +42,8 @@
     "ember-export-application-global": "^1.0.5",
     "ember-font-awesome": "^4.0.0-alpha.14",
     "ember-fullcalendar": "^1.8.0",
+    "ember-i18n": "^5.2.1",
+    "ember-i18n-inject": "0.0.2",
     "ember-load-initializers": "^0.6.0",
     "ember-lodash": "^4.18.0",
     "ember-moment": "7.4.1",
