@@ -4,6 +4,7 @@ import com.h2osis.auth.Role
 import com.h2osis.auth.User
 import com.h2osis.auth.UserRole
 import com.h2osis.constant.AuthKeys
+import com.h2osis.utils.BarberSecurityService
 import grails.transaction.Transactional
 
 
@@ -12,10 +13,16 @@ class UsersService {
 
     def messageSource
 
+    BarberSecurityService barberSecurityService
+
     def createUser(def params) {
 
-        if (params.password == null || params.phone == null || params.phone == "") {
-            return messageSource.getMessage("user.phone.and.pass.null", null,  Locale.default)
+        if(!params.password && !params.rpassword){
+            params.password = barberSecurityService.generator((('0'..'9')).join(), 6)
+        }
+
+        if (params.phone == null || params.phone == "") {
+            return messageSource.getMessage("user.phone.null", null,  Locale.default)
         } else if (!User.findByPhone(params.phone)) {
             User user = new User(username: params.login,
                     password: params.password,
