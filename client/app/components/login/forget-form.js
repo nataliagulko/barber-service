@@ -33,6 +33,23 @@ export default Component.extend({
 					notification.showErrorMessage(response.error);
 				}
 			});
+		},
+
+		checkCode: function () {
+			const params = $(".forget-form").serialize();
+			const notification = this.get('notification');
+
+			$.post({
+				url: config.host + '/register/submitChangePassRequest',
+				data: params
+			}).then((response) => {
+				if (!response.error) {
+					this.set('isLoginShown', true);
+					notification.showInfoMessage(`Доступ восстановлен`);
+				} else {
+					notification.showErrorMessage(response.error);
+				}
+			});
 		}
 	}
 });

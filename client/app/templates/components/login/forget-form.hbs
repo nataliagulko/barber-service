@@ -8,23 +8,32 @@
 </div>
 
 {{#unless isCodeSent}}
-    <div class="form-group">
-        <div class="input-icon">
-            <i class="fa fa-lock"></i>
-            {{input id="pass" class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Введите новый пароль"
-            name="pass"}}
-        </div>
+<div class="form-group">
+    <div class="input-icon">
+        <i class="fa fa-lock"></i>
+        {{input id="pass" class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Введите новый пароль"
+        name="pass"}}
     </div>
-    <div class="form-group">
-        <div class="input-icon">
-            <i class="fa fa-check"></i>
-            {{input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Повторите пароль" name="rpass"}}
-        </div>
+</div>
+<div class="form-group">
+    <div class="input-icon">
+        <i class="fa fa-check"></i>
+        {{input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Повторите пароль" name="rpass"}}
     </div>
-    <div class="form-actions">
-        <button type="button" class="btn green btn-outline" {{action 'showLogin'}}>Назад</button>
-        <button type="submit" class="btn btn-success uppercase pull-right" {{action 'sumbitCode'}}>Получить код</button>
-    </div>
+</div>
+<div class="form-actions">
+    <button type="button" class="btn green btn-outline" {{action 'showLogin'}}>Назад</button>
+    <button type="submit" class="btn btn-success uppercase pull-right" {{action 'sumbitCode'}}>Получить код</button>
+</div>
 {{else}}
-    {{login/submit-forget-code code=code isLoginShown=isLoginShown}} 
+<div class="form-group">
+    <div class="input-icon">
+        <i class="fa fa-key"></i>
+        {{input class="form-control placeholder-no-fix" type="tel" autocomplete="off" placeholder="Code" name="code" maxlength=6}}
+        {{input type="hidden" id="requestId" name="requestId" value=code}}
+    </div>
+</div>
+<div class="form-actions">
+    <button type="submit" class="btn btn-success uppercase pull-right" {{action 'checkCode'}}>Завершить</button>
+</div>
 {{/unless}}
