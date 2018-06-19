@@ -67,6 +67,10 @@ $bg-color: #364150;
         }
     }
 
+    .content textarea.form-control {
+        height: auto;
+    }
+
     .content select.form-control {
         padding-left: 9px;
         padding-right: 9px;

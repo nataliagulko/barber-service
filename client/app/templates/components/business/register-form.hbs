@@ -1,73 +1,81 @@
 <h3 class="font-green">Регистрация</h3>
 <p class="hint">Введите данные вашей организации:</p>
-<div class="form-group {{if showBusinessNameError "has-error"}}">
-    <label class="control-label visible-ie8 visible-ie9">Название</label>
-    {{input class="form-control placeholder-no-fix" placeholder="Название" value=business.name
-        focus-out=(action (mut showBusinessNameError) true)}}
-    {{#if showBusinessNameError}}
-    <small class="help-block">
-        {{v-get business 'name' 'message'}}
-    </small>
-    {{/if}}
+<div class="form-group {{if showBusinessNameError (if (v-get business 'name' 'isInvalid') "has-error")}}">
+    <label class="col-md-4 control-label">Название</label>
+    <div class="col-md-8">
+        {{input class="form-control placeholder-no-fix" value=business.name
+            focus-out=(action (mut showBusinessNameError) true)}}
+        {{#if showBusinessNameError}}
+        <small class="help-block">
+            {{v-get business 'name' 'message'}}
+        </small>
+        {{/if}}
+    </div>
 </div>
-<div class="form-group {{if showBusinessAddressError "has-error"}}">
-    <label class="control-label visible-ie8 visible-ie9">Адрес</label>
-    {{input class="form-control placeholder-no-fix" placeholder="Город, улица, дом" value=business.address
-        focus-out=(action (mut showBusinessAddressError) true)}}
-    {{#if showBusinessAddressError}}
-    <small class="help-block">
-        {{v-get business 'address' 'message'}}
-    </small>
-    {{/if}}
+<div class="form-group">
+    <label class="col-md-4 control-label">Адрес</label>
+    <div class="col-md-8">
+        {{textarea class="form-control placeholder-no-fix" rows="2" value=business.address}}
+    </div>
 </div>
 <p class="hint"> Введите личные данные: </p>
-<div class="form-group {{if showMasterFirstnameError "has-error"}}">
-    <label class="control-label visible-ie8 visible-ie9">Имя</label>
-    {{input class="form-control placeholder-no-fix" placeholder="Имя" value=master.firstname
-        focus-out=(action (mut showMasterFirstnameError) true)}}
-    {{#if showMasterFirstnameError}}
-    <small class="help-block">
-        {{v-get master 'firstname' 'message'}}
-    </small>
-    {{/if}}
+<div class="form-group {{if showMasterFirstnameError (if (v-get master 'firstname' 'isInvalid') "has-error")}}">
+    <label class="col-md-4 control-label">Имя</label>
+    <div class="col-md-8">
+        {{input class="form-control placeholder-no-fix" value=master.firstname
+            focus-out=(action (mut showMasterFirstnameError) true)}}
+        {{#if showMasterFirstnameError}}
+        <small class="help-block">
+            {{v-get master 'firstname' 'message'}}
+        </small>
+        {{/if}}
+    </div>
 </div>
-<div class="form-group {{if showMasterSecondnameError "has-error"}}">
-    <label class="control-label visible-ie8 visible-ie9">Фамилия</label>
-    {{input class="form-control placeholder-no-fix" placeholder="Фамилия" value=master.secondname
-        focus-out=(action (mut showMasterSecondnameError) true)}}
-    {{#if showMasterSecondnameError}}
-    <small class="help-block">
-        {{v-get master 'secondname' 'message'}}
-    </small>
-    {{/if}}
+<div class="form-group {{if showMasterSecondnameError (if (v-get master 'secondname' 'isInvalid') "has-error")}}">
+    <label class="col-md-4 control-label">Фамилия</label>
+    <div class="col-md-8">
+        {{input class="form-control placeholder-no-fix" value=master.secondname
+            focus-out=(action (mut showMasterSecondnameError) true)}}
+        {{#if showMasterSecondnameError}}
+        <small class="help-block">
+            {{v-get master 'secondname' 'message'}}
+        </small>
+        {{/if}}
+    </div>
 </div>
-<div class="form-group {{if showMasterPhoneError "has-error"}}">
-    <label class="control-label visible-ie8 visible-ie9">Телефон</label>
-    {{masked-input mask=phoneMask class="form-control placeholder-no-fix" placeholder='Телефон' type="tel" value=master.phone
-        focus-out=(action (mut showMasterPhoneError) true)}}
-    {{#if showMasterPhoneError}}
-    <small class="help-block">
-        {{v-get master 'phone' 'message'}}
-    </small>
-    {{/if}}
+<div class="form-group {{if showMasterPhoneError (if (v-get master 'phone' 'isInvalid') "has-error")}}">
+    <label class="col-md-4 control-label">Телефон</label>
+    <div class="col-md-8">
+        {{masked-input mask=phoneMask class="form-control placeholder-no-fix" type="tel" value=master.phone
+            focus-out=(action (mut showMasterPhoneError) true)}}
+        {{#if showMasterPhoneError}}
+        <small class="help-block">
+            {{v-get master 'phone' 'message'}}
+        </small>
+        {{/if}}
+    </div>
 </div>
-<div class="form-group {{if showMasterPasswordError "has-error"}}">
-    <label class="control-label visible-ie8 visible-ie9">Пароль</label>
-    {{input class="form-control placeholder-no-fix" placeholder="Пароль" type="password" value=master.password
-        focus-out=(action (mut showMasterPasswordError) true)}}
-    {{#if showMasterPasswordError}}
-    <small class="help-block">
-        {{v-get master 'password' 'message'}}
-    </small>
-    {{/if}}
+<div class="form-group {{if showMasterPasswordError (if (v-get master 'password' 'isInvalid') "has-error")}}">
+    <label class="col-md-4 control-label">Пароль</label>
+    <div class="col-md-8">
+        {{input class="form-control placeholder-no-fix" type="password" value=master.password
+            focus-out=(action (mut showMasterPasswordError) true)}}
+        {{#if showMasterPasswordError}}
+        <small class="help-block">
+            {{v-get master 'password' 'message'}}
+        </small>
+        {{/if}}
+    </div>
 </div>
-<div class="form-group margin-top-20 margin-bottom-20">
-    <label class="mt-checkbox mt-checkbox-outline">
-        <input name="tnc" type="checkbox"> I agree to the
-        <a href="javascript:;">Terms of Service </a> &amp;
-        <a href="javascript:;">Privacy Policy </a>
-        <span></span>
-    </label>
+<div class="form-group">
+    <div class="col-md-offset-4 col-md-8">
+        <label class="mt-checkbox mt-checkbox-outline">
+            <input name="tnc" type="checkbox"> I agree to the
+            <a href="javascript:;">Terms of Service </a> &amp;
+            <a href="javascript:;">Privacy Policy </a>
+            <span></span>
+        </label>
+    </div>
 </div>
 {{#if showMasterErrors}}
     <div class="form-group">
@@ -87,7 +95,7 @@
         </ul>
     </div>
 {{/if}}
-<div class="form-actions">
+<div class="form-actions text-center">
     <button type="submit" class="btn btn-success uppercase" {{action "saveBusinessAndUser"}}>
         Зарегистрировать
     </button>

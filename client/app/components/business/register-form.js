@@ -4,7 +4,7 @@ import { readOnly } from '@ember/object/computed';
 
 export default Component.extend({
     tabName: 'form',
-    classNames: ['register-form'],
+    classNames: ['register-form, form-horizontal'],
     notification: inject("notification-service"),
     constants: inject("constants-service"),
     phoneMask: readOnly("constants.PHONE_MASK"),
