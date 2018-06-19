@@ -19,7 +19,7 @@ class BusinessAjaxController {
             Business business = Business.get(data.id)
             if (business) {
                 JSON.use('business') {
-                    render([data:business] as JSON)
+                    render([data: business] as JSON)
                 }
             } else {
                 render([msg: g.message(code: "business.get.user.not.found")] as JSON)
@@ -34,39 +34,42 @@ class BusinessAjaxController {
         def data = request.JSON.data
         def attrs = data.attributes
         def relationships = data.relationships
-            if (attrs.name && attrs.address && relationships.masters) {
-                Business business = new Business()
+        if (attrs.name && attrs.address && relationships.masters) {
+            Business business = new Business()
 
-                business.addMaster(relationships.masters.data[0].id)
-
-                business.name = attrs.name
-                business.inn = attrs.inn
-                business.description = attrs.description
-                business.phone = attrs.phone
-                business.address = attrs.address
-                business.email = attrs.email
-                business.mode = attrs.mode
-
-                business.smsCentrLogin = attrs.smsCentrLogin
-                business.smsCentrPass = attrs.smsCentrPass
-
-                business.save(flush: true)
-                JSON.use('business') {
-                    render([data: business] as JSON)
-                }
-            } else {
-                errors.add([
-                        "status": 422,
-                        "detail": g.message(code: "business.create.params.null"),
-                        "source": [
-                                "pointer": "data"
-                        ]
-                ])
-                response.status = 422
-                render([errors: errors] as JSON)
+            relationships.master.data.id.each {
+                business.addToMasters(User.get(it.id))
             }
+
+
+            business.name = attrs.name
+            business.inn = attrs.inn
+            business.description = attrs.description
+            business.phone = attrs.phone
+            business.address = attrs.address
+            business.email = attrs.email
+            business.mode = attrs.mode
+
+            business.smsCentrLogin = attrs.smsCentrLogin
+            business.smsCentrPass = attrs.smsCentrPass
+
+            business.save(flush: true)
+            JSON.use('business') {
+                render([data: business] as JSON)
+            }
+        } else {
+            errors.add([
+                    "status": 422,
+                    "detail": g.message(code: "business.create.params.null"),
+                    "source": [
+                            "pointer": "data"
+                    ]
+            ])
+            response.status = 422
+            render([errors: errors] as JSON)
         }
     }
+
 
     def update() {
         def errors = []
