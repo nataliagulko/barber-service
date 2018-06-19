@@ -19,19 +19,26 @@ export default Component.extend({
             masterRecord
                 .validate()
                 .then(({ validations }) => {
+
                     if (validations.get('isValid')) {
                         _this.set("showMasterErrors", false);
                         masterRecord.save()
                             .then((master) => {
+
                                 businessRecord
                                     .validate()
                                     .then(({ validations }) => {
+
                                         if (validations.get('isValid')) {
                                             _this.set("showBusinessErrors", false);
                                             businessRecord.set("masters", [master]);
                                             businessRecord.save()
-                                                .then((b) => {
-                                                    _this.get("notification").showInfoMessage(`Организация ${b.get("name")} создана`);
+                                                .then((business) => {
+
+                                                    _this.get("notification").showInfoMessage(`
+                                                        Организация ${business.get("name")} создана.
+                                                        ${master.get("firstname")}, используйте номер телефона и пароль для входа.
+                                                    `);
                                                     _this.get("router").transitionTo("login");
                                                 });
                                         } else {
