@@ -48,7 +48,7 @@ class BootStrap {
         } else {
 
             if (!User.count()) {
-                User user = new User(username: "nnogieva", password: "123", email: "sokolovep@gmail.com", firstname: "natalya", secondname: "nogieva", phone: "+7(904)238-79-70").save(flush: true)
+                User user = new User(username: "ngulko", password: "123456", email: "ng@gmail.com", firstname: "natalya", secondname: "gulko", phone: "+7(904)238-79-70").save(flush: true)
                 Role role = Role.findByAuthority(AuthKeys.ADMIN)
                 new UserRole(user: user, role: role).save(flush: true)
 

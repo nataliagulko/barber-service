@@ -34,11 +34,7 @@ export default Component.extend({
                                             businessRecord.set("masters", [master]);
                                             businessRecord.save()
                                                 .then((business) => {
-
-                                                    _this.get("notification").showInfoMessage(`
-                                                        Организация ${business.get("name")} создана.
-                                                        ${master.get("firstname")}, используйте номер телефона и пароль для входа.
-                                                    `);
+                                                    _this.get("notification").showInfoMessage(`Организация ${business.get("name")} создана. ${master.get("firstname")}, используйте номер телефона и пароль для входа.`);
                                                     _this.get("router").transitionTo("login");
                                                 });
                                         } else {

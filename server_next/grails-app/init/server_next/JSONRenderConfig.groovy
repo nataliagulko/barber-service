@@ -4,6 +4,7 @@ import com.h2osis.model.Business
 import com.h2osis.model.Holiday
 import com.h2osis.model.Slot
 import com.h2osis.model.WorkTime
+import com.h2osis.auth.User
 import grails.converters.JSON
 
 /**
@@ -107,6 +108,13 @@ class JSONRenderConfig {
                 
                 returnArray['relationships'] = relationships
                 returnArray['attributes'] = attrs
+                return returnArray
+            }
+
+            it.registerObjectMarshaller(User) {
+                def returnArray = [:]
+                returnArray['id'] = it.id
+                returnArray['type'] = 'master'
                 return returnArray
             }
         }
