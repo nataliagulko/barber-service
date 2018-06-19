@@ -22,12 +22,13 @@ export default Component.extend({
                     if (validations.get('isValid')) {
                         _this.set("showMasterErrors", false);
                         masterRecord.save()
-                            .then(() => {
+                            .then((master) => {
                                 businessRecord
                                     .validate()
                                     .then(({ validations }) => {
                                         if (validations.get('isValid')) {
                                             _this.set("showBusinessErrors", false);
+                                            businessRecord.set("masters", [master]);
                                             businessRecord.save()
                                                 .then((b) => {
                                                     _this.get("notification").showInfoMessage(`Организация ${b.get("name")} создана`);

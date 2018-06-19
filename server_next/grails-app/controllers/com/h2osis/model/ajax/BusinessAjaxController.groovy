@@ -33,11 +33,12 @@ class BusinessAjaxController {
         def errors = []
         def data = request.JSON.data
         def attrs = data.attributes
-        def principal = springSecurityService.principal
-        User user = User.get(principal.id)
-        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
-            if (attrs.name && attrs.address) {
+        def relationships = data.relationships
+            if (attrs.name && attrs.address && relationships.masters) {
                 Business business = new Business()
+
+                business.addMaster(relationships.masters.data[0].id)
+
                 business.name = attrs.name
                 business.inn = attrs.inn
                 business.description = attrs.description
@@ -64,16 +65,6 @@ class BusinessAjaxController {
                 response.status = 422
                 render([errors: errors] as JSON)
             }
-        } else {
-            errors.add([
-                    "status": 422,
-                    "detail": g.message(code: "business.create.not.admin"),
-                    "source": [
-                            "pointer": "data"
-                    ]
-            ])
-            response.status = 422
-            render([errors: errors] as JSON)
         }
     }
 
