@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import Component from '@ember/component';
 import { inject } from '@ember/service';
-import { alias } from '@ember/object/computed';
+import { alias, readOnly } from '@ember/object/computed';
 import config from 'barbers/config/environment';
 import { validator, buildValidations } from 'ember-cp-validations';
 
@@ -22,9 +22,14 @@ export default Component.extend(Validations, {
 	tagName: 'form',
 	classNames: ['forget-form'],
 	notification: inject("notification-service"),
-	phoneMask: ['+', '7', '(', /[1-9]/, /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/],
+	constants: inject("constants-service"),
+	phoneMask: readOnly("constants.PHONE_MASK"),
 	isFormInvalid: alias('validations.isInvalid'),
 	isCodeSent: false,
+
+	didInsertElement() {
+		this.get("constants");
+	},
 
 	actions: {
 		showLogin: function () {
