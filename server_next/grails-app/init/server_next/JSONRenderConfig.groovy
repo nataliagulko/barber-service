@@ -109,13 +109,6 @@ class JSONRenderConfig {
                 returnArray['attributes'] = attrs
                 return returnArray
             }
-
-            it.registerObjectMarshaller(User) {
-                def returnArray = [:]
-                returnArray['id'] = it.id
-                returnArray['type'] = 'master'
-                return returnArray
-            }
         }
     }
 }
