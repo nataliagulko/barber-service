@@ -36,7 +36,7 @@ class BusinessAjaxController {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
         if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
-            if (attrs.name && attrs.inn) {
+            if (attrs.name && attrs.address) {
                 Business business = new Business()
                 business.name = attrs.name
                 business.inn = attrs.inn
@@ -85,7 +85,7 @@ class BusinessAjaxController {
         User user = User.get(principal.id)
         Business business = Business.get(data.id)
         if (business && user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
-            if (attrs.name && attrs.inn) {
+            if (attrs.name && attrs.address) {
                 business.name = attrs.name
                 business.inn = attrs.inn
                 business.description = attrs.description

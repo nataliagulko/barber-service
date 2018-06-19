@@ -8,7 +8,14 @@ import { validator, buildValidations } from 'ember-cp-validations';
 const Validations = buildValidations({
 	'phone': validator('presence', true),
 	'pass': validator('presence', true),
-	'rpass': validator('presence', true)
+	'rpass': [
+		validator('presence', true),
+		validator('confirmation', {
+			on: 'pass',
+			message: '{description} do not match',
+			description: 'Passwords'
+		})
+	]
 });
 
 export default Component.extend(Validations, {
@@ -34,7 +41,6 @@ export default Component.extend(Validations, {
 				url: config.host + '/register/createChangePassRequest',
 				data: params
 			}).then((response) => {
-
 				if (!response.error) {
 					this.set("requestId", response.id);
 					notification.showInfoMessage(response.code);
