@@ -22,7 +22,7 @@ class Business {
         name nullable: false
         inn nullable: true
         address nullable: false
-        phone nullable: false, widget: "phone"
+        phone nullable: true, widget: "phone"
         email nullable: true
         description nullable: true
         masters nullable: true, minSize: 0
