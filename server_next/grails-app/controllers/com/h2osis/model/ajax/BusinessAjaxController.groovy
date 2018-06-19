@@ -41,7 +41,6 @@ class BusinessAjaxController {
                 business.addToMasters(User.get(new Long(it)))
             }
 
-
             business.name = attrs.name
             business.inn = attrs.inn
             business.description = attrs.description

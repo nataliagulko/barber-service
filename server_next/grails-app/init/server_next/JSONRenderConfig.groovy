@@ -101,13 +101,19 @@ class JSONRenderConfig {
 
                 def relationships = [:]
 
-//                def masterDetails = [:]
-//                masterDetails['id'] = it.masters.id
-//                masterDetails['type'] = 'master'
-//                relationships['master'] = masterDetails
-
+                def mastersDetails = [:]
+                mastersDetails['data'] = it.masters
+                relationships['masters'] = mastersDetails
+                
                 returnArray['relationships'] = relationships
                 returnArray['attributes'] = attrs
+                return returnArray
+            }
+
+            it.registerObjectMarshaller(User) {
+                def returnArray = [:]
+                returnArray['id'] = it.id
+                returnArray['type'] = 'master'
                 return returnArray
             }
         }
