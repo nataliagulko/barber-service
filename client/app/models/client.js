@@ -1,10 +1,17 @@
 import DS from 'ember-data';
-import Ember from 'ember';
+import { computed } from '@ember/object';
 import { validator, buildValidations } from 'ember-cp-validations';
 
 const Validations = buildValidations({
     firstname: validator('presence', true),
-    phone: validator('presence', true),
+    phone: [
+        validator('presence', true),
+        validator('format', {
+            type: 'phone',
+            allowBlank: true,
+            regex: /(\+7\(\d{3}\)\d{3}-\d{2})-(\d{1})/
+        })
+    ],
     email: [
         validator('format', {
             type: 'email',
@@ -26,7 +33,7 @@ export default DS.Model.extend(Validations, {
     accountExpired: DS.attr(),
     accountLocked: DS.attr(),
     passwordExpired: DS.attr(),
-    fullname: Ember.computed('firstname', 'secondname', function() {
+    fullname: computed('firstname', 'secondname', function() {
         if (!this.get('secondname')) {
             return this.get('firstname');  
         }

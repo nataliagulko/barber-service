@@ -1,32 +1,38 @@
 import DS from 'ember-data';
-import Ember from 'ember';
+import { computed } from '@ember/object';
 import { validator, buildValidations } from 'ember-cp-validations';
 
 const Validations = buildValidations({
     firstname: validator('presence', true),
     secondname: validator('presence', true),
-    phone: validator('presence', true),
     email: [
         validator('format', {
             type: 'email',
             allowBlank: true
         })
     ],
+    phone: [
+        validator('presence', true),
+        validator('format', {
+            type: 'phone',
+            allowBlank: false,
+            regex: /(\+7\(\d{3}\)\d{3}-\d{2})-(\d{1})/
+        })
+    ],
     password: [
-        // validator('presence', true),
         validator('length', {
             min: 6,
             max: 20
         })
     ],
     rpassword: [
-        // validator('presence', true),
         validator('confirmation', {
             on: 'password',
             message: '{description} do not match',
-            description: 'Passwords'
+            description: 'Passwords',
+            allowBlank: true
         })
-    ]
+    ],
 });
 
 export default DS.Model.extend(Validations, {
@@ -42,7 +48,7 @@ export default DS.Model.extend(Validations, {
     accountExpired: DS.attr('boolean'),
     accountLocked: DS.attr('boolean'),
     passwordExpired: DS.attr('boolean'),
-    fullname: Ember.computed('firstname', 'secondname', function() {
+    fullname: computed('firstname', 'secondname', function () {
         return `${this.get('firstname')} ${this.get('secondname')}`;
     })
 });
