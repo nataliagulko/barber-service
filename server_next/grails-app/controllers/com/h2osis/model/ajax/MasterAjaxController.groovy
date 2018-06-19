@@ -27,8 +27,8 @@ class MasterAjaxController {
         def errors = []
         def data = request.JSON.data
         def attrs = data.attributes
-        if (attrs.phone && ((attrs.password && attrs.rpassword) || (!attrs.password && !attrs.rpassword))) {
-            if (attrs.password.equals(attrs.rpassword) || (!attrs.password && !attrs.rpassword)) {
+        if (attrs.phone && ((attrs.password && attrs.rpassword) || (attrs.password && !attrs.rpassword) || (!attrs.password && !attrs.rpassword))) {
+            if (attrs.password.equals(attrs.rpassword) || (attrs.password && !attrs.rpassword) || (!attrs.password && !attrs.rpassword)) {
                 def result = usersService.createUser(attrs)
                 if (result instanceof User) {
                     //result.setPassword(null)

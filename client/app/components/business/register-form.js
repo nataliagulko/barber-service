@@ -1,9 +1,12 @@
 import Component from '@ember/component';
+import { inject } from '@ember/service';
+import { readOnly } from '@ember/object/computed';
 
 export default Component.extend({
     tabName: 'form',
     classNames: ['register-form'],
-    phoneMask: ['+', '7', '(', /[1-9]/, /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/],
+    constants: inject("constants-service"),
+    phoneMask: readOnly("constants.PHONE_MASK"),
 
     actions: {
         saveBusinessAndUser: function () {
