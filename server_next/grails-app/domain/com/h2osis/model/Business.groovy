@@ -18,6 +18,11 @@ class Business {
     static hasMany = [masters: User, clients: User] // ссыль на мастеров и клиентов
 
 
+    static mapping = {
+        masters joinTable: [name: "business_master", key: "business_masters_id"]
+        clients joinTable: [name: "business_client", key: "business_clients_id"]
+    }
+
     static constraints = {
         name nullable: false
         inn nullable: true
