@@ -371,6 +371,7 @@ class JSONRenderConfig {
                 attrs['address'] = it.address
                 attrs['email'] = it.email
                 attrs['mode'] = it.mode
+                attrs['guid'] = it.guid
 
                 def relationships = [:]
 
