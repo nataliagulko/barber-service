@@ -51,23 +51,18 @@ class JSONRenderConfig {
                 attrs['username'] = it.username
                 attrs['email'] = it.email
                 attrs['masterTZ'] = it.masterTZ
+                attrs['role'] = it.role
+                attrs['business'] = it.business
                 returnArray['attributes'] = attrs
 
                 return returnArray
             }
 
-            it.registerObjectMarshaller(Holiday) {
-                def holidayReturn = [:]
-                holidayReturn['id'] = it.id
-                holidayReturn['type'] = 'holiday'
-                return holidayReturn
-            }
-
-            it.registerObjectMarshaller(WorkTime) {
-                def workTimeReturn = [:]
-                workTimeReturn['id'] = it.id
-                workTimeReturn['type'] = 'workTime'
-                return workTimeReturn
+            it.registerObjectMarshaller(Business) {
+                def businessReturn = [:]
+                businessReturn['id'] = it.id
+                businessReturn['type'] = 'business'
+                return businessReturn
             }
         }
 

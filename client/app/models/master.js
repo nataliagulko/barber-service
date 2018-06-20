@@ -33,6 +33,7 @@ const Validations = buildValidations({
             allowBlank: true
         })
     ],
+    business: validator('belongsTo'),
 });
 
 export default DS.Model.extend(Validations, {
@@ -48,6 +49,8 @@ export default DS.Model.extend(Validations, {
     accountExpired: DS.attr('boolean'),
     accountLocked: DS.attr('boolean'),
     passwordExpired: DS.attr('boolean'),
+    role: DS.attr(),
+    business: DS.belongsTo('business', { async: true }),
     fullname: computed('firstname', 'secondname', function () {
         return `${this.get('firstname')} ${this.get('secondname')}`;
     })
