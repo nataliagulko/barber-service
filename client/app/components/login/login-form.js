@@ -15,8 +15,9 @@ export default Component.extend({
 
             this.get('session').authenticate(authenticator, credentials)
                 .then(() => { },
-                    (xhr) => {
-                        this.get("notification").showInfoMessage(xhr);
+                    () => {
+                        const message = this.get("i18n").t("auth.login.bad.credentials");
+                        this.get("notification").showErrorMessage(message);
                     });
         },
 

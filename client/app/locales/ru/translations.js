@@ -43,6 +43,7 @@ export default {
     "auth.login.do.register": "Зарегистрироваться",
     "auth.login.login.not.free": "Логин занят",
     "auth.login.login.text.must.be": "Логин должен быть заполнен",
+    "auth.login.bad.credentials": "Неверные учетные данные",
     "auth.login.empty.err": "Все поля должны быть заполнены",
     "auth.login.phone": "Телефон",
     "auth.login.email": "E-mail",
