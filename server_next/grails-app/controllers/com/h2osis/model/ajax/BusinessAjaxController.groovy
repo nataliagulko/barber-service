@@ -121,6 +121,7 @@ class BusinessAjaxController {
     }
 
     def destroy() {
+        def errors = []
         def data = request.JSON.data
         if (data.id) {
             Business business = Business.get(data.id)
@@ -128,41 +129,88 @@ class BusinessAjaxController {
                 business.delete(flush: true)
                 render([errors: []] as JSON)
             } else {
-                render([errors: { g.message(code: "user.get.user.not.found") }] as JSON)
+                errors.add([
+                        "status": 422,
+                        "detail": g.message(code: "user.get.user.not.found"),
+                        "source": [
+                                "pointer": "data"
+                        ]
+                ])
+                response.status = 422
+                render([errors: errors] as JSON)
             }
         } else {
-            render([errors: { g.message(code: "user.get.id.null") }] as JSON)
+            errors.add([
+                    "status": 422,
+                    "detail": g.message(code: "user.get.id.null"),
+                    "source": [
+                            "pointer": "data"
+                    ]
+            ])
+            response.status = 422
+            render([errors: errors] as JSON)
         }
     }
 
     def find() {
+        def errors = []
         def data = request.JSON.query
         if (data && data.value) {
-            String value = params.value
-            List<Business> businessList = Business.findAllByName(data.value)
+            String value = data.value
+            List<Business> businessList = Business.findAllByNameOrGuid(value, value)
             if (businessList) {
                 JSON.use('business') {
                     render([data: businessList] as JSON)
                 }
             } else {
-                render([msg: g.message(code: "business.fine.not.found")] as JSON)
+                errors.add([
+                        "status": 422,
+                        "detail": g.message(code: "business.fine.not.found"),
+                        "source": [
+                                "pointer": "data"
+                        ]
+                ])
+                response.status = 422
+                render([errors: errors] as JSON)
             }
         } else {
-            render([msg: g.message(code: "business.value.null")] as JSON)
+            errors.add([
+                    "status": 422,
+                    "detail": g.message(code: "business.value.null"),
+                    "source": [
+                            "pointer": "data"
+                    ]
+            ])
+            response.status = 422
+            render([errors: errors] as JSON)
         }
     }
 
     def list() {
-        List<Business> businessList = Business.all
-        if (businessList) {
+        def errors = []
+        List<Business> businessList
+        def data = request.JSON.query
+        if (data && data.value) {
+            String value = data.value
+            businessList = Business.findAllByNameOrGuidOrPhone(value, value, value)
+        } else {
+            businessList = Business.all
+        }
 
+        if (businessList) {
             JSON.use('business') {
                 render([data: businessList] as JSON)
             }
         } else {
-            render([errors: { g.message(code: "user.fine.not.found") }] as JSON)
+            errors.add([
+                    "status": 422,
+                    "detail": g.message(code: "user.fine.not.found"),
+                    "source": [
+                            "pointer": "data"
+                    ]
+            ])
+            response.status = 422
+            render([errors: errors] as JSON)
         }
     }
-
-
 }
