@@ -4,6 +4,7 @@ import { readOnly } from '@ember/object/computed';
 
 export default Component.extend({
     session: inject(),
+    notification: inject("notification-service"),
     constants: inject("constants-service"),
     phoneMask: readOnly("constants.PHONE_MASK"),
 
@@ -12,7 +13,11 @@ export default Component.extend({
             var credentials = this.getProperties('identification', 'password'),
                 authenticator = 'authenticator:token';
 
-            this.get('session').authenticate(authenticator, credentials);
+            this.get('session').authenticate(authenticator, credentials)
+                .then(() => { },
+                    (xhr) => {
+                        this.get("notification").showInfoMessage(xhr);
+                    });
         },
 
         showForgetPassword: function () {
