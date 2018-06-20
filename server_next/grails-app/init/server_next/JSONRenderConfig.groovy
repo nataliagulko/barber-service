@@ -53,6 +53,7 @@ class JSONRenderConfig {
                 attrs['email'] = it.email
                 attrs['masterTZ'] = it.masterTZ
                 attrs['role'] = it.role
+                attrs['guid'] = it.guid
 
                 def relationships = [:]
                 def businessDetails = [:]
@@ -97,6 +98,7 @@ class JSONRenderConfig {
                 attrs['username'] = it.username
                 attrs['email'] = it.email
                 attrs['masterTZ'] = it.masterTZ
+                attrs['guid'] = it.guid
                 returnArray['attributes'] = attrs
                 return returnArray
             }
