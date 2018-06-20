@@ -1,5 +1,6 @@
 package server_next
 
+import com.h2osis.auth.Role
 import com.h2osis.model.Business
 import com.h2osis.model.Holiday
 import com.h2osis.model.Service
@@ -52,7 +53,18 @@ class JSONRenderConfig {
                 attrs['email'] = it.email
                 attrs['masterTZ'] = it.masterTZ
                 attrs['role'] = it.role
-                attrs['business'] = it.business
+
+                def relationships = [:]
+                def businessDetails = [:]
+                businessDetails['data'] = it.business
+                relationships['business'] = businessDetails
+
+                def roleDetails = [:]
+                roleDetails['data'] = it.role
+                relationships['role'] = roleDetails
+
+
+                returnArray['relationships'] = relationships
                 returnArray['attributes'] = attrs
 
                 return returnArray
@@ -63,6 +75,12 @@ class JSONRenderConfig {
                 businessReturn['id'] = it.id
                 businessReturn['type'] = 'business'
                 return businessReturn
+            }
+            it.registerObjectMarshaller(Role) {
+                def roleReturn = [:]
+                roleReturn['id'] = it.id
+                roleReturn['type'] = 'role'
+                return roleReturn
             }
         }
 
