@@ -11,6 +11,7 @@ class Business {
     String address
     String email
     String mode
+    String guid
 
     String smsCentrLogin
     String smsCentrPass

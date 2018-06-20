@@ -51,6 +51,8 @@ class BusinessAjaxController {
 
             business.smsCentrLogin = attrs.smsCentrLogin
             business.smsCentrPass = attrs.smsCentrPass
+            business.guid = UUID.randomUUID().toString()
+
 
             business.save(flush: true)
             JSON.use('business') {
