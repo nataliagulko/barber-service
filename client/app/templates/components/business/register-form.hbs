@@ -1,17 +1,18 @@
-{{#bs-form model=business onSubmit=(action "sumbit") formLayout="horizontal" classNames="register-form" novalidate=true as |form|}}
-    {{form.element controlType="text" label="Название" property="name"}} 
+{{#bs-form model=business onSubmit=(action "saveBusiness") formLayout="horizontal" classNames="register-form" novalidate=true as |form|}}
+    <h3 class="font-green">Регистрация</h3>
+    <p class="hint">Введите данные вашей организации:</p>
     {{#form.group validation=nameValidation}}
         <label class="control-label col-md-4 ">Название</label>
         <div class="col-md-8">
             {{input class="form-control" value=business.name}}
         </div>
     {{/form.group}} 
-    {{form.element controlType="textarea" label="Адрес" placeholder="Адрес" property="password" rows="2"}}
-    {{bs-button defaultText="Зарегистрировать" type="success" buttonType="submit"}} 
+    {{form.element controlType="textarea" label="Адрес" property="address" rows="2"}}
+    <div class="form-actions text-center">
+        {{bs-button defaultText="Зарегистрировать" type="success" buttonType="submit"}} 
+    </div>
 {{/bs-form}}
 
-<h3 class="font-green">Регистрация</h3>
-<p class="hint">Введите данные вашей организации:</p>
 <div class="form-group {{if showBusinessNameError (if (v-get business 'name' 'isInvalid') " has-error ")}}">
     <label class="col-md-4 control-label">Название</label>
     <div class="col-md-8">

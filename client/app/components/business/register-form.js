@@ -8,8 +8,27 @@ export default Component.extend({
     phoneMask: readOnly("constants.PHONE_MASK"),
 
     actions: {
-        submit: function () {
+        saveBusiness: function () {
             console.log("submit");
+            const _this = this;
+            const businessRecord = this.get("business");
+
+            businessRecord
+                .validate()
+                .then(({ validations }) => {
+
+                    if (validations.get('isValid')) {
+                        _this.set("showBusinessErrors", false);
+                        // businessRecord.set("masters", [master]);
+                        // businessRecord.save()
+                        //     .then((business) => {
+                        //         _this.get("notification").showInfoMessage(`Организация ${business.get("name")} создана. ${master.get("firstname")}, используйте номер телефона и пароль для входа.`);
+                        //         _this.get("router").transitionTo("login");
+                        //     });
+                    } else {
+                        _this.set("showBusinessErrors", true);
+                    }
+                });
         },
 
         saveBusinessAndUser: function () {
