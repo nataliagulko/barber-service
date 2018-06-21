@@ -38,6 +38,7 @@ export default {
     "auth.login.label": "Войти",
     "auth.login.password": "Пароль",
     "auth.login.password.change": "Восстановить доступ",
+    "auth.login.access.restore": "Доступ восстановлен. Используйте новый пароль для входа",
     "auth.login.do.register": "Зарегистрироваться",
     "auth.login.login.not.free": "Логин занят",
     "auth.login.login.text.must.be": "Логин должен быть заполнен",

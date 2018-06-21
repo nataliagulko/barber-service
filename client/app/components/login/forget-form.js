@@ -6,14 +6,29 @@ import config from 'nova/config/environment';
 import { validator, buildValidations } from 'ember-cp-validations';
 
 const Validations = buildValidations({
-	'phone': validator('presence', true),
-	'pass': validator('presence', true),
+	'phone': [
+		validator('presence', true),
+		validator('format', {
+			type: 'phone',
+			allowBlank: false,
+			regex: /(\+7\(\d{3}\)\d{3}-\d{2})-(\d{1})/
+		})
+	],
+	'pass': [
+		validator('presence', true),
+		validator('length', {
+			min: 6,
+			max: 20
+		}),
+		validator('format', {
+			regex: /((?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20})/,
+			messageKey: 'auth.registration.password.validation.message'
+		})
+	],
 	'rpass': [
 		validator('presence', true),
 		validator('confirmation', {
 			on: 'pass',
-			message: '{description} do not match',
-			description: 'Passwords'
 		})
 	]
 });
@@ -29,22 +44,34 @@ export default Component.extend(Validations, {
 		this.get("constants");
 	},
 
+	submit() {
+		const isCodeSent = this.get("isCodeSent");
+
+		if (isCodeSent) {
+			this.send("checkCode");
+		} else {
+			this.send("sumbitCode");
+		}
+	},
+
 	actions: {
 		showLogin: function () {
 			this.set("isLoginShown", true);
 		},
 
 		sumbitCode: function () {
-			const params = $(".forget-form").serialize();
 			const notification = this.get('notification');
-
-			this.set('isCodeSent', true);
+			const params = {
+				phone: this.get("phone"),
+				pass: this.get("pass")
+			};
 
 			$.post({
 				url: config.host + '/register/createChangePassRequest',
 				data: params
 			}).then((response) => {
 				if (!response.error) {
+					this.set('isCodeSent', true);
 					this.set("requestId", response.id);
 					notification.showInfoMessage(response.code);
 				} else {
@@ -54,8 +81,13 @@ export default Component.extend(Validations, {
 		},
 
 		checkCode: function () {
-			const params = $(".forget-form").serialize();
 			const notification = this.get('notification');
+			const i18n = this.get('i18n');
+			const params = {
+				phone: this.get("phone"),
+				requestId: this.get("requestId"),
+				code: this.get("code")
+			};
 
 			$.post({
 				url: config.host + '/register/submitChangePassRequest',
@@ -63,7 +95,7 @@ export default Component.extend(Validations, {
 			}).then((response) => {
 				if (!response.error) {
 					this.set('isLoginShown', true);
-					notification.showInfoMessage(`Доступ восстановлен`);
+					notification.showInfoMessage(i18n.t("auth.login.access.restore"));
 				} else {
 					notification.showErrorMessage(response.error);
 				}

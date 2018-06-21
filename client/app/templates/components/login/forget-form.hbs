@@ -1,23 +1,23 @@
 {{#bs-form model=this formLayout="vertical" classNames="forget-form" autocomplete="off" novalidate=true as |form|}}
     <h3 class="form-title font-green">{{t "auth.login.password.change"}}</h3>
     {{#form.element controlType="tel" label="" property="phone" useIcons=false as |el|}}
-        {{masked-input class="form-control" mask=phoneMask placeholder=(t "auth.login.phone")  value=el.value}}
+        {{masked-input class="form-control" mask=phoneMask placeholder=(t "auth.login.phone")  value=el.value disabled=isCodeSent}}
     {{/form.element}}
     {{#unless isCodeSent}}
-        {{form.element controlType="password" label="" placeholder=(t "auth.login.password.set.label") property="pass"}}
-        {{form.element controlType="password" label="" placeholder=(t "auth.login.password.repeat.label") property="rpass"}}
+        {{form.element controlType="password" label="" placeholder=(t "auth.login.password.set.label") property="pass" useIcons=false}}
+        {{form.element controlType="password" label="" placeholder=(t "auth.login.password.repeat.label") property="rpass" useIcons=false}}
         <div class="form-actions">
             {{bs-button defaultText=(t "button.back") type="outline" onClick=(action "showLogin") classNames="green"}}
-            {{bs-button defaultText=(t "auth.sms.code.send.label") type="success" buttonType="submit" onClick=(action "sumbitCode") disabled=isFormInvalid 
+            {{bs-button defaultText=(t "auth.sms.code.send.label") type="success" buttonType="submit" disabled=isFormInvalid 
                 classNames="uppercase pull-right"}}
         </div>
     {{else}}
         <div class="form-group">
-            {{form.element controlType="tel" label="" placeholder=(t "auth.sms.code.set.label") property="code" maxlength=6}}
+            {{form.element controlType="tel" label="" placeholder=(t "auth.sms.code.set.label") property="code" maxlength=6 useIcons=false}}
             {{input type="hidden" id="requestId" name="requestId" value=requestId}}
         </div>
         <div class="form-actions">
-            {{bs-button defaultText=(t "auth.sms.code.finish.label") type="success" classNames="uppercase pull-right" onClick=(action "checkCode")}}
+            {{bs-button defaultText=(t "auth.sms.code.finish.label") type="success" buttonType="submit" classNames="uppercase pull-right"}}
         </div>
     {{/unless}}
 {{/bs-form}}
