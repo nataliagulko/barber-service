@@ -51,7 +51,7 @@ grails.plugin.springsecurity.filterChain.chainMap = [
 
 grails.plugin.springsecurity.rest.token.validation.enableAnonymousAccess = true
 grails.plugin.springsecurity.rest.login.active=true
-grails.plugin.springsecurity.rest.login.failureStatusCode=401
+grails.plugin.springsecurity.rest.login.failureStatusCode=400
 grails.plugin.springsecurity.rest.token.validation.active=true
 
 grails.plugin.springsecurity.logout.postOnly=false

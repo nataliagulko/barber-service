@@ -18,6 +18,8 @@ class User {
     String smsCentrLogin
     String smsCentrPass
 
+    String guid
+
 
     boolean enabled = true
     boolean accountExpired
@@ -40,6 +42,7 @@ class User {
         accountLocked display: false
         passwordExpired display: false
         oAuthIDs display: false
+        guid blank: true, nullable: true
 
         smsCentrLogin blank: true, nullable: true
         smsCentrPass blank: true, nullable: true

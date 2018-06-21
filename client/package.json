@@ -1,7 +1,7 @@
 {
-  "name": "barbers",
+  "name": "nova",
   "version": "0.0.0",
-  "description": "Small description for barbers goes here",
+  "description": "Service for barbers and others",
   "license": "MIT",
   "author": "",
   "directories": {
@@ -15,12 +15,14 @@
     "test": "ember test"
   },
   "devDependencies": {
+    "bootstrap-sass": "^3.3.7",
     "broccoli-asset-rev": "^2.4.5",
     "ember-ajax": "^2.4.1",
+    "ember-bootstrap": "^1.2.2",
+    "ember-bootstrap-cp-validations": "^1.0.0",
     "ember-cli": "^2.18.1",
     "ember-cli-app-version": "^2.0.0",
     "ember-cli-babel": "^6.11.0",
-    "ember-cli-bootstrap-sassy": "0.5.6",
     "ember-cli-code-coverage": "^0.4.2",
     "ember-cli-cors": "0.0.2",
     "ember-cli-dependency-checker": "^1.3.0",
@@ -42,6 +44,9 @@
     "ember-export-application-global": "^1.0.5",
     "ember-font-awesome": "^4.0.0-alpha.14",
     "ember-fullcalendar": "^1.8.0",
+    "ember-i18n": "^5.2.1",
+    "ember-i18n-cp-validations": "^3.1.0",
+    "ember-i18n-inject": "0.0.2",
     "ember-load-initializers": "^0.6.0",
     "ember-lodash": "^4.18.0",
     "ember-moment": "7.4.1",

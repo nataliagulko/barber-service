@@ -31,6 +31,7 @@ class SecConfig {
                 '/userAjax/create',
                 '/clientAjax/create',
                 '/ticketAjax/create',
+                '/businessAjax/create',
                 '/slotAjax/**']) {
             new NovaRequestMap(url: url, configAttribute: 'permitAll').save(flush: true)
         }

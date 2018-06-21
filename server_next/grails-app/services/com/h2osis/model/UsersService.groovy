@@ -4,6 +4,7 @@ import com.h2osis.auth.Role
 import com.h2osis.auth.User
 import com.h2osis.auth.UserRole
 import com.h2osis.constant.AuthKeys
+import com.h2osis.utils.BarberSecurityService
 import grails.transaction.Transactional
 
 
@@ -12,10 +13,16 @@ class UsersService {
 
     def messageSource
 
+    BarberSecurityService barberSecurityService
+
     def createUser(def params) {
 
-        if (params.password == null || params.phone == null || params.phone == "") {
-            return messageSource.getMessage("user.phone.and.pass.null", null,  Locale.default)
+        if(!params.password && !params.rpassword){
+            params.password = barberSecurityService.generator((('0'..'9')).join(), 6)
+        }
+
+        if (params.phone == null || params.phone == "") {
+            return messageSource.getMessage("user.phone.null", null,  Locale.default)
         } else if (!User.findByPhone(params.phone)) {
             User user = new User(username: params.login,
                     password: params.password,
@@ -23,6 +30,7 @@ class UsersService {
                     secondname: params.secondname,
                     firstname: params.firstname,
                     phone: params.phone,
+                    guid: UUID.randomUUID().toString(),
                     enabled: params.enabled ? params.enabled : true).save(flush: true)
             if (params.businessId) {
                 Business business = Business.get(params.businessId)
@@ -35,7 +43,7 @@ class UsersService {
                     business.save(flush: true)
                 }
             }
-            String authority = params.masterRole ? AuthKeys.MASTER : (params.userRole ? AuthKeys.CLIENT : null)
+            String authority = params.type == "master" ? AuthKeys.MASTER : (params.type == "client"  ? AuthKeys.CLIENT : null)
             if (authority) {
                 Role role = Role.findByAuthority(authority)
                 new UserRole(user: user, role: role).save(flush: true);

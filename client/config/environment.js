@@ -2,7 +2,7 @@
 
 module.exports = function (environment) {
     var ENV = {
-        modulePrefix: 'barbers',
+        modulePrefix: 'nova',
         environment: environment,
         rootURL: '/',
         locationType: 'auto',
@@ -71,7 +71,11 @@ module.exports = function (environment) {
 
     ENV['moment'] = {
         includeLocales: ['ru']
-    }
+    };
+
+    ENV['i18n'] = {
+        defaultLocale: 'ru'
+    };
 
     if (environment === 'development') {
         // ENV.APP.LOG_RESOLVER = true;
@@ -92,9 +96,7 @@ module.exports = function (environment) {
         ENV.APP.rootElement = '#ember-testing';
     }
 
-    if (environment === 'production') {
-
-    }
+    if (environment === 'production') { }
 
     return ENV;
 };

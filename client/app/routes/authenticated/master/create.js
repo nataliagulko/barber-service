@@ -1,5 +1,5 @@
 import Route from '@ember/routing/route';
-import RollbackAttributesMixin from 'barbers/mixins/rollback-attributes-mixin';
+import RollbackAttributesMixin from 'nova/mixins/rollback-attributes-mixin';
 
 export default Route.extend(RollbackAttributesMixin, {
 	model() {

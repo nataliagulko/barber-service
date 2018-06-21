@@ -875,8 +875,9 @@ $dl-horizontal-breakpoint:    $grid-float-breakpoint !default;
 //** Horizontal line color.
 $hr-border:                   $gray-lighter !default;
 
-@import "bootstrap";
+@import "ember-bootstrap/bootstrap";
 @import "metronic/__metronic";
 @import "barbers/__barbers";
 
 @import "ember-power-select";
+

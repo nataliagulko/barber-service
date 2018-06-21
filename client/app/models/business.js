@@ -1,6 +1,25 @@
 import DS from 'ember-data';
+import { validator, buildValidations } from 'ember-cp-validations';
 
-export default DS.Model.extend({
+const Validations = buildValidations({
+    name: validator('presence', true),
+    email: [
+        validator('format', {
+            type: 'email',
+            allowBlank: true
+        })
+	],
+	phone: [
+        validator('format', {
+            type: 'phone',
+            allowBlank: true,
+            regex: /(\+7\(\d{3}\)\d{3}-\d{2})-(\d{1})/
+        })
+	],
+	masters: validator('hasMany'),
+	clients: validator('hasMany'),
+});
+export default DS.Model.extend(Validations, {
 	name: DS.attr(),
 	inn: DS.attr(),
 	description: DS.attr(),
@@ -10,6 +29,7 @@ export default DS.Model.extend({
 	mode: DS.attr(),
 	smsCentrLogin: DS.attr(),
 	smsCentrPass: DS.attr(),
+	guid: DS.attr(),
 	masters: DS.hasMany('master'),
 	clients: DS.hasMany('client'),
 });
