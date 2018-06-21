@@ -23,13 +23,15 @@ const Validations = buildValidations({
         validator('length', {
             min: 6,
             max: 20
+        }),
+        validator('format', {
+            regex: /((?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20})/,
+            messageKey: 'auth.registration.password.validation.message'
         })
     ],
     rpassword: [
         validator('confirmation', {
             on: 'password',
-            message: '{description} do not match',
-            description: 'Passwords',
             allowBlank: true
         })
     ],

@@ -52,6 +52,7 @@ export default {
     "auth.login.socialNetwork.bind": "Привязать",
     "auth.login.socialNetwork.unbind": "Отвязать учетную запись Вконтакте",
     "auth.login.username": "Логин",
+    "auth.registration.password.validation.message": "{{description}} должно содержать цифры, заглавные и строчные латинские символы",
     "user.get.id.null": "Не задан идентификатор пользователя",
     "user.get.user.not.found": "Пользователь с таким идентификатором не найден",
     "user.get.user.by.phone.not.found": "Пользователь с таким номером телефона не найден",
