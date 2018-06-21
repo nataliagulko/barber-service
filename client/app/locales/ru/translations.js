@@ -35,11 +35,9 @@ export default {
         phone: "{{description}} должно быть корректным номером телефона",
         url: "{{description}} должно быть корректным url адресом"
     },
-    "auth.login.login.text": "Логин",
-    "auth.login.login.free": "Логин свободен",
-    "auth.login.fio": "ФИО",
+    "auth.login.label": "Войти",
     "auth.login.password": "Пароль",
-    "auth.login.password.change": "Сменить пароль",
+    "auth.login.password.change": "Восстановить доступ",
     "auth.login.do.register": "Зарегистрироваться",
     "auth.login.login.not.free": "Логин занят",
     "auth.login.login.text.must.be": "Логин должен быть заполнен",
