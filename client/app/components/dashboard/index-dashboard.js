@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import { inject } from '@ember/service';
-import config from 'barbers/config/environment';
+import config from 'nova/config/environment';
 import moment from 'moment';
 import RSVP from 'rsvp';
 import $ from 'jquery';

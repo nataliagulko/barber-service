@@ -2,7 +2,7 @@ import $ from 'jquery';
 import Component from '@ember/component';
 import { inject } from '@ember/service';
 import { alias, readOnly } from '@ember/object/computed';
-import config from 'barbers/config/environment';
+import config from 'nova/config/environment';
 import { validator, buildValidations } from 'ember-cp-validations';
 
 const Validations = buildValidations({
