@@ -1,43 +1,23 @@
-<h3 class="form-title font-green">Восстановить доступ</h3>
-<div class="form-group {{if showPhoneError "has-error"}}">
-    {{masked-input mask=phoneMask class="form-control placeholder-no-fix" placeholder='Телефон' type="tel" autofocus="autofocus"
-    disabled=isCodeSent name="phone" value=phone focus-out=(action (mut showPhoneError) true)}}
-    {{#if showPhoneError}}
-    <small class="help-block">
-        {{validations.attrs.phone.message}}
-    </small>
-    {{/if}}
-</div>
-
-{{#unless isCodeSent}}
-<div class="form-group {{if showPassError "has-error"}}">
-    {{input id="pass" class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Введите новый пароль"
-    name="pass" value=pass focus-out=(action (mut showPassError) true)}}
-    {{#if showPassError}}
-    <small class="help-block">
-        {{validations.attrs.pass.message}}
-    </small>
-    {{/if}}
-</div>
-<div class="form-group {{if showRpassError "has-error"}}">
-    {{input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Повторите пароль" name="rpass"
-    value=rpass focus-out=(action (mut showRpassError) true)}}
-    {{#if showRpassError}}
-    <small class="help-block">
-        {{validations.attrs.rpass.message}}
-    </small>
-    {{/if}}
-</div>
-<div class="form-actions">
-    <button type="button" class="btn green btn-outline" {{action 'showLogin'}}>Назад</button>
-    <button type="submit" class="btn btn-success uppercase pull-right" {{action 'sumbitCode'}} disabled={{isFormInvalid}}>Получить код</button>
-</div>
-{{else}}
-<div class="form-group">
-    {{input class="form-control placeholder-no-fix" type="tel" autocomplete="off" placeholder="Code" name="code" maxlength=6
-    value=code}} {{input type="hidden" id="requestId" name="requestId" value=requestId}}
-</div>
-<div class="form-actions">
-    <button type="submit" class="btn btn-success uppercase pull-right" {{action 'checkCode'}}>Завершить</button>
-</div>
-{{/unless}}
+{{#bs-form model=this formLayout="vertical" classNames="forget-form" autocomplete="off" novalidate=true as |form|}}
+    <h3 class="form-title font-green">{{t "auth.login.password.change"}}</h3>
+    {{#form.element controlType="tel" label="" property="phone" useIcons=false as |el|}}
+        {{masked-input class="form-control" mask=phoneMask placeholder=(t "auth.login.phone")  value=el.value}}
+    {{/form.element}}
+    {{#unless isCodeSent}}
+        {{form.element controlType="password" label="" placeholder=(t "auth.login.password.set.label") property="pass"}}
+        {{form.element controlType="password" label="" placeholder=(t "auth.login.password.repeat.label") property="rpass"}}
+        <div class="form-actions">
+            {{bs-button defaultText=(t "button.back") type="outline" onClick=(action "showLogin") classNames="green"}}
+            {{bs-button defaultText=(t "auth.sms.code.send.label") type="success" buttonType="submit" onClick=(action "sumbitCode") disabled=isFormInvalid 
+                classNames="uppercase pull-right"}}
+        </div>
+    {{else}}
+        <div class="form-group">
+            {{form.element controlType="tel" label="" placeholder=(t "auth.sms.code.set.label") property="code" maxlength=6}}
+            {{input type="hidden" id="requestId" name="requestId" value=requestId}}
+        </div>
+        <div class="form-actions">
+            {{bs-button defaultText=(t "auth.sms.code.finish.label") type="success" classNames="uppercase pull-right" onClick=(action "checkCode")}}
+        </div>
+    {{/unless}}
+{{/bs-form}}

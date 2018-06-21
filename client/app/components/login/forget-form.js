@@ -19,8 +19,6 @@ const Validations = buildValidations({
 });
 
 export default Component.extend(Validations, {
-	tagName: 'form',
-	classNames: ['forget-form'],
 	notification: inject("notification-service"),
 	constants: inject("constants-service"),
 	phoneMask: readOnly("constants.PHONE_MASK"),
