@@ -3,13 +3,15 @@ import { inject } from '@ember/service';
 import { readOnly } from '@ember/object/computed';
 
 export default Component.extend({
-    tabName: 'form',
-    classNames: ['register-form, form-horizontal'],
     notification: inject("notification-service"),
     constants: inject("constants-service"),
     phoneMask: readOnly("constants.PHONE_MASK"),
 
     actions: {
+        submit: function () {
+            console.log("submit");
+        },
+
         saveBusinessAndUser: function () {
             const _this = this;
             const businessRecord = this.get("business");
