@@ -12,7 +12,7 @@ export default {
         collection: "{{description}} должно быть коллекцией",
         singular: "{{description}} должно быть единственным",
         tooLong: "{{description}} слишком длинное (максимум {{max}} символов)",
-        tooShort: "{{description}} слишком короткое (минимум is {{min}} символов)",
+        tooShort: "{{description}} слишком короткое (минимум {{min}} символов)",
         before: "{{description}} must be before {{before}}",
         after: "{{description}} must be after {{after}}",
         wrongDateFormat: "{{description}} должно быть вида {{format}}",

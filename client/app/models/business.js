@@ -15,7 +15,9 @@ const Validations = buildValidations({
             allowBlank: true,
             regex: /(\+7\(\d{3}\)\d{3}-\d{2})-(\d{1})/
         })
-    ]
+	],
+	masters: validator('hasMany'),
+	clients: validator('hasMany'),
 });
 export default DS.Model.extend(Validations, {
 	name: DS.attr(),

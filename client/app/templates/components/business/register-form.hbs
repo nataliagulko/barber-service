@@ -1,100 +1,23 @@
-{{#bs-form model=business onSubmit=(action "saveBusiness") formLayout="horizontal" classNames="register-form" novalidate=true
+{{!-- Business form --}}
+{{#bs-form model=business formLayout="horizontal" classNames="register-form" novalidate=true
 as |form|}}
     <h3 class="font-green">Регистрация</h3>
     <p class="hint">Введите данные вашей организации:</p>
     {{form.element controlType="text" label="Название"  property="name" useIcons=false}}
     {{form.element controlType="textarea" label="Адрес" property="address" rows="2"}}
-    <div class="form-actions text-center">
-        {{bs-button defaultText="Зарегистрировать" type="success" buttonType="submit"}}
-    </div>
 {{/bs-form}}
 
-<form class="form-horizontal">
-    <div class="form-group">
-        <label class="col-md-4 control-label">Адрес</label>
-        <div class="col-md-8">
-            {{textarea class="form-control placeholder-no-fix" rows="2" value=business.address}}
-        </div>
-    </div>
+{{!-- Master form --}}
+{{#bs-form model=master formLayout="horizontal" classNames="register-form" novalidate=true
+as |form|}}
     <p class="hint"> Введите личные данные: </p>
-    <div class="form-group {{if showMasterFirstnameError (if (v-get master 'firstname' 'isInvalid') " has-error ")}}">
-        <label class="col-md-4 control-label">Имя</label>
-        <div class="col-md-8">
-            {{input class="form-control placeholder-no-fix" value=master.firstname focus-out=(action (mut showMasterFirstnameError) true)}}
-            {{#if showMasterFirstnameError}}
-            <small class="help-block">
-                {{v-get master 'firstname' 'message'}}
-            </small>
-            {{/if}}
-        </div>
-    </div>
-    <div class="form-group {{if showMasterSecondnameError (if (v-get master 'secondname' 'isInvalid') " has-error ")}}">
-        <label class="col-md-4 control-label">Фамилия</label>
-        <div class="col-md-8">
-            {{input class="form-control placeholder-no-fix" value=master.secondname focus-out=(action (mut showMasterSecondnameError)
-            true)}} {{#if showMasterSecondnameError}}
-            <small class="help-block">
-                {{v-get master 'secondname' 'message'}}
-            </small>
-            {{/if}}
-        </div>
-    </div>
-    <div class="form-group {{if showMasterPhoneError (if (v-get master 'phone' 'isInvalid') " has-error ")}}">
-        <label class="col-md-4 control-label">Телефон</label>
-        <div class="col-md-8">
-            {{masked-input mask=phoneMask class="form-control placeholder-no-fix" type="tel" value=master.phone focus-out=(action (mut
-            showMasterPhoneError) true)}} {{#if showMasterPhoneError}}
-            <small class="help-block">
-                {{v-get master 'phone' 'message'}}
-            </small>
-            {{/if}}
-        </div>
-    </div>
-    <div class="form-group {{if showMasterPasswordError (if (v-get master 'password' 'isInvalid') " has-error ")}}">
-        <label class="col-md-4 control-label">Пароль</label>
-        <div class="col-md-8">
-            {{input class="form-control placeholder-no-fix" type="password" value=master.password focus-out=(action (mut showMasterPasswordError)
-            true)}} {{#if showMasterPasswordError}}
-            <small class="help-block">
-                {{v-get master 'password' 'message'}}
-            </small>
-            {{/if}}
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-4 col-md-8">
-            <label class="mt-checkbox mt-checkbox-outline">
-                <input name="tnc" type="checkbox"> I agree to the
-                <a href="javascript:;">Terms of Service </a> &amp;
-                <a href="javascript:;">Privacy Policy </a>
-                <span></span>
-            </label>
-        </div>
-    </div>
-    {{#if showMasterErrors}}
-    <div class="form-group">
-        <ul class="alert alert-danger">
-            {{#each (v-get master "errors") as |error|}}
-            <li>
-                <small>{{error.attribute}}: {{error.message}}</small>
-            </li>
-            {{/each}}
-        </ul>
-    </div>
-    {{/if}} {{#if showBusinessErrors}}
-    <div class="form-group">
-        <ul class="alert alert-danger">
-            {{#each (v-get business "errors") as |error|}}
-            <li>
-                <small>{{error.attribute}}: {{error.message}}</small>
-            </li>
-            {{/each}}
-        </ul>
-    </div>
-    {{/if}}
+    {{form.element controlType="text" label="Имя"  property="firstname" useIcons=false}}
+    {{form.element controlType="text" label="Фамилия"  property="secondname" useIcons=false}}
+    {{#form.element controlType="tel" label="Телефон"  property="phone" useIcons=false as |el|}}
+        {{masked-input class="form-control" mask=phoneMask value=el.value}}
+    {{/form.element}}
+    {{form.element controlType="password" label="Пароль"  property="password" useIcons=false}}
     <div class="form-actions text-center">
-        <button type="submit" class="btn btn-success uppercase" {{action "saveBusinessAndUser"}}>
-            Зарегистрировать
-        </button>
+        {{bs-button defaultText="Зарегистрировать" type="success" buttonType="submit" classNames="uppercase"}}
     </div>
-</form>
+{{/bs-form}}

@@ -7,64 +7,51 @@ export default Component.extend({
     constants: inject("constants-service"),
     phoneMask: readOnly("constants.PHONE_MASK"),
 
+    submit() {
+        this.send("saveMaster");
+    },
+
     actions: {
-        saveBusiness: function () {
-            console.log("submit");
+        saveBusiness: function (master) {
             const _this = this;
             const businessRecord = this.get("business");
 
             businessRecord
                 .validate()
                 .then(({ validations }) => {
-
                     if (validations.get('isValid')) {
-                        _this.set("showBusinessErrors", false);
-                        // businessRecord.set("masters", [master]);
-                        // businessRecord.save()
-                        //     .then((business) => {
-                        //         _this.get("notification").showInfoMessage(`Организация ${business.get("name")} создана. ${master.get("firstname")}, используйте номер телефона и пароль для входа.`);
-                        //         _this.get("router").transitionTo("login");
-                        //     });
-                    } else {
-                        _this.set("showBusinessErrors", true);
+                        businessRecord.set("masters", [master]);
+                        businessRecord.save()
+                            .then((business) => {
+                                _this.get("notification").showInfoMessage(`Организация ${business.get("name")} создана. ${master.get("firstname")}, используйте номер телефона и пароль для входа.`);
+                                _this.get("router").transitionTo("login");
+                            });
                     }
                 });
         },
 
-        saveBusinessAndUser: function () {
+        saveMaster: function () {
             const _this = this;
-            const businessRecord = this.get("business");
             const masterRecord = this.get("master");
+            const businessRecord = this.get("business");
 
             masterRecord.set("enabled", true);
+            // validate master
             masterRecord
                 .validate()
                 .then(({ validations }) => {
-
                     if (validations.get('isValid')) {
-                        _this.set("showMasterErrors", false);
-                        masterRecord.save()
-                            .then((master) => {
-
-                                businessRecord
-                                    .validate()
-                                    .then(({ validations }) => {
-
-                                        if (validations.get('isValid')) {
-                                            _this.set("showBusinessErrors", false);
-                                            businessRecord.set("masters", [master]);
-                                            businessRecord.save()
-                                                .then((business) => {
-                                                    _this.get("notification").showInfoMessage(`Организация ${business.get("name")} создана. ${master.get("firstname")}, используйте номер телефона и пароль для входа.`);
-                                                    _this.get("router").transitionTo("login");
-                                                });
-                                        } else {
-                                            _this.set("showBusinessErrors", true);
-                                        }
-                                    });
+                        // then validate business
+                        businessRecord.validate()
+                            .then(({ validations }) => {
+                                if (validations.get('isValid')) {
+                                    // and after save master
+                                    masterRecord.save()
+                                        .then((master) => {
+                                            _this.send("saveBusiness", master);
+                                        });
+                                }
                             });
-                    } else {
-                        _this.set("showMasterErrors", true);
                     }
                 });
         }
