@@ -38,11 +38,6 @@ export default Component.extend(Validations, {
 	constants: inject("constants-service"),
 	phoneMask: readOnly("constants.PHONE_MASK"),
 	isFormInvalid: alias('validations.isInvalid'),
-	isCodeSent: false,
-
-	didInsertElement() {
-		this.get("constants");
-	},
 
 	submit() {
 		const isCodeSent = this.get("isCodeSent");
@@ -73,6 +68,7 @@ export default Component.extend(Validations, {
 				if (!response.error) {
 					this.set('isCodeSent', true);
 					this.set("requestId", response.id);
+					// показывать только в дев режиме
 					notification.showInfoMessage(response.code);
 				} else {
 					notification.showErrorMessage(response.error);
