@@ -30,6 +30,7 @@ class UsersService {
                     secondname: params.secondname,
                     firstname: params.firstname,
                     phone: params.phone,
+                    guid: UUID.randomUUID().toString(),
                     enabled: params.enabled ? params.enabled : true).save(flush: true)
             if (params.businessId) {
                 Business business = Business.get(params.businessId)

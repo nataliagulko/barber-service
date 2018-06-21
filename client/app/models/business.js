@@ -27,6 +27,7 @@ export default DS.Model.extend(Validations, {
 	mode: DS.attr(),
 	smsCentrLogin: DS.attr(),
 	smsCentrPass: DS.attr(),
+	guid: DS.attr(),
 	masters: DS.hasMany('master'),
 	clients: DS.hasMany('client'),
 });

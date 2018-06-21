@@ -1,9 +1,12 @@
-import Ember from 'ember';
-import moment from 'moment';
+import Component from '@ember/component';
+import { inject } from '@ember/service';
 import config from 'barbers/config/environment';
+import moment from 'moment';
+import RSVP from 'rsvp';
+import $ from 'jquery';
 
-export default Ember.Component.extend({
-    session: Ember.inject.service(),
+export default Component.extend({
+    session: inject(),
 
     didInsertElement() {
         this.send("getStatistic");
@@ -16,7 +19,7 @@ export default Ember.Component.extend({
             token = headerValue;
         });
 
-        return new Ember.RSVP.Promise(function (resolve, reject) {
+        return new RSVP.Promise(function (resolve, reject) {
             $.post({
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader('Authorization', token);
@@ -49,10 +52,10 @@ export default Ember.Component.extend({
             this.getAuthorizedStatistic(query, 'masterAjax/payStatistic')
                 .then((data) => {
                     this.set("costAvg", data.costAVG);
-                    this.set("costSUMM", data.costSUMM);                    
+                    this.set("costSUMM", data.costSUMM);
                 });
             this.getAuthorizedStatistic(query, 'masterAjax/clientStatistic')
-                .then((data) => {
+                .then((/* data */) => {
                     // this.set("cost", data.costAVG);                    
                 });
         }
