@@ -1,9 +1,11 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { inject } from '@ember/service';
+import { readOnly } from '@ember/object/computed';
 
-export default Ember.Component.extend({
+export default Component.extend({
     classNames: ['portlet', 'light', 'bordered'],
-    ticketService: Ember.inject.service("ticket-service"),
-    validationMessage: Ember.computed.readOnly("ticketService.validationMessage"),
+    ticketService: inject("ticket-service"),
+    validationMessage: readOnly("ticketService.validationMessage"),
 
     didInsertElement() {
         const ticketService = this.get("ticketService");

@@ -1,12 +1,14 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { inject } from '@ember/service';
+import { readOnly } from '@ember/object/computed';
 
-export default Ember.Component.extend({
+export default Component.extend({
     tagName: '',
-    ticketService: Ember.inject.service("ticket-service"),
-    phone: Ember.computed.readOnly("ticketService.phone"),
-    client: Ember.computed.readOnly("ticketService.client"),
-    activeStep: Ember.computed.readOnly("ticketService.activeStep"),
-    isNewClient: Ember.computed.readOnly("ticketService.isNewClient"),
+    ticketService: inject.service("ticket-service"),
+    phone: readOnly("ticketService.phone"),
+    client: readOnly("ticketService.client"),
+    activeStep: readOnly("ticketService.activeStep"),
+    isNewClient: readOnly("ticketService.isNewClient"),
 
     actions: {
         saveClient: function (name) {

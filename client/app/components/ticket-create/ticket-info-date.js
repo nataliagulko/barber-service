@@ -1,8 +1,10 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { inject } from '@ember/service';
+import { readOnly } from '@ember/object/computed';
 
-export default Ember.Component.extend({
+export default Component.extend({
     tagName: '',
-    ticketService: Ember.inject.service("ticket-service"),
-    ticketDate: Ember.computed.readOnly("ticketService.ticketDate"),
-    ticketTime: Ember.computed.readOnly("ticketService.ticketTime")
+    ticketService: inject("ticket-service"),
+    ticketDate: readOnly("ticketService.ticketDate"),
+    ticketTime: readOnly("ticketService.ticketTime")
 });

@@ -3,8 +3,6 @@ import { inject } from '@ember/service';
 import { readOnly } from '@ember/object/computed';
 
 export default Component.extend({
-	// classNames: ['portlet', 'light', 'bordered', 'right-panel'],
-	// elementId: 'ticket-time',
 	tagName: '',
 	ticketService: inject.service("ticket-service"),
 	activeStep: readOnly("ticketService.activeStep"),

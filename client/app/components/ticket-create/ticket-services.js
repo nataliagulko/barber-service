@@ -1,10 +1,10 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { inject } from '@ember/service';
+import { readOnly } from '@ember/object/computed';
 
-export default Ember.Component.extend({
-    // classNames: ['portlet', 'light', 'bordered', 'right-panel'],
-    // elementId: 'ticket-services',
+export default Component.extend({
     tagName: '',
-    ticketService: Ember.inject.service("ticket-service"),
-    servicesByMaster: Ember.computed.readOnly("ticketService.servicesByMaster"),
-    activeStep: Ember.computed.readOnly("ticketService.activeStep")
+    ticketService: inject("ticket-service"),
+    servicesByMaster: readOnly("ticketService.servicesByMaster"),
+    activeStep: readOnly("ticketService.activeStep")
 });

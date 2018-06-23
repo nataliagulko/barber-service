@@ -1,8 +1,9 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { inject } from '@ember/service';
 
-export default Ember.Component.extend({
+export default Component.extend({
     classNames: ['mt-element-step'],
-    ticketService: Ember.inject.service('ticket-service'),
+    ticketService: inject('ticket-service'),
 
     actions: {
         changeStep: function(stepSelector) {
