@@ -25,6 +25,7 @@ const Validations = buildValidations({
             max: 20
         }),
         validator('format', {
+            allowBlank: true,
             regex: /((?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20})/,
             messageKey: 'auth.registration.password.validation.message'
         })
