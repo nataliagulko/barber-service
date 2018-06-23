@@ -39,7 +39,7 @@ export default Service.extend({
 		let isSameMaster = selectedMaster === master;
 
 		if (selectedMaster && isSameMaster) {
-			this._setTicketProperty("master", master);
+			this._setTicketProperty("master", null);
 			this.set("servicesByMaster", []);
 		}
 		else if (selectedMaster && !isSameMaster) {
