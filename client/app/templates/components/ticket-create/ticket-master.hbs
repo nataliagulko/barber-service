@@ -1,4 +1,3 @@
-{{!-- {{#if (eq activeStep "#master-step")}}  --}}
 <div id="ticket-master" class="portlet light bordered right-panel {{if (not-eq activeStep "#master-step") "hidden"}}">
     <div class="portlet-title">
         <div class="caption">
@@ -9,9 +8,8 @@
     <div class="portlet-body ticket-portlet-body">
         <div class="tiles">
             {{#each masters as |master|}}
-                {{ticket-master-card master=master}}
+                {{ticket-create/ticket-master-card master=master}}
             {{/each}}
         </div>
     </div>
 </div>
-{{!-- {{/if}} --}}
