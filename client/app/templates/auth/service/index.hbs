@@ -1,11 +1,11 @@
 <div class="portlet light">
 	<div class="portlet-title">
 		<div class="caption font-dark">
-			<i class="icon-users font-green-sharp "></i>
-	        <span class="caption-subject bold uppercase">Мастера</span>
+			<i class="icon-bag font-green-sharp "></i>
+	        <span class="caption-subject bold uppercase">Услуги</span>
         </div>
         <div class="actions">
-        	{{#link-to "authenticated.master.create" class="btn btn-success"}}
+        	{{#link-to "auth.service.create" class="btn btn-success"}}
 				<i class="fa fa-plus"></i>
 				Добавить
 			{{/link-to}}
@@ -14,7 +14,7 @@
 	<div class="portlet-body">
 		<div class="row">
 			<div class="col-md-12">
-				{{master/master-list list=model}}
+				{{service-list list=model}}
 			</div>
 		</div>
 	</div>

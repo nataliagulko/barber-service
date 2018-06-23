@@ -371,7 +371,7 @@ export default Service.extend({
                             const ticketDate = moment(ticket.get("ticketDate")).format("Do MMMM");
                             let message = `Запись ${ticketDate} ${ticket.get("time")} создана`;
 
-                            _this.get("routing").transitionTo('authenticated.ticket');
+                            _this.get("routing").transitionTo('auth.ticket');
                             _this.get("notification").showInfoMessage(message);
                             _this.set("ticket", null);
                         });
