@@ -1,6 +1,7 @@
-<div class="ticket-info__item ticket-info-master {{if selectedMaster " animate-from-top " " "}}">
+<div class="ticket-info__item ticket-info-master {{if ticket.master " animate-from-top " " "}}">
     <div>
         <i class="fa fa-scissors font-red-sunglo margin-right-10"></i>
     </div>
-    <div>{{selectedMaster.fullname}}</div>
+	{{log "master info" ticket.master}}
+    <div>{{ticket.master.fullname}}</div>
 </div>
