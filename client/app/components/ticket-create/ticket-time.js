@@ -4,7 +4,7 @@ import { readOnly } from '@ember/object/computed';
 
 export default Component.extend({
 	tagName: '',
-	ticketService: inject.service("ticket-service"),
+	ticketService: inject("ticket-service"),
 	activeStep: readOnly("ticketService.activeStep"),
 
 	actions: {

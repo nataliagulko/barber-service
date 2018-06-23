@@ -1,12 +1,14 @@
-import Ember from 'ember';
 import moment from 'moment';
+import $ from 'jquery';
+import Service from '@ember/service';
+import { inject } from '@ember/service';
 
-export default Ember.Service.extend({
-    store: Ember.inject.service("store"),
-    routing: Ember.inject.service('-routing'),
-    pickadateService: Ember.inject.service("pickadate-service"),
-    pickatimeService: Ember.inject.service("pickatime-service"),
-    notification: Ember.inject.service("notification-service"),
+export default Service.extend({
+    store: inject("store"),
+    routing: inject('-routing'),
+    pickadateService: inject("pickadate-service"),
+    pickatimeService: inject("pickatime-service"),
+    notification: inject("notification-service"),
 
     ticket: null,
     selectedMaster: null,

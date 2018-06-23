@@ -3,7 +3,7 @@ import { inject } from '@ember/service';
 
 export default Component.extend({
     tagName: '',
-    ticketService: inject.service("ticket-service"),
+    ticketService: inject("ticket-service"),
 
     actions: {
         removeLastNumber() {
