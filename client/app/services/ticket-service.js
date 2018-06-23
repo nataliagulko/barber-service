@@ -11,7 +11,6 @@ export default Service.extend({
 	notification: inject("notification-service"),
 
 	ticket: null,
-	selectedMaster: null,
 	ticketDate: null,
 	ticketTime: null,
 	servicesByMaster: [],
@@ -34,37 +33,34 @@ export default Service.extend({
 
 	toggleMaster(master, event) {
 		const ticket = this.get("ticket");
-		
+
 		let selectedItem = $(event.target).closest('.tile');
 		let selectedMaster = ticket.get("master");
 		let isSameMaster = selectedMaster === master;
-		
+
 		if (selectedMaster && isSameMaster) {
-			this._setSelectedMaster(null);
+			this._setTicketProperty("master", master);
 			this.set("servicesByMaster", []);
 		}
 		else if (selectedMaster && !isSameMaster) {
-			this._setSelectedMaster(master);
+			this._setTicketProperty("master", master);
 
 			$('.tile').each(function () {
 				$(this).removeClass('selected');
 			});
 		}
 		else {
-			this._setSelectedMaster(master);
+			this._setTicketProperty("master", master);
 		}
 
 		$(selectedItem).toggleClass('selected');
 	},
-	
-	_setSelectedMaster(master) {
-		this._setTicketProperty("master", master);
-	},
 
 	getServicesByMaster() {
-		let store = this.get("store"),
-			master = this.get("selectedMaster"),
-			_this = this;
+		const _this = this;
+		const store = this.get("store");
+		const ticket = this.get("ticket");
+		const master = ticket.get("master");
 
 		let services = store.query("service", {
 			query: {
@@ -118,11 +114,13 @@ export default Service.extend({
 	},
 
 	getHolidays() {
-		let store = this.get("store"),
-			_this = this,
-			master = this.get("selectedMaster"),
-			duration = this.get("duration"),
-			pickadateService = this.get("pickadateService");
+		const _this = this;
+		const store = this.get("store");
+		const pickadateService = this.get("pickadateService");
+
+		const ticket = this.get("ticket");
+		const master = ticket.get("master");
+		const duration = this.get("duration");
 
 		let holidays = store.query("holiday", {
 			query: {
@@ -167,12 +165,14 @@ export default Service.extend({
 	},
 
 	getTimeSlots() {
-		let store = this.get("store"),
-			master = this.get("selectedMaster"),
-			duration = this.get("duration"),
-			date = this.get("ticketDate"),
-			_this = this,
-			pickatimeService = this.get("pickatimeService");
+		const _this = this;
+		const store = this.get("store");
+		const pickatimeService = this.get("pickatimeService");
+
+		const ticket = this.get("ticket");
+		const duration = this.get("duration");
+		const date = this.get("ticketDate");
+		const master = ticket.get("master");
 
 		let slots = store.query("slot", {
 			query: {
