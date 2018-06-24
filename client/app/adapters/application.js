@@ -1,14 +1,30 @@
 import DS from 'ember-data';
-import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
+import TokenAuthorizerMixin from 'ember-simple-auth-token/mixins/token-authorizer';
 import config from '../config/environment';
 import { singularize } from 'ember-inflector';
 import { camelize } from '@ember/string';
 import rsvp from 'rsvp';
 import $ from 'jquery';
 
-export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
-	authorizer: 'authorizer:token',
+export default DS.JSONAPIAdapter.extend(TokenAuthorizerMixin, {
 	host: config.host,
+
+	authorizedAjax: function (url, data) {
+		return new rsvp.Promise(function (resolve, reject) {
+			$.ajax({
+				type: 'POST',
+				url: url,
+				dataType: 'json',
+				data: data,
+				contentType: 'application/json; charset=utf-8',
+				mimeType: 'application/json',
+			}).then(function (data) {
+				resolve(data);
+			}, function (jqXHR) {
+				reject(jqXHR);
+			});
+		});
+	},
 
 	pathForType: function (type) {
 		let camelized = camelize(type);
@@ -17,87 +33,60 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
 
 	findAll: function (store, type) {
 		let url = this.buildURL(type.modelName, null, null, 'findAll');
-
 		url = url + "Ajax/list";
 
-		return this.ajax(url, 'POST');
+		return this.authorizedAjax(url, null);
 	},
 
 	query: function (store, type, query) {
-		let url = this.buildURL(type.modelName, null, null, 'findAll'),
-			data = JSON.stringify(query),
-			methodName = query.methodName || "list";
+		let url = this.buildURL(type.modelName, null, null, 'findAll');
+		const data = JSON.stringify(query);
+		const methodName = query.methodName || "list";
 
 		url = url + "Ajax/" + methodName;
 
-		return authorizedAjax(this.get("session"), url, data);
+		return this.authorizedAjax(url, data);
 	},
 
 	queryRecord: function (store, type, query) {
-		let url = this.buildURL(type.modelName, null, null, 'findRecord'),
-			data = JSON.stringify(query),
-			methodName = query.methodName || "get";
+		let url = this.buildURL(type.modelName, null, null, 'findRecord');
+		const data = JSON.stringify(query);
+		const methodName = query.methodName || "get";
 
 		url = url + "Ajax/" + methodName;
 
-		return authorizedAjax(this.get("session"), url, data);
+		return this.authorizedAjax(url, data);
 	},
 
 	createRecord: function (store, type, snapshot) {
-		let url = this.buildURL(type.modelName + 'Ajax/create', null, null, 'createRecord'),
-			data = JSON.stringify(this.serialize(snapshot, { includeId: true }));
+		let url = this.buildURL(type.modelName + 'Ajax/create', null, null, 'createRecord');
+		const data = JSON.stringify(this.serialize(snapshot, { includeId: true }));
 
-		return authorizedAjax(this.get("session"), url, data);
+		return this.authorizedAjax(url, data);
 	},
 
 	findRecord(store, type, id) {
-		let url = this.buildURL(type.modelName + 'Ajax/get', null, null, 'findRecord'),
-			data = JSON.stringify({
-				data: {
-					id: id
-				}
-			});
+		let url = this.buildURL(type.modelName + 'Ajax/get', null, null, 'findRecord')
+		const data = JSON.stringify({
+			data: {
+				id: id
+			}
+		});
 
-		return authorizedAjax(this.get("session"), url, data);
+		return this.authorizedAjax(url, data);
 	},
 
 	updateRecord(store, type, snapshot) {
-		let data = JSON.stringify(this.serialize(snapshot, { includeId: true })),
-			url = this.buildURL(type.modelName + 'Ajax/update', null, null, 'updateRecord');
+		const data = JSON.stringify(this.serialize(snapshot, { includeId: true }));
+		const url = this.buildURL(type.modelName + 'Ajax/update', null, null, 'updateRecord');
 
-		return authorizedAjax(this.get("session"), url, data);
+		return this.authorizedAjax(url, data);
 	},
 
 	deleteRecord(store, type, snapshot) {
-		let data = JSON.stringify(this.serialize(snapshot, { includeId: true })),
-			url = this.buildURL(type.modelName + 'Ajax/destroy', null, null, 'deleteRecord');
+		const data = JSON.stringify(this.serialize(snapshot, { includeId: true }));
+		const url = this.buildURL(type.modelName + 'Ajax/destroy', null, null, 'deleteRecord');
 
-		return authorizedAjax(this.get("session"), url, data);
+		return this.authorizedAjax(url, data);
 	}
 });
-
-export function authorizedAjax(session, url, data) {
-	let token;
-
-	session.authorize('authorizer:token', (headerName, headerValue) => {
-		token = headerValue;
-	});
-
-	return new rsvp.Promise(function (resolve, reject) {
-		$.ajax({
-			beforeSend: function (xhr) {
-				xhr.setRequestHeader('Authorization', token);
-			},
-			type: 'POST',
-			url: url,
-			dataType: 'json',
-			data: data,
-			contentType: 'application/json; charset=utf-8',
-			mimeType: 'application/json',
-		}).then(function (data) {
-			resolve(data);
-		}, function (jqXHR) {
-			reject(jqXHR);
-		});
-	});
-}
