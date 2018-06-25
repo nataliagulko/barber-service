@@ -1,11 +1,12 @@
+import $ from 'jquery';
+import moment from 'moment';
+import TokenAuthorizerMixin from 'ember-simple-auth-token/mixins/token-authorizer';
 import Component from '@ember/component';
 import { inject } from '@ember/service';
 import config from 'nova/config/environment';
-import moment from 'moment';
 import RSVP from 'rsvp';
-import $ from 'jquery';
 
-export default Component.extend({
+export default Component.extend(TokenAuthorizerMixin, {
     session: inject(),
 
     didInsertElement() {
@@ -13,17 +14,8 @@ export default Component.extend({
     },
 
     getAuthorizedStatistic: function (query, methodName) {
-        let token;
-
-        this.get("session").authorize('authorizer:token', (headerName, headerValue) => {
-            token = headerValue;
-        });
-
         return new RSVP.Promise(function (resolve, reject) {
             $.post({
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader('Authorization', token);
-                },
                 url: `${config.host}/${methodName}`,
                 data: JSON.stringify(query),
                 contentType: 'application/json; charset=utf-8',
@@ -51,8 +43,8 @@ export default Component.extend({
 
             this.getAuthorizedStatistic(query, 'masterAjax/payStatistic')
                 .then((data) => {
-                    this.set("costAvg", data.costAVG);
-                    this.set("costSUMM", data.costSUMM);
+                    this.set("costAvg", data.costAVG || 0);
+                    this.set("costSUMM", data.costSUMM || 0);
                 });
             this.getAuthorizedStatistic(query, 'masterAjax/clientStatistic')
                 .then((/* data */) => {

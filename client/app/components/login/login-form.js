@@ -12,7 +12,7 @@ export default Component.extend({
     actions: {
         authenticate: function () {
             const _this = this;
-            const credentials = this.getProperties('identification', 'password');
+            const credentials = this.getProperties('username', 'password');
             const authenticator = 'authenticator:token';
 
             this.get('session').authenticate(authenticator, credentials)
