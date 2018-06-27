@@ -66,7 +66,7 @@ export default DS.JSONAPIAdapter.extend(TokenAuthorizerMixin, {
 	},
 
 	findRecord(store, type, id) {
-		let url = this.buildURL(type.modelName + 'Ajax/get', null, null, 'findRecord')
+		let url = this.buildURL(type.modelName + 'Ajax/get', null, null, 'findRecord');
 		const data = JSON.stringify({
 			data: {
 				id: id
