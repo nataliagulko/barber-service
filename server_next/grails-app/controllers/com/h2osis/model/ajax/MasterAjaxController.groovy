@@ -442,7 +442,6 @@ class MasterAjaxController {
     }
 
     def payStatistic(){
-        println request.JSON.query
         def data = request.JSON.query
         if (data.id) {
             User user = User.get(data.id)

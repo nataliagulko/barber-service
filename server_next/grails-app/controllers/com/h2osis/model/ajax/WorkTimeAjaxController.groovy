@@ -196,9 +196,9 @@ class WorkTimeAjaxController {
         }
     }
 
-    def list() {
-        def data = request.JSON.data
-        def query = request.JSON.query
+    def list(params) {
+		println params
+        def query = params
         if (query) {
             User user = User.get(query.masterId)
             if (user) {
