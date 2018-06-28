@@ -1,13 +1,12 @@
 import Component from '@ember/component';
 import { inject } from '@ember/service';
-import { readOnly, alias } from '@ember/object/computed';
+import { readOnly } from '@ember/object/computed';
 
 export default Component.extend({
     session: inject(),
     notification: inject("notification-service"),
     constants: inject("constants-service"),
     phoneMask: readOnly("constants.PHONE_MASK"),
-    user: alias('controllers.applications.user'),
 
     actions: {
         authenticate: function () {
