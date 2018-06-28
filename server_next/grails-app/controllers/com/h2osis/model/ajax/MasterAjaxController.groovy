@@ -64,8 +64,8 @@ class MasterAjaxController {
         }
     }
 
-    def get() {
-        def data = request.JSON.data
+    def get(params) {
+		def data = params
         if (data && data.id) {
             User user = User.get(data.id)
             if (user) {
