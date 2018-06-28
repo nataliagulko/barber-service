@@ -74,9 +74,9 @@ class HolidayAjaxController {
         }
     }
 
-    def get() {
+    def get(params) {
         def errors = []
-        def data = request.JSON.data
+        def data = params
         if (data.id) {
             Holiday holiday = Holiday.get(data.id)
             if (holiday) {
@@ -148,7 +148,7 @@ class HolidayAjaxController {
         }
     }
 
-    def find() {
+    def find(params) {
         if (params.value) {
             String value = params.value
             List<User> listOfUsers = searchService.userSearch(value)
@@ -163,9 +163,8 @@ class HolidayAjaxController {
         }
     }
 
-    def list() {
-        def data = request.JSON.data
-        def query = request.JSON.query
+    def list(params) {
+        def query = params
         if (query) {
             User user = User.get(query.masterId)
             if (user) {
@@ -199,44 +198,8 @@ class HolidayAjaxController {
     }
 
     @Transactional
-    def saveHoliday() {
-        Holiday holiday = new Holiday()
-
-        if (params.id) {
-            holiday = Holiday.get(params.id)
-        }
-
-        if (params.dateFrom && params.dateTo && params.master) {
-            Date dateFrom = Date.parse('dd.MM.yyyy', params.dateFrom)
-            Date dateTo = Date.parse('dd.MM.yyyy', params.dateTo)
-
-            holiday.setMaster(User.get(params.master))
-            holiday.setDateFrom(dateFrom)
-            holiday.setDateTo(dateTo)
-            holiday.setComment(params.comment)
-            holiday.save(flush: true)
-            render([id: holiday.id] as JSON)
-        } else {
-            render([msg: g.message(code: "holiday.params.null")] as JSON)
-        }
-    }
-
-    @Transactional
-    def deleteHoliday() {
-        if (params.id) {
-            Holiday holiday = Holiday.get(params.id)
-            if (holiday) {
-                holiday.delete(flush: true)
-            }
-            render([code: 0] as JSON)
-        } else {
-            render([msg: g.message(code: "params.id.null")] as JSON)
-        }
-    }
-
-    @Transactional
-    def destroy() {
-        def data = request.JSON.data
+    def destroy(params) {
+        def data = params
         if (data.id) {
             Holiday holiday = Holiday.get(data.id)
             if (holiday) {

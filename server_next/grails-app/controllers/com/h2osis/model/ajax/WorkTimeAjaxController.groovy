@@ -66,9 +66,9 @@ class WorkTimeAjaxController {
         }
     }
 
-    def get() {
+    def get(params) {
         def errors = []
-        def data = request.JSON.data
+        def data = params
         if (data.id) {
             WorkTime workTime = WorkTime.get(data.id)
             if (workTime) {
@@ -159,29 +159,9 @@ class WorkTimeAjaxController {
         }
     }
 
-    def delete() {
-        def principal = springSecurityService.principal
-        User user = User.get(principal.id)
-        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
-            if (params.id) {
-                WorkTime workTime = WorkTime.get(params.id)
-                if (workTime) {
-                    workTime.delete(flush: true)
-                    render([code: 0] as JSON)
-                } else {
-                    render([msg: g.message(code: "worktime.get.user.not.found")] as JSON)
-                }
-            } else {
-                render([msg: g.message(code: "worktime.get.id.null")] as JSON)
-            }
-        } else {
-            render([msg: g.message(code: "worktime.delete.not.admin")] as JSON)
-        }
-    }
-
     @Transactional
-    def destroy() {
-        def data = request.JSON.data
+    def destroy(params) {
+        def data = params
         if (data.id) {
             WorkTime workTime = WorkTime.get(data.id)
             if (workTime) {
@@ -197,7 +177,6 @@ class WorkTimeAjaxController {
     }
 
     def list(params) {
-		println params
         def query = params
         if (query) {
             User user = User.get(query.masterId)
