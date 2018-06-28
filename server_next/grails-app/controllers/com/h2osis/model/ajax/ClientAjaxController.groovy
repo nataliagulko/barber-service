@@ -74,8 +74,9 @@ class ClientAjaxController {
     }
 
     def get(params) {
+		def errors = []
         def data = params
-        if (data && data.id) {
+        if (data.id) {
             User user = User.get(data.id)
             if (user) {
                 user.setPassword(null)
@@ -84,38 +85,42 @@ class ClientAjaxController {
                     render([data: user] as JSON)
                 }
             } else {
-                render([errors: { g.message(code: "user.get.user.not.found") }] as JSON)
-            }
-        } else {
-            def query = request.JSON.query
-            def errors = []
-            if(query && query.phone) {
-                User user = User.findByPhone(query.phone)
-                if(!user){
-                    user = User.findByPhone(novaUtilsService.getFullPhone(query.phone))
-                }
-                if (user) {
-                    user.setPassword(null)
-                    JSON.use('clients') {
-                        render([data: user] as JSON)
-                    }
-                } else {
-                    // render([errors:
-                                    // novaUtilsService.getErrorsSingleArrayJSON(g.message(code: "user.get.user.by.phone.not.found"))] as JSON)
-                    errors.add([
+				errors.add([
                         "status": 422,
-                        "detail": g.message(code: "user.get.user.by.phone.not.found"),
+                        "detail": g.message(code: "user.get.user.not.found"),
                         "source": [
                                 "pointer": "data"
                         ]
                     ])
                     response.status = 422
                     render([errors: errors] as JSON)
-                }
-            }else {
-                render([errors: novaUtilsService.getErrorsSingleArrayJSON(g.message(code: "user.get.id.null"))] as JSON)
             }
-        }
+        } else if (data && data.phone) {
+			User user = User.findByPhone(data.phone)
+			if(!user){
+				user = User.findByPhone(novaUtilsService.getFullPhone(data.phone))
+			}
+			if (user) {
+				user.setPassword(null)
+				JSON.use('clients') {
+					render([data: user] as JSON)
+				}
+			} else {
+				// render([errors:
+								// novaUtilsService.getErrorsSingleArrayJSON(g.message(code: "user.get.user.by.phone.not.found"))] as JSON)
+				errors.add([
+					"status": 422,
+					"detail": g.message(code: "user.get.user.by.phone.not.found"),
+					"source": [
+							"pointer": "data"
+					]
+				])
+				response.status = 422
+				render([errors: errors] as JSON)
+			}
+		} else {
+			render([errors: novaUtilsService.getErrorsSingleArrayJSON(g.message(code: "user.get.id.null"))] as JSON)
+		}
     }
 
     def update() {

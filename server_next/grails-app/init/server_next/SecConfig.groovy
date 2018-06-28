@@ -26,8 +26,8 @@ class SecConfig {
                 '**/fonts/**',
                 '/**/assets/**',
                 '/masterAjax/create',
-                '/masterAjax/list',
-                '/clientAjax/list',
+                '/masterAjax/list/**',
+                '/clientAjax/list/**',
                 '/userAjax/create',
                 '/clientAjax/create',
                 '/ticketAjax/create',
@@ -48,23 +48,23 @@ class SecConfig {
                 '/serviceToGroupAjax/**',
                 '/searchable/**',
                 '/springSecurityOAuth/**',
-                '/userAjax/get',
+                '/userAjax/get/**',
                 '/userAjax/save',
                 '/userAjax/find',
-                '/clientAjax/get',
+                '/clientAjax/get/**',
                 '/clientAjax/update',
                 '/clientAjax/find',
-                '/masterAjax/**',
+                '/masterAjax/get/**',
                 '/masterAjax/update',
                 '/masterAjax/find',
-                '/masterAjax/destroy',
+                '/masterAjax/destroy/**',
         ]) {
             new NovaRequestMap(url: url, configAttribute: [AuthKeys.MASTER, AuthKeys.CLIENT, AuthKeys.SUPER_MASTER]).save(flush: true)
         }
 
         for (String url in [
-                '/clientAjax/destroy',
-                '/masterAjax/destroy',
+                '/clientAjax/destroy/**',
+                '/masterAjax/destroy/**',
                 '/masterAjax/clientStatistic',
                 '/masterAjax/payStatistic',
         ]) {
