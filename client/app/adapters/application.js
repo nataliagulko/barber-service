@@ -1,13 +1,18 @@
 import DS from 'ember-data';
-import TokenAuthorizerMixin from 'ember-simple-auth-token/mixins/token-authorizer';
 import config from '../config/environment';
 import { singularize } from 'ember-inflector';
 import { camelize } from '@ember/string';
 import rsvp from 'rsvp';
 import $ from 'jquery';
+import { inject } from '@ember/controller';
 
-export default DS.JSONAPIAdapter.extend(TokenAuthorizerMixin, {
+export default DS.JSONAPIAdapter.extend({
 	host: config.host,
+	session: inject('session'),
+	authorize(xhr) {
+		let { access_token } = this.get('session.data.authenticated');
+		xhr.setRequestHeader('Authorization', `Bearer ${access_token}`);
+	},
 
 	authorizedAjax: function (url, data) {
 		return new rsvp.Promise(function (resolve, reject) {
