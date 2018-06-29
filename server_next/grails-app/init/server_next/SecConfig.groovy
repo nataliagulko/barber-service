@@ -25,10 +25,8 @@ class SecConfig {
                 '/user/changePassword/**',
                 '**/fonts/**',
                 '/**/assets/**',
-                '/masterAjax/create',
                 '/masterAjax/list/**',
                 '/clientAjax/list/**',
-                '/userAjax/create',
                 '/clientAjax/create',
                 '/ticketAjax/create',
                 '/businessAjax/create',
@@ -37,13 +35,11 @@ class SecConfig {
         }
 
         for (String url in [
-                '/serviceAjax/**',
                 '/ticketAjax/**',
                 '/worktimeAjax/**',
                 '/holidayAjax/**',
                 '/businessAjax/**',
-                '/service/**',
-                '/serviceGroup/**',
+                '/serviceAjax/**',
                 '/serviceGroupAjax/**',
                 '/serviceToGroupAjax/**',
                 '/searchable/**',
@@ -63,6 +59,7 @@ class SecConfig {
         }
 
         for (String url in [
+                '/ticketAjax/destroy/**',
                 '/clientAjax/destroy/**',
                 '/masterAjax/destroy/**',
                 '/masterAjax/clientStatistic',
