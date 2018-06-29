@@ -93,9 +93,9 @@ class ServiceGroupAjaxController {
         }
     }
 
-    def get() {
+    def get(params) {
         def errors = []
-        def data = request.JSON.data
+        def data = params
         if (data.id) {
             ServiceGroup serviceGroup = ServiceGroup.get(data.id)
             if (serviceGroup) {
@@ -126,68 +126,13 @@ class ServiceGroupAjaxController {
         }
     }
 
-    def getSubServices() {
-        if (params.id) {
-            ServiceGroup group = ServiceGroup.get(params.id)
-            if (group) {
-                render(view: "/serviceGroup/subServices", model: [subservices: ServiceToGroup.findAllByGroup(group, [sort: 'serviceOrder'])])
-            } else {
-                render([msg: g.message(code: "services.group.not.found")] as JSON)
-            }
-        } else {
-            render([msg: g.message(code: "services.group.id.null")] as JSON)
-        }
-    }
-
     @Transactional
-    def saveSubService() {
-        if (params.service && params.id && params.serviceOrder && params.serviceTimeout) {
-            ServiceGroup group = ServiceGroup.get(params.id)
-            if (!group) {
-                render([msg: g.message(code: "services.group.not.found")] as JSON)
-            } else {
-                ServiceToGroup serviceToGroup = null
-                if (params.serviceToGroup) {
-                    serviceToGroup = ServiceToGroup.get(params.serviceToGroup)
-                } else {
-                    serviceToGroup = new ServiceToGroup()
-                }
-                serviceToGroup.setService(Service.get(Long.parseLong(params.service)))
-                serviceToGroup.setServiceTimeout(Long.parseLong(params.serviceTimeout))
-                serviceToGroup.setServiceOrder(Long.parseLong(params.serviceOrder))
-                serviceToGroup.setGroup(group)
-                serviceToGroup.save(flush: true)
-                render([id: serviceToGroup.id] as JSON)
-            }
-        } else {
-            render([msg: g.message(code: "services.group.params.null")] as JSON)
-        }
-    }
-
-    @Transactional
-    def deleteSubService() {
-        if (params.id && params.groupId) {
-            Service service = Service.get(params.id)
-            ServiceGroup group = ServiceGroup.get(params.groupId)
-            if (service) {
-                ServiceToGroup serviceToGroup = ServiceToGroup.findByServiceAndGroup(service, group)
-                if (serviceToGroup) {
-                    serviceToGroup.delete(flush: true)
-                }
-            }
-            render([code: 0] as JSON)
-        } else {
-            render([msg: g.message(code: "params.id.null")] as JSON)
-        }
-    }
-
-    @Transactional
-    def destroy() {
+    def destroy(params) {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
         if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
-            def data = request.JSON.data
-            if (data.type && data.id) {
+            def data = params
+            if (data.id) {
                 ServiceGroup serviceGroup = ServiceGroup.get(data.id)
                 if (serviceGroup) {
                     final session = sessionFactory.currentSession

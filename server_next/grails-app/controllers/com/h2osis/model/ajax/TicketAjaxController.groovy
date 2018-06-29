@@ -26,8 +26,8 @@ class TicketAjaxController {
     static allowedMethods = [choose: ['POST', 'GET']]
 
 
-    def get() {
-        def data = request.JSON.data
+    def get(params) {
+        def data = params
         if (data.id) {
             Ticket ticket = Ticket.get(data.id)
             if (ticket) {
@@ -138,32 +138,11 @@ class TicketAjaxController {
         }
     }
 
-    def delete() {
+    def destroy(params) {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
         if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
-            def data = request.JSON.data
-            if (data.id) {
-                Ticket ticket = Ticket.get(data.id)
-                if (ticket) {
-                    ticket.delete(flush: true)
-                    render([erorrs: 0] as JSON)
-                } else {
-                    render([erorrs: g.message(code: "ticket.get.user.not.found")] as JSON)
-                }
-            } else {
-                render([erorrs: g.message(code: "ticket.get.id.null")] as JSON)
-            }
-        } else {
-            render([erorrs: g.message(code: "ticket.delete.not.admin")] as JSON)
-        }
-    }
-
-    def destroy() {
-        def principal = springSecurityService.principal
-        User user = User.get(principal.id)
-        if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
-            def data = request.JSON.data
+            def data = params
             if (data.id) {
                 Ticket ticket = Ticket.get(data.id)
                 if (ticket) {
@@ -180,9 +159,9 @@ class TicketAjaxController {
         }
     }
 
-    def list() {
+    def list(params) {
         def data = request.JSON.data
-        def query = request.JSON.query
+        def query = params
         def errors = []
 
         List<Ticket> ticketList = Ticket.createCriteria().list(offset: query.offset) {

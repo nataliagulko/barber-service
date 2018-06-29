@@ -55,6 +55,7 @@ export default {
     "auth.login.password.repeat.label": "Повторите пароль",
     "auth.registration.password.validation.message": "{{description}} должно содержать цифры, заглавные и строчные латинские символы",
     "button.back": "Назад",
+    "button.save": "Сохранить",
     "user.get.id.null": "Не задан идентификатор пользователя",
     "user.get.user.not.found": "Пользователь с таким идентификатором не найден",
     "user.get.user.by.phone.not.found": "Пользователь с таким номером телефона не найден",

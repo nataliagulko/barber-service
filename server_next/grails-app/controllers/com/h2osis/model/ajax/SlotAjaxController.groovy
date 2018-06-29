@@ -12,8 +12,8 @@ class SlotAjaxController {
     SlotsService slotsService
     static allowedMethods = [choose: ['POST', 'GET']]
 
-    def list() {
-        def data = request.JSON.query
+    def list(params) {
+        def data = params
         if (data.time && data.slotDate && data.masterId) {
             User master = User.get(data.masterId)
             List<Map<String, String>> response = slotsService.getSlotsInvert(master.id, data.getLong("time"),

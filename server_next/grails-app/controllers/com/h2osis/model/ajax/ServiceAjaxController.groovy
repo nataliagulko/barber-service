@@ -17,9 +17,9 @@ class ServiceAjaxController {
     static allowedMethods = [choose: ['POST', 'GET']]
     def sessionFactory
 
-    def get() {
+    def get(params) {
         def errors = []
-        def data = request.JSON.data
+        def data = params
         if (data.id) {
             Service service = Service.get(data.id)
             if (service) {
@@ -90,7 +90,6 @@ class ServiceAjaxController {
                     service.setMasters(masters)
                 }
                 service.save(flush: true)
-                Service.search().createIndexAndWait()
                 JSON.use('services') {
                     render([data: service] as JSON)
                 }
@@ -138,7 +137,6 @@ class ServiceAjaxController {
                         service.setMasters(masters)
                     }
                     service.save(flush: true)
-                    Service.search().createIndexAndWait()
                     JSON.use('services') {
                         render([data: service] as JSON)
                     }
@@ -155,12 +153,12 @@ class ServiceAjaxController {
     }
 
     @Transactional
-    def destroy() {
+    def destroy(params) {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
         if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
-            def data = request.JSON.data
-            if (data.type && data.id) {
+            def data = params
+            if (data.id) {
                 Service service = Service.get(data.id)
                 if (service) {
                     if (ServiceToGroup.countByService(service)) {
@@ -183,7 +181,6 @@ class ServiceAjaxController {
                                 ServiceToGroup.deleteAll(ServiceToGroup.findAllByGroup(serviceGroup))
                             }
                             service.delete(flush: true)
-                            Service.search().createIndexAndWait()
                             response.status = 204
                             render([errors: []] as JSON)
                         }
@@ -202,9 +199,9 @@ class ServiceAjaxController {
         }
     }
 
-    def list() {
+    def list(params) {
         List<Service> serviceList = Service.createCriteria().list {
-            def query = request.JSON.query
+            def query = params
             if (query) {
                 if (query.name) {
                     eq("name", query.name)

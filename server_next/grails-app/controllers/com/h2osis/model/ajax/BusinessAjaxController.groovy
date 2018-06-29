@@ -13,8 +13,8 @@ class BusinessAjaxController {
     def springSecurityService
     static allowedMethods = [choose: ['POST', 'GET']]
 
-    def get() {
-        def data = request.JSON.data
+    def get(params) {
+        def data = params
         if (data && data.id) {
             Business business = Business.get(data.id)
             if (business) {
@@ -120,9 +120,9 @@ class BusinessAjaxController {
         }
     }
 
-    def destroy() {
+    def destroy(params) {
         def errors = []
-        def data = request.JSON.data
+        def data = params
         if (data.id) {
             Business business = Business.get(data.id)
             if (business) {
@@ -186,10 +186,10 @@ class BusinessAjaxController {
         }
     }
 
-    def list() {
+    def list(params) {
         def errors = []
         List<Business> businessList
-        def data = request.JSON.query
+        def data = params
         if (data && data.value) {
             String value = data.value
             businessList = Business.findAllByNameOrGuidOrPhone(value, value, value)

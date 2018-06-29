@@ -1,6 +1,6 @@
 {{#bs-form model=this onSubmit=(action "authenticate") formLayout="vertical" classNames="login-form" autocomplete="off" novalidate=true as |form|}}
     <h3 class="form-title font-green">{{t "auth.login.label"}}</h3>
-    {{#form.element controlType="tel" label="" property="identification" useIcons=false as |el|}}
+    {{#form.element controlType="tel" label="" property="username" useIcons=false as |el|}}
         {{masked-input class="form-control" mask=phoneMask placeholder=(t "auth.login.phone")  value=el.value}}
     {{/form.element}}
     {{form.element controlType="password" label="" placeholder=(t "auth.login.password") property="password"}}
