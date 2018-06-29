@@ -9,8 +9,7 @@
 	<div class="form-actions">
 		{{#form.group}}
 			<div class="col-md-offset-4 col-md-8">
-				{{bs-button defaultText=(t "button.save") type="success" buttonType="submit"
-					disabled=(v-get master 'isInvalid')}}
+				{{bs-button defaultText=(t "button.save") type="success" buttonType="submit"}}
 				{{#link-to "auth.master.index" class="btn btn-default" }}
 					<i class="fa fa-arrow-left"></i>
 					{{t "button.back"}}

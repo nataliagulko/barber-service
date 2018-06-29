@@ -34,7 +34,6 @@ class ServiceGroupAjaxController {
                     serviceGroup.setMasters(masters)
                 }
                 serviceGroup.save(flush: true)
-                serviceGroup.search().createIndexAndWait()
                 JSON.use('serviceGroups') {
                     render([data: serviceGroup] as JSON)
                 }
@@ -147,7 +146,6 @@ class ServiceGroupAjaxController {
                     } else {
                         ServiceToGroup.deleteAll(ServiceToGroup.findAllByGroup(serviceGroup))
                         serviceGroup.delete(flush: true)
-                        Service.search().createIndexAndWait()
                         response.status = 204
                         render([errors: []] as JSON)
                     }
