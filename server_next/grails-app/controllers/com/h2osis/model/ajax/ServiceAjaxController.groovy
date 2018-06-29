@@ -90,7 +90,6 @@ class ServiceAjaxController {
                     service.setMasters(masters)
                 }
                 service.save(flush: true)
-                Service.search().createIndexAndWait()
                 JSON.use('services') {
                     render([data: service] as JSON)
                 }
@@ -138,7 +137,6 @@ class ServiceAjaxController {
                         service.setMasters(masters)
                     }
                     service.save(flush: true)
-                    Service.search().createIndexAndWait()
                     JSON.use('services') {
                         render([data: service] as JSON)
                     }
@@ -183,7 +181,6 @@ class ServiceAjaxController {
                                 ServiceToGroup.deleteAll(ServiceToGroup.findAllByGroup(serviceGroup))
                             }
                             service.delete(flush: true)
-                            Service.search().createIndexAndWait()
                             response.status = 204
                             render([errors: []] as JSON)
                         }
