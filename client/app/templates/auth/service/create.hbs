@@ -18,14 +18,14 @@
 			<div class="portlet-body form">
                <div class="tab-content">
                		<div id="service" class="tab-pane active">
-						{{service-form 
+						{{service/service-form 
 							service=model.service 
 							masters=model.masters 
 							subservices=model.subservices 
 						}}
 					</div>
 					<div id="service-group" class="tab-pane">
-						{{service-group-form
+						{{service/service-group-form
 							serviceGroup=model.serviceGroup
 							masters=model.masters 
 							subservices=model.subservices 
