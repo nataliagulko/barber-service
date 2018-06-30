@@ -64,18 +64,19 @@ export default Service.extend({
 		const master = ticket.get("master");
 
 		let services = store.query("service", {
-			masterId: master.id
+			masterId: master.get("id")
 		});
 
 		services.then(function () {
-			_this.set("servicesByMaster", services);
+			_this._setTicketProperty("services", services);
 		});
 	},
 
 	toggleServiceItem(service, event) {
-		let selectedItem = $(event.target).closest('.tile'),
-			selectedServices = this.get("selectedServices"),
-			isServiceIncluded = selectedServices.includes(service);
+		const ticket = this.get("ticket");
+		const selectedServices = ticket.get("services");
+		const selectedItem = $(event.target).closest('.tile');
+		const isServiceIncluded = selectedServices.includes(service);
 
 		if (isServiceIncluded) {
 			selectedServices.removeObject(service);
@@ -91,21 +92,22 @@ export default Service.extend({
 			$('.ticket-info-services-top').removeClass('hidden');
 		}
 
+
 		this._setTicketProperty("services", selectedServices);
 		this._calculateDurationAndCost();
 
 		$(selectedItem).toggleClass('selected');
 	},
 
-	_calculateDurationAndCost() {
-		let selectedServices = this.get("selectedServices"),
-			totalCost = 0,
-			totalDuration = 0;
+	_calculateDurationAndCost(selectedServices) {
+		let totalCost = 0;
+		let totalDuration = 0;
 
 		selectedServices.forEach(function (item) {
 			totalCost += item.get("cost");
 			totalDuration += item.get("time");
 		});
+		
 		this.set("cost", totalCost);
 		this._setTicketProperty("cost", totalCost);
 		this.set("duration", totalDuration);
@@ -122,7 +124,7 @@ export default Service.extend({
 		const duration = this.get("duration");
 
 		let holidays = store.query("holiday", {
-			masterId: master.id,
+			masterId: master.get("id"),
 			time: duration
 		});
 
@@ -327,6 +329,8 @@ export default Service.extend({
 	_setTicketProperty(prop, value) {
 		let ticket = this.get("ticket");
 		ticket.set(prop, value);
+		this.set("ticket", ticket);
+		console.log("ticket", this.get("ticket"));
 		this._validateTicketProperty(ticket, prop);
 	},
 
