@@ -28,8 +28,7 @@ class ClientAjaxController {
         def data = request.JSON.data
         def attrs = data.attributes
         def errors = []
-        if (attrs.phone && attrs.password && attrs.rpassword) {
-            if (attrs.password.equals(attrs.rpassword)) {
+        if (attrs.phone && attrs.firstname) {
                 def result = usersService.createUser(attrs)
                 if (result instanceof User) {
                     //result.setPassword(null)
@@ -41,7 +40,7 @@ class ClientAjaxController {
                 } else {
                     errors.add([
                         "status": 422,
-                        "detail": "wrong user data",
+                        "detail": result,
                         "source": [
                                 "pointer": "data"
                         ]
@@ -49,21 +48,10 @@ class ClientAjaxController {
                     response.status = 422
                     render([errors: errors] as JSON)
                 }
-            } else {
-                errors.add([
-                        "status": 422,
-                        "detail": g.message(code: "user.get.user.by.phone.not.found"),
-                        "source": [
-                                "pointer": "data"
-                        ]
-                    ])
-                response.status = 422
-                render([errors: errors] as JSON)
-            }
         } else {
             errors.add([
                         "status": 422,
-                        "detail": g.message(code: "user.phone.and.pass.null"),
+                        "detail": g.message(code: "user.phone.null"),
                         "source": [
                                 "pointer": "data"
                         ]

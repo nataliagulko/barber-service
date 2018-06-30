@@ -308,11 +308,9 @@ export default Service.extend({
 		let client = store.createRecord("client", {
 			firstname: name,
 			phone: this.get("phone"),
-			password: "emptyPass123",
-			rpassword: "emptyPass123"
+			enabled: false
 		});
 
-		// need validate client too
 		client
 			.save()
 			.then((cl) => {
