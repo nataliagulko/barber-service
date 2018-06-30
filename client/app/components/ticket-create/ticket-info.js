@@ -7,11 +7,6 @@ export default Component.extend({
     ticketService: inject("ticket-service"),
     validationMessage: readOnly("ticketService.validationMessage"),
 
-    didInsertElement() {
-        const ticketService = this.get("ticketService");
-        ticketService.setTicketRecord(this.get("ticket"));
-    },
-
     actions: {
         saveTicket() {
             const ticketService = this.get("ticketService");
