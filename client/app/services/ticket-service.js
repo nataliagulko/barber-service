@@ -68,14 +68,14 @@ export default Service.extend({
 		});
 
 		services.then(function () {
-			_this._setTicketProperty("services", services);
+			_this.set("servicesByMaster", services);
 		});
 	},
 
 	toggleServiceItem(service, event) {
 		const ticket = this.get("ticket");
-		const selectedServices = ticket.get("services");
 		const selectedItem = $(event.target).closest('.tile');
+		let selectedServices = ticket.get("services");
 		const isServiceIncluded = selectedServices.includes(service);
 
 		if (isServiceIncluded) {
@@ -85,16 +85,7 @@ export default Service.extend({
 			selectedServices.pushObject(service);
 		}
 
-		if (selectedServices.get("length") === 0) {
-			$('.ticket-info-services-top').addClass('hidden');
-		}
-		else {
-			$('.ticket-info-services-top').removeClass('hidden');
-		}
-
-
-		this._setTicketProperty("services", selectedServices);
-		this._calculateDurationAndCost();
+		this._calculateDurationAndCost(selectedServices);
 
 		$(selectedItem).toggleClass('selected');
 	},
@@ -107,10 +98,8 @@ export default Service.extend({
 			totalCost += item.get("cost");
 			totalDuration += item.get("time");
 		});
-		
-		this.set("cost", totalCost);
+
 		this._setTicketProperty("cost", totalCost);
-		this.set("duration", totalDuration);
 		this._setTicketProperty("duration", totalDuration);
 	},
 
@@ -330,7 +319,6 @@ export default Service.extend({
 		let ticket = this.get("ticket");
 		ticket.set(prop, value);
 		this.set("ticket", ticket);
-		console.log("ticket", this.get("ticket"));
 		this._validateTicketProperty(ticket, prop);
 	},
 
