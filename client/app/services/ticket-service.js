@@ -11,13 +11,7 @@ export default Service.extend({
 	notification: inject("notification-service"),
 
 	ticket: null,
-	selectedMaster: null,
-	ticketDate: null,
-	ticketTime: null,
 	servicesByMaster: [],
-	selectedServices: [],
-	cost: null,
-	duration: null,
 	phone: "",
 	client: null,
 	isNewClient: false,
@@ -110,7 +104,7 @@ export default Service.extend({
 
 		const ticket = this.get("ticket");
 		const master = ticket.get("master");
-		const duration = this.get("duration");
+		const duration = ticket.get("duration");
 
 		let holidays = store.query("holiday", {
 			masterId: master.get("id"),
@@ -119,8 +113,8 @@ export default Service.extend({
 
 		holidays.then(function () {
 			holidays = holidays.toArray();
-			let disableDates = _this._parseHolidays(holidays),
-				yesterday = moment().subtract(1, 'days');
+			const disableDates = _this._parseHolidays(holidays);
+			const yesterday = moment().subtract(1, 'days');
 
 			pickadateService.set("#ticket-date-picker", "disable", false);
 			pickadateService.set("#ticket-date-picker", "min", yesterday);
@@ -132,10 +126,10 @@ export default Service.extend({
 		let datesArr = [];
 
 		holidays.forEach(function (item) {
-			const dateFrom = moment(item.get("dateFrom")).toObject(),
-				dateTo = moment(item.get("dateTo")).toObject();
+			const dateFrom = moment(item.get("dateFrom")).toObject();
+			const dateTo = moment(item.get("dateTo")).toObject();
 
-			let range = {
+			const range = {
 				"from": [dateFrom.years, dateFrom.months, dateFrom.date],
 				"to": [dateTo.years, dateTo.months, dateTo.date]
 			};
@@ -148,7 +142,6 @@ export default Service.extend({
 
 	onTicketDateChange(selectedDate) {
 		const date = selectedDate;
-		this.set("ticketDate", date);
 		this._setTicketProperty("ticketDate", date);
 	},
 
@@ -158,12 +151,12 @@ export default Service.extend({
 		const pickatimeService = this.get("pickatimeService");
 
 		const ticket = this.get("ticket");
-		const duration = this.get("duration");
-		const date = this.get("ticketDate");
+		const duration = ticket.get("duration");
+		const date = ticket.get("ticketDate");
 		const master = ticket.get("master");
 
 		let slots = store.query("slot", {
-			masterId: master.id,
+			masterId: master.get("id"),
 			time: duration,
 			slotDate: date
 		});
@@ -172,7 +165,7 @@ export default Service.extend({
 			timeSlots = timeSlots.toArray();
 			if (timeSlots.length === 0) { return; }
 
-			let parsedSlots = _this._parsedSlots(timeSlots);
+			const parsedSlots = _this._parsedSlots(timeSlots);
 
 			pickatimeService.set("#ticket-time-picker", "disable", false);
 			pickatimeService.set("#ticket-time-picker", "min", parsedSlots.disabledMinTime);
@@ -182,15 +175,15 @@ export default Service.extend({
 	},
 
 	_parsedSlots(timeSlots) {
-		let timesArr = [],
-			minTime = 0,
-			maxTime = 0;
+		let timesArr = [];
+		let minTime = 0;
+		let maxTime = 0;
 
 		timeSlots.forEach(function (item) {
-			const start = moment(item.get("start")).toObject(),
-				end = moment(item.get("end")).toObject();
+			const start = moment(item.get("start")).toObject();
+			const end = moment(item.get("end")).toObject();
 
-			var rangeObj = {
+			const rangeObj = {
 				"from": [start.hours, start.minutes],
 				"to": [end.hours, end.minutes]
 			};
@@ -209,8 +202,6 @@ export default Service.extend({
 	},
 
 	onTicketTimeChange(selectedTime) {
-		$('.ticket-info-time-top').removeClass('hidden');
-		this.set("ticketTime", selectedTime);
 		this._setTicketProperty("time", selectedTime);
 	},
 
