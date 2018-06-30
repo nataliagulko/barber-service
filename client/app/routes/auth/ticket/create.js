@@ -20,7 +20,7 @@ export default Route.extend(RollbackAttributesMixin, {
 	deactivate() {
 		this._super(...arguments);
 
-		const model = this.modelFor(this.routeName);
-		this.rollback(model.ticket);
+		this.rollback(this.get("ticket"));
+		this.get("ticketService").changeStep("#master-step");
 	}
 });
