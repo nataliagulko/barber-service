@@ -53,7 +53,7 @@ export default Component.extend({
 
 		showTicketInfo: function (event) {
 			this.set("selectedEvent", event);
-			this.$("#ticket-modal").modal('show');
+			this.set("openTicketInfo", true);
 		}
 	},
 

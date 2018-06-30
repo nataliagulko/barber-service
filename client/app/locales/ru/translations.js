@@ -138,7 +138,7 @@ export default {
     "serviceToGroup.delete.not.admin": "Удалять связи может только мастер",
     "serviceToGroup.serviceOrder.label": "Порядок",
     "serviceToGroup.serviceTimeout.label": "Перерыв",
-    "ticket.label": "запись",
+    "ticket.label": "Запись",
     "ticket.list.label": "Список записей",
     "ticket.new.label": "Новая запись",
     "ticket.create.label": "Создать запись",
@@ -233,5 +233,6 @@ export default {
     "search.dateTo.label": "Дата окончания",
     "search.date.label": "Дата",
     "search.find.label": "Найти",
-    "search.clear.label": "Очистить"
+	"search.clear.label": "Очистить",
+	"currency.sign": "₽"
 };
