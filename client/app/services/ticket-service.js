@@ -6,6 +6,7 @@ import { inject } from '@ember/service';
 export default Service.extend({
 	store: inject("store"),
 	routing: inject('-routing'),
+	constants: inject("constants-service"),
 	pickadateService: inject("pickadate-service"),
 	pickatimeService: inject("pickatime-service"),
 	notification: inject("notification-service"),
@@ -13,7 +14,6 @@ export default Service.extend({
 	ticket: null,
 	servicesByMaster: [],
 	phone: "",
-	client: null,
 	isNewClient: false,
 	activeStep: '#master-step',
 	validationMessage: null,
@@ -206,9 +206,10 @@ export default Service.extend({
 	},
 
 	inputPhone(value) {
-		let phone = this.get("phone");
+		const constants = this.get("constants");
+		const phoneLength = constants.PHONE_LENGTH;
 
-		const phoneLength = 16;
+		let phone = this.get("phone");
 
 		//todo подумать как сделать без двух if
 		if (phone.length < phoneLength) {
@@ -262,7 +263,7 @@ export default Service.extend({
 	},
 
 	_resetClient() {
-		this.set("client", null);
+		this._setTicketProperty("client", null);
 		this.set("isNewClient", false);
 	},
 
@@ -302,7 +303,6 @@ export default Service.extend({
 
 	_setClient(client, isNew) {
 		this.set("isNewClient", isNew);
-		this.set("client", client);
 		this._setTicketProperty("client", client);
 	},
 
@@ -324,10 +324,6 @@ export default Service.extend({
 			text = `${prop}: ${message}`;
 			this.set("validationMessage", text);
 		}
-	},
-
-	setTicketRecord(ticket) {
-		this.set("ticket", ticket);
 	},
 
 	saveTicket() {
