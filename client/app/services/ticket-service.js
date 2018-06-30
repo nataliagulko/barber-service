@@ -64,9 +64,7 @@ export default Service.extend({
 		const master = ticket.get("master");
 
 		let services = store.query("service", {
-			query: {
-				masterId: master.id
-			}
+			masterId: master.id
 		});
 
 		services.then(function () {
@@ -124,10 +122,8 @@ export default Service.extend({
 		const duration = this.get("duration");
 
 		let holidays = store.query("holiday", {
-			query: {
-				masterId: master.id,
-				time: duration
-			}
+			masterId: master.id,
+			time: duration
 		});
 
 		holidays.then(function () {
@@ -176,11 +172,9 @@ export default Service.extend({
 		const master = ticket.get("master");
 
 		let slots = store.query("slot", {
-			query: {
-				masterId: master.id,
-				time: duration,
-				slotDate: date
-			},
+			masterId: master.id,
+			time: duration,
+			slotDate: date
 		});
 
 		slots.then((timeSlots) => {
