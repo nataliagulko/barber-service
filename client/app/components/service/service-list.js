@@ -1,8 +1,10 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { inject } from '@ember/service';
+import $ from 'jquery';
 
-export default Ember.Component.extend({
-	store: Ember.inject.service("store"),
-	bootbox: Ember.inject.service("bootbox-service"),
+export default Component.extend({
+	store: inject("store"),
+	bootbox: inject("bootbox-service"),
 
 	didInsertElement: function() {
 		var $table = $("#service-list");
@@ -14,9 +16,9 @@ export default Ember.Component.extend({
 			const extension = service.get("extensionShort");
 
 			if (extension === "ServiceGroup") {
-				this.get("router").transitionTo('/service-group/edit/' + service.id);
+				this.get("router").transitionTo('/auth/service-group/edit/' + service.id);
 			} else {
-				this.get("router").transitionTo('/service/edit/' + service.id);
+				this.get("router").transitionTo('/auth/service/edit/' + service.id);
 			}
 		},
 

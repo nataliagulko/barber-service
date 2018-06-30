@@ -11,6 +11,7 @@ export default Service.extend({
 	notification: inject("notification-service"),
 
 	ticket: null,
+	selectedMaster: null,
 	ticketDate: null,
 	ticketTime: null,
 	servicesByMaster: [],
@@ -294,9 +295,7 @@ export default Service.extend({
 			_this = this;
 
 		let client = store.queryRecord("client", {
-			query: {
-				phone: phone
-			},
+			phone: phone
 		});
 
 		client.then(
@@ -315,11 +314,9 @@ export default Service.extend({
 		let client = store.createRecord("client", {
 			firstname: name,
 			phone: this.get("phone"),
-			password: "emptyPass123",
-			rpassword: "emptyPass123"
+			enabled: false
 		});
 
-		// need validate client too
 		client
 			.save()
 			.then((cl) => {
@@ -336,10 +333,6 @@ export default Service.extend({
 	_setTicketProperty(prop, value) {
 		let ticket = this.get("ticket");
 		ticket.set(prop, value);
-		this.set("ticket", ticket);
-
-		console.log("ticket", this.get("ticket"));
-
 		this._validateTicketProperty(ticket, prop);
 	},
 
@@ -354,6 +347,10 @@ export default Service.extend({
 			text = `${prop}: ${message}`;
 			this.set("validationMessage", text);
 		}
+	},
+
+	setTicketRecord(ticket) {
+		this.set("ticket", ticket);
 	},
 
 	saveTicket() {

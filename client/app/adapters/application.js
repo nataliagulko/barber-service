@@ -1,103 +1,50 @@
 import DS from 'ember-data';
-import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 import config from '../config/environment';
 import { singularize } from 'ember-inflector';
 import { camelize } from '@ember/string';
-import rsvp from 'rsvp';
-import $ from 'jquery';
+import TokenAuthorizerMixin from 'ember-simple-auth-token/mixins/token-authorizer';
 
-export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
-	authorizer: 'authorizer:token',
+export default DS.JSONAPIAdapter.extend(TokenAuthorizerMixin, {
 	host: config.host,
 
 	pathForType: function (type) {
-		let camelized = camelize(type);
+		const camelized = camelize(type);
 		return singularize(camelized);
 	},
 
-	findAll: function (store, type) {
-		let url = this.buildURL(type.modelName, null, null, 'findAll');
+	buildURL: function (modelName, id, snapshot, requestType, query) {
+		const host = this.get("host");
 
-		url = url + "Ajax/list";
+		const type = this.pathForType(modelName);
+		const model = `${type}Ajax`;
+		const ids = id ? `/${id}` : '';
+		
+		let method;
 
-		return this.ajax(url, 'POST');
+		switch (requestType) {
+			case 'findAll':
+				method = 'list';
+				break;
+			case 'findRecord':
+				method = 'get';
+				break;
+			case 'createRecord':
+				method = 'create';
+				break;
+			case 'updateRecord':
+				method = 'update';
+				break;
+			case 'deleteRecord':
+				method = 'destroy';
+				break;
+			case 'query':
+				method = query.methodName ? query.methodName : 'list';
+				break;
+			case 'queryRecord':
+			method = query.methodName ? query.methodName : 'get';
+				break;
+		}
+
+		return `${host}/${model}/${method}${ids}`;
 	},
-
-	query: function (store, type, query) {
-		let url = this.buildURL(type.modelName, null, null, 'findAll'),
-			data = JSON.stringify(query),
-			methodName = query.methodName || "list";
-
-		url = url + "Ajax/" + methodName;
-
-		return authorizedAjax(this.get("session"), url, data);
-	},
-
-	queryRecord: function (store, type, query) {
-		let url = this.buildURL(type.modelName, null, null, 'findRecord'),
-			data = JSON.stringify(query),
-			methodName = query.methodName || "get";
-
-		url = url + "Ajax/" + methodName;
-
-		return authorizedAjax(this.get("session"), url, data);
-	},
-
-	createRecord: function (store, type, snapshot) {
-		let url = this.buildURL(type.modelName + 'Ajax/create', null, null, 'createRecord'),
-			data = JSON.stringify(this.serialize(snapshot, { includeId: true }));
-
-		return authorizedAjax(this.get("session"), url, data);
-	},
-
-	findRecord(store, type, id) {
-		let url = this.buildURL(type.modelName + 'Ajax/get', null, null, 'findRecord'),
-			data = JSON.stringify({
-				data: {
-					id: id
-				}
-			});
-
-		return authorizedAjax(this.get("session"), url, data);
-	},
-
-	updateRecord(store, type, snapshot) {
-		let data = JSON.stringify(this.serialize(snapshot, { includeId: true })),
-			url = this.buildURL(type.modelName + 'Ajax/update', null, null, 'updateRecord');
-
-		return authorizedAjax(this.get("session"), url, data);
-	},
-
-	deleteRecord(store, type, snapshot) {
-		let data = JSON.stringify(this.serialize(snapshot, { includeId: true })),
-			url = this.buildURL(type.modelName + 'Ajax/destroy', null, null, 'deleteRecord');
-
-		return authorizedAjax(this.get("session"), url, data);
-	}
 });
-
-export function authorizedAjax(session, url, data) {
-	let token;
-
-	session.authorize('authorizer:token', (headerName, headerValue) => {
-		token = headerValue;
-	});
-
-	return new rsvp.Promise(function (resolve, reject) {
-		$.ajax({
-			beforeSend: function (xhr) {
-				xhr.setRequestHeader('Authorization', token);
-			},
-			type: 'POST',
-			url: url,
-			dataType: 'json',
-			data: data,
-			contentType: 'application/json; charset=utf-8',
-			mimeType: 'application/json',
-		}).then(function (data) {
-			resolve(data);
-		}, function (jqXHR) {
-			reject(jqXHR);
-		});
-	});
-}
