@@ -1,6 +1,7 @@
 package com.h2osis.model
 
 import com.h2osis.auth.User
+import com.ibm.icu.text.Transliterator
 
 class Business {
 
@@ -12,6 +13,7 @@ class Business {
     String email
     String mode
     String guid
+    String code
 
     String smsCentrLogin
     String smsCentrPass
@@ -26,6 +28,7 @@ class Business {
 
     static constraints = {
         name nullable: false
+        code nullable: false
         inn nullable: true
         address nullable: false
         phone nullable: true, widget: "phone"
@@ -47,5 +50,9 @@ class Business {
 
     String toString() {
         return name
+    }
+
+    static String getCode(String name){
+        return  Transliterator.getInstance("Cyrillic-Latin").transliterate(name)?.replaceAll(' ','_')
     }
 }
