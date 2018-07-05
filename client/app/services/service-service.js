@@ -1,18 +1,11 @@
-import Ember from 'ember';
+import Service from '@ember/service';
+import { inject } from '@ember/service';
+import { readOnly } from '@ember/object/computed';
 
-export default Ember.Service.extend({
-	store: Ember.inject.service("store"),
-	serviceToGroupService: Ember.inject.service("service-to-group-service"),
-	servicesToGroup: Ember.computed.readOnly('serviceToGroupService.servicesToGroup'),
-
-	saveService: function (serviceRecord, masters, _this) {
-		serviceRecord.set("masters", masters);
-		serviceRecord
-			.save()
-			.then(() => {
-				_this.get("router").transitionTo('service');
-			});
-	},
+export default Service.extend({
+	store: inject("store"),
+	serviceToGroupService: inject("service-to-group-service"),
+	servicesToGroup: readOnly('serviceToGroupService.servicesToGroup'),
 
 	saveServiceGroup: function (serviceGroupRecord, masters, _this) {
 		const servicesToGroup = this.get("servicesToGroup");

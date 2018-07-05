@@ -1,94 +1,33 @@
-<form class="form-horizontal" {{action 'save' on='submit'}}>
-    <div class="form-body">
-        <div class="form-group">
-            <label class="col-sm-4 control-label">
-                Название
-                <span class="required" aria-required="true"> * </span>
-            </label>
-            <div class="col-sm-6">
-                {{input name="name" 
-                class="form-control" 
-                value=service.name
-                focus-out=(action (mut showNameError) true)}}
-                {{#if showNameError}}
-                    <small class="help-block">
-                        {{v-get service 'name' 'message'}}
-                    </small>
-                {{/if}}
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-4 control-label">
-                Мастера
-                <span class="required" aria-required="true"> * </span>
-            </label>
-            <div class="col-sm-6">
-                {{#power-select-multiple 
-                    options=masters 
-                    selected=selectedMasters
-                    searchField="fullname"
-                    onchange=(action (mut selectedMasters))
-                    as |master| }}
-                    {{master.fullname}}
-                {{/power-select-multiple}}
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-4 control-label">&nbsp;</label>
-            <div class="col-sm-6">
-                <label class="mt-checkbox">
-                    Сделать подуслугой {{input type="checkbox" checked=service.partOfList name="partOfList"}}
-                    <span></span>
-                </label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-4 control-label">
-                Стоимость
-                <span class="required" aria-required="true"> * </span>
-            </label>
-            <div class="col-sm-6">
-                {{input name="cost" 
-                class="form-control"  
-                value=service.cost
-                focus-out=(action (mut showCostError) true)}}
-                {{#if showCostError}}
-                    <small class="help-block">
-                        {{v-get service 'cost' 'message'}}
-                    </small>
-                {{/if}}
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-4 control-label">
-                Продолжительность
-                <span class="required" aria-required="true"> * </span>
-            </label>
-            <div class="col-sm-6">
-                {{input name="time" 
-                class="form-control"  
-                value=service.time
-                focus-out=(action (mut showTimeError) true)}}
-                {{#if showTimeError}}
-                    <small class="help-block">
-                        {{v-get service 'time' 'message'}}
-                    </small>
-                {{/if}}
-            </div>
-        </div>
-    </div>
-    <div class="form-actions">
-        <div class="row">
-            <div class="col-sm-offset-4 col-sm-8">
-                {{input 
-                    class="btn btn-success" 
-                    type="submit" 
-                    value="Сохранить"
-                    disabled=(v-get service 'isInvalid')}}
-                {{#link-to "auth.service.index" class="btn btn-default" }}
-                    <i class="fa fa-arrow-left"></i> Назад
-                {{/link-to}}
-            </div>
-        </div>
-    </div>
-</form>
+{{#bs-form model=service formLayout="horizontal" novalidate=true onSubmit=(action "save") as |form|}}
+	<div class="form-body">
+		{{form.element controlType="text" label=(t "service.name.label")  property="name" useIcons=false}}
+		{{#form.element controlType="power-select-multiple" 
+			property="masters" 
+			label=(t "service.masters.label") 
+			options=allMasters 
+			useIcons=false as |el|}}
+			{{#el.control searchField="fullname" as |option|}}
+				{{option.fullname}}
+			{{/el.control}}
+		{{/form.element}}
+		{{#form.element controlType="checkbox" property="partOfList" useIcons=false as |el|}}
+			<label class="mt-checkbox">
+				{{t "service.partOfList.label"}} {{el.control}}
+				<span></span>
+			</label>
+		{{/form.element}}
+		{{form.element controlType="text" label=(t "service.cost.label")  property="cost" useIcons=false}}
+		{{form.element controlType="text" label=(t "service.time.label")  property="time" useIcons=false}}
+	</div>
+	<div class="form-actions">
+		{{#form.group}}
+			<div class="col-md-offset-4 col-md-8">
+				{{bs-button defaultText=(t "button.save") type="success" buttonType="submit"}}
+				{{#link-to "auth.service.index" class="btn btn-default" }}
+					<i class="fa fa-arrow-left"></i>
+					{{t "button.back"}}
+				{{/link-to}}
+			</div>
+		{{/form.group}}
+	</div>
+{{/bs-form}}
