@@ -1,10 +1,11 @@
 import Component from '@ember/component';
 import moment from 'moment';
 import $ from 'jquery';
+import { inject } from '@ember/service';
 
 export default Component.extend({
 	classNames: ["calendar"],
-	store: Ember.inject.service("store"),
+	store: inject("store"),
 
 	headerOptions: {
 		left: "title",

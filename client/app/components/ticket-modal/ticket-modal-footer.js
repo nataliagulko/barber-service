@@ -1,9 +1,4 @@
-import Ember from 'ember';
+import Component from '@ember/component';
 
-export default Ember.Component.extend({
-    actions: {
-        remove: () => {
-            console.log("footer, remove");
-        }
-    }
+export default Component.extend({
 });
