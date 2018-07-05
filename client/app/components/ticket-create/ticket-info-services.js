@@ -5,5 +5,5 @@ import { readOnly } from '@ember/object/computed';
 export default Component.extend({
         tagName: '',
         ticketService: inject("ticket-service"),
-        selectedServices: readOnly("ticketService.selectedServices")
+        ticket: readOnly("ticketService.ticket"),
 });

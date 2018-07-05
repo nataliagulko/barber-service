@@ -68,9 +68,11 @@ class ServiceGroupAjaxController {
                     data.relationships.masters.data.id.each {
                         it -> mastersIdsList.add(it)
                     }
-                    Set<User> masters = new HashSet<User>()
-                    masters.addAll(User.findAllByIdInList(mastersIdsList))
-                    serviceGroup.setMasters(masters)
+                    if(mastersIdsList) {
+                        Set<User> masters = new HashSet<User>()
+                        masters.addAll(User.findAllByIdInList(mastersIdsList))
+                        serviceGroup.setMasters(masters)
+                    }
                 }
                 serviceGroup.save(flush: true)
                 JSON.use('serviceGroups') {

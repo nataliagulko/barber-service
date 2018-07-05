@@ -6,20 +6,14 @@ import { inject } from '@ember/service';
 export default Service.extend({
 	store: inject("store"),
 	routing: inject('-routing'),
+	constants: inject("constants-service"),
 	pickadateService: inject("pickadate-service"),
 	pickatimeService: inject("pickatime-service"),
 	notification: inject("notification-service"),
 
 	ticket: null,
-	selectedMaster: null,
-	ticketDate: null,
-	ticketTime: null,
 	servicesByMaster: [],
-	selectedServices: [],
-	cost: null,
-	duration: null,
 	phone: "",
-	client: null,
 	isNewClient: false,
 	activeStep: '#master-step',
 	validationMessage: null,
@@ -33,42 +27,38 @@ export default Service.extend({
 	},
 
 	toggleMaster(master, event) {
-		let selectedItem = $(event.target).closest('.tile'),
-			selectedMaster = this.get("selectedMaster"),
-			isSameMaster = selectedMaster === master;
+		const ticket = this.get("ticket");
+
+		let selectedItem = $(event.target).closest('.tile');
+		let selectedMaster = ticket.get("master");
+		let isSameMaster = selectedMaster === master;
 
 		if (selectedMaster && isSameMaster) {
-			this._setSelectedMaster(null);
+			this._setTicketProperty("master", null);
 			this.set("servicesByMaster", []);
-
-			$('.ticket-info-master-top').addClass('hidden');
 		}
 		else if (selectedMaster && !isSameMaster) {
-			this._setSelectedMaster(master);
+			this._setTicketProperty("master", master);
 
 			$('.tile').each(function () {
 				$(this).removeClass('selected');
 			});
 		}
 		else {
-			this._setSelectedMaster(master);
+			this._setTicketProperty("master", master);
 		}
 
 		$(selectedItem).toggleClass('selected');
 	},
 
-	_setSelectedMaster(master) {
-		this.set("selectedMaster", master);
-		this._setTicketProperty("master", master);
-	},
-
 	getServicesByMaster() {
-		let store = this.get("store"),
-			master = this.get("selectedMaster"),
-			_this = this;
+		const _this = this;
+		const store = this.get("store");
+		const ticket = this.get("ticket");
+		const master = ticket.get("master");
 
 		let services = store.query("service", {
-			masterId: master.id
+			masterId: master.get("id")
 		});
 
 		services.then(function () {
@@ -77,9 +67,10 @@ export default Service.extend({
 	},
 
 	toggleServiceItem(service, event) {
-		let selectedItem = $(event.target).closest('.tile'),
-			selectedServices = this.get("selectedServices"),
-			isServiceIncluded = selectedServices.includes(service);
+		const ticket = this.get("ticket");
+		const selectedItem = $(event.target).closest('.tile');
+		let selectedServices = ticket.get("services");
+		const isServiceIncluded = selectedServices.includes(service);
 
 		if (isServiceIncluded) {
 			selectedServices.removeObject(service);
@@ -88,50 +79,42 @@ export default Service.extend({
 			selectedServices.pushObject(service);
 		}
 
-		if (selectedServices.get("length") === 0) {
-			$('.ticket-info-services-top').addClass('hidden');
-		}
-		else {
-			$('.ticket-info-services-top').removeClass('hidden');
-		}
-
-		this._setTicketProperty("services", selectedServices);
-		this._calculateDurationAndCost();
+		this._calculateDurationAndCost(selectedServices);
 
 		$(selectedItem).toggleClass('selected');
 	},
 
-	_calculateDurationAndCost() {
-		let selectedServices = this.get("selectedServices"),
-			totalCost = 0,
-			totalDuration = 0;
+	_calculateDurationAndCost(selectedServices) {
+		let totalCost = 0;
+		let totalDuration = 0;
 
 		selectedServices.forEach(function (item) {
 			totalCost += item.get("cost");
 			totalDuration += item.get("time");
 		});
-		this.set("cost", totalCost);
+
 		this._setTicketProperty("cost", totalCost);
-		this.set("duration", totalDuration);
 		this._setTicketProperty("duration", totalDuration);
 	},
 
 	getHolidays() {
-		let store = this.get("store"),
-			_this = this,
-			master = this.get("selectedMaster"),
-			duration = this.get("duration"),
-			pickadateService = this.get("pickadateService");
+		const _this = this;
+		const store = this.get("store");
+		const pickadateService = this.get("pickadateService");
+
+		const ticket = this.get("ticket");
+		const master = ticket.get("master");
+		const duration = ticket.get("duration");
 
 		let holidays = store.query("holiday", {
-			masterId: master.id,
+			masterId: master.get("id"),
 			time: duration
 		});
 
 		holidays.then(function () {
 			holidays = holidays.toArray();
-			let disableDates = _this._parseHolidays(holidays),
-				yesterday = moment().subtract(1, 'days');
+			const disableDates = _this._parseHolidays(holidays);
+			const yesterday = moment().subtract(1, 'days');
 
 			pickadateService.set("#ticket-date-picker", "disable", false);
 			pickadateService.set("#ticket-date-picker", "min", yesterday);
@@ -143,10 +126,10 @@ export default Service.extend({
 		let datesArr = [];
 
 		holidays.forEach(function (item) {
-			const dateFrom = moment(item.get("dateFrom")).toObject(),
-				dateTo = moment(item.get("dateTo")).toObject();
+			const dateFrom = moment(item.get("dateFrom")).toObject();
+			const dateTo = moment(item.get("dateTo")).toObject();
 
-			let range = {
+			const range = {
 				"from": [dateFrom.years, dateFrom.months, dateFrom.date],
 				"to": [dateTo.years, dateTo.months, dateTo.date]
 			};
@@ -159,20 +142,21 @@ export default Service.extend({
 
 	onTicketDateChange(selectedDate) {
 		const date = selectedDate;
-		this.set("ticketDate", date);
 		this._setTicketProperty("ticketDate", date);
 	},
 
 	getTimeSlots() {
-		let store = this.get("store"),
-			master = this.get("selectedMaster"),
-			duration = this.get("duration"),
-			date = this.get("ticketDate"),
-			_this = this,
-			pickatimeService = this.get("pickatimeService");
+		const _this = this;
+		const store = this.get("store");
+		const pickatimeService = this.get("pickatimeService");
+
+		const ticket = this.get("ticket");
+		const duration = ticket.get("duration");
+		const date = ticket.get("ticketDate");
+		const master = ticket.get("master");
 
 		let slots = store.query("slot", {
-			masterId: master.id,
+			masterId: master.get("id"),
 			time: duration,
 			slotDate: date
 		});
@@ -181,7 +165,7 @@ export default Service.extend({
 			timeSlots = timeSlots.toArray();
 			if (timeSlots.length === 0) { return; }
 
-			let parsedSlots = _this._parsedSlots(timeSlots);
+			const parsedSlots = _this._parsedSlots(timeSlots);
 
 			pickatimeService.set("#ticket-time-picker", "disable", false);
 			pickatimeService.set("#ticket-time-picker", "min", parsedSlots.disabledMinTime);
@@ -191,15 +175,15 @@ export default Service.extend({
 	},
 
 	_parsedSlots(timeSlots) {
-		let timesArr = [],
-			minTime = 0,
-			maxTime = 0;
+		let timesArr = [];
+		let minTime = 0;
+		let maxTime = 0;
 
 		timeSlots.forEach(function (item) {
-			const start = moment(item.get("start")).toObject(),
-				end = moment(item.get("end")).toObject();
+			const start = moment(item.get("start")).toObject();
+			const end = moment(item.get("end")).toObject();
 
-			var rangeObj = {
+			const rangeObj = {
 				"from": [start.hours, start.minutes],
 				"to": [end.hours, end.minutes]
 			};
@@ -218,15 +202,14 @@ export default Service.extend({
 	},
 
 	onTicketTimeChange(selectedTime) {
-		$('.ticket-info-time-top').removeClass('hidden');
-		this.set("ticketTime", selectedTime);
 		this._setTicketProperty("time", selectedTime);
 	},
 
 	inputPhone(value) {
-		let phone = this.get("phone");
+		const constants = this.get("constants");
+		const phoneLength = constants.PHONE_LENGTH;
 
-		const phoneLength = 16;
+		let phone = this.get("phone");
 
 		//todo подумать как сделать без двух if
 		if (phone.length < phoneLength) {
@@ -280,7 +263,7 @@ export default Service.extend({
 	},
 
 	_resetClient() {
-		this.set("client", null);
+		this._setTicketProperty("client", null);
 		this.set("isNewClient", false);
 	},
 
@@ -320,13 +303,13 @@ export default Service.extend({
 
 	_setClient(client, isNew) {
 		this.set("isNewClient", isNew);
-		this.set("client", client);
 		this._setTicketProperty("client", client);
 	},
 
 	_setTicketProperty(prop, value) {
 		let ticket = this.get("ticket");
 		ticket.set(prop, value);
+		this.set("ticket", ticket);
 		this._validateTicketProperty(ticket, prop);
 	},
 
@@ -343,8 +326,11 @@ export default Service.extend({
 		}
 	},
 
-	setTicketRecord(ticket) {
-		this.set("ticket", ticket);
+	resetProperties() {
+		this.set("servicesByMaster", null);
+		this.set("phone", null);
+		this.set("isNewClient", false);
+		this.set("activeStep", '#master-step');
 	},
 
 	saveTicket() {
@@ -361,9 +347,9 @@ export default Service.extend({
 							const ticketDate = moment(ticket.get("ticketDate")).format("Do MMMM");
 							let message = `Запись ${ticketDate} ${ticket.get("time")} создана`;
 
+							_this.resetProperties();
 							_this.get("routing").transitionTo('auth.ticket');
 							_this.get("notification").showInfoMessage(message);
-							_this.set("ticket", null);
 						});
 				}
 			}, () => {

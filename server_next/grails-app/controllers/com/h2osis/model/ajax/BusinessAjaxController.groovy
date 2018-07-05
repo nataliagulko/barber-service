@@ -52,6 +52,7 @@ class BusinessAjaxController {
             business.smsCentrLogin = attrs.smsCentrLogin
             business.smsCentrPass = attrs.smsCentrPass
             business.guid = UUID.randomUUID().toString()
+            business.code = Business.getCode(business.name)
 
 
             business.save(flush: true)
@@ -88,6 +89,10 @@ class BusinessAjaxController {
                 business.address = attrs.address
                 business.email = attrs.email
                 business.mode = attrs.mode
+
+                if(attrs.code) {
+                    business.code = attrs.code
+                }
 
                 business.smsCentrLogin = attrs.smsCentrLogin
                 business.smsCentrPass = attrs.smsCentrPass
@@ -157,7 +162,7 @@ class BusinessAjaxController {
         def data = request.JSON.query
         if (data && data.value) {
             String value = data.value
-            List<Business> businessList = Business.findAllByNameOrGuid(value, value)
+            List<Business> businessList = Business.findAllByNameOrGuidOrCode(value, value, value)
             if (businessList) {
                 JSON.use('business') {
                     render([data: businessList] as JSON)
@@ -192,7 +197,7 @@ class BusinessAjaxController {
         def data = params
         if (data && data.value) {
             String value = data.value
-            businessList = Business.findAllByNameOrGuidOrPhone(value, value, value)
+            businessList = Business.findAllByNameOrGuidOrPhoneOrCode(value, value, value, value)
         } else {
             businessList = Business.all
         }

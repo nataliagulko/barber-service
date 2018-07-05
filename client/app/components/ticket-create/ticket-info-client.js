@@ -6,7 +6,7 @@ export default Component.extend({
     tagName: '',
     ticketService: inject("ticket-service"),
     phone: readOnly("ticketService.phone"),
-    client: readOnly("ticketService.client"),
+    ticket: readOnly("ticketService.ticket"),
     activeStep: readOnly("ticketService.activeStep"),
     isNewClient: readOnly("ticketService.isNewClient"),
 
