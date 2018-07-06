@@ -1,8 +1,9 @@
 {{#bs-form model=service formLayout="horizontal" novalidate=true onSubmit=(action "save") as |form|}}
 	<div class="form-body">
 		{{form.element controlType="text" label=(t "service.name.label")  property="name" useIcons=false}}
-		{{#form.element controlType="power-select-multiple" 
-			property="masters" 
+		{{#form.element 
+			controlType="power-select-multiple" 
+			property="masters"
 			label=(t "service.masters.label") 
 			options=allMasters 
 			useIcons=false as |el|}}

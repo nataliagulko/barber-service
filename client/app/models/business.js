@@ -16,8 +16,8 @@ const Validations = buildValidations({
             regex: /(\+7\(\d{3}\)\d{3}-\d{2})-(\d{1})/
         })
 	],
-	masters: validator('hasMany'),
-	clients: validator('hasMany'),
+	masters: validator('has-many'),
+	clients: validator('has-many'),
 });
 export default DS.Model.extend(Validations, {
 	name: DS.attr(),

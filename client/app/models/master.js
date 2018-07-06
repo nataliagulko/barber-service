@@ -35,7 +35,7 @@ const Validations = buildValidations({
             on: 'password',
             allowBlank: true
         })
-    ],
+	],
     // business: validator('belongsTo'),
 });
 
@@ -56,5 +56,5 @@ export default DS.Model.extend(Validations, {
     // business: DS.belongsTo('business', { async: true }),
     fullname: computed('firstname', 'secondname', function () {
         return `${this.get('firstname')} ${this.get('secondname')}`;
-    })
+	}),
 });

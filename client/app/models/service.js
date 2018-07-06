@@ -12,10 +12,7 @@ const Validations = buildValidations({
 		allowString: true,
 		gt: 0
 	}),
-	masters: [
-		validator('has-many'),
-		validator('presence', true)
-	]
+	// masters: validator('has-many'),
 });
 
 export default DS.Model.extend(Validations, {
