@@ -28,7 +28,7 @@ class User {
 
     static hasMany = [oAuthIDs: OAuthID, masters: User]
     static hasOne = [business: Business, role: Role]
-    static transients = ['springSecurityService', 'masters', 'business', 'role']
+    static transients = ['springSecurityService', 'masters', 'business', 'role', 'businessList']
 
     static constraints = {
         phone blank: false, nullable: false, unique: true, widget: "phone"
@@ -119,6 +119,19 @@ class User {
         }
         if(userOrgs!=null && !userOrgs.isEmpty()){
             return userOrgs.first()
+        }else {
+            return null
+        }
+    }
+
+    def getBusinessList() {
+        List<Business> userOrgs = Business.createCriteria().list() {
+            masters {
+                eq('id', this.id)
+            }
+        }
+        if(userOrgs!=null && !userOrgs.isEmpty()){
+            return userOrgs
         }else {
             return null
         }
