@@ -106,8 +106,9 @@ class TicketAjaxController {
                                 ticketSMService.ticketStatusUpdate(ticket.id, attrs.status)
                             }
                             // Ticket.search().createIndexAndWait()
-
-                            render([data: ticket] as JSON)
+                            JSON.use('tickets') {
+                                render([data: ticket] as JSON)
+                            }
                         } catch (Exception e) {
                             render([erorrs: e.toString()] as JSON)
                         }
