@@ -51,7 +51,7 @@ class JSONRenderConfig {
                 attrs['username'] = it.username
                 attrs['email'] = it.email
                 attrs['masterTZ'] = it.masterTZ
-                attrs['role'] = it.role
+
                 attrs['guid'] = it.guid
                 attrs['enabled'] = it.enabled
 
