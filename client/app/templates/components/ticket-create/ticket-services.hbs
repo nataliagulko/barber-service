@@ -1,0 +1,15 @@
+<div id="ticket-services" class="portlet light bordered right-panel {{if (not-eq activeStep "#services-step") "hidden "}}">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="icon-bag font-red-sunglo"></i>
+            <span class="caption-subject font-red-sunglo">Выбор услуг</span>
+        </div>
+    </div>
+    <div class="portlet-body ticket-portlet-body">
+        <div class="tiles">
+            {{#each servicesByMaster as |service|}}
+                {{ticket-create/ticket-services-item service=service}}
+            {{/each}}
+        </div>
+    </div>
+</div>

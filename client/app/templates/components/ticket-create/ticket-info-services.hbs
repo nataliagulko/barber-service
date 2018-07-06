@@ -1,0 +1,10 @@
+<div class="ticket-info__item ticket-info-services {{if ticket.services "animate-from-top" ""}}">
+	<div>
+		<i class="icon-bag font-red-sunglo margin-right-10"></i>
+	</div>
+	<div>
+		{{#each ticket.services as |service|}}
+			<div class="animate-from-top">{{service.name}}</div>
+		{{/each}}
+	</div>
+</div>

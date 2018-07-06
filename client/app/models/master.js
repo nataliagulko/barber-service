@@ -16,7 +16,7 @@ const Validations = buildValidations({
         validator('format', {
             type: 'phone',
             allowBlank: false,
-            regex: /(\+7\(\d{3}\)\d{3}-\d{2})-(\d{1})/
+			regex: /(\+7\(\d{3}\)\d{3}-\d{2})-(\d{1})/
         })
     ],
     password: [
@@ -25,6 +25,7 @@ const Validations = buildValidations({
             max: 20
         }),
         validator('format', {
+            allowBlank: true,
             regex: /((?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20})/,
             messageKey: 'auth.registration.password.validation.message'
         })

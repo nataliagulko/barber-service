@@ -1,0 +1,39 @@
+<div class="row">
+	<div class="col-md-8 col-sm-10">
+		{{#bs-tab customTabs=true as |tab|}}
+			<div class="portlet light bordered">
+				<div class="portlet-title tabbable-line">
+					<div class="caption font-dark">
+						<i class="icon-bag font-green-sharp "></i>
+						<span class="caption-subject bold uppercase">Новая услуга</span>
+					</div>
+					{{#bs-nav type="tabs" as |nav|}}
+						{{#nav.item active=(bs-eq tab.activeId "service")}}
+							<a href="#service" class="" role="tab" {{action tab.select "service"}}>Простая</a>
+						{{/nav.item}}
+						{{#nav.item active=(bs-eq tab.activeId "service-group")}}
+							<a href="#service-group" class="" role="tab" {{action tab.select "service-group"}}>Составная</a>
+						{{/nav.item}}
+					{{/bs-nav}}
+				</div>
+
+				<div class="tab-content">
+					{{#tab.pane elementId="service" title="Простая" }}
+						{{service/service-form 
+							service=model.service 
+							masters=model.masters 
+							subservices=model.subservices 
+						}}
+					{{/tab.pane}}
+					{{#tab.pane elementId="service-group" title="Составная" }}
+						{{service/service-group-form
+						serviceGroup=model.serviceGroup
+						masters=model.masters 
+						subservices=model.subservices 
+					}}
+					{{/tab.pane}}
+				</div>
+			</div>
+		{{/bs-tab}}
+	</div>
+</div>

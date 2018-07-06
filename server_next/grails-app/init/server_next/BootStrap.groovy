@@ -33,10 +33,16 @@ class BootStrap {
             new SMTransition(objectType: SMObjectType.ticket, stateFrom: TicketStatus.NEW, stateTo: TicketStatus.REJECTED).save(flush: true)
         }
 
-        if (!Role.count()) {
+        if (!Role.findByAuthority(AuthKeys.MASTER)) {
             new Role(authority: AuthKeys.MASTER, description: "admin").save(flush: true)
+        }
+        if (!Role.findByAuthority(AuthKeys.CLIENT)) {
             new Role(authority: AuthKeys.CLIENT, description: "user").save(flush: true)
+        }
+        if (!Role.findByAuthority(AuthKeys.ROOT)) {
             new Role(authority: AuthKeys.ROOT, description: "root").save(flush: true)
+        }
+        if (!Role.findByAuthority(AuthKeys.SUPER_MASTER)) {
             new Role(authority: AuthKeys.SUPER_MASTER, description: "super_master").save(flush: true)
         }
 

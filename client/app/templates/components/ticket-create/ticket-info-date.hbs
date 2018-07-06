@@ -1,0 +1,9 @@
+<div class="ticket-info__item ticket-info-date {{if ticket.ticketDate "animate-from-top" ""}}">
+    <div>
+        <i class="icon-calendar font-red-sunglo margin-right-10"></i>
+    </div>
+    <div>
+        {{moment-format ticket.ticketDate 'Do MMMM YYYY' 'DD.MM.YYYY' allow-empty=true}},
+        <span class="{{if ticket.time "animate-from-top" ""}}">{{ticket.time}}</span>
+    </div>
+</div>

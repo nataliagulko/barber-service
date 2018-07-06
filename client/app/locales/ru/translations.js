@@ -55,6 +55,7 @@ export default {
     "auth.login.password.repeat.label": "Повторите пароль",
     "auth.registration.password.validation.message": "{{description}} должно содержать цифры, заглавные и строчные латинские символы",
     "button.back": "Назад",
+    "button.save": "Сохранить",
     "user.get.id.null": "Не задан идентификатор пользователя",
     "user.get.user.not.found": "Пользователь с таким идентификатором не найден",
     "user.get.user.by.phone.not.found": "Пользователь с таким номером телефона не найден",
@@ -137,12 +138,15 @@ export default {
     "serviceToGroup.delete.not.admin": "Удалять связи может только мастер",
     "serviceToGroup.serviceOrder.label": "Порядок",
     "serviceToGroup.serviceTimeout.label": "Перерыв",
-    "ticket.label": "запись",
+    "ticket.label": "Запись",
     "ticket.list.label": "Список записей",
     "ticket.new.label": "Новая запись",
     "ticket.create.label": "Создать запись",
     "ticket.edit.label": "Редактировать запись",
     "ticket.show.label": "Показать запись",
+    "ticket.delete.label": "Удалить",
+    "ticket.reject.label": "Отклонить",
+    "ticket.accept.label": "Подтвердить",
     "ticket.ticketDate.label": "Дата",
     "ticket.time.label": "Время",
     "ticket.comment.label": "Комментарий",
@@ -232,5 +236,6 @@ export default {
     "search.dateTo.label": "Дата окончания",
     "search.date.label": "Дата",
     "search.find.label": "Найти",
-    "search.clear.label": "Очистить"
+	"search.clear.label": "Очистить",
+	"currency.sign": "₽"
 };

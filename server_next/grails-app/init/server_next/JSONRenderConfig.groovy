@@ -45,25 +45,26 @@ class JSONRenderConfig {
                 returnArray['type'] = 'master'
 
                 def attrs = [:]
-                returnArray['id'] = it.id
                 attrs['phone'] = it.phone
                 attrs['firstname'] = it.firstname
                 attrs['secondname'] = it.secondname
                 attrs['username'] = it.username
                 attrs['email'] = it.email
                 attrs['masterTZ'] = it.masterTZ
-                attrs['role'] = it.role
+
                 attrs['guid'] = it.guid
+                attrs['enabled'] = it.enabled
 
-                def relationships = [:]
-                def businessDetails = [:]
-                businessDetails['data'] = it.business
-                relationships['business'] = businessDetails
+                attrs['business'] = it.business.code
 
+				def relationships = [:]
                 def roleDetails = [:]
                 roleDetails['data'] = it.role
                 relationships['role'] = roleDetails
 
+                def orgDetails = [:]
+                orgDetails['data'] = it.role
+                relationships['role'] = orgDetails
 
                 returnArray['relationships'] = relationships
                 returnArray['attributes'] = attrs
@@ -71,12 +72,6 @@ class JSONRenderConfig {
                 return returnArray
             }
 
-            it.registerObjectMarshaller(Business) {
-                def businessReturn = [:]
-                businessReturn['id'] = it.id
-                businessReturn['type'] = 'business'
-                return businessReturn
-            }
             it.registerObjectMarshaller(Role) {
                 def roleReturn = [:]
                 roleReturn['id'] = it.id
@@ -372,6 +367,7 @@ class JSONRenderConfig {
                 attrs['email'] = it.email
                 attrs['mode'] = it.mode
                 attrs['guid'] = it.guid
+                attrs['code'] = it.code
 
                 def relationships = [:]
 

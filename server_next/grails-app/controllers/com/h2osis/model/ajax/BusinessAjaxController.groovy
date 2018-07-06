@@ -13,8 +13,8 @@ class BusinessAjaxController {
     def springSecurityService
     static allowedMethods = [choose: ['POST', 'GET']]
 
-    def get() {
-        def data = request.JSON.data
+    def get(params) {
+        def data = params
         if (data && data.id) {
             Business business = Business.get(data.id)
             if (business) {
@@ -52,6 +52,7 @@ class BusinessAjaxController {
             business.smsCentrLogin = attrs.smsCentrLogin
             business.smsCentrPass = attrs.smsCentrPass
             business.guid = UUID.randomUUID().toString()
+            business.code = Business.getCode(business.name)
 
 
             business.save(flush: true)
@@ -89,6 +90,10 @@ class BusinessAjaxController {
                 business.email = attrs.email
                 business.mode = attrs.mode
 
+                if(attrs.code) {
+                    business.code = attrs.code
+                }
+
                 business.smsCentrLogin = attrs.smsCentrLogin
                 business.smsCentrPass = attrs.smsCentrPass
 
@@ -120,9 +125,9 @@ class BusinessAjaxController {
         }
     }
 
-    def destroy() {
+    def destroy(params) {
         def errors = []
-        def data = request.JSON.data
+        def data = params
         if (data.id) {
             Business business = Business.get(data.id)
             if (business) {
@@ -157,7 +162,7 @@ class BusinessAjaxController {
         def data = request.JSON.query
         if (data && data.value) {
             String value = data.value
-            List<Business> businessList = Business.findAllByNameOrGuid(value, value)
+            List<Business> businessList = Business.findAllByNameOrGuidOrCode(value, value, value)
             if (businessList) {
                 JSON.use('business') {
                     render([data: businessList] as JSON)
@@ -186,13 +191,13 @@ class BusinessAjaxController {
         }
     }
 
-    def list() {
+    def list(params) {
         def errors = []
         List<Business> businessList
-        def data = request.JSON.query
+        def data = params
         if (data && data.value) {
             String value = data.value
-            businessList = Business.findAllByNameOrGuidOrPhone(value, value, value)
+            businessList = Business.findAllByNameOrGuidOrPhoneOrCode(value, value, value, value)
         } else {
             businessList = Business.all
         }
