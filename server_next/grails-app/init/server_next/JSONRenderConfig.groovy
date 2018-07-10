@@ -147,7 +147,7 @@ class JSONRenderConfig {
 
                 def serviceToGroupsDetails = [:]
                 serviceToGroupsDetails['data'] = it.serviceToGroups
-                relationships['serviceToGroups'] = serviceToGroupsDetails
+                relationships['servicesToGroup'] = serviceToGroupsDetails
 
                 returnArray['relationships'] = relationships
 

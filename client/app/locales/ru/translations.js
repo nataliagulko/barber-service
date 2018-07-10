@@ -115,6 +115,7 @@ export default {
     "service.name.label": "Название",
     "service.cost.label": "Стоимость",
     "service.time.label": "Продолжительность",
+    "service.time.minutes.label": "мин.",
     "service.masters.label": "Мастера",
     "service.partOfList.label": "Сделать подуслугой",
     "service.partOfList.help": "Услуга может использоваться только в составной услуге",

@@ -6,13 +6,12 @@ export default Component.extend({
 	store: inject("store"),
 	serviceToGroupService: inject("service-to-group-service"),
 	servicesToGroup: readOnly('serviceToGroupService.servicesToGroup'),
-	
+
 	actions: {
 		save: function () {
 			const _this = this;
 			const serviceGroupRecord = this.get("serviceGroup");
 			const servicesToGroup = this.get("servicesToGroup");
-			
 
 			serviceGroupRecord
 				.validate()

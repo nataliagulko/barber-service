@@ -5,44 +5,44 @@ import { readOnly } from '@ember/object/computed';
 export default Component.extend({
 	store: inject("store"),
 	serviceToGroupService: inject("service-to-group-service"),
-	servicesToGroup: readOnly('serviceToGroupServicesToGroup'),
+	servicesToGroup: readOnly('serviceToGroupService.servicesToGroup'),
 	isRowAddingDisabled: readOnly('serviceToGroupService.isRowAddingDisabled'),
 
-	didInsertElement: function() {
-		var serviceGroup = this.get("serviceGroup"),
-			serviceToGroupService = this.get("serviceToGroupService");
+	didInsertElement: function () {
+		const serviceToGroupService = this.get("serviceToGroupService");
+		const serviceGroup = this.get("serviceGroup");
 
 		serviceToGroupService.showSubservices(serviceGroup, this);
 	},
 
 	actions: {
-		addServiceToGroup: function() {
+		addServiceToGroup: function () {
 			var serviceToGroupService = this.get("serviceToGroupService");
 
 			serviceToGroupService.addServiceToGroup();
 		},
 
-		removeServiceToGroup: function(subservice) {
+		removeServiceToGroup: function (subservice) {
 			var serviceToGroupService = this.get("serviceToGroupService");
 			var serviceGroup = this.get("serviceGroup");
 
 			serviceToGroupService.removeServiceToGroup(subservice, serviceGroup);
 		},
 
-		reorderSubservices: function(groupModel) {
+		reorderSubservices: function (groupModel) {
 			var serviceToGroupService = this.get("serviceToGroupService");
 
 			serviceToGroupService.reorderSubservices(groupModel);
 		},
 
-		inputServiceToGroupTimeout: function() {
+		inputServiceToGroupTimeout: function () {
 			var serviceToGroupService = this.get("serviceToGroupService");
 			var serviceGroup = this.get("serviceGroup");
 
 			serviceToGroupService.inputServiceToGroupTimeout(serviceGroup);
 		},
 
-		selectSubservice: function(serviceToGroup, subservice) {
+		selectSubservice: function (serviceToGroup, subservice) {
 			var serviceToGroupService = this.get("serviceToGroupService"),
 				serviceGroup = this.get("serviceGroup");
 
