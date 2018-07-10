@@ -21,8 +21,28 @@
 					serviceGroup=serviceGroup}}
 			</div>
 		{{/form.group}}
-		{{form.element controlType="text" label=(t "service.cost.label")  property="cost" useIcons=false}}
-		{{form.element controlType="text" label=(t "service.time.label")  property="time" useIcons=false}}
+		{{#form.group}}
+			<label class="col-md-4 control-label">
+                {{t "service.cost.label"}}
+            </label>
+			<div class="col-md-8">
+				<label class="form-control-static">
+					{{serviceGroup.cost}}&nbsp;{{t "currency.sign"}}
+				</label>
+				{{form.element controlType="hidden" property="cost" useIcons=false}}
+			</div>
+		{{/form.group}}
+		{{#form.group}}
+			<label class="col-md-4 control-label">
+                {{t "service.cost.label"}}
+            </label>
+			<div class="col-md-8">
+				<label class="form-control-static">
+					{{serviceGroup.time}}&nbsp;{{t "service.time.minutes.label"}}
+				</label>
+				{{form.element controlType="hidden" property="time" useIcons=false}}
+			</div>
+		{{/form.group}}
 	</div>
 	<div class="form-actions">
 		{{#form.group}}

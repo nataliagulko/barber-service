@@ -45,9 +45,10 @@ export default Service.extend({
 		let serviceGroupTime = 0;
 
 		servicesToGroup.forEach(function (serviceToGroup) {
-			let innerService = serviceToGroup.get("service");
+			const innerService = serviceToGroup.get("service");
 
 			serviceGroupCost += innerService.get("cost");
+			serviceGroupTime += Number(serviceToGroup.get("serviceTimeout"));
 			serviceGroupTime += innerService.get("time");
 		});
 
@@ -80,24 +81,6 @@ export default Service.extend({
 	},
 
 	inputServiceToGroupTimeout: function (serviceGroup) {
-		const $timeouts = $("[name=serviceTimeout]");
-		let serviceGroupTime = serviceGroup.get("time");
-		// previous saved summary of timeouts:
-		let serviceToGroupTimeout = this.get("serviceToGroupTimeout");
-		// current summary of timeouts
-		let serviceTimeout = 0;
-
-		$timeouts.each(function (ind, elem) {
-			serviceTimeout += Number(elem.value);
-		});
-
-		// subtract previous timeouts
-		serviceGroupTime -= serviceToGroupTimeout;
-		// add current timeouts
-		serviceGroupTime += serviceTimeout;
-		// save current timeouts
-		serviceToGroupTimeout = serviceTimeout;
-		serviceGroup.set("time", serviceGroupTime);
-		this.set("serviceToGroupTimeout", serviceToGroupTimeout);
+		this._calculateServiceGroupCostAndTime(serviceGroup);
 	},
 });
