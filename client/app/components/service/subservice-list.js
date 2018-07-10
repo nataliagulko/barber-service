@@ -1,10 +1,12 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { inject } from '@ember/service';
+import { readOnly } from '@ember/object/computed';
 
-export default Ember.Component.extend({
-	store: Ember.inject.service("store"),
-	serviceToGroupService: Ember.inject.service("service-to-group-service"),
-	servicesToGroup: Ember.computed.readOnly('serviceToGroupService.servicesToGroup'),
-	isRowAddingDisabled: Ember.computed.readOnly('serviceToGroupService.isRowAddingDisabled'),
+export default Component.extend({
+	store: inject("store"),
+	serviceToGroupService: inject("service-to-group-service"),
+	servicesToGroup: readOnly('serviceToGroupServicesToGroup'),
+	isRowAddingDisabled: readOnly('serviceToGroupService.isRowAddingDisabled'),
 
 	didInsertElement: function() {
 		var serviceGroup = this.get("serviceGroup"),

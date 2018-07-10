@@ -1,7 +1,9 @@
-import Ember from 'ember';
+import Service from '@ember/service';
+import { inject } from '@ember/service';
+import $ from 'jquery';
 
-export default Ember.Service.extend({
-    store: Ember.inject.service("store"),
+export default Service.extend({
+    store: inject("store"),
     servicesToGroup: [],
     serviceToGroupTimeout: 0,
     isRowAddingDisabled: false,
@@ -91,7 +93,7 @@ export default Ember.Service.extend({
             serviceToGroupTimeout = this.get("serviceToGroupTimeout"),
             // current summary of timeouts
             serviceTimeout = 0,
-            $timeouts = Ember.$("[name=serviceTimeout]");
+            $timeouts = $("[name=serviceTimeout]");
 
         $timeouts.each(function (ind, elem) {
             serviceTimeout += Number(elem.value);

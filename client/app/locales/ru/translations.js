@@ -132,6 +132,7 @@ export default {
     "serviceGroup.cost.label": "Стоимость",
     "serviceGroup.time.label": "Время",
     "serviceGroup.subservice.label": "подуслуга",
+    "serviceGroup.subservices.label": "Подуслуги",
     "serviceGroup.service.is.subservice": "Данная услуга является частью комплексной услуги {{0}} (Идентификатор {{1}}), необходимо сначала удалить ее оттуда",
     "serviceToGroup.not.found": "Связь не найдена",
     "serviceToGroup.get.id.null": "Не передан идентификатор связи",

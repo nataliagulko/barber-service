@@ -1,32 +1,33 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { inject } from '@ember/service';
+import { readOnly } from '@ember/object/computed';
 
-export default Ember.Component.extend({
-	store: Ember.inject.service("store"),
-	serviceService: Ember.inject.service("service-service"),
-	servicesToGroup: Ember.computed.readOnly('serviceService.servicesToGroup'),
-	selectedMasters: [],
-
-	didInsertElement() {
-		const serviceGroupRecord = this.get("serviceGroup"),
-			masters = serviceGroupRecord.get("masters");
-
-		this.set("selectedMasters", masters);
-	},
-
+export default Component.extend({
+	store: inject("store"),
+	serviceToGroupService: inject("service-to-group-service"),
+	servicesToGroup: readOnly('serviceToGroupService.servicesToGroup'),
+	
 	actions: {
-		save: function() {
-			// console.log(this.get("serviceGroup").get("validations.errors"));
-			// return;
+		save: function () {
+			const _this = this;
 			const serviceGroupRecord = this.get("serviceGroup");
-			var serviceService = this.get("serviceService"),
-				selectedMasters = this.get("selectedMasters"),
-				_this = this;
+			const servicesToGroup = this.get("servicesToGroup");
+			
 
 			serviceGroupRecord
 				.validate()
 				.then(({ validations }) => {
 					if (validations.get('isValid')) {
-						serviceService.saveServiceGroup(serviceGroupRecord, selectedMasters, _this);
+						serviceGroupRecord
+							.save()
+							.then(function (record) {
+								servicesToGroup.forEach(function (item, ind) {
+									item.set("serviceGroup", record);
+									item.set("serviceOrder", ind);
+									item.save();
+								});
+								_this.get("router").transitionTo('auth.service');
+							});
 					}
 				});
 		}
