@@ -24,6 +24,9 @@ class ServiceGroupAjaxController {
             def attrs = data.attributes
             if (data.type && data.type == "service-group" && attrs.name && attrs.cost && attrs.time) {
                 ServiceGroup serviceGroup = new ServiceGroup(name: attrs.name, cost: attrs.cost, time: attrs.time)
+                if(!attrs.cost || !attrs.time){
+                    serviceGroup.updateFields()
+                }
                 if (data.relationships.masters) {
                     List mastersIdsList = new ArrayList<Long>()
                     data.relationships.masters.data.id.each {
@@ -71,6 +74,11 @@ class ServiceGroupAjaxController {
             if (data.type && data.type == "service-group") {
                 ServiceGroup serviceGroup = ServiceGroup.get(data.id)
                 serviceGroup.setName(attrs.name)
+                serviceGroup.setCost(attrs.cost)
+                serviceGroup.setTime(attrs.time)
+                if(!attrs.cost || !attrs.time){
+                    serviceGroup.updateFields()
+                }
                 if (data.relationships?.masters) {
                     List mastersIdsList = new ArrayList<Long>()
                     data.relationships.masters.data.id.each {
