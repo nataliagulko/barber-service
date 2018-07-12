@@ -8,8 +8,8 @@ export default Component.extend({
 	
 	actions: {
 		save: function() {
-			const masterRecord = this.get("master"),
-			_this = this;
+			const _this = this;
+			const masterRecord = this.get("master");
 
             masterRecord.set("enabled", true);
 			masterRecord

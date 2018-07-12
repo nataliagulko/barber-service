@@ -39,7 +39,11 @@ dependencies {
 
     // https://mvnrepository.com/artifact/mysql/mysql-connector-java
     runtime group: 'mysql', name: 'mysql-connector-java', version: '6.0.6'
-    
+
+    // https://mvnrepository.com/artifact/com.ibm.icu/icu4j
+    compile group: 'com.ibm.icu', name: 'icu4j', version: '62.1'
+
+
 
     compile "org.springframework.boot:spring-boot-starter-logging"
     compile "org.springframework.boot:spring-boot-autoconfigure"

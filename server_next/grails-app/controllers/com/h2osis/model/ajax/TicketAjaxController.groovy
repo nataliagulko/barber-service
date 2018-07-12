@@ -83,6 +83,7 @@ class TicketAjaxController {
     def update() {
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
+		def errors = []
         if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             def data = request.JSON.data
             def attrs = data.attributes
@@ -105,18 +106,35 @@ class TicketAjaxController {
                                 ticketSMService.ticketStatusUpdate(ticket.id, attrs.status)
                             }
                             // Ticket.search().createIndexAndWait()
-
-                            render([data: ticket] as JSON)
+                            JSON.use('tickets') {
+                                render([data: ticket] as JSON)
+                            }
                         } catch (Exception e) {
                             render([erorrs: e.toString()] as JSON)
                         }
                     }
                 }
             } else {
-                render([erorrs: g.message(code: "ticket.create.params.null")] as JSON)
+				errors.add([
+					"status": 422,
+					"detail": g.message(code: "ticket.create.params.null"),
+					"source": [
+							"pointer": "data"
+					]
+				])
+				response.status = 422
+				render([errors: errors] as JSON)
             }
         } else {
-            render([erorrs: g.message(code: "ticket.edit.not.admin")] as JSON)
+			errors.add([
+				"status": 422,
+				"detail": g.message(code: "ticket.edit.not.admin"),
+				"source": [
+						"pointer": "data"
+				]
+			])
+			response.status = 422
+			render([errors: errors] as JSON)
         }
     }
 
@@ -139,8 +157,10 @@ class TicketAjaxController {
     }
 
     def destroy(params) {
+		println params
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
+		def errors = []
         if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
             def data = params
             if (data.id) {
@@ -149,13 +169,37 @@ class TicketAjaxController {
                     ticketsService.destroyTicket(ticket)
                     render([erorrs: 0] as JSON)
                 } else {
-                    render([erorrs: g.message(code: "ticket.get.user.not.found")] as JSON)
+					errors.add([
+						"status": 422,
+						"detail": g.message(code: "ticket.get.user.not.found"),
+						"source": [
+								"pointer": "data"
+						]
+					])
+					response.status = 422
+					render([errors: errors] as JSON)
                 }
             } else {
-                render([erorrs: g.message(code: "ticket.get.id.null")] as JSON)
+				errors.add([
+					"status": 422,
+					"detail": g.message(code: "ticket.get.id.null"),
+					"source": [
+							"pointer": "data"
+					]
+				])
+				response.status = 422
+				render([errors: errors] as JSON)
             }
         } else {
-            render([erorrs: g.message(code: "ticket.delete.not.admin")] as JSON)
+			errors.add([
+				"status": 422,
+				"detail": g.message(code: "ticket.delete.not.admin"),
+				"source": [
+						"pointer": "data"
+				]
+			])
+			response.status = 422
+			render([errors: errors] as JSON)
         }
     }
 

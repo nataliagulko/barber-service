@@ -87,7 +87,7 @@ export default Component.extend({
                 .then((record) => {
                     record.destroyRecord();
                     if (needTransition) {
-                        router.transitionTo("master");
+                        router.transitionTo("auth.master");
                     }
                 });
         });
@@ -124,7 +124,7 @@ export default Component.extend({
                                     if (validations.get('isValid')) {
                                         record2.save()
                                             .then(() => {
-                                                router.transitionTo("master");
+                                                router.transitionTo("auth.master");
                                             });
                                     } else {
                                         this.set("errors", validations.get("errors"));
@@ -154,7 +154,7 @@ export default Component.extend({
             .then(({ validations }) => {
                 if (validations.get('isValid')) {
                     record.save();
-                    router.transitionTo("master");
+                    router.transitionTo("auth.master");
                 } else {
                     this.set("errors", validations.get("errors"));
                 }
@@ -196,7 +196,7 @@ export default Component.extend({
             if (changedWorkTimes.length) {
                 this._saveChangedWorkTimes(changedWorkTimes);
             } else {
-                this.get("router").transitionTo("master");
+                this.get("router").transitionTo("auth.master");
             }
         }
     }

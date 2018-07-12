@@ -25,6 +25,7 @@ class SecConfig {
                 '/user/changePassword/**',
                 '**/fonts/**',
                 '/**/assets/**',
+                '/masterAjax/create',
                 '/masterAjax/list/**',
                 '/clientAjax/list/**',
                 '/clientAjax/create',

@@ -1,10 +1,11 @@
 import Component from '@ember/component';
 import moment from 'moment';
 import $ from 'jquery';
+import { inject } from '@ember/service';
 
 export default Component.extend({
 	classNames: ["calendar"],
-	store: Ember.inject.service("store"),
+	store: inject("store"),
 
 	headerOptions: {
 		left: "title",
@@ -53,7 +54,7 @@ export default Component.extend({
 
 		showTicketInfo: function (event) {
 			this.set("selectedEvent", event);
-			this.$("#ticket-modal").modal('show');
+			this.set("openTicketInfo", true);
 		}
 	},
 

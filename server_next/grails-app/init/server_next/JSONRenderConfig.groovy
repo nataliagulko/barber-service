@@ -51,15 +51,20 @@ class JSONRenderConfig {
                 attrs['username'] = it.username
                 attrs['email'] = it.email
                 attrs['masterTZ'] = it.masterTZ
-                attrs['role'] = it.role
+
                 attrs['guid'] = it.guid
                 attrs['enabled'] = it.enabled
 
+                //attrs['business'] = it.business.code
 
 				def relationships = [:]
                 def roleDetails = [:]
                 roleDetails['data'] = it.role
                 relationships['role'] = roleDetails
+
+                def orgDetails = [:]
+                orgDetails['data'] = it.business
+                relationships['business'] = orgDetails
 
                 returnArray['relationships'] = relationships
                 returnArray['attributes'] = attrs
@@ -72,6 +77,13 @@ class JSONRenderConfig {
                 roleReturn['id'] = it.id
                 roleReturn['type'] = 'role'
                 return roleReturn
+            }
+
+			it.registerObjectMarshaller(Business) {
+                def businessReturn = [:]
+                businessReturn['id'] = it.id
+                businessReturn['type'] = 'business'
+                return businessReturn
             }
         }
 
@@ -147,7 +159,7 @@ class JSONRenderConfig {
 
                 def serviceToGroupsDetails = [:]
                 serviceToGroupsDetails['data'] = it.serviceToGroups
-                relationships['serviceToGroups'] = serviceToGroupsDetails
+                relationships['servicesToGroup'] = serviceToGroupsDetails
 
                 returnArray['relationships'] = relationships
 
@@ -362,6 +374,7 @@ class JSONRenderConfig {
                 attrs['email'] = it.email
                 attrs['mode'] = it.mode
                 attrs['guid'] = it.guid
+                attrs['code'] = it.code
 
                 def relationships = [:]
 

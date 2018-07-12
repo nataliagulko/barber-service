@@ -1,0 +1,18 @@
+<div class="portlet light bordered">
+	<div class="portlet-title">
+		<div class="caption font-dark">
+			<i class="icon-calendar font-green-sharp "></i>
+			<span class="caption-subject bold uppercase">{{t "holiday.label"}}</span>
+		</div>
+		<div class="actions">
+			<button class="btn btn-default" {{action "addHoliday"}} disabled={{newHoliday}}>
+				<i class="fa fa-plus"></i>
+				{{t "button.create"}}
+			</button>
+		</div>
+	</div>
+	<div class="portlet-body form">
+		{{master/master-holiday-create newHoliday=newHoliday holidays=holidays}}
+		{{master/master-holiday-row holidays=holidays}}
+	</div>
+</div>

@@ -24,6 +24,9 @@ class ServiceGroupAjaxController {
             def attrs = data.attributes
             if (data.type && data.type == "service-group" && attrs.name && attrs.cost && attrs.time) {
                 ServiceGroup serviceGroup = new ServiceGroup(name: attrs.name, cost: attrs.cost, time: attrs.time)
+                if(!attrs.cost || !attrs.time){
+                    serviceGroup.updateFields()
+                }
                 if (data.relationships.masters) {
                     List mastersIdsList = new ArrayList<Long>()
                     data.relationships.masters.data.id.each {
@@ -49,7 +52,15 @@ class ServiceGroupAjaxController {
                 render([errors: errors] as JSON)
             }
         } else {
-            render([errors: g.message(code: "service.create.not.admin")] as JSON)
+            errors.add([
+                    "status": 422,
+                    "detail": g.message(code: "service.create.not.admin"),
+                    "source": [
+                            "pointer": "data"
+                    ]
+            ])
+            response.status = 422
+            render([errors: errors] as JSON)
         }
     }
 
@@ -63,14 +74,21 @@ class ServiceGroupAjaxController {
             if (data.type && data.type == "service-group") {
                 ServiceGroup serviceGroup = ServiceGroup.get(data.id)
                 serviceGroup.setName(attrs.name)
+                serviceGroup.setCost(attrs.cost)
+                serviceGroup.setTime(attrs.time)
+                if(!attrs.cost || !attrs.time){
+                    serviceGroup.updateFields()
+                }
                 if (data.relationships?.masters) {
                     List mastersIdsList = new ArrayList<Long>()
                     data.relationships.masters.data.id.each {
                         it -> mastersIdsList.add(it)
                     }
-                    Set<User> masters = new HashSet<User>()
-                    masters.addAll(User.findAllByIdInList(mastersIdsList))
-                    serviceGroup.setMasters(masters)
+                    if(mastersIdsList) {
+                        Set<User> masters = new HashSet<User>()
+                        masters.addAll(User.findAllByIdInList(mastersIdsList))
+                        serviceGroup.setMasters(masters)
+                    }
                 }
                 serviceGroup.save(flush: true)
                 JSON.use('serviceGroups') {
@@ -88,7 +106,15 @@ class ServiceGroupAjaxController {
                 render([errors: errors] as JSON)
             }
         } else {
-            render([errors: g.message(code: "service.create.not.admin")] as JSON)
+            errors.add([
+                    "status": 422,
+                    "detail": g.message(code: "service.create.not.admin"),
+                    "source": [
+                            "pointer": "data"
+                    ]
+            ])
+            response.status = 422
+            render([errors: errors] as JSON)
         }
     }
 
@@ -127,6 +153,7 @@ class ServiceGroupAjaxController {
 
     @Transactional
     def destroy(params) {
+        def errors = []
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
         if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
@@ -141,8 +168,15 @@ class ServiceGroupAjaxController {
                         list()
                     }
                     if (ticketByService) {
+                        errors.add([
+                                "status": 422,
+                                "detail": message(code: "service.in.tickets"),
+                                "source": [
+                                        "pointer": "data"
+                                ]
+                        ])
                         response.status = 422
-                        render([errors: message(code: "service.in.tickets")] as JSON)
+                        render([errors: errors] as JSON)
                     } else {
                         ServiceToGroup.deleteAll(ServiceToGroup.findAllByGroup(serviceGroup))
                         serviceGroup.delete(flush: true)
@@ -150,16 +184,37 @@ class ServiceGroupAjaxController {
                         render([errors: []] as JSON)
                     }
                 } else {
+                    errors.add([
+                            "status": 422,
+                            "detail": g.message(code: "service.get.user.not.found"),
+                            "source": [
+                                    "pointer": "data"
+                            ]
+                    ])
                     response.status = 422
-                    render([errors: g.message(code: "service.get.user.not.found")] as JSON)
+                    render([errors: errors] as JSON)
                 }
             } else {
+                errors.add([
+                        "status": 422,
+                        "detail": g.message(code: "service.get.id.null"),
+                        "source": [
+                                "pointer": "data"
+                        ]
+                ])
                 response.status = 422
-                render([errors: g.message(code: "service.get.id.null")] as JSON)
+                render([errors: errors] as JSON)
             }
         } else {
+            errors.add([
+                    "status": 422,
+                    "detail": g.message(code: "service.delete.not.admin"),
+                    "source": [
+                            "pointer": "data"
+                    ]
+            ])
             response.status = 422
-            render([errors: g.message(code: "service.delete.not.admin")] as JSON)
+            render([errors: errors] as JSON)
         }
     }
 }

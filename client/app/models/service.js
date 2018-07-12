@@ -1,6 +1,6 @@
 import DS from 'ember-data';
-import Ember from 'ember';
 import { validator, buildValidations } from 'ember-cp-validations';
+import { computed } from '@ember/object';
 
 const Validations = buildValidations({
 	name: validator('presence', true),
@@ -12,7 +12,7 @@ const Validations = buildValidations({
 		allowString: true,
 		gt: 0
 	}),
-	masters: validator('has-many')
+	// masters: validator('has-many'),
 });
 
 export default DS.Model.extend(Validations, {
@@ -25,11 +25,10 @@ export default DS.Model.extend(Validations, {
 	}),
 	partOfList: DS.attr('boolean'),
 	extension: DS.attr('string'),
-	extensionShort: Ember.computed('extension', function() {
-		let ext = this.get('extension').split("."),
-			short = ext[ext.length - 1];
+	extensionShort: computed('extension', function () {
+		const ext = this.get('extension').split(".");
 
-		return short;
+		return ext[ext.length - 1];
 	}),
 	masters: DS.hasMany('master'),
 });
