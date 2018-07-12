@@ -51,6 +51,7 @@ class SecConfig {
                 '/clientAjax/update',
                 '/clientAjax/find',
                 '/masterAjax/get/**',
+                '/masterAjax/create',
                 '/masterAjax/update',
                 '/masterAjax/find',
                 '/masterAjax/destroy/**',

@@ -7,6 +7,9 @@ export default Route.extend({
 			workTimes: this.get("store").query("workTime", {
 				masterId: params.master_id
 			}),
+			holidays: this.get("store").query("holiday", {
+				masterId: params.master_id
+			}),
 			master: this.get('store').findRecord('master', params.master_id)
 		});
 	}

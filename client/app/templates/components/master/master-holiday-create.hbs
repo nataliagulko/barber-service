@@ -1,0 +1,25 @@
+{{#if newHoliday}}
+	<div class="master-holiday-create">
+		{{#bs-form formLayout="horizontal" model=newHoliday novalidate=true onSubmit=(action "saveHoliday") as |form|}}
+			<div class="form-body">
+				{{#form.element controlType="text" label=(t "holiday.dateFrom.label") property="dateFrom" useIcons=false as |el|}}
+					{{masked-input class="form-control master-holiday-create__input" mask=dateMask value=el.value}}
+				{{/form.element}}
+				{{#form.element controlType="text" label=(t "holiday.dateTo.label") property="dateTo" useIcons=false as |el|}}
+					{{masked-input class="form-control master-holiday-create__input" mask=dateMask value=el.value}}
+				{{/form.element}}
+				{{#form.element controlType="textarea" label=(t "holiday.comment.label") property="comment" useIcons=false as |el|}}
+					{{el.control class="master-holiday-create__comment"}}
+				{{/form.element}}
+			</div>
+			<div class="form-actions">
+				{{#form.group}}
+					<div class="col-md-offset-4 col-md-8">
+						{{bs-button defaultText=(t "button.save") type="success" buttonType="submit"}}
+						{{bs-button defaultText=(t "button.cancel") buttonType="button" onClick=(action "removeHoliday" newHoliday)}}
+					</div>
+				{{/form.group}}
+			</div>
+		{{/bs-form}}
+	</div>
+{{/if}}

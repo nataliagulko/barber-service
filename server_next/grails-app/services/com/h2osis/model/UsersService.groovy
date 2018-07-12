@@ -35,7 +35,8 @@ class UsersService {
             if (params.businessId) {
                 Business business = Business.get(params.businessId)
                 if (business) {
-                    if (params.userRole) {
+					Boolean userRole = params.type == "master" ? false : true
+                    if (userRole) {
                         business.addToClients(user)
                     } else if (params.masterRole) {
                         business.addToMasters(user)

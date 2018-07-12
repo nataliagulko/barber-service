@@ -1,0 +1,30 @@
+.master-holiday {
+	&-create {
+		margin-bottom: 15px;
+	}
+
+	&-row {
+		display: table;
+		width: 100%;
+		margin-bottom: 5px;
+
+		&:hover {
+			background-color: #f3f4f6;
+		}
+
+		&__cell {
+			display: table-cell;
+			width: 180px;
+			vertical-align: top;
+
+			&_right {
+				width: auto;
+			}
+		}
+
+		&__date,
+		&__dash {
+			display: inline-block;
+		}
+	}
+}

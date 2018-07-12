@@ -43,7 +43,6 @@ class HolidayAjaxController {
                     holiday.setDateTo(dateTo.toDate())
                     holiday.setMaster(user)
                     holiday.save(flush: true)
-                    Service.search().createIndexAndWait()
                     JSON.use('holidays') {
                         render([data: holiday] as JSON)
                     }
