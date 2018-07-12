@@ -27,9 +27,10 @@ class MasterAjaxController {
         def errors = []
         def data = request.JSON.data
         def attrs = data.attributes
+        def relationships = data.relationships
         if (attrs.phone && ((attrs.password && attrs.rpassword) || (attrs.password && !attrs.rpassword) || (!attrs.password && !attrs.rpassword))) {
             if (attrs.password.equals(attrs.rpassword) || (attrs.password && !attrs.rpassword) || (!attrs.password && !attrs.rpassword)) {
-                def result = usersService.createUser(attrs)
+                def result = usersService.createUser(attrs, relationships)
                 if (result instanceof User) {
                     //result.setPassword(null)
                     Role role = Role.findByAuthority(AuthKeys.MASTER)

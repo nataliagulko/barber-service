@@ -55,16 +55,14 @@ class JSONRenderConfig {
                 attrs['guid'] = it.guid
                 attrs['enabled'] = it.enabled
 
-                attrs['business'] = it.business.code
-
 				def relationships = [:]
                 def roleDetails = [:]
                 roleDetails['data'] = it.role
                 relationships['role'] = roleDetails
 
                 def orgDetails = [:]
-                orgDetails['data'] = it.role
-                relationships['role'] = orgDetails
+                orgDetails['data'] = it.business
+                relationships['business'] = orgDetails
 
                 returnArray['relationships'] = relationships
                 returnArray['attributes'] = attrs
@@ -77,6 +75,13 @@ class JSONRenderConfig {
                 roleReturn['id'] = it.id
                 roleReturn['type'] = 'role'
                 return roleReturn
+            }
+
+			it.registerObjectMarshaller(Business) {
+                def businessReturn = [:]
+                businessReturn['id'] = it.id
+                businessReturn['type'] = 'business'
+                return businessReturn
             }
         }
 
