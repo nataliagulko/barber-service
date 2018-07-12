@@ -55,7 +55,7 @@ class JSONRenderConfig {
                 attrs['guid'] = it.guid
                 attrs['enabled'] = it.enabled
 
-                attrs['business'] = it.business.code
+                //attrs['business'] = it.business.code
 
 				def relationships = [:]
                 def roleDetails = [:]
@@ -63,8 +63,8 @@ class JSONRenderConfig {
                 relationships['role'] = roleDetails
 
                 def orgDetails = [:]
-                orgDetails['data'] = it.role
-                relationships['role'] = orgDetails
+                orgDetails['data'] = it.business
+                relationships['business'] = orgDetails
 
                 returnArray['relationships'] = relationships
                 returnArray['attributes'] = attrs
