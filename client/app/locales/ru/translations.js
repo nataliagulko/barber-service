@@ -218,6 +218,7 @@ export default {
     "workTime.dayOfWeek.label": "День недели",
     "workTime.timeFrom.label": "Время с",
     "workTime.timeTo.label": "Время до",
+    "workTime.rest.label": "пер.",
     "workTime.params.null": "Необходимо указать мастера, день недели, время С и время ПО",
     "workTime.params.master.not.found": "Мастер по указанному идентификатору не найден",
     "workTime.not.found": "Промежуток рабочего времени с таким индентификатором не найден",

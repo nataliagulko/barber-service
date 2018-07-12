@@ -1,0 +1,15 @@
+.master-holiday-row {
+	margin-bottom: 15px;
+	
+    &__input,
+    &__dash {
+        display: inline-block;
+    }
+
+    &__input {
+		width: 100px;
+		margin-bottom: 8px;
+    }
+
+    &__dash {}
+}

@@ -1,0 +1,21 @@
+{{#each holidays as |h|}}
+<div class="master-holiday-row">
+	<div class="row">
+		<div class="col-md-9">
+			{{input class="form-control master-holiday-row__input" value=(moment-format h.dateFrom dateFormat)}}
+			<span class="master-holiday-row__dash">—</span>
+			{{input class="form-control master-holiday-row__input" value=(moment-format h.dateTo dateFormat)}}
+		</div>
+		<div class="col-md-3 text-right">
+			<button class="btn btn-danger">
+				<i class="fa fa-trash"></i>
+			</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			{{textarea class="form-control" value=h.comment}}
+		</div>
+	</div>
+</div>
+{{/each}}

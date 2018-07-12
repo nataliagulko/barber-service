@@ -4,6 +4,7 @@ export default Service.extend({
 	PHONE_MASK: null,
 	PHONE_LENGTH: 16,
 	TIME_MASK: null,
+	DEFUALT_DATE_FORMAT: "DD.MM.YYYY",
 
     init() {
         this._super(...arguments);
