@@ -13,7 +13,7 @@ export default Component.extend({
 			const masterRecord = this.get("master");
 			const business = this.get("currentUser").get("business");
 
-			masterRecord.set("enabled", true);
+			masterRecord.set("enabled", false);
 			masterRecord.set("business", business);
 			masterRecord
 				.validate()
