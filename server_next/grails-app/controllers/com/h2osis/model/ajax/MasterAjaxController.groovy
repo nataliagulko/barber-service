@@ -78,15 +78,14 @@ class MasterAjaxController {
                 render([errors: { g.message(code: "user.get.user.not.found") }] as JSON)
             }
         } else {
-            def query = request.JSON.query
-            if (query && query.phone) {
-                User user = User.findByPhone(query.phone)
+            if (data && data.phone) {
+                User user = User.findByPhone(data.phone)
                 if (!user) {
-                    user = User.findByPhone(novaUtilsService.getFullPhone(query.phone))
+                    user = User.findByPhone(novaUtilsService.getFullPhone(data.phone))
                 }
                 if (user) {
                     user.setPassword(null)
-                    JSON.use('clients') {
+                    JSON.use('masters') {
                         render([data: user] as JSON)
                     }
                 } else {

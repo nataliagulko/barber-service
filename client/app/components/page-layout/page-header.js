@@ -1,9 +1,11 @@
-import Ember from 'ember';
+import Component from '@ember/component';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
+import { inject } from '@ember/service';
 
-export default Ember.Component.extend(ApplicationRouteMixin, {
-	session: Ember.inject.service('session'),
+export default Component.extend(ApplicationRouteMixin, {
 	classNames: ['page-header', 'navbar', 'navbar-fixed-top'],
+	session: inject('session'),
+	currentUser: inject('current-user-service'),
 
     actions: {
         invalidateSession: function() {
