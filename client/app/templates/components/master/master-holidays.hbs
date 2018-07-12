@@ -4,16 +4,15 @@
 			<i class="icon-calendar font-green-sharp "></i>
 			<span class="caption-subject bold uppercase">{{t "holiday.label"}}</span>
 		</div>
+		<div class="actions">
+			<button class="btn btn-default" {{action "addHoliday"}}>
+				<i class="fa fa-plus"></i>
+				{{t "button.create"}}
+			</button>
+		</div>
 	</div>
 	<div class="portlet-body form">
+		{{master/master-holiday-create newHoliday=newHoliday holidays=holidays}}
 		{{master/master-holiday-row holidays=holidays}}
-		<div class="form-actions">
-			<div class="row">
-				<div class="col-md-offset-2 col-md-10">
-					<button type="submit" class="btn btn-success">{{t "button.save"}}</button>
-					{{#link-to "auth.master.index" class="btn btn-default"}} {{t "button.back"}} {{/link-to}}
-				</div>
-			</div>
-		</div>
 	</div>
 </div>
