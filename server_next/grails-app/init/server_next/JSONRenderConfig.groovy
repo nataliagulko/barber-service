@@ -394,5 +394,19 @@ class JSONRenderConfig {
                 return returnArray
             }
         }
+
+        JSON.createNamedConfig('roles') {
+            it.registerObjectMarshaller(Role) {
+                def returnArray = [:]
+                returnArray['id'] = it.id
+                returnArray['type'] = 'role'
+
+                def attrs = [:]
+                attrs['authority'] = it.authority
+                attrs['description'] = it.description
+                returnArray['attributes'] = attrs
+                return returnArray
+            }
+        }
     }
 }
