@@ -43,7 +43,6 @@ class HolidayAjaxController {
                     holiday.setDateTo(dateTo.toDate())
                     holiday.setMaster(user)
                     holiday.save(flush: true)
-                    Service.search().createIndexAndWait()
                     JSON.use('holidays') {
                         render([data: holiday] as JSON)
                     }
@@ -144,22 +143,46 @@ class HolidayAjaxController {
                 render([errors: errors] as JSON)
             }
         } else {
-            render([errors: g.message(code: "holiday.create.only.admin")] as JSON)
+            errors.add([
+                    "status": 422,
+                    "detail": g.message(code: "holiday.create.only.admin"),
+                    "source": [
+                            "pointer": "data"
+                    ]
+            ])
+            response.status = 422
+            render([errors: errors] as JSON)
         }
     }
 
     def find(params) {
+        def errors = []
         if (params.value) {
             String value = params.value
-            List<User> listOfUsers = searchService.userSearch(value)
-            if (listOfUsers) {
-                listOfUsers.each { it -> it.setPassword(null) }
+            List<Holiday> listOfHoliday = Holiday.findAllByComment(value)
+            if (listOfHoliday) {
                 render(listOfUsers as JSON)
             } else {
-                render([msg: g.message(code: "user.fine.not.found")] as JSON)
+                errors.add([
+                        "status": 422,
+                        "detail": g.message(code: "user.fine.not.found"),
+                        "source": [
+                                "pointer": "data"
+                        ]
+                ])
+                response.status = 422
+                render([errors: errors] as JSON)
             }
         } else {
-            render([msg: g.message(code: "find.value.null")] as JSON)
+            errors.add([
+                    "status": 422,
+                    "detail": g.message(code: "find.value.null"),
+                    "source": [
+                            "pointer": "data"
+                    ]
+            ])
+            response.status = 422
+            render([errors: errors] as JSON)
         }
     }
 
@@ -177,12 +200,20 @@ class HolidayAjaxController {
                 nonWorkDays.each { it++ }
 
                 DateTime dateTimeCurrent = novaDateUtilService.getMasterTZDateTime(new DateTime(), user)
-                List<Holiday> holidays =
-                        Holiday.findAllByMasterAndCommentNotEqualAndDateToGreaterThan(user, "maxTime", dateTimeCurrent, [sort: 'dateFrom'])?.plus(
-                                Holiday.findAllByMasterAndCommentAndMaxTimeLessThanAndDateToGreaterThan(user,
-                                        "maxTime", query.time ? query.time : slotsService.getDuration(1L),
-                                        dateTimeCurrent,
-                                        [sort: 'dateFrom']))?.sort { a, b -> a.dateFrom <=> b.dateFrom }
+                List<Holiday> holidays
+                if(params.showOnlyHolidays){
+                    holidays  =
+                            Holiday.findAllByMasterAndCommentNotEqualAndDateToGreaterThanAndCommentNotEqual(
+                                    user, "maxTime", dateTimeCurrent, 'fullday', [sort: 'dateFrom'])
+                                    ?.sort { a, b -> a.dateFrom <=> b.dateFrom }
+                } else {
+                    holidays  =
+                    Holiday.findAllByMasterAndCommentNotEqualAndDateToGreaterThan(user, "maxTime", dateTimeCurrent, [sort: 'dateFrom'])?.plus(
+                            Holiday.findAllByMasterAndCommentAndMaxTimeLessThanAndDateToGreaterThan(user,
+                                    "maxTime", query.time ? query.time : slotsService.getDuration(1L),
+                                    dateTimeCurrent,
+                                    [sort: 'dateFrom']))?.sort { a, b -> a.dateFrom <=> b.dateFrom }
+                }
                 holidays?.each {
                     it.master.setPassword(null)
                 }
@@ -190,15 +221,32 @@ class HolidayAjaxController {
                     render([data: holidays] as JSON)
                 }
             } else {
-                render([msg: g.message(code: "user.get.user.not.found")] as JSON)
+                errors.add([
+                        "status": 422,
+                        "detail": g.message(code: "holiday.not.found"),
+                        "source": [
+                                "pointer": "data"
+                        ]
+                ])
+                response.status = 422
+                render([errors: errors] as JSON)
             }
         } else {
-            render([msg: g.message(code: "user.get.id.null")] as JSON)
+            errors.add([
+                    "status": 422,
+                    "detail": g.message(code: "user.get.id.null"),
+                    "source": [
+                            "pointer": "data"
+                    ]
+            ])
+            response.status = 422
+            render([errors: errors] as JSON)
         }
     }
 
     @Transactional
     def destroy(params) {
+        def errors = []
         def data = params
         if (data.id) {
             Holiday holiday = Holiday.get(data.id)
@@ -206,10 +254,26 @@ class HolidayAjaxController {
                 holiday.delete(flush: true)
                 render([errors: []] as JSON)
             } else {
-                render([errors: { g.message(code: "holiday.not.found") }] as JSON)
+                errors.add([
+                        "status": 422,
+                        "detail": g.message(code: "holiday.not.found"),
+                        "source": [
+                                "pointer": "data"
+                        ]
+                ])
+                response.status = 422
+                render([errors: errors] as JSON)
             }
         } else {
-            render([errors: { g.message(code: "holiday.not.found") }] as JSON)
+            errors.add([
+                    "status": 422,
+                    "detail": g.message(code: "holiday.not.found"),
+                    "source": [
+                            "pointer": "data"
+                    ]
+            ])
+            response.status = 422
+            render([errors: errors] as JSON)
         }
     }
 }

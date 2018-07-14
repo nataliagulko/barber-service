@@ -437,7 +437,7 @@ Page Header
             /* User */
             > li.dropdown-user {
 	                .dropdown-toggle {
-						padding: $header-top-menu-user-item-padding;
+						padding: $header-top-menu-user-item-padding !important;
 
 						> .username {
 							display: inline-block;

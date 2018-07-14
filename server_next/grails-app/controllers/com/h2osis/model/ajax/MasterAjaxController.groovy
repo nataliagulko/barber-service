@@ -27,9 +27,10 @@ class MasterAjaxController {
         def errors = []
         def data = request.JSON.data
         def attrs = data.attributes
+        def relationships = data.relationships
         if (attrs.phone && ((attrs.password && attrs.rpassword) || (attrs.password && !attrs.rpassword) || (!attrs.password && !attrs.rpassword))) {
             if (attrs.password.equals(attrs.rpassword) || (attrs.password && !attrs.rpassword) || (!attrs.password && !attrs.rpassword)) {
-                def result = usersService.createUser(attrs)
+                def result = usersService.createUser(attrs, relationships)
                 if (result instanceof User) {
                     //result.setPassword(null)
                     Role role = Role.findByAuthority(AuthKeys.MASTER)
@@ -78,15 +79,14 @@ class MasterAjaxController {
                 render([errors: { g.message(code: "user.get.user.not.found") }] as JSON)
             }
         } else {
-            def query = request.JSON.query
-            if (query && query.phone) {
-                User user = User.findByPhone(query.phone)
+            if (data && data.phone) {
+                User user = User.findByPhone(data.phone)
                 if (!user) {
-                    user = User.findByPhone(novaUtilsService.getFullPhone(query.phone))
+                    user = User.findByPhone(novaUtilsService.getFullPhone(data.phone))
                 }
                 if (user) {
                     user.setPassword(null)
-                    JSON.use('clients') {
+                    JSON.use('masters') {
                         render([data: user] as JSON)
                     }
                 } else {

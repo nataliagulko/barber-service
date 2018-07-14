@@ -17,7 +17,7 @@ $header-logo-margin:                                					($header-height - $head
 
 $header-top-menu-general-item-padding:      							19px 10px 10px 10px !default;  // adjust top menu general elements padding. default: 15px 10px 7px 10px
 $header-top-menu-general-item-padding-on-mobile:       					19px 6px 10px 6px !default;  // adjust top menu general elements padding mobile. default: 15px 10px 7px 10px
-$header-top-menu-user-item-padding:         				  			16px 6px 13px 8px !default; // adjust top menu user bar element padding. default: 6px 0px 6px 6px
+$header-top-menu-user-item-padding:         				  			$header-top-menu-general-item-padding !default; // adjust top menu user bar element padding. default: 6px 0px 6px 6px
 $header-top-menu-user-item-padding-on-mobile:         					16px 0px 13px 2px !default;  // adjust top menu user bar element padding on mobile. default: 6px 0px 6px 4px
 $header-top-menu-language-item-padding:     							16px 3px 13px 7px !default;  // adjust top menu language bar element padding. default: 11px 1px 11px 5px
 $header-top-menu-language-item-padding-on-mobile:						16px 4px 13px 2px !default;  // adjust top menu language bar element padding. default: 11px 0px 11px 4px

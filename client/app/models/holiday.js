@@ -22,6 +22,6 @@ const Validations = buildValidations({
 export default DS.Model.extend(Validations, {
 	dateFrom: DS.attr(),
 	dateTo: DS.attr(),
+	comment: DS.attr(),
 	master: DS.belongsTo('master'),
-	comment: DS.attr()
 });

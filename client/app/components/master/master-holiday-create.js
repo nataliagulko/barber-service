@@ -3,30 +3,33 @@ import { inject } from '@ember/service';
 import { readOnly } from '@ember/object/computed';
 
 export default Component.extend({
+	store: inject(),
 	constants: inject("constants-service"),
-	currentUser: inject("current-user-service"),
-	phoneMask: readOnly("constants.PHONE_MASK"),
+	dateFormat: readOnly("constants.DEFUALT_DATE_FORMAT"),
+	dateMask: readOnly("constants.DATE_MASK"),
 
 	actions: {
-		save: function () {
+		saveHoliday: function (holiday) {
 			const _this = this;
-			const masterRecord = this.get("master");
-			const business = this.get("currentUser").get("business");
 
-			masterRecord.set("enabled", false);
-			masterRecord.set("business", business);
-			masterRecord
+			holiday
 				.validate()
 				.then(({ validations }) => {
 					if (validations.get('isValid')) {
-						masterRecord
+						holiday
 							.save()
 							.then(() => {
-								_this.get("router").transitionTo('auth.master');
+								_this.set("newHoliday", null);
 							});
 					}
 				});
+		},
 
+		removeHoliday: function (holiday) {
+			holiday.destroyRecord()
+				.then(() => {
+					this.set("newHoliday", null);
+				});
 		}
 	}
 });
