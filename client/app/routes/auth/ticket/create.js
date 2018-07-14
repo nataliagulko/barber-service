@@ -21,6 +21,6 @@ export default Route.extend(RollbackAttributesMixin, {
 		this._super(...arguments);
 
 		this.rollback(this.get("ticket"));
-		this.get("ticketService").changeStep("#master-step");
+		this.get("ticketService").changeStep("", "#master-step");
 	}
 });

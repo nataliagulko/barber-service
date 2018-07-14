@@ -5,25 +5,33 @@ export default Component.extend({
     classNames: ['mt-element-step'],
     ticketService: inject('ticket-service'),
 
-    actions: {
-        changeStep: function(stepSelector) {
-            var ticketService = this.get('ticketService');
-            ticketService.changeStep(stepSelector);
+    actions: {        
+        getMasters: function() {
+            const ticketService = this.get('ticketService');
+            ticketService.changeStep("", "#master-step");
         },
 
         getServicesByMaster: function () {
-            var ticketService = this.get('ticketService');
+            const ticketService = this.get('ticketService');
             ticketService.getServicesByMaster();
+            ticketService.changeStep("#master-step", "#services-step");
         },
 
         getHolidays: function () {
-            var ticketService = this.get('ticketService');
+            const ticketService = this.get('ticketService');
             ticketService.getHolidays();
+            ticketService.changeStep("#services-step", "#date-step");
         },
 
         getTimeSlots: function () {
-            var ticketService = this.get('ticketService');
+            const ticketService = this.get('ticketService');
             ticketService.getTimeSlots();
-        }
+            ticketService.changeStep("#date-step", "#time-step");           
+        },
+
+        getClient: function () {
+            const ticketService = this.get('ticketService');
+            ticketService.changeStep("#time-step", "#client-step");
+        },
     }
 });

@@ -18,12 +18,14 @@ export default Service.extend({
 	activeStep: '#master-step',
 	validationMessage: null,
 
-	changeStep(step) {
-		this.set("activeStep", step);
+	changeStep(prevStep, nextStep) {
+		this.set("activeStep", nextStep);
 
-		// убираем активное состояние со всех шагов и добавляем выбранному
 		$('.mt-step-col').removeClass('active');
-		$(step).addClass('active');
+		$(prevStep).addClass('done');
+		$(nextStep)
+			.removeClass('done')
+			.addClass('active');
 	},
 
 	toggleMaster(master, event) {
@@ -49,6 +51,8 @@ export default Service.extend({
 		}
 
 		$(selectedItem).toggleClass('selected');
+		this.changeStep("#master-step", "#services-step");
+		this.getServicesByMaster();
 	},
 
 	getServicesByMaster() {
@@ -143,6 +147,8 @@ export default Service.extend({
 	onTicketDateChange(selectedDate) {
 		const date = selectedDate;
 		this._setTicketProperty("ticketDate", date);
+		this.changeStep("#date-step", "#time-step");
+		this.getTimeSlots();
 	},
 
 	getTimeSlots() {
@@ -203,6 +209,7 @@ export default Service.extend({
 
 	onTicketTimeChange(selectedTime) {
 		this._setTicketProperty("time", selectedTime);
+		this.changeStep("#time-step", "#client-step");
 	},
 
 	inputPhone(value) {
