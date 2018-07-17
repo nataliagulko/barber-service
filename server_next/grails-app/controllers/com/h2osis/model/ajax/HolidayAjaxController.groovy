@@ -161,7 +161,9 @@ class HolidayAjaxController {
             String value = params.value
             List<Holiday> listOfHoliday = Holiday.findAllByComment(value)
             if (listOfHoliday) {
-                render(listOfUsers as JSON)
+                JSON.use('holidays') {
+                    render([data: listOfHoliday] as JSON)
+                }
             } else {
                 errors.add([
                         "status": 422,
