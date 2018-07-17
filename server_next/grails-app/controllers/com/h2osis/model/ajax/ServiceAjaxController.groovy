@@ -51,6 +51,7 @@ class ServiceAjaxController {
     }
 
     def find() {
+        def errors = []
         if (params.value) {
             String value = params.value
             List<Service> serviceList = searchService.serviceSearch(value)
@@ -64,10 +65,26 @@ class ServiceAjaxController {
                     render([data: serviceList] as JSON)
                 }
             } else {
-                render([errors: g.message(code: "service.fine.not.found")] as JSON)
+                errors.add([
+                        "status": 422,
+                        "detail": g.message(code: "service.fine.not.found"),
+                        "source": [
+                                "pointer": "data"
+                        ]
+                ])
+                response.status = 422
+                render([errors: errors] as JSON)
             }
         } else {
-            render([errors: g.message(code: "find.value.null")] as JSON)
+            errors.add([
+                    "status": 422,
+                    "detail": g.message(code: "find.value.null"),
+                    "source": [
+                            "pointer": "data"
+                    ]
+            ])
+            response.status = 422
+            render([errors: errors] as JSON)
         }
     }
 
@@ -105,11 +122,20 @@ class ServiceAjaxController {
                 render([errors: errors] as JSON)
             }
         } else {
-            render([errors: g.message(code: "service.create.not.admin")] as JSON)
+            errors.add([
+                    "status": 422,
+                    "detail": g.message(code: "service.create.not.admin"),
+                    "source": [
+                            "pointer": "data"
+                    ]
+            ])
+            response.status = 422
+            render([errors: errors] as JSON)
         }
     }
 
     def update() {
+        def errors = []
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
         if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
@@ -127,6 +153,9 @@ class ServiceAjaxController {
                     if (attrs.name) {
                         service.setName(attrs.name)
                     }
+                    if(attrs.partOfList){
+                        service.setPartOfList(attrs.partOfList)
+                    }
                     if (data.relationships.masters) {
                         List mastersIdsList = new ArrayList<Long>()
                         data.relationships.masters.data.id.each {
@@ -141,19 +170,44 @@ class ServiceAjaxController {
                         render([data: service] as JSON)
                     }
                 } else {
-                    render([errors: g.message(code: "service.create.params.null")] as JSON)
+                    errors.add([
+                            "status": 422,
+                            "detail": g.message(code: "service.create.params.null"),
+                            "source": [
+                                    "pointer": "data"
+                            ]
+                    ])
+                    response.status = 422
+                    render([errors: errors] as JSON)
                 }
 
             } else {
-                render([errors: g.message(code: "service.create.params.null")] as JSON)
+                errors.add([
+                        "status": 422,
+                        "detail": g.message(code: "service.create.params.null"),
+                        "source": [
+                                "pointer": "data"
+                        ]
+                ])
+                response.status = 422
+                render([errors: errors] as JSON)
             }
         } else {
-            render([errors: g.message(code: "service.create.not.admin")] as JSON)
+            errors.add([
+                    "status": 422,
+                    "detail": g.message(code: "service.create.not.admin"),
+                    "source": [
+                            "pointer": "data"
+                    ]
+            ])
+            response.status = 422
+            render([errors: errors] as JSON)
         }
     }
 
     @Transactional
     def destroy(params) {
+        def errors = []
         def principal = springSecurityService.principal
         User user = User.get(principal.id)
         if (user.authorities.authority.contains(Role.findByAuthority(AuthKeys.MASTER).authority)) {
@@ -173,8 +227,15 @@ class ServiceAjaxController {
                             list()
                         }
                         if(ticketByService){
+                            errors.add([
+                                    "status": 422,
+                                    "detail": message(code: "service.in.tickets"),
+                                    "source": [
+                                            "pointer": "data"
+                                    ]
+                            ])
                             response.status = 422
-                            render([errors: message(code: "service.in.tickets")] as JSON)
+                            render([errors: errors] as JSON)
                         }else {
                             if (service.class == com.h2osis.model.ServiceGroup.class) {
                                 ServiceGroup serviceGroup = ServiceGroup.get(data.id)
@@ -186,20 +247,42 @@ class ServiceAjaxController {
                         }
                     }
                 } else {
+                    errors.add([
+                            "status": 422,
+                            "detail": g.message(code: "service.get.user.not.found"),
+                            "source": [
+                                    "pointer": "data"
+                            ]
+                    ])
                     response.status = 422
-                    render([errors: g.message(code: "service.get.user.not.found")] as JSON)
+                    render([errors: errors] as JSON)
                 }
             } else {
+                errors.add([
+                        "status": 422,
+                        "detail": g.message(code: "service.get.id.null"),
+                        "source": [
+                                "pointer": "data"
+                        ]
+                ])
                 response.status = 422
-                render([errors: g.message(code: "service.get.id.null")] as JSON)
+                render([errors: errors] as JSON)
             }
         } else {
+            errors.add([
+                    "status": 422,
+                    "detail": g.message(code: "service.delete.not.admin"),
+                    "source": [
+                            "pointer": "data"
+                    ]
+            ])
             response.status = 422
-            render([errors: g.message(code: "service.delete.not.admin")] as JSON)
+            render([errors: errors] as JSON)
         }
     }
 
     def list(params) {
+        def errors = []
         List<Service> serviceList = Service.createCriteria().list {
             def query = params
             if (query) {
@@ -238,9 +321,9 @@ class ServiceAjaxController {
             order("name", "asc")
         }
         if (serviceList) {
-            def query = request.JSON.query
+            def query = params
 
-            if (query && query.onlySimpleService == true) {
+            if (query && query.onlySimpleService) {
                 serviceList = serviceList.findAll {
                     (it.class == Service.class)
                 }
@@ -249,7 +332,15 @@ class ServiceAjaxController {
                 render([data: serviceList] as JSON)
             }
         } else {
-            render([errors: g.message(code: "service.fine.not.found")] as JSON)
+            errors.add([
+                    "status": 422,
+                    "detail": g.message(code: "service.fine.not.found"),
+                    "source": [
+                            "pointer": "data"
+                    ]
+            ])
+            response.status = 422
+            render([errors: errors] as JSON)
         }
     }
 }

@@ -10,13 +10,13 @@
     <div class="col-md-10">
         {{#if workTime.checked}}
         <div class="form-group work-time-row__group">
-            {{input type="text" class="form-control work-time-row__input" placeholder="10:00" value=workTime.start maxlength=5}} —
-            {{input type="text" class="form-control work-time-row__input" placeholder="19:00" value=workTime.end maxlength=5}}
+			{{masked-input class="form-control work-time-row__input" mask=timeMask placeholder="10:00" value=workTime.start}} —
+			{{masked-input class="form-control work-time-row__input" mask=timeMask placeholder="19:00" value=workTime.end}}
         </div>
         <div class="form-group work-time-row__group">
-            перерыв
-            {{input type="text" class="form-control work-time-row__input" placeholder="13:00" value=workTime.lunchStart maxlength=5}} —
-            {{input type="text" class="form-control work-time-row__input" placeholder="14:00" value=workTime.lunchEnd maxlength=5}}
+            {{t "workTime.rest.label"}}
+			{{masked-input class="form-control work-time-row__input" mask=timeMask placeholder="13:00" value=workTime.lunchStart}} —
+			{{masked-input class="form-control work-time-row__input" mask=timeMask placeholder="14:00" value=workTime.lunchEnd}}
         </div>
         {{else}}
         <div class="form-group work-time-row__group">

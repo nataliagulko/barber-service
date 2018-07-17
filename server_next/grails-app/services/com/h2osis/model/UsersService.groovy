@@ -15,7 +15,7 @@ class UsersService {
 
     BarberSecurityService barberSecurityService
 
-    def createUser(def params) {
+    def createUser(def params, def relationships) {
 
         if(!params.password && !params.rpassword){
             params.password = barberSecurityService.generator((('0'..'9')).join(), 6)
@@ -32,10 +32,11 @@ class UsersService {
                     phone: params.phone,
                     guid: UUID.randomUUID().toString(),
                     enabled: params.enabled ? params.enabled : true).save(flush: true)
-            if (params.businessId) {
-                Business business = Business.get(params.businessId)
+            if (relationships.business.id) {
+                Business business = Business.get(params.business.id)
                 if (business) {
-                    if (params.userRole) {
+					Boolean userRole = params.type == "master" ? false : true
+                    if (userRole) {
                         business.addToClients(user)
                     } else if (params.masterRole) {
                         business.addToMasters(user)

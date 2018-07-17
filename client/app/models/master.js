@@ -35,8 +35,9 @@ const Validations = buildValidations({
             on: 'password',
             allowBlank: true
         })
-    ],
-    // business: validator('belongsTo'),
+	],
+    role: validator('has-many'),
+    business: validator('belongs-to'),
 });
 
 export default DS.Model.extend(Validations, {
@@ -52,9 +53,9 @@ export default DS.Model.extend(Validations, {
     accountExpired: DS.attr('boolean'),
     accountLocked: DS.attr('boolean'),
     passwordExpired: DS.attr('boolean'),
-    role: DS.attr(),
-    // business: DS.belongsTo('business', { async: true }),
+    role: DS.hasMany('role', { async: true }),
+    business: DS.belongsTo('business', { async: true }),
     fullname: computed('firstname', 'secondname', function () {
         return `${this.get('firstname')} ${this.get('secondname')}`;
-    })
+	}),
 });

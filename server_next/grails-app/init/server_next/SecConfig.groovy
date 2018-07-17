@@ -25,11 +25,14 @@ class SecConfig {
                 '/user/changePassword/**',
                 '**/fonts/**',
                 '/**/assets/**',
+                '/masterAjax/create',
                 '/masterAjax/list/**',
                 '/clientAjax/list/**',
                 '/clientAjax/create',
                 '/ticketAjax/create',
                 '/businessAjax/create',
+                '/roleAjax/get',
+                '/roleAjax/list',
                 '/slotAjax/**']) {
             new NovaRequestMap(url: url, configAttribute: 'permitAll').save(flush: true)
         }

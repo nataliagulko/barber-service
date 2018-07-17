@@ -21,14 +21,14 @@
 					{{#tab.pane elementId="service" title="Простая" }}
 						{{service/service-form 
 							service=model.service 
-							masters=model.masters 
+							allMasters=model.masters 
 							subservices=model.subservices 
 						}}
 					{{/tab.pane}}
 					{{#tab.pane elementId="service-group" title="Составная" }}
 						{{service/service-group-form
 						serviceGroup=model.serviceGroup
-						masters=model.masters 
+						allMasters=model.masters 
 						subservices=model.subservices 
 					}}
 					{{/tab.pane}}

@@ -2,10 +2,10 @@
 	<thead>
 		<tr>
 			<td class="col-sm-1"></td>
-			<td class="col-sm-7">Услуга</td>
-			<td class="col-sm-3">Перерыв</td>
+			<td class="col-sm-7"></td>
+			<td class="col-sm-3">{{t "serviceToGroup.serviceTimeout.label"}}</td>
 			<td class="col-sm-1">
-				<button type="button" class="btn btn-default" {{action "addServiceToGroup"}} disabled= {{isRowAddingDisabled}}>
+				<button type="button" class="btn btn-default" {{action "addServiceToGroup"}} disabled={{isRowAddingDisabled}}>
 					<i class="fa fa-plus"></i>
 				</button>
 			</td>
@@ -28,10 +28,10 @@
 						as |subservice| }}
 							{{subservice.name}}
 							<small class="font-grey-silver subservice-list__select-info">
-								{{subservice.cost}}&nbsp;<i class="fa fa-rouble"></i>,
+								{{subservice.cost}}&nbsp;{{t "currency.sign"}},
 							</small>
 							<small class="font-grey-silver subservice-list__select-info">
-								{{subservice.time}}&nbsp;мин.
+								{{subservice.time}}&nbsp;{{t "service.time.minutes.label"}}
 							</small>
 					{{/power-select}}
 				</td>

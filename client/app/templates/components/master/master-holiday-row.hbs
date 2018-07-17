@@ -1,0 +1,21 @@
+{{#each holidays as |h|}}
+	<div class="master-holiday-row">
+		<div class="row">
+			<div class="col-md-9">
+				<div class="master-holiday-row__cell">
+					<span class="master-holiday-row__date">{{moment-format h.dateFrom dateFormat}}</span>
+					<span class="master-holiday-row__dash">—</span>
+					<span class="master-holiday-row__date">{{moment-format h.dateTo dateFormat}}</span>
+				</div>
+				<div class="master-holiday-row__cell master-holiday-row__cell_right">
+					<span class="master-holiday-row__comment">{{h.comment}}</span>
+				</div>
+			</div>
+			<div class="col-md-3 text-right">
+				<button class="btn btn-danger" {{action "remove" h}}>
+					<i class="fa fa-trash"></i>
+				</button>
+			</div>
+		</div>
+	</div>
+{{/each}}
