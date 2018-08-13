@@ -15,6 +15,14 @@
     "test": "ember test"
   },
   "devDependencies": {
+    "@types/ember": "^2.8.32",
+    "@types/ember-data": "^2.14.18",
+    "@types/ember-qunit": "^3.0.3",
+    "@types/ember-test-helpers": "^0.7.1",
+    "@types/ember-testing-helpers": "0.0.3",
+    "@types/ember__test-helpers": "^0.7.0",
+    "@types/qunit": "^2.5.2",
+    "@types/rsvp": "^4.0.2",
     "bootstrap-sass": "^3.3.7",
     "broccoli-asset-rev": "^2.4.5",
     "ember-ajax": "^2.4.1",
@@ -38,6 +46,7 @@
     "ember-cli-shims": "^1.0.2",
     "ember-cli-sri": "^2.1.0",
     "ember-cli-test-loader": "^1.1.0",
+    "ember-cli-typescript": "^1.4.0",
     "ember-cli-uglify": "^1.2.0",
     "ember-cli-uuid": "^0.5.0",
     "ember-cp-validations": "^3.5.1",
@@ -66,7 +75,8 @@
     "eslint-plugin-ember": "^5.1.0",
     "loader.js": "^4.0.10",
     "phantomjs": "^2.1.7",
-    "toastr": "^2.1.2"
+    "toastr": "^2.1.2",
+    "typescript": "^3.0.1"
   },
   "engines": {
     "node": ">= 0.12.0"
