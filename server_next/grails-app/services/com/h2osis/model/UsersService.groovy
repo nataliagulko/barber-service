@@ -32,7 +32,7 @@ class UsersService {
                     phone: params.phone,
                     guid: UUID.randomUUID().toString(),
                     enabled: params.enabled ? params.enabled : true).save(flush: true)
-            if (relationships.business.id) {
+            if (relationships && relationships.business.id) {
                 Business business = Business.get(params.business.id)
                 if (business) {
 					Boolean userRole = params.type == "master" ? false : true

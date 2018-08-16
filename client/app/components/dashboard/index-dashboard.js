@@ -30,14 +30,6 @@ export default Component.extend(TokenAuthorizerMixin, {
 	},
 
 	actions: {
-		testForDestroyBusiness: function () {
-			// надо проверить удаление организации
-			this.get("store").findRecord("business", 2)
-				.then((b) => {
-					b.destroyRecord();
-				});
-		},
-
 		getStatistic: function () {
 			let now = moment().format("DD.MM.YYYY"),
 				monthAgo = moment().subtract(1, 'months').format("DD.MM.YYYY");
