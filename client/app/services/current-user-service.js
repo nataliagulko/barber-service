@@ -12,10 +12,8 @@ export default Service.extend({
 
 		if (!isEmpty(phone)) {
 			return this.get('store').queryRecord('master', { phone }).then((master) => {
-				this.set('master', master);
-				this.get('store').findRecord("business", master.get("business").get("id")).then(business => {
-					this.set('business', business);
-				});
+				this.set('user', master);
+				this.set('business', master.get("business"));
 			});
 		} else {
 			return RSVP.resolve();
