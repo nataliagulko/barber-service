@@ -37,9 +37,11 @@ class BusinessAjaxController {
         if (attrs.name && attrs.address) {
             Business business = new Business()
 
-            // relationships.masters.data.id.each {
-            //     business.addToMasters(User.get(new Long(it)))
-            // }
+			if (relationships && relationships.masters) {
+				relationships.masters.data.id.each {
+					business.addToMasters(User.get(new Long(it)))
+				}
+			}
 
             business.name = attrs.name
             business.inn = attrs.inn
