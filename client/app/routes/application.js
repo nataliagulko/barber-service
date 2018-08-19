@@ -11,7 +11,6 @@ export default Route.extend(ApplicationRouteMixin, {
 		return this.get('currentUserService')
 			.load()
 			.then(() => {
-				const user = this.get("currentUserService").get("user");
 				this.get("currentUserService").get("business")
 					.then((currentBusiness) => {
 						if (currentBusiness) {
