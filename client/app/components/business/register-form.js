@@ -15,22 +15,16 @@ export default Component.extend({
 		saveBusiness: function (master) {
 			const _this = this;
 			const businessRecord = this.get("business");
-
-			businessRecord
-				.validate()
-				.then(({ validations }) => {
-					if (validations.get('isValid')) {
-						businessRecord.set("masters", [master]);
-						businessRecord.save()
-							.then((business) => {
-								const message = _this.get("i18n").t("bussiness.registration.success", {
-									name: business.get("name"),
-									master: master.get("firstname")
-								});
-								_this.get("notification").showInfoMessage(message);
-								_this.get("router").transitionTo("login");
-							});
-					}
+			
+			businessRecord.get("masters").pushObject(master);
+			businessRecord.save()
+				.then((business) => {
+					const message = _this.get("i18n").t("business.registration.success", {
+						name: business.get("name"),
+						master: master.get("firstname")
+					});
+					_this.get("notification").showInfoMessage(message);
+					_this.get("router").transitionTo("login");
 				});
 		},
 

@@ -84,7 +84,7 @@ export default {
 	"worktime.weekend": "выходной",
 	"slots.not.found": "Слоты для данного мастера на данную дату не найдены",
 	"auth.login.in": "Войти",
-	"auth.login.register": "регистрация",
+	"auth.login.register": "Регистрация",
 	"main.info.about": "О проекте",
 	"auth.reg.pass2.fail": "Пароли не совпадают",
 	"springSecurity.oauth.registration.link.not.exists": "Нет связанного аккаунта",
@@ -188,6 +188,7 @@ export default {
 		"value.null": "Не задано значение для поиска",
 		"update.params.null": "Не верно переданы значения для обновления организации",
 		"registration.success": "Организация {{name}} создана. {{master}}, используйте номер телефона и пароль для входа.",
+		"registration.input.data": "Введите данные вашей организации",
 	},
 	"user": {
 		"label": "пользователь",
@@ -218,7 +219,8 @@ export default {
 		"get.user.by.phone.not.found": "Пользователь с таким номером телефона не найден",
 		"fine.not.found": "Пользователи по запросу на найдены",
 		"block.not.admin": "Блокировать пользователей могут только администраторы",
-		"business.not.found": "Для пользователя {{phone}} не указана организация"
+		"business.not.found": "Для пользователя {{phone}} не указана организация",
+		"registration.input.data": "Введите личные данные",
 	},
 	"find.value.null": "Не передан параметр поиска",
 	"auth.sms.code.send.label": "Получить код в смс",
