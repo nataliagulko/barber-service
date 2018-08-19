@@ -8,17 +8,17 @@ export default Component.extend({
 	phoneMask: readOnly("constants.PHONE_MASK"),
 
 	submit() {
-		this.send("saveMaster");
+		this.send("saveBusiness");
 	},
 
 	actions: {
-		saveBusiness: function (master) {
+		saveMaster: function (business) {
 			const _this = this;
-			const businessRecord = this.get("business");
+			const masterRecord = this.get("master");
 			
-			businessRecord.get("masters").pushObject(master);
-			businessRecord.save()
-				.then((business) => {
+			masterRecord.set("business", business);
+			masterRecord.save()
+				.then((master) => {
 					const message = _this.get("i18n").t("business.registration.success", {
 						name: business.get("name"),
 						master: master.get("firstname")
@@ -28,25 +28,25 @@ export default Component.extend({
 				});
 		},
 
-		saveMaster: function () {
+		saveBusiness: function () {
 			const _this = this;
-			const masterRecord = this.get("master");
 			const businessRecord = this.get("business");
+			const masterRecord = this.get("master");
 
-			masterRecord.set("enabled", true);
-			// validate master
-			masterRecord
+			businessRecord.set("enabled", true);
+			// validate business
+			businessRecord
 				.validate()
 				.then(({ validations }) => {
 					if (validations.get('isValid')) {
-						// then validate business
-						businessRecord.validate()
+						// then validate master
+						masterRecord.validate()
 							.then(({ validations }) => {
 								if (validations.get('isValid')) {
-									// and after save master
-									masterRecord.save()
-										.then((master) => {
-											_this.send("saveBusiness", master);
+									// and after save business
+									businessRecord.save()
+										.then((business) => {
+											_this.send("saveMaster", business);
 										});
 								}
 							});
