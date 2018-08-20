@@ -127,7 +127,7 @@ class HolidayAjaxController {
                     holiday.setMaster(user)
                 }
                 holiday.save(flush: true)
-                Service.search().createIndexAndWait()
+                // Service.search().createIndexAndWait()
                 JSON.use('holidays') {
                     render([data: holiday] as JSON)
                 }

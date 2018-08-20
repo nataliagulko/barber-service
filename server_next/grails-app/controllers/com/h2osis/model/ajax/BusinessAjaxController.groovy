@@ -34,12 +34,14 @@ class BusinessAjaxController {
         def data = request.JSON.data
         def attrs = data.attributes
         def relationships = data.relationships
-        if (attrs.name && attrs.address && relationships.masters) {
+        if (attrs.name && attrs.address) {
             Business business = new Business()
 
-            relationships.masters.data.id.each {
-                business.addToMasters(User.get(new Long(it)))
-            }
+			if (relationships && relationships.masters) {
+				relationships.masters.data.id.each {
+					business.addToMasters(User.get(new Long(it)))
+				}
+			}
 
             business.name = attrs.name
             business.inn = attrs.inn
