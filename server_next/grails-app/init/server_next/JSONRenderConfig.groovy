@@ -32,7 +32,6 @@ class JSONRenderConfig {
                 attrs['email'] = it.email
                 attrs['masterTZ'] = it.masterTZ
                 attrs['role'] = it.role.authority
-                attrs['business'] = it.business.name
                 returnArray['attributes'] = attrs
                 return returnArray
             }
@@ -55,15 +54,14 @@ class JSONRenderConfig {
                 attrs['guid'] = it.guid
                 attrs['enabled'] = it.enabled
 
-                //attrs['business'] = it.business.code
-
 				def relationships = [:]
                 def roleDetails = [:]
                 roleDetails['data'] = it.role
                 relationships['role'] = roleDetails
 
-                def orgDetails = [:]
-                orgDetails['data'] = it.business
+				def orgDetails = [:]
+                orgDetails['id'] = it.business
+                orgDetails['type'] = 'business'
                 relationships['business'] = orgDetails
 
                 returnArray['relationships'] = relationships

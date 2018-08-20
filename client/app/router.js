@@ -9,7 +9,7 @@ const Router = EmberRouter.extend({
 Router.map(function () {
   this.route('not-found', { path: '/*path' });
   this.route('login');
-  this.route('auth', { page: '/' }, function () {
+  this.route('auth', { path: '/:code' }, function () {
     this.route('ticket', function () {
       this.route('create');
     });

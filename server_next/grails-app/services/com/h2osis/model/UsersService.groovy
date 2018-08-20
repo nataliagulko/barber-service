@@ -32,18 +32,18 @@ class UsersService {
                     phone: params.phone,
                     guid: UUID.randomUUID().toString(),
                     enabled: params.enabled ? params.enabled : true).save(flush: true)
-            if (relationships.business.id) {
-                Business business = Business.get(params.business.id)
+            if (relationships && relationships.business.data.id) {
+                Business business = Business.get(relationships.business.data.id)
                 if (business) {
-					Boolean userRole = params.type == "master" ? false : true
-                    if (userRole) {
-                        business.addToClients(user)
-                    } else if (params.masterRole) {
+                    if (params.type == "master") {
                         business.addToMasters(user)
+                    } else {
+                        business.addToClients(user)
                     }
                     business.save(flush: true)
                 }
             }
+			println params.type
             String authority = params.type == "master" ? AuthKeys.MASTER : (params.type == "client"  ? AuthKeys.CLIENT : null)
             if (authority) {
                 Role role = Role.findByAuthority(authority)
