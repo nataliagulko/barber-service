@@ -43,7 +43,6 @@ class UsersService {
                     business.save(flush: true)
                 }
             }
-			println params.type
             String authority = params.type == "master" ? AuthKeys.MASTER : (params.type == "client"  ? AuthKeys.CLIENT : null)
             if (authority) {
                 Role role = Role.findByAuthority(authority)
