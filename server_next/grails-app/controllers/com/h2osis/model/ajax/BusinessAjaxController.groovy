@@ -19,7 +19,7 @@ class BusinessAjaxController {
             Business business = Business.get(data.id)
             if (business) {
                 JSON.use('business') {
-                    render([data: business] as JSON)
+                    render(template: "/business/business", model: [business: business])
                 }
             } else {
                 render([msg: g.message(code: "business.get.user.not.found")] as JSON)
@@ -37,11 +37,11 @@ class BusinessAjaxController {
         if (attrs.name && attrs.address) {
             Business business = new Business()
 
-			if (relationships && relationships.masters) {
-				relationships.masters.data.id.each {
-					business.addToMasters(User.get(new Long(it)))
-				}
-			}
+            if (relationships && relationships.masters) {
+                relationships.masters.data.id.each {
+                    business.addToMasters(User.get(new Long(it)))
+                }
+            }
 
             business.name = attrs.name
             business.inn = attrs.inn
@@ -66,7 +66,7 @@ class BusinessAjaxController {
                     "source": [
                             "pointer": "data"
                     ]
-            ])
+                ])
             response.status = 422
             render([errors: errors] as JSON)
         }
@@ -98,9 +98,7 @@ class BusinessAjaxController {
                 business.smsCentrPass = attrs.smsCentrPass
 
                 business.save(flush: true)
-                JSON.use('business') {
-                    render([data: business] as JSON)
-                }
+                render(template: "/business/business", model: [business: business])
             } else {
                 errors.add([
                         "status": 422,
@@ -108,7 +106,7 @@ class BusinessAjaxController {
                         "source": [
                                 "pointer": "data"
                         ]
-                ])
+                    ])
                 response.status = 422
                 render([errors: errors] as JSON)
             }
@@ -119,7 +117,7 @@ class BusinessAjaxController {
                     "source": [
                             "pointer": "data"
                     ]
-            ])
+                ])
             response.status = 422
             render([errors: errors] as JSON)
         }
@@ -140,7 +138,7 @@ class BusinessAjaxController {
                         "source": [
                                 "pointer": "data"
                         ]
-                ])
+                    ])
                 response.status = 422
                 render([errors: errors] as JSON)
             }
@@ -151,7 +149,7 @@ class BusinessAjaxController {
                     "source": [
                             "pointer": "data"
                     ]
-            ])
+                ])
             response.status = 422
             render([errors: errors] as JSON)
         }
@@ -164,9 +162,7 @@ class BusinessAjaxController {
             String value = data.value
             List<Business> businessList = Business.findAllByNameOrGuidOrCode(value, value, value)
             if (businessList) {
-                JSON.use('business') {
-                    render([data: businessList] as JSON)
-                }
+                render(template: "/business/business", model: [business: business])
             } else {
                 errors.add([
                         "status": 422,
@@ -174,7 +170,7 @@ class BusinessAjaxController {
                         "source": [
                                 "pointer": "data"
                         ]
-                ])
+                    ])
                 response.status = 422
                 render([errors: errors] as JSON)
             }
@@ -185,7 +181,7 @@ class BusinessAjaxController {
                     "source": [
                             "pointer": "data"
                     ]
-            ])
+                ])
             response.status = 422
             render([errors: errors] as JSON)
         }
@@ -203,9 +199,7 @@ class BusinessAjaxController {
         }
 
         if (businessList) {
-            JSON.use('business') {
-                render([data: businessList] as JSON)
-            }
+            render(template: "/business/business", model: [business: business])
         } else {
             errors.add([
                     "status": 422,
@@ -213,7 +207,7 @@ class BusinessAjaxController {
                     "source": [
                             "pointer": "data"
                     ]
-            ])
+                ])
             response.status = 422
             render([errors: errors] as JSON)
         }

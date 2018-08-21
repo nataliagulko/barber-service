@@ -17,6 +17,7 @@ export default Component.extend({
 			const masterRecord = this.get("master");
 			
 			masterRecord.set("business", business);
+			masterRecord.set("enabled", true);
 			masterRecord.save()
 				.then((master) => {
 					const message = _this.get("i18n").t("business.registration.success", {
@@ -33,7 +34,6 @@ export default Component.extend({
 			const businessRecord = this.get("business");
 			const masterRecord = this.get("master");
 
-			businessRecord.set("enabled", true);
 			// validate business
 			businessRecord
 				.validate()

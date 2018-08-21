@@ -20,7 +20,6 @@ class User {
 
     String guid
 
-
     boolean enabled = true
     boolean accountExpired
     boolean accountLocked

@@ -35,9 +35,7 @@ class MasterAjaxController {
                     //result.setPassword(null)
                     Role role = Role.findByAuthority(AuthKeys.MASTER)
                     new UserRole(user: result, role: role).save(flush: true);
-                    JSON.use('masters') {
-                        render([data: result] as JSON)
-                    }
+                    render(template: "/user/user", model: [user: result])
                 } else {
                     render([errors: { result }] as JSON)
                 }
@@ -48,7 +46,7 @@ class MasterAjaxController {
                         "source": [
                                 "pointer": "data"
                         ]
-                ])
+                    ])
                 response.status = 422
                 render([errors: errors] as JSON)
             }
@@ -59,22 +57,19 @@ class MasterAjaxController {
                     "source": [
                             "pointer": "data"
                     ]
-            ])
+                ])
             response.status = 422
             render([errors: errors] as JSON)
         }
     }
 
     def get(params) {
-		def data = params
+        def data = params
         if (data && data.id) {
             User user = User.get(data.id)
             if (user) {
                 user.setPassword(null)
-                //render([user: user, holidays: Holiday.findAllByMaster(user), worktTmesMap: worktTmesMap] as JSON)
-                JSON.use('masters') {
-                    render([data: user] as JSON)
-                }
+                render(template: "/user/user", model: [user: user])
             } else {
                 render([errors: { g.message(code: "user.get.user.not.found") }] as JSON)
             }
@@ -86,12 +81,10 @@ class MasterAjaxController {
                 }
                 if (user) {
                     user.setPassword(null)
-                    JSON.use('masters') {
-                        render([data: user] as JSON)
-                    }
+                    render(template: "/user/user", model: [user: user])
                 } else {
                     render([errors:
-                                    novaUtilsService.getErrorsSingleArrayJSON(g.message(code: "user.get.user.by.phone.not.found"))] as JSON)
+                            novaUtilsService.getErrorsSingleArrayJSON(g.message(code: "user.get.user.by.phone.not.found"))] as JSON)
                 }
             } else {
                 render([errors: novaUtilsService.getErrorsSingleArrayJSON(g.message(code: "user.get.id.null"))] as JSON)
@@ -105,9 +98,7 @@ class MasterAjaxController {
             User user = User.get(data.id)
             if (user) {
                 usersService.saveUser(data.attributes, user)
-                JSON.use('masters') {
-                    render([data: user] as JSON)
-                }
+                render(template: "/user/user", model: [user: user])
             } else {
                 render([errors: { g.message(code: "user.get.user.not.found") }] as JSON)
             }
@@ -119,10 +110,7 @@ class MasterAjaxController {
     def list() {
         List<User> userList = UserRole.findAllByRole(Role.findByAuthority("ROLE_ADMIN")).user
         if (userList) {
-
-            JSON.use('masters') {
-                render([data: userList.findAll { it.enabled == true }] as JSON)
-            }
+            render(template: "/user/user", model: [user: user])
         } else {
             render([errors: { g.message(code: "user.fine.not.found") }] as JSON)
         }
@@ -150,7 +138,7 @@ class MasterAjaxController {
         if (data.id) {
             User user = User.get(data.id)
             user = user == null ?
-                    User.get(springSecurityService.principal.id) : user
+            User.get(springSecurityService.principal.id) : user
             if (user) {
                 def result = Ticket.executeQuery("select user from Ticket where master_id = $user and type = 'HEAD' group by user_id ")
                 JSON.use('clients') {
@@ -173,7 +161,7 @@ class MasterAjaxController {
         if (data.id) {
             User user = User.get(data.id)
             user = user == null ?
-                    User.get(springSecurityService.principal.id) : user
+            User.get(springSecurityService.principal.id) : user
             if (user) {
                 Date dateFrom = novaDateUtilService.getMasterTZDateTimeDDMMYYYY(data.dateFrom, user).toDate()
                 Date dateTo = novaDateUtilService.getMasterTZDateTimeDDMMYYYY(data.dateTo, user).toDate()
@@ -188,6 +176,4 @@ class MasterAjaxController {
             render([errors: { g.message(code: "user.get.id.null") }] as JSON)
         }
     }
-
-
 }

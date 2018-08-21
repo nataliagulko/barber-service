@@ -5,7 +5,7 @@ model
     User user
 }
 
-json jsonapi.render(user)
+json jsonapi.render(user, [excludes: ['oAuthIDs', 'password']])
 
 
 

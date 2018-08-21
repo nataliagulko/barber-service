@@ -11,15 +11,22 @@ export default Route.extend(ApplicationRouteMixin, {
 		return this.get('currentUserService')
 			.load()
 			.then(() => {
-				this.get("currentUserService").get("business")
-					.then((currentBusiness) => {
-						if (currentBusiness) {
-							const code = currentBusiness.get("code");
-							this.transitionTo("auth", code);
-						} else {
-							this._invalidate();
-						}
-					});
+				this.get("currentUserService").get("user")
+				.then((user) => {
+					// if (user) {
+						const code = "code";
+						this.transitionTo("auth", code);
+					// }
+				});
+				// this.get("currentUserService").get("business")
+				// 	.then((currentBusiness) => {
+				// 		if (currentBusiness) {
+				// 			const code = currentBusiness.get("code");
+				// 			this.transitionTo("auth", code);
+				// 		} else {
+				// 			this._invalidate();
+				// 		}
+				// 	});
 			})
 			.catch(() => this._invalidate());
 	},

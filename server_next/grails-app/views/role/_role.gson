@@ -6,9 +6,3 @@ model
 }
 
 json jsonapi.render(role)
-
-
-
-
-
-
