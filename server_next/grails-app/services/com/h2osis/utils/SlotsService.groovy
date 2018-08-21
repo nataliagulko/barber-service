@@ -1,8 +1,8 @@
 package com.h2osis.utils
 
 import com.h2osis.auth.User
-import com.h2osis.constant.TicketStatus
-import com.h2osis.constant.TicketType
+import constant.TicketStatus
+import constant.TicketType
 import com.h2osis.model.Holiday
 import com.h2osis.model.Service
 import com.h2osis.model.Slot
@@ -12,7 +12,6 @@ import com.h2osis.model.WorkTime
 import grails.transaction.Transactional
 import org.joda.time.*
 import org.joda.time.format.DateTimeFormat
-import org.springframework.scheduling.annotation.Async
 
 @Transactional
 class SlotsService {

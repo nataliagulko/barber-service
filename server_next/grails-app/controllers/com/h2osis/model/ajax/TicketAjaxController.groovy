@@ -2,9 +2,9 @@ package com.h2osis.model.ajax
 
 import com.h2osis.auth.Role
 import com.h2osis.auth.User
-import com.h2osis.constant.AuthKeys
-import com.h2osis.constant.TicketStatus
-import com.h2osis.constant.TicketType
+import constant.AuthKeys
+import constant.TicketStatus
+import constant.TicketType
 import com.h2osis.model.Service
 import com.h2osis.model.Ticket
 import com.h2osis.model.TicketsService

@@ -1,12 +1,9 @@
 package com.h2osis.model.rest
 
-import com.h2osis.auth.Role
-import com.h2osis.auth.User
-import com.h2osis.constant.AuthKeys
-import com.h2osis.constant.TicketType
+
+import constant.TicketType
 import com.h2osis.model.Service
 import com.h2osis.model.Ticket
-import grails.converters.JSON
 import grails.transaction.Transactional
 import org.joda.time.LocalDate
 

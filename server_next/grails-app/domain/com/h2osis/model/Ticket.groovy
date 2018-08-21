@@ -1,7 +1,7 @@
 package com.h2osis.model
 
 import com.h2osis.auth.User
-import com.h2osis.constant.TicketType
+import constant.TicketType
 import com.h2osis.sm.SMObjectType
 import org.joda.time.DateTime
 import org.joda.time.LocalTime

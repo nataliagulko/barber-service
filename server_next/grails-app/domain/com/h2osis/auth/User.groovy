@@ -1,6 +1,6 @@
 package com.h2osis.auth
 
-import com.h2osis.constant.AuthKeys
+import constant.AuthKeys
 import com.h2osis.model.Business
 
 class User {

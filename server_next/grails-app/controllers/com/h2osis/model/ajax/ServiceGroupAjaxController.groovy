@@ -2,8 +2,7 @@ package com.h2osis.model.ajax
 
 import com.h2osis.auth.Role
 import com.h2osis.auth.User
-import com.h2osis.constant.AuthKeys
-import com.h2osis.model.Service
+import constant.AuthKeys
 import com.h2osis.model.ServiceGroup
 import com.h2osis.model.ServiceToGroup
 import grails.converters.JSON
