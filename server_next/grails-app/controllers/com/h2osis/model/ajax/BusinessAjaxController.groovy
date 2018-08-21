@@ -58,9 +58,7 @@ class BusinessAjaxController {
 
 
             business.save(flush: true)
-            JSON.use('business') {
-                render([data: business] as JSON)
-            }
+            render(template: "/business/business", model: [business: business])
         } else {
             errors.add([
                     "status": 422,
