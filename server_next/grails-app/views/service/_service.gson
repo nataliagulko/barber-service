@@ -5,4 +5,4 @@ model
     Service service
 }
 
-json jsonapi.render(service)
+json jsonapi.render(service, [excludes: ['masters']])

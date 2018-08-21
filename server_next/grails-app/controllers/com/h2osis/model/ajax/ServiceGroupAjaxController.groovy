@@ -37,9 +37,7 @@ class ServiceGroupAjaxController {
                     serviceGroup.setMasters(masters)
                 }
                 serviceGroup.save(flush: true)
-                JSON.use('serviceGroups') {
-                    render([data: serviceGroup] as JSON)
-                }
+                render(template: "/serviceGroup/serviceGroup", model: [serviceGroup: serviceGroup])
             } else {
                 errors.add([
                         "status": 422,
@@ -91,9 +89,7 @@ class ServiceGroupAjaxController {
                     }
                 }
                 serviceGroup.save(flush: true)
-                JSON.use('serviceGroups') {
-                    render([data: serviceGroup] as JSON)
-                }
+                render(template: "/serviceGroup/serviceGroup", model: [serviceGroup: serviceGroup])
             } else {
                 errors.add([
                         "status": 422,
@@ -124,9 +120,7 @@ class ServiceGroupAjaxController {
         if (data.id) {
             ServiceGroup serviceGroup = ServiceGroup.get(data.id)
             if (serviceGroup) {
-                JSON.use('serviceGroups') {
-                    render([data: serviceGroup] as JSON)
-                }
+                render(template: "/serviceGroup/serviceGroup", model: [serviceGroup: serviceGroup])
             } else {
                 errors.add([
                         "status": 422,

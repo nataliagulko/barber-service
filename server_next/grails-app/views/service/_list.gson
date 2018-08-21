@@ -1,0 +1,8 @@
+import com.h2osis.model.Service
+
+model 
+{
+    List<Service> list = []
+}
+
+json jsonapi.render(list, [excludes: ['masters']])

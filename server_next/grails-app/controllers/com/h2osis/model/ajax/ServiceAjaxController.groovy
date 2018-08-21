@@ -23,9 +23,7 @@ class ServiceAjaxController {
         if (data.id) {
             Service service = Service.get(data.id)
             if (service) {
-                JSON.use('services') {
-                    render([data: service] as JSON)
-                }
+            	render(template: "/service/service", model: [service: service])
             } else {
                 errors.add([
                         "status": 422,
@@ -61,9 +59,7 @@ class ServiceAjaxController {
                         it.masters.id.contains(params.master)
                     }
                 }
-                JSON.use('services') {
-                    render([data: serviceList] as JSON)
-                }
+                render(template: "/service/service", model: [service: service])
             } else {
                 errors.add([
                         "status": 422,
@@ -107,9 +103,7 @@ class ServiceAjaxController {
                     service.setMasters(masters)
                 }
                 service.save(flush: true)
-                JSON.use('services') {
-                    render([data: service] as JSON)
-                }
+                render(template: "/service/service", model: [service: service])
             } else {
                 errors.add([
                         "status": 422,
@@ -166,9 +160,7 @@ class ServiceAjaxController {
                         service.setMasters(masters)
                     }
                     service.save(flush: true)
-                    JSON.use('services') {
-                        render([data: service] as JSON)
-                    }
+                    render(template: "/service/service", model: [service: service])
                 } else {
                     errors.add([
                             "status": 422,
@@ -329,7 +321,7 @@ class ServiceAjaxController {
                 }
             }
             JSON.use('services') {
-                render([data: serviceList] as JSON)
+				render(template: "/service/list", model: [list: serviceList])
             }
         } else {
             errors.add([
