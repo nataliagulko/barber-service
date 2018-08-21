@@ -1,0 +1,8 @@
+import com.h2osis.model.Service
+
+model 
+{
+    Service service
+}
+
+json jsonapi.render(service)

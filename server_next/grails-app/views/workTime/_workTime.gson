@@ -1,0 +1,13 @@
+import com.h2osis.model.WorkTime
+
+model 
+{
+    WorkTime workTime
+}
+
+json jsonapi.render(workTime)
+
+
+
+
+

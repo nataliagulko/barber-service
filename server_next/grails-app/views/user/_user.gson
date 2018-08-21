@@ -1,0 +1,13 @@
+import com.h2osis.auth.User
+
+model 
+{
+    User user
+}
+
+json jsonapi.render(user)
+
+
+
+
+

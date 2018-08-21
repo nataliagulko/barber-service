@@ -1,0 +1,10 @@
+import com.h2osis.model.ServiceToGroup
+
+model 
+{
+    ServiceToGroup serviceToGroup
+}
+
+json jsonapi.render(serviceToGroup)
+
+

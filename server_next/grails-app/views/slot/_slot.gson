@@ -1,0 +1,11 @@
+import com.h2osis.model.Slot
+
+model 
+{
+    Slot slot
+}
+
+json jsonapi.render(Slot)
+
+
+

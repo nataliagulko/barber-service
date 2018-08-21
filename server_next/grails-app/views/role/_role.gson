@@ -1,0 +1,14 @@
+import com.h2osis.auth.UserRole
+
+model 
+{
+    UserRole role
+}
+
+json jsonapi.render(role)
+
+
+
+
+
+
