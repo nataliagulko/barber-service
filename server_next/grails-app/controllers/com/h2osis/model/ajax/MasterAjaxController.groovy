@@ -12,6 +12,7 @@ import com.h2osis.utils.NovaUtilsService
 import com.h2osis.utils.SearchService
 import grails.converters.JSON
 import grails.transaction.Transactional
+import org.grails.datastore.gorm.GormEnhancer
 
 class MasterAjaxController {
 

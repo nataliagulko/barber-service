@@ -1,11 +1,17 @@
 import com.h2osis.auth.User
+import grails.plugin.json.view.api.JsonView
+import grails.plugin.json.view.api.internal.DefaultJsonApiViewHelper
+import json.NovaJsonApiViewHelper
 
 model 
 {
     User user
 }
-
-json jsonapi.render(user, [excludes: ['oAuthIDs', 'password']])
+DefaultJsonApiViewHelper defaultJsonApiViewHelper = (DefaultJsonApiViewHelper) jsonapi
+NovaJsonApiViewHelper novaJsonApiViewHelper = new NovaJsonApiViewHelper((JsonView)defaultJsonApiViewHelper.view,
+        defaultJsonApiViewHelper.viewHelper)
+novaJsonApiViewHelper.customClassName = "master"
+json novaJsonApiViewHelper.render(user, [excludes: ['oAuthIDs', 'password']])
 
 
 
