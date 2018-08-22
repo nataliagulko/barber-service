@@ -6,11 +6,12 @@ import json.NovaJsonApiViewHelper
 model 
 {
     User user
+    String type
 }
 DefaultJsonApiViewHelper defaultJsonApiViewHelper = (DefaultJsonApiViewHelper) jsonapi
 NovaJsonApiViewHelper novaJsonApiViewHelper = new NovaJsonApiViewHelper((JsonView)defaultJsonApiViewHelper.view,
         defaultJsonApiViewHelper.viewHelper)
-novaJsonApiViewHelper.customClassName = "master"
+novaJsonApiViewHelper.customClassName = type
 json novaJsonApiViewHelper.render(user, [excludes: ['oAuthIDs', 'password']])
 
 

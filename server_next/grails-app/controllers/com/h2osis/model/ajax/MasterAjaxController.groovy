@@ -70,7 +70,7 @@ class MasterAjaxController {
             User user = User.get(data.id)
             if (user) {
                 user.setPassword(null)
-                render(template: "/user/user", model: [user: user])
+                render(template: "/user/user", model: [user: user, type:"master"])
             } else {
                 render([errors: { g.message(code: "user.get.user.not.found") }] as JSON)
             }
