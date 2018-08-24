@@ -20,6 +20,7 @@ class MasterAjaxController {
     UsersService usersService
     NovaUtilsService novaUtilsService
     NovaDateUtilService novaDateUtilService
+    NovaSelectorService novaSelectorService
     static allowedMethods = [choose: ['POST', 'GET']]
 
     def create() {
@@ -116,9 +117,12 @@ class MasterAjaxController {
     }
 
     def list() {
-        List<User> userList = UserRole.findAllByRole(Role.findByAuthority("ROLE_ADMIN")).user
-        if (userList) {
+        def principal = springSecurityService.principal
+        User curUser = User.get(principal.id)
 
+        List<User> userList = new ArrayList<>()
+        userList.addAll(novaSelectorService.getCoMasters(curUser))
+        if (userList) {
             JSON.use('masters') {
                 render([data: userList.findAll { it.enabled == true }] as JSON)
             }
