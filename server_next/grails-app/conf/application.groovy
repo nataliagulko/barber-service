@@ -1,5 +1,3 @@
-import com.h2osis.constant.AuthKeys
-
 // Added by the Spring Security Core plugin:
 grails.plugin.springsecurity.userLookup.userDomainClassName = 'com.h2osis.auth.User'
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'com.h2osis.auth.UserRole'

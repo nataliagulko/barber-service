@@ -1,4 +1,4 @@
-package com.h2osis.constant
+package constant
 /**
  * User: esokolov
  * типы талонов

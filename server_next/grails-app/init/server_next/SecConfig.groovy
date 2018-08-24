@@ -1,7 +1,7 @@
 package server_next
 
 import com.h2osis.auth.NovaRequestMap
-import com.h2osis.constant.AuthKeys
+import constant.AuthKeys
 
 class SecConfig {
 
@@ -31,8 +31,7 @@ class SecConfig {
                 '/clientAjax/create',
                 '/ticketAjax/create',
                 '/businessAjax/create',
-                '/roleAjax/get',
-                '/roleAjax/list',
+                '/roleAjax/**',
                 '/slotAjax/**']) {
             new NovaRequestMap(url: url, configAttribute: 'permitAll').save(flush: true)
         }

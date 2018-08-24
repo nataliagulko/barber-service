@@ -53,6 +53,8 @@ class Business {
     }
 
     static String getCode(String name){
-        return  Transliterator.getInstance("Cyrillic-Latin").transliterate(name)?.replaceAll(' ','_')
+        return  Transliterator.getInstance("Any-Latin; NFD; [^\\p{Alnum}] Remove")
+                .transliterate(name)
+                ?.replaceAll(' ','_')
     }
 }

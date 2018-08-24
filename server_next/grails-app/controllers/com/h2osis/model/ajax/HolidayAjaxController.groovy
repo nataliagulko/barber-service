@@ -2,9 +2,8 @@ package com.h2osis.model.ajax
 
 import com.h2osis.auth.Role
 import com.h2osis.auth.User
-import com.h2osis.constant.AuthKeys
+import constant.AuthKeys
 import com.h2osis.model.Holiday
-import com.h2osis.model.Service
 import com.h2osis.model.WorkTime
 import com.h2osis.utils.NovaDateUtilService
 import com.h2osis.utils.SearchService
@@ -127,7 +126,7 @@ class HolidayAjaxController {
                     holiday.setMaster(user)
                 }
                 holiday.save(flush: true)
-                Service.search().createIndexAndWait()
+                // Service.search().createIndexAndWait()
                 JSON.use('holidays') {
                     render([data: holiday] as JSON)
                 }

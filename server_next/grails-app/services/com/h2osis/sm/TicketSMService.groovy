@@ -1,6 +1,6 @@
 package com.h2osis.sm
 
-import com.h2osis.constant.TicketType
+import constant.TicketType
 import com.h2osis.model.Ticket
 import grails.transaction.Transactional
 

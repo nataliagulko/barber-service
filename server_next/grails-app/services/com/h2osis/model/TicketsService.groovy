@@ -1,12 +1,11 @@
 package com.h2osis.model
 
 import com.h2osis.auth.User
-import com.h2osis.constant.TicketStatus
-import com.h2osis.constant.TicketType
+import constant.TicketStatus
+import constant.TicketType
 import com.h2osis.utils.NovaDateUtilService
 import grails.gorm.transactions.Transactional
 import org.joda.time.DateTime
-import org.joda.time.format.DateTimeFormat
 
 @Transactional
 class TicketsService {

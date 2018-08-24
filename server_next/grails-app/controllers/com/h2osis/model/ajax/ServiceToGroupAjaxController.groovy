@@ -4,10 +4,9 @@ import com.h2osis.model.Service
 import com.h2osis.model.ServiceGroup
 import com.h2osis.model.ServiceToGroup
 import grails.converters.JSON
-import grails.transaction.Transactional
 import com.h2osis.auth.User
 import com.h2osis.auth.Role
-import com.h2osis.constant.AuthKeys
+import constant.AuthKeys
 
 
 class ServiceToGroupAjaxController {
