@@ -1,6 +1,6 @@
 package com.h2osis.utils
 
-import com.h2osis.constant.AuthKeys
+import constant.AuthKeys
 import grails.plugin.springsecurity.SpringSecurityUtils
 
 /**

@@ -2,9 +2,10 @@ package com.h2osis.model.ajax
 
 import com.h2osis.auth.Role
 import com.h2osis.auth.User
-import com.h2osis.constant.AuthKeys
-import com.h2osis.constant.TicketStatus
-import com.h2osis.constant.TicketType
+import com.h2osis.model.NovaSelectorService
+import constant.AuthKeys
+import constant.TicketStatus
+import constant.TicketType
 import com.h2osis.model.Service
 import com.h2osis.model.Ticket
 import com.h2osis.model.TicketsService
@@ -23,6 +24,7 @@ class TicketAjaxController {
     def springSecurityService
     TicketSMService ticketSMService
     TicketsService ticketsService
+    NovaSelectorService novaSelectorService
     static allowedMethods = [choose: ['POST', 'GET']]
 
 
@@ -208,6 +210,10 @@ class TicketAjaxController {
         def query = params
         def errors = []
 
+        def principal = springSecurityService.principal
+        User curUser = User.get(principal.id)
+        Set<User> coMasters = novaSelectorService.getCoMasters(curUser)
+
         List<Ticket> ticketList = Ticket.createCriteria().list(offset: query.offset) {
 
             if(query.status){
@@ -223,6 +229,10 @@ class TicketAjaxController {
 
             if (query.master) {
                 eq('master', User.get(query.user))
+            }else{
+                master {
+                    'in'('id', coMasters.id)
+                }
             }
 
             if (query.service) {

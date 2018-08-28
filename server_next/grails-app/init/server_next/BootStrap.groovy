@@ -3,14 +3,11 @@ package server_next
 import com.h2osis.auth.Role
 import com.h2osis.auth.User
 import com.h2osis.auth.UserRole
-import com.h2osis.constant.AuthKeys
-import com.h2osis.constant.TicketStatus
+import constant.AuthKeys
+import constant.TicketStatus
 import com.h2osis.model.Business
 import com.h2osis.model.Holiday
 import com.h2osis.model.Service
-import com.h2osis.model.ServiceGroup
-import com.h2osis.model.ServiceToGroup
-import com.h2osis.model.Ticket
 import com.h2osis.model.WorkTime
 import com.h2osis.sm.SMObjectType
 import com.h2osis.sm.SMTransition
@@ -18,8 +15,6 @@ import grails.plugin.springsecurity.SpringSecurityService
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import grails.util.Environment
-import grails.converters.JSON
-
 
 class BootStrap {
 

@@ -2,7 +2,8 @@ package com.h2osis.model.ajax
 
 import com.h2osis.auth.Role
 import com.h2osis.auth.User
-import com.h2osis.constant.AuthKeys
+import com.h2osis.model.NovaSelectorService
+import constant.AuthKeys
 import com.h2osis.model.Service
 import com.h2osis.model.ServiceGroup
 import com.h2osis.model.ServiceToGroup
@@ -16,6 +17,7 @@ class ServiceAjaxController {
     SearchService searchService
     static allowedMethods = [choose: ['POST', 'GET']]
     def sessionFactory
+    NovaSelectorService novaSelectorService
 
     def get(params) {
         def errors = []
@@ -275,7 +277,14 @@ class ServiceAjaxController {
 
     def list(params) {
         def errors = []
+        def principal = springSecurityService.principal
+        User curUser = User.get(principal.id)
+        Set<User> coMasters = novaSelectorService.getCoMasters(curUser)
         List<Service> serviceList = Service.createCriteria().list {
+            masters {
+                'in'('id', coMasters.id)
+            }
+
             def query = params
             if (query) {
                 if (query.name) {

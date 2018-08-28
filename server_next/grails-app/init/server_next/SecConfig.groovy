@@ -1,7 +1,7 @@
 package server_next
 
 import com.h2osis.auth.NovaRequestMap
-import com.h2osis.constant.AuthKeys
+import constant.AuthKeys
 
 class SecConfig {
 

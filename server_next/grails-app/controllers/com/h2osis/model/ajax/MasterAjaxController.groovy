@@ -3,16 +3,14 @@ package com.h2osis.model.ajax
 import com.h2osis.auth.Role
 import com.h2osis.auth.User
 import com.h2osis.auth.UserRole
-import com.h2osis.constant.AuthKeys
-import com.h2osis.constant.TicketStatus
+import constant.AuthKeys
+import constant.TicketStatus
 import com.h2osis.model.*
 import com.h2osis.utils.BarberSecurityService
 import com.h2osis.utils.NovaDateUtilService
 import com.h2osis.utils.NovaUtilsService
 import com.h2osis.utils.SearchService
 import grails.converters.JSON
-import grails.transaction.Transactional
-import org.grails.datastore.gorm.GormEnhancer
 
 class MasterAjaxController {
 
@@ -22,6 +20,7 @@ class MasterAjaxController {
     UsersService usersService
     NovaUtilsService novaUtilsService
     NovaDateUtilService novaDateUtilService
+    NovaSelectorService novaSelectorService
     static allowedMethods = [choose: ['POST', 'GET']]
 
     def create() {
@@ -109,9 +108,15 @@ class MasterAjaxController {
     }
 
     def list() {
-        List<User> userList = UserRole.findAllByRole(Role.findByAuthority("ROLE_ADMIN")).user
+        def principal = springSecurityService.principal
+        User curUser = User.get(principal.id)
+
+        List<User> userList = new ArrayList<>()
+        userList.addAll(novaSelectorService.getCoMasters(curUser))
         if (userList) {
-            render(template: "/user/user", model: [user: user])
+            JSON.use('masters') {
+                render([data: userList.findAll { it.enabled == true }] as JSON)
+            }
         } else {
             render([errors: { g.message(code: "user.fine.not.found") }] as JSON)
         }

@@ -1,7 +1,7 @@
 package com.h2osis.auth
 
-import com.h2osis.constant.AuthKeys
-import com.h2osis.constant.SMSMessages
+import constant.AuthKeys
+import constant.SMSMessages
 import com.h2osis.model.Business
 import com.h2osis.utils.BarberSMSService
 import com.h2osis.utils.BarberSecurityService

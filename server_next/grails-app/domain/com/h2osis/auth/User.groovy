@@ -1,6 +1,6 @@
 package com.h2osis.auth
 
-import com.h2osis.constant.AuthKeys
+import constant.AuthKeys
 import com.h2osis.model.Business
 
 class User {
@@ -126,6 +126,32 @@ class User {
     def getBusinessList() {
         List<Business> userOrgs = Business.createCriteria().list() {
             masters {
+                eq('id', this.id)
+            }
+        }
+        if(userOrgs!=null && !userOrgs.isEmpty()){
+            return userOrgs
+        }else {
+            return null
+        }
+    }
+
+    def getClientBusiness() {
+        List<Business> userOrgs = Business.createCriteria().list() {
+            clients {
+                eq('id', this.id)
+            }
+        }
+        if(userOrgs!=null && !userOrgs.isEmpty()){
+            return userOrgs.first()
+        }else {
+            return null
+        }
+    }
+
+    def getClientBusinessList() {
+        List<Business> userOrgs = Business.createCriteria().list() {
+            clients {
                 eq('id', this.id)
             }
         }
