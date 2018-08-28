@@ -3,15 +3,17 @@ import grails.plugin.json.view.api.JsonView
 import grails.plugin.json.view.api.internal.DefaultJsonApiViewHelper
 import json.NovaJsonApiViewHelper
 
-model 
+model
 {
     User user
     String type
+    Object business
 }
 DefaultJsonApiViewHelper defaultJsonApiViewHelper = (DefaultJsonApiViewHelper) jsonapi
 NovaJsonApiViewHelper novaJsonApiViewHelper = new NovaJsonApiViewHelper((JsonView)defaultJsonApiViewHelper.view,
         defaultJsonApiViewHelper.viewHelper)
 novaJsonApiViewHelper.customClassName = type
+novaJsonApiViewHelper.addCustomRelation("business", business)
 json novaJsonApiViewHelper.render(user, [excludes: ['oAuthIDs', 'password']])
 
 

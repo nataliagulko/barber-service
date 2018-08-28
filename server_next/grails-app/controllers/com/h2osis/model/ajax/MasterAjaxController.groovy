@@ -3,13 +3,15 @@ package com.h2osis.model.ajax
 import com.h2osis.auth.Role
 import com.h2osis.auth.User
 import com.h2osis.auth.UserRole
-import constant.AuthKeys
-import constant.TicketStatus
-import com.h2osis.model.*
+import com.h2osis.model.NovaSelectorService
+import com.h2osis.model.Ticket
+import com.h2osis.model.UsersService
 import com.h2osis.utils.BarberSecurityService
 import com.h2osis.utils.NovaDateUtilService
 import com.h2osis.utils.NovaUtilsService
 import com.h2osis.utils.SearchService
+import constant.AuthKeys
+import constant.TicketStatus
 import grails.converters.JSON
 
 class MasterAjaxController {
@@ -69,7 +71,7 @@ class MasterAjaxController {
             User user = User.get(data.id)
             if (user) {
                 user.setPassword(null)
-                render(template: "/user/user", model: [user: user, type: "master"])
+                render(template: "/user/user", model: [user: user, type: "master", business: user.business])
             } else {
                 render([errors: { g.message(code: "user.get.user.not.found") }] as JSON)
             }
@@ -81,7 +83,7 @@ class MasterAjaxController {
                 }
                 if (user) {
                     user.setPassword(null)
-                    render(template: "/user/user", model: [user: user, type: "master"])
+                    render(template: "/user/user", model: [user: user, type: "master", business: user.business])
                 } else {
                     render([errors:
                             novaUtilsService.getErrorsSingleArrayJSON(g.message(code: "user.get.user.by.phone.not.found"))] as JSON)

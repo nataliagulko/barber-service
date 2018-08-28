@@ -1,5 +1,6 @@
 package json
 
+
 import grails.plugin.json.builder.JsonGenerator
 import grails.plugin.json.builder.JsonOutput
 import grails.plugin.json.view.api.GrailsJsonViewHelper
@@ -10,15 +11,9 @@ import grails.rest.Link
 import grails.views.api.http.Parameters
 import groovy.transform.CompileStatic
 import org.codehaus.groovy.runtime.StackTraceUtils
-import org.grails.datastore.gorm.GormEnhancer
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PersistentProperty
-import org.grails.datastore.mapping.model.types.Association
-import org.grails.datastore.mapping.model.types.Basic
-import org.grails.datastore.mapping.model.types.Embedded
-import org.grails.datastore.mapping.model.types.EmbeddedCollection
-import org.grails.datastore.mapping.model.types.ToMany
-import org.grails.datastore.mapping.model.types.ToOne
+import org.grails.datastore.mapping.model.types.*
 import org.springframework.http.HttpMethod
 import org.springframework.validation.Errors
 import org.springframework.validation.FieldError
@@ -28,6 +23,15 @@ import org.springframework.validation.ObjectError
 class NovaJsonApiViewHelper extends DefaultJsonApiViewHelper{
 
     String customClassName
+
+    Map<String, Object> additionsRelationships
+
+    void addCustomRelation(String name, Object o){
+        if(additionsRelationships == null){
+            additionsRelationships = new HashMap<>()
+        }
+        additionsRelationships.put(name, o)
+    }
 
     NovaJsonApiViewHelper(JsonView view, GrailsJsonViewHelper viewHelper) {
         super(view, viewHelper)
@@ -204,6 +208,37 @@ class NovaJsonApiViewHelper extends DefaultJsonApiViewHelper{
                 out.write(JsonOutput.COLON)
                 out.write(JsonOutput.OPEN_BRACE)
                 boolean firstRelationship = true
+
+                if(additionsRelationships != null){
+
+                    additionsRelationships.entrySet().each {
+                        if (!firstRelationship) {
+                            out.write(JsonOutput.COMMA)
+                        }
+
+                        firstRelationship = false
+                        out.write(generator.toJson(it.getValue().class.simpleName.toLowerCase()))
+                        out.write(JsonOutput.COLON)
+                        out.write(JsonOutput.OPEN_BRACE)
+
+                        out.write(generator.toJson("data"))
+                        out.write(JsonOutput.COLON)
+
+                        out.write(JsonOutput.OPEN_BRACE)
+
+                        out.write(generator.toJson("type"))
+                        out.write(JsonOutput.COLON)
+                        out.write(generator.toJson(it.getValue().class.simpleName.toLowerCase()))
+                        out.write(JsonOutput.COMMA)
+
+                        out.write(generator.toJson("id"))
+                        out.write(JsonOutput.COLON)
+                        out.write(generator.toJson(it.getValue().properties.id))
+
+                        out.write(JsonOutput.CLOSE_BRACE)
+                        out.write(JsonOutput.CLOSE_BRACE)
+                    }
+                }
 
                 for (association in relationships) {
                     if (!includeExcludeSupport.shouldInclude(includes, excludes, "${basePath}${association.name}".toString())) continue
