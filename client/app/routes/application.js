@@ -4,29 +4,29 @@ import { inject } from '@ember/service';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
 export default Route.extend(ApplicationRouteMixin, {
-	// currentUserService: inject('current-user-service'),
-	// notification: inject("notification-service"),
+	currentUserService: inject('current-user-service'),
+	notification: inject("notification-service"),
 
-	// _loadCurrentUser() {
-	// 	return this.get('currentUserService')
-	// 		.load()
-	// 		.then(() => {
-	// 			this.get("currentUserService").get("business")
-	// 				.then((currentBusiness) => {
-	// 					if (currentBusiness) {
-	// 						const code = currentBusiness.get("code");
-	// 						this.transitionTo("auth", code);
-	// 					} else {
-	// 						this._invalidate();
-	// 					}
-	// 				});
-	// 		})
-	// 		.catch(() => this._invalidate());
-	// },
+	_loadCurrentUser() {
+		return this.get('currentUserService')
+			.load()
+			.then(() => {
+				this.get("currentUserService").get("business")
+					.then((currentBusiness) => {
+						if (currentBusiness) {
+							const code = currentBusiness.get("code");
+							this.transitionTo("auth", code);
+						} else {
+							this._invalidate();
+						}
+					});
+			})
+			.catch(() => this._invalidate());
+	},
 
-	// _invalidate() {
-	// 	this.get('session').invalidate();
-	// },
+	_invalidate() {
+		this.get('session').invalidate();
+	},
 
 	init() {
 		this._super(...arguments);
@@ -39,12 +39,12 @@ export default Route.extend(ApplicationRouteMixin, {
 			});
 	},
 
-	// beforeModel() {
-	// 	return this._loadCurrentUser();
-	// },
+	beforeModel() {
+		return this._loadCurrentUser();
+	},
 
-	// sessionAuthenticated() {
-	// 	this._super(...arguments);
-	// 	this._loadCurrentUser();
-	// },
+	sessionAuthenticated() {
+		this._super(...arguments);
+		this._loadCurrentUser();
+	},
 });

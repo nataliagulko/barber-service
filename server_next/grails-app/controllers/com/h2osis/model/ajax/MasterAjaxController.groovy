@@ -35,7 +35,7 @@ class MasterAjaxController {
                     //result.setPassword(null)
                     Role role = Role.findByAuthority(AuthKeys.MASTER)
                     new UserRole(user: result, role: role).save(flush: true);
-                    render(template: "/user/user", model: [user: result])
+                    render(template: "/user/user", model: [user: result, type: "master"])
                 } else {
                     render([errors: { result }] as JSON)
                 }
@@ -69,7 +69,7 @@ class MasterAjaxController {
             User user = User.get(data.id)
             if (user) {
                 user.setPassword(null)
-                render(template: "/user/user", model: [user: user, type:"master"])
+                render(template: "/user/user", model: [user: user, type: "master"])
             } else {
                 render([errors: { g.message(code: "user.get.user.not.found") }] as JSON)
             }
@@ -81,7 +81,7 @@ class MasterAjaxController {
                 }
                 if (user) {
                     user.setPassword(null)
-                    render(template: "/user/user", model: [user: user])
+                    render(template: "/user/user", model: [user: user, type: "master"])
                 } else {
                     render([errors:
                             novaUtilsService.getErrorsSingleArrayJSON(g.message(code: "user.get.user.by.phone.not.found"))] as JSON)
@@ -98,7 +98,7 @@ class MasterAjaxController {
             User user = User.get(data.id)
             if (user) {
                 usersService.saveUser(data.attributes, user)
-                render(template: "/user/user", model: [user: user])
+                render(template: "/user/user", model: [user: user, type: "master"])
             } else {
                 render([errors: { g.message(code: "user.get.user.not.found") }] as JSON)
             }
