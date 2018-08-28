@@ -8,20 +8,23 @@ export default Route.extend(ApplicationRouteMixin, {
 	notification: inject("notification-service"),
 
 	_loadCurrentUser() {
-		return this.get('currentUserService')
-			.load()
+		const _this = this;
+		const currentUserService = _this.get("currentUserService");
+
+		const p = currentUserService.load()
 			.then(() => {
-				this.get("currentUserService").get("business")
-					.then((currentBusiness) => {
-						if (currentBusiness) {
-							const code = currentBusiness.get("code");
-							this.transitionTo("auth", code);
-						} else {
-							this._invalidate();
-						}
-					});
+				debugger;
+				const business = _this.get("currentUserService.master");
+				if (business) {
+					const code = business.get("firstname")
+					_this.transitionTo("auth", code);
+				} else {
+					_this._invalidate();
+				}
 			})
-			.catch(() => this._invalidate());
+			.catch(() => _this._invalidate());
+
+		return p;
 	},
 
 	_invalidate() {
