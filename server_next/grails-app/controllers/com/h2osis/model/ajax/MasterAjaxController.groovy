@@ -39,7 +39,14 @@ class MasterAjaxController {
                     new UserRole(user: result, role: role).save(flush: true);
                     render(template: "/user/user", model: [user: result, type: "master"])
                 } else {
-                    render([errors: { result }] as JSON)
+                    errors.add([
+                            "status": 422,
+                            "detail": result,
+                            "source": [
+                                    "pointer": "data"
+                            ]
+                    ])
+                    render([errors: errors] as JSON)
                 }
             } else {
                 errors.add([
