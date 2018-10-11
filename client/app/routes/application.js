@@ -13,10 +13,9 @@ export default Route.extend(ApplicationRouteMixin, {
 
 		const p = currentUserService.load()
 			.then(() => {
-				debugger;
-				const business = _this.get("currentUserService.master");
+				const business = _this.get("currentUserService.business");
 				if (business) {
-					const code = business.get("firstname")
+					const code = business.get("code") || "nova";
 					_this.transitionTo("auth", code);
 				} else {
 					_this._invalidate();
