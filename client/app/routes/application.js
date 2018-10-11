@@ -49,4 +49,10 @@ export default Route.extend(ApplicationRouteMixin, {
 		this._super(...arguments);
 		this._loadCurrentUser();
 	},
+
+	actions: {
+		error(error) {
+			// console.log(error);
+		}
+	}
 });
