@@ -1,8 +1,15 @@
 import com.h2osis.model.Business
+import grails.plugin.json.view.api.JsonView
+import grails.plugin.json.view.api.internal.DefaultJsonApiViewHelper
+import json.NovaJsonApiViewHelper
 
 model 
 {
     Business business
 }
-
-json jsonapi.render(business)
+DefaultJsonApiViewHelper defaultJsonApiViewHelper = (DefaultJsonApiViewHelper) jsonapi
+NovaJsonApiViewHelper novaJsonApiViewHelper = new NovaJsonApiViewHelper((JsonView)defaultJsonApiViewHelper.view,
+        defaultJsonApiViewHelper.viewHelper)
+novaJsonApiViewHelper.addCustomAttrClassName("clients", "client")
+novaJsonApiViewHelper.addCustomAttrClassName("masters", "master")
+json novaJsonApiViewHelper.render(business, [excludes: ['oAuthIDs', 'password']])

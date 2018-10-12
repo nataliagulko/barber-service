@@ -20,17 +20,25 @@ import org.springframework.validation.FieldError
 import org.springframework.validation.ObjectError
 
 @CompileStatic
-class NovaJsonApiViewHelper extends DefaultJsonApiViewHelper{
+class NovaJsonApiViewHelper extends DefaultJsonApiViewHelper {
 
     String customClassName
 
     Map<String, Object> additionsRelationships
+    Map<String, String> customAttrClassName
 
-    void addCustomRelation(String name, Object o){
-        if(additionsRelationships == null){
+    void addCustomRelation(String name, Object o) {
+        if (additionsRelationships == null) {
             additionsRelationships = new HashMap<>()
         }
         additionsRelationships.put(name, o)
+    }
+
+    void addCustomAttrClassName(String attr, String className) {
+        if (customAttrClassName == null) {
+            customAttrClassName = new HashMap<>()
+        }
+        customAttrClassName.put(attr, className)
     }
 
     NovaJsonApiViewHelper(JsonView view, GrailsJsonViewHelper viewHelper) {
@@ -148,12 +156,13 @@ class NovaJsonApiViewHelper extends DefaultJsonApiViewHelper{
 
         out.write(JsonOutput.OPEN_BRACE)
 
+
         writeKeyValueNova(out, 'type', customClassName ? customClassName : entity.decapitalizedName)
 
         PersistentProperty identity = entity.identity
         String idName = identity?.name
 
-        if(idName != null) {
+        if (idName != null) {
             out.write(JsonOutput.COMMA)
             writeKeyValueNova(out, 'id', idGenerator.render(object, identity))
         }
@@ -181,13 +190,13 @@ class NovaJsonApiViewHelper extends DefaultJsonApiViewHelper{
 
                     Object prop = ((GroovyObject) object).getProperty(persistentProperty.name)
                     if (persistentProperty instanceof Embedded) {
-                        renderEmbeddedEntity(prop, (Association)persistentProperty, out, "${basePath}${persistentProperty.name}.".toString(), includes, excludes)
+                        renderEmbeddedEntity(prop, (Association) persistentProperty, out, "${basePath}${persistentProperty.name}.".toString(), includes, excludes)
                     } else if (persistentProperty instanceof EmbeddedCollection && prop instanceof Iterable) {
                         out.write(JsonOutput.OPEN_BRACKET)
                         Iterator iterator = ((Iterable) prop).iterator()
                         while (iterator.hasNext()) {
                             def o = iterator.next()
-                            renderEmbeddedEntity(o, (Association)persistentProperty, out, "${basePath}${persistentProperty.name}.".toString(), includes, excludes)
+                            renderEmbeddedEntity(o, (Association) persistentProperty, out, "${basePath}${persistentProperty.name}.".toString(), includes, excludes)
                             if (iterator.hasNext()) {
                                 out.write(JsonOutput.COMMA)
                             }
@@ -209,7 +218,7 @@ class NovaJsonApiViewHelper extends DefaultJsonApiViewHelper{
                 out.write(JsonOutput.OPEN_BRACE)
                 boolean firstRelationship = true
 
-                if(additionsRelationships != null){
+                if (additionsRelationships != null) {
 
                     additionsRelationships.entrySet().each {
                         if (!firstRelationship) {
@@ -269,7 +278,12 @@ class NovaJsonApiViewHelper extends DefaultJsonApiViewHelper{
                             while (iterator.hasNext()) {
                                 def o = iterator.next()
                                 out.write(JsonOutput.OPEN_BRACE)
-                                writeKeyValueNova(out, 'type', type)
+                                if (customAttrClassName != null &&
+                                        customAttrClassName.containsKey(association.properties.name)) {
+                                    writeKeyValueNova(out, 'type', customAttrClassName.get(association.properties.name))
+                                } else {
+                                    writeKeyValueNova(out, 'type', type)
+                                }
                                 out.write(JsonOutput.COMMA)
                                 writeKeyValueNova(out, 'id', idGenerator.render(o, associatedEntity.identity))
                                 out.write(JsonOutput.CLOSE_BRACE)
@@ -317,7 +331,7 @@ class NovaJsonApiViewHelper extends DefaultJsonApiViewHelper{
         PersistentEntity persistentEntity = property.getAssociatedEntity()
         out.write(JsonOutput.OPEN_BRACE)
         boolean firstAttribute = true
-        for (PersistentProperty prop: persistentEntity.getPersistentProperties()) {
+        for (PersistentProperty prop : persistentEntity.getPersistentProperties()) {
             if (!includeExcludeSupport.shouldInclude(includes, excludes, "${basePath}${prop.name}".toString())) continue
 
             if (!firstAttribute) {
@@ -469,15 +483,15 @@ class NovaJsonApiViewHelper extends DefaultJsonApiViewHelper{
                     out.write(generator.toJson(view.request.uri))
 
                     if (arguments.get(PAGINATION) instanceof Map) {
-                        Map paginationArgs = (Map)arguments.get(PAGINATION)
+                        Map paginationArgs = (Map) arguments.get(PAGINATION)
                         if (!paginationArgs.containsKey(PAGINATION_TOTAL) || !paginationArgs.containsKey(PAGINATION_RESROUCE)) {
                             throw new IllegalArgumentException("JSON API pagination arguments must contain resource and total")
                         }
-                        Integer total = (Integer)paginationArgs.get(PAGINATION_TOTAL)
+                        Integer total = (Integer) paginationArgs.get(PAGINATION_TOTAL)
                         Object resource = paginationArgs.get(PAGINATION_RESROUCE)
                         Parameters params = defaultPaginateParams(paginationArgs)
                         List<Link> links = getPaginationLinks(resource, total, params)
-                        for(link in links) {
+                        for (link in links) {
                             out.write(JsonOutput.COMMA)
                             writeKeyValueNova(out, link.rel, link.href)
                         }
@@ -495,7 +509,7 @@ class NovaJsonApiViewHelper extends DefaultJsonApiViewHelper{
 
     JsonOutput.JsonWritable renderIncludedNova(Object object, Map arguments) {
 
-        List<String> expandProperties = getExpandProperties((JsonView)view, arguments)
+        List<String> expandProperties = getExpandProperties((JsonView) view, arguments)
         if (!expandProperties.empty && includeAssociations(arguments)) {
 
             new JsonOutput.JsonWritable() {
@@ -581,6 +595,6 @@ class NovaJsonApiViewHelper extends DefaultJsonApiViewHelper{
 
     @Override
     JsonApiIdRenderStrategy getIdGenerator() {
-        ((JsonView)view).jsonApiIdRenderStrategy
+        ((JsonView) view).jsonApiIdRenderStrategy
     }
 }
