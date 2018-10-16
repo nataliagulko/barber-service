@@ -13,7 +13,9 @@ DefaultJsonApiViewHelper defaultJsonApiViewHelper = (DefaultJsonApiViewHelper) j
 NovaJsonApiViewHelper novaJsonApiViewHelper = new NovaJsonApiViewHelper((JsonView)defaultJsonApiViewHelper.view,
         defaultJsonApiViewHelper.viewHelper)
 novaJsonApiViewHelper.customClassName = type
-novaJsonApiViewHelper.addCustomRelation("business", business)
+if(business!=null) {
+    novaJsonApiViewHelper.addCustomRelation("business", business)
+}
 json novaJsonApiViewHelper.render(user, [excludes: ['oAuthIDs', 'password']])
 
 
