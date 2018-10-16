@@ -15,6 +15,10 @@ NovaJsonApiViewHelper novaJsonApiViewHelper = new NovaJsonApiViewHelper((JsonVie
 novaJsonApiViewHelper.customClassName = type
 if(business!=null) {
     novaJsonApiViewHelper.addCustomRelation("business", business)
+}else{
+    if(user.business!=null){
+        novaJsonApiViewHelper.addCustomRelation("business", user.business)
+    }
 }
 json novaJsonApiViewHelper.render(user, [excludes: ['oAuthIDs', 'password']])
 
