@@ -168,8 +168,20 @@ class TicketAjaxController {
             if (data.id) {
                 Ticket ticket = Ticket.get(data.id)
                 if (ticket) {
-                    ticketsService.destroyTicket(ticket)
-                    render([erorrs: 0] as JSON)
+                    try {
+                        ticketsService.destroyTicket(ticket)
+                        render([erorrs: 0] as JSON)
+                    }catch(Exception e){
+                        errors.add([
+                                "status": 422,
+                                "detail": e.getMessage(),
+                                "source": [
+                                        "pointer": "data"
+                                ]
+                        ])
+                        response.status = 422
+                        render([errors: errors] as JSON)
+                    }
                 } else {
 					errors.add([
 						"status": 422,
