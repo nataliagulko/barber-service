@@ -1,17 +1,7 @@
-<div id="ticket-services" class="portlet light bordered right-panel {{if (not-eq activeStep "#services-step") "hidden"}}">
+<div id="ticket-services" class="portlet light bordered right-panel ticket-portlet {{if (not-eq activeStep "#services-step") "hidden"}}">
 	<div class="portlet-title">
 		<div class="caption">
 			<span class="caption-subject font-red-sunglo">{{t "ticket.services.choose"}}</span>
-		</div>
-		<div class="inputs">
-			<div class="portlet-input input-inline input-medium">
-				<div class="input-group">
-					{{input class="form-control input-circle-left" placeholder=(t "search.label") key-up=(action "filterServices") value=filter}}
-					<span class="input-group-btn">
-						<button class="btn btn-circle-right btn-default" type="submit">{{t "search.find.label"}}</button>
-					</span>
-				</div>
-			</div>
 		</div>
 		{{#if ticket.services}}
 			<div class="actions">
@@ -20,6 +10,14 @@
 		{{/if}}
 	</div>
 	<div class="portlet-body ticket-portlet-body">
+		<div class="ticket-portlet-search">
+			<div class="input-group">
+				{{input class="form-control" placeholder=(t "search.label") key-up=(action "filterServices") value=filter}}
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="submit">{{t "search.find.label"}}</button>
+				</span>
+			</div>
+		</div>
 		<div class="tiles">
 			{{#if filteredServices}}
 				{{#each filteredServices as |service|}}

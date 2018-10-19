@@ -1,0 +1,16 @@
+.ticket-portlet {
+	height: calc(100vh - 270px);
+
+	&-body {
+		position: relative;
+		height: calc(100% - 65px);
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+
+	&-search {
+		width: 50%;
+		margin-bottom: 20px;
+		margin-left: calc(50% - 20px);
+	}
+}
