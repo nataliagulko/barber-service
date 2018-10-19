@@ -1,12 +1,8 @@
 {{#bs-form model=service formLayout="horizontal" novalidate=true onSubmit=(action "save") as |form|}}
 	<div class="form-body">
 		{{form.element controlType="text" label=(t "service.name.label")  property="name" useIcons=false}}
-		{{#form.element 
-			controlType="power-select-multiple" 
-			property="masters"
-			label=(t "service.masters.label") 
-			options=allMasters 
-			useIcons=false as |el|}}
+		{{#form.element controlType="power-select-multiple" property="masters" label=(t "service.masters.label") options=allMasters
+		 useIcons=false as |el|}}
 			{{#el.control searchField="fullname" as |option|}}
 				{{option.fullname}}
 			{{/el.control}}
@@ -17,8 +13,7 @@
 				<span></span>
 			</label>
 		{{/form.element}}
-		{{form.element controlType="text" label=(t "service.cost.label")  property="cost" useIcons=false}}
-		{{form.element controlType="text" label=(t "service.time.label")  property="time" useIcons=false}}
+		{{form.element controlType="text" label=(t "service.cost.label")  property="cost" useIcons=false}} {{form.element controlType="text" label=(t "service.time.label")  property="time" useIcons=false}}
 	</div>
 	<div class="form-actions">
 		{{#form.group}}

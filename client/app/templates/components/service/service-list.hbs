@@ -1,10 +1,10 @@
 <table id="service-list" class="table table-hover dataTables">
 	<thead>
 		<tr>
-			<th class="col-sm-5">Название</th>
-			<th class="text-right">Стоимость</th>
-			<th class="text-right">Время</th>
-			<th class="text-right">Мастер</th>
+			<th class="col-sm-5">{{t "service.name.label"}}</th>
+			<th class="text-right">{{t "service.cost.label"}}</th>
+			<th class="text-right">{{t "service.time.label"}}</th>
+			<th class="text-right">{{t "service.masters.label"}}</th>
 			<th class="text-right"></th>
 		</tr>
 	</thead>
@@ -14,23 +14,23 @@
 				<td>
 					{{service.name}}
 					{{#if service.partOfList}}
-						<span class="badge badge-info">подуслуга</span>
+						<span class="badge badge-info">{{t "service.subservice.label"}}</span>
 					{{/if}}
 				</td>
 				<td class="text-right">
 					{{service.time}}&nbsp;<i class="fa fa-ruble"></i>
 				</td>
-				<td class="text-right">{{service.cost}}&nbsp;мин.</td>
+				<td class="text-right">{{service.cost}}&nbsp;{{t "service.time.minutes.label"}}</td>
 				<td class="text-right">
 					{{#each service.masters as |master|}}
 						<span class="service-list__master">{{master.fullname}}</span>
 					{{/each}}
 				</td>
 				<td class="text-right service-list__actions">
-					<button type="button" class="btn btn-default" {{action 'edit' service}}>
+					<button type="button" class="btn btn-default" {{action "edit" service}}>
 						<i class="fa fa-pencil"></i>
 					</button>
-					<button type="button" class="btn btn-danger" {{action 'delete' service}}>
+					<button type="button" class="btn btn-danger" {{action "delete" service}}>
 						<i class="fa fa-trash"></i>
 					</button>
 				</td>

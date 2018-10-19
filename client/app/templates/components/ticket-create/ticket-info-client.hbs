@@ -1,25 +1,25 @@
 <div class="ticket-info__item ticket-info-client {{if (or (eq activeStep "#client-step") ticket.client) "animate-from-top" ""}}">
-    <div>
-        <i class="icon-call-end font-red-sunglo margin-right-10"></i>
-    </div>
-    <div class="ticket-info-client__phone">{{phone}}</div>
+	<div>
+		<i class="icon-call-end font-red-sunglo margin-right-10"></i>
+	</div>
+	<div class="ticket-info-client__phone">{{phone}}</div>
 </div>
 
 {{#if ticket.client}}
-    <div class="ticket-info__item ticket-info-client animate-from-top">
-        <div>
-            <i class="icon-user font-red-sunglo margin-right-10"></i>
-        </div>
-        <div>{{ticket.client.fullname}}</div>
-    </div>
+	<div class="ticket-info__item ticket-info-client animate-from-top">
+		<div>
+			<i class="icon-user font-red-sunglo margin-right-10"></i>
+		</div>
+		<div>{{ticket.client.fullname}}</div>
+	</div>
 {{/if}}
 
 
-{{#if isNewClient}}            
-    <div class="input-group">
-        {{input type="text" value=name class="form-control" autofocus="autofocus"}}
-        <span class="input-group-btn">
-            <button class="btn btn-default" type="button" {{action "saveClient" name}}>Сохранить</button>
-        </span>
-    </div>
+{{#if isNewClient}}
+	<div class="input-group">
+		{{input type="text" value=name class="form-control" autofocus="autofocus"}}
+		<span class="input-group-btn">
+			<button class="btn btn-default" type="button" {{action "saveClient" name}}>{{t "button.save"}}</button>
+		</span>
+	</div>
 {{/if}}

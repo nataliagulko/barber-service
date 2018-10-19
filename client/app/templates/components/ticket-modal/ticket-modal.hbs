@@ -1,4 +1,4 @@
-{{#bs-modal open=openTicketInfo onHidden=(action (mut openTicketInfo) false) as |modal|}}
+{{#bs-modal open=openTicketInfo onHidden=(action (mut openTicketInfo) false) as |modal| }}
 	{{#modal.header}}
 		<h4 class="modal-title">{{t "ticket.label"}} #{{event.id}}</h4>
 	{{/modal.header}}
@@ -21,7 +21,7 @@
 					<label class="control-label col-md-4">{{t "ticket.time.label"}}:</label>
 					<label class="form-control-static col-md-6">
 						{{moment-format event.ticketDate "Do MMMM"}} {{moment-format event.start "HH:mm"}}—{{moment-format event.end "HH:mm"}}, {{event.data.duration}}
-						мин.
+						{{t "ticket.timeMin.label"}}
 					</label>
 				</div>
 				<div class="form-group">

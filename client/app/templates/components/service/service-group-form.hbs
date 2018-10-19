@@ -1,20 +1,16 @@
 {{#bs-form model=serviceGroup formLayout="horizontal" novalidate=true onSubmit=(action "save") as |form|}}
 	<div class="form-body">
 		{{form.element controlType="text" label=(t "service.name.label")  property="name" useIcons=false}}
-		{{#form.element 
-			controlType="power-select-multiple" 
-			property="masters"
-			label=(t "service.masters.label") 
-			options=allMasters 
-			useIcons=false as |el|}}
+		{{#form.element controlType="power-select-multiple" property="masters" label=(t "service.masters.label") options=allMasters
+		 useIcons=false as |el|}}
 			{{#el.control searchField="fullname" as |option|}}
 				{{option.fullname}}
 			{{/el.control}}
 		{{/form.element}}
 		{{#form.group}}
 			<label class="col-md-4 control-label">
-                {{t "serviceGroup.subservices.label"}}
-            </label>
+				{{t "serviceGroup.subservices.label"}}
+			</label>
 			<div class="col-md-8">
 				{{service/subservice-list 
 					subservices=subservices
@@ -23,8 +19,8 @@
 		{{/form.group}}
 		{{#form.group}}
 			<label class="col-md-4 control-label">
-                {{t "service.cost.label"}}
-            </label>
+				{{t "service.cost.label"}}
+			</label>
 			<div class="col-md-8">
 				<label class="form-control-static">
 					{{serviceGroup.cost}}&nbsp;{{t "currency.sign"}}
@@ -34,8 +30,8 @@
 		{{/form.group}}
 		{{#form.group}}
 			<label class="col-md-4 control-label">
-                {{t "service.cost.label"}}
-            </label>
+				{{t "service.cost.label"}}
+			</label>
 			<div class="col-md-8">
 				<label class="form-control-static">
 					{{serviceGroup.time}}&nbsp;{{t "service.time.minutes.label"}}

@@ -1,11 +1,11 @@
-<div class="tile bg-grey-cararra" onclick={{action 'toggleServiceItem' service}}>
-    <div class="corner"></div>
-    <div class="check"></div>
-    <div class="tile-body font-dark">
-        <span class="font-md">{{service.name}}</span>
-    </div>
-    <div class="tile-object">
-        <div class="name font-dark">{{service.time}}&nbsp;мин.</div>
-        <div class="number font-dark">{{service.cost}}&nbsp;₽</div>
-    </div>
+<div class="tile bg-grey-cararra" onclick= {{action "toggleServiceItem" service}}>
+	<div class="corner"></div>
+	<div class="check"></div>
+	<div class="tile-body font-dark">
+		<span class="font-md">{{service.name}}</span>
+	</div>
+	<div class="tile-object">
+		<div class="name font-dark">{{service.time}}&nbsp;{{t "ticket.timeMin.label"}}</div>
+		<div class="number font-dark">{{service.cost}}&nbsp;{{t "currency.sign"}}</div>
+	</div>
 </div>

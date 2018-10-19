@@ -1,15 +1,16 @@
 <div class="row">
 	<div class="col-md-12 page-404">
-		<div class="number font-green"> 404 </div>
+		<div class="number font-green"> {{t "not.found.404"}} </div>
 		<div class="details">
-			<h3>Oops! You're lost.</h3>
-			<p> We can not find the page you're looking for.
+			<h3>{{t "not.found.oops.lost"}}</h3>
+			<p>
+				{{t "not.found.page"}}
 				<br>
-				{{#link-to "index"}} Return home {{/link-to}} or try the search bar below.
+				{{#link-to "index"}} {{t "not.found.return.index"}} {{/link-to}} {{t "not.found.search.below"}}
 			</p>
 			<form action="#">
 				<div class="input-group input-medium">
-					<input type="text" class="form-control" placeholder="keyword...">
+					<input type="text" class="form-control">
 					<span class="input-group-btn">
 						<button type="submit" class="btn green">
 							<i class="fa fa-search"></i>

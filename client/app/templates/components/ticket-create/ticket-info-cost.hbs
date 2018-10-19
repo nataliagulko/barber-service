@@ -1,9 +1,9 @@
 <div class="ticket-info__item ticket-info-cost {{if ticket.cost "animate-from-top" ""}}">
-    <div>
-        <i class="icon-wallet font-red-sunglo margin-right-10"></i>
-    </div>
-    <div>
-        <span>{{ticket.cost}}</span> ₽,
-        <span>{{ticket.duration}}</span> мин.
-    </div>
+	<div>
+		<i class="icon-wallet font-red-sunglo margin-right-10"></i>
+	</div>
+	<div>
+		<span>{{ticket.cost}}</span>&nbsp;{{t "currency.sign"}},
+		<span>{{ticket.duration}}</span>&nbsp;{{t "ticket.timeMin.label"}}
+	</div>
 </div>

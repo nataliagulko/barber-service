@@ -1,7 +1,7 @@
 {{full-calendar 
-    viewName='agendaDay'
-    slotLabelFormat='HH:mm'
-    slotDuration='00:10:00'
+    viewName="agendaDay"
+    slotLabelFormat="HH:mm"
+    slotDuration="00:10:00"
     selectable=true
     minTime="08:00:00"
     maxTime="20:30:00"
@@ -15,8 +15,8 @@
     filterResourcesWithEvents=true
     navLinks=true
     refetchResourcesOnNavigate=true
-    eventClick=(action 'showTicketInfo')
-    events=(action "getEvents")}}
+    eventClick=(action "showTicketInfo")
+    events=(action "getEvents") }}
     {{!-- resources=(action "getResources") --}}
 
     {{ticket-modal/ticket-modal openTicketInfo=openTicketInfo event=selectedEvent}}
