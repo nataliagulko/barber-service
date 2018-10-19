@@ -6,12 +6,6 @@ module.exports = {
   "launch_in_ci": [
     "PhantomJS"
   ],
-<<<<<<< HEAD
-  "launch_in_dev": [
-    "PhantomJS",
-    "Firefox"
-  ]
-=======
   launch_in_dev: [
     'Chrome'
   ],
@@ -30,5 +24,4 @@ module.exports = {
       ].filter(Boolean)
     }
   }
->>>>>>> dacf787... message
 };

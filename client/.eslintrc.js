@@ -9,11 +9,6 @@ module.exports = {
     'plugin:ember/recommended' // or 'plugin:ember/base'
   ],
   rules: {
-<<<<<<< HEAD
-    // override rules' settings here
-  }
-}
-=======
   },
   overrides: [
     // node files
@@ -37,4 +32,3 @@ module.exports = {
     }
   ]
 };
->>>>>>> dacf787... message

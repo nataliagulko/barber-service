@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-/* eslint-env node */
-=======
 'use strict';
 
 const browsers = [
@@ -16,7 +13,6 @@ if (isCI || isProduction) {
   browsers.push('ie 11');
 }
 
->>>>>>> dacf787... message
 module.exports = {
   browsers
 };

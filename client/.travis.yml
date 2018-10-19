@@ -15,11 +15,8 @@ cache:
 
 before_install:
   - npm config set spin false
-<<<<<<< HEAD
-=======
 
 script:
   - npm run lint:hbs
   - npm run lint:js
   - npm test
->>>>>>> dacf787... message
