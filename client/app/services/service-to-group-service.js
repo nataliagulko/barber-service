@@ -8,8 +8,8 @@ export default Service.extend({
 	isRowAddingDisabled: false,
 
 	addServiceToGroup: function () {
-		let servicesToGroup = this.get("servicesToGroup");
-		const serviceToGroupRecord = this.get("store").createRecord("serviceToGroup");
+		let servicesToGroup = this.servicesToGroup;
+		const serviceToGroupRecord = this.store.createRecord("serviceToGroup");
 
 		servicesToGroup.pushObject(serviceToGroupRecord);
 		this._changeIsRowAddingDisabled();
@@ -38,7 +38,7 @@ export default Service.extend({
 	},
 
 	_calculateServiceGroupCostAndTime: function (serviceGroup) {
-		const servicesToGroup = this.get("servicesToGroup");
+		const servicesToGroup = this.servicesToGroup;
 
 		let serviceGroupCost = 0;
 		let serviceGroupTime = 0;
@@ -59,14 +59,14 @@ export default Service.extend({
 		// if subservices not chosen
 		// if servicesToGroup list is empty
 
-		const servicesToGroup = this.get("servicesToGroup");
+		const servicesToGroup = this.servicesToGroup;
 		const isRowAddingDisabled = servicesToGroup.get("length") > 0 ? false : true;
 
 		this.set("isRowAddingDisabled", isRowAddingDisabled);
 	},
 
 	removeServiceToGroup: function (record, serviceGroup) {
-		let servicesToGroup = this.get("servicesToGroup");
+		let servicesToGroup = this.servicesToGroup;
 
 		servicesToGroup.removeObject(record);
 		record.destroyRecord("serviceToGroup");

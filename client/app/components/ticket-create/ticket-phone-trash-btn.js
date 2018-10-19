@@ -7,7 +7,7 @@ export default Component.extend({
 
     actions: {
         clearPhone() {
-            var ticketService = this.get('ticketService');
+            var ticketService = this.ticketService;
             ticketService.clearPhoneNumber();
         }
     }

@@ -5,8 +5,8 @@ import { hash } from 'rsvp';
 export default Route.extend(RollbackAttributesMixin, {
     model(params) {
 		return hash({
-			service: this.get('store').findRecord('service', params.id),
-			masters: this.get('store').findAll('master')
+			service: this.store.findRecord('service', params.id),
+			masters: this.store.findAll('master')
 		});
 	},
 

@@ -16,20 +16,20 @@ export default Component.extend({
 			const extension = service.get("extensionShort");
 
 			if (extension === "ServiceGroup") {
-				this.get("router").transitionTo('/auth/service-group/edit/' + service.id);
+				this.router.transitionTo('/auth/service-group/edit/' + service.id);
 			} else {
-				this.get("router").transitionTo('/auth/service/edit/' + service.id);
+				this.router.transitionTo('/auth/service/edit/' + service.id);
 			}
 		},
 
 		delete: function(service) {
-			const store = this.get("store"),
+			const store = this.store,
 				extension = service.get("extensionShort");
 
 			if (extension === "ServiceGroup") {
-				this.get("bootbox").confirmDelete(store, "service-group", service.id, "услугу");
+				this.bootbox.confirmDelete(store, "service-group", service.id, "услугу");
 			} else {
-				this.get("bootbox").confirmDelete(store, "service", service.id, "услугу");
+				this.bootbox.confirmDelete(store, "service", service.id, "услугу");
 			}
 		}
 	}

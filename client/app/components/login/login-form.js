@@ -14,7 +14,7 @@ export default Component.extend({
             const credentials = this.getProperties('username', 'password');
             const authenticator = 'authenticator:token';
 
-            this.get('session').authenticate(authenticator, credentials)
+            this.session.authenticate(authenticator, credentials)
                 .then(() => { },
                     () => {
                         const message = _this.get("i18n").t("auth.login.bad.credentials");

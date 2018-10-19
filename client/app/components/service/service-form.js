@@ -6,7 +6,7 @@ export default Component.extend({
 	actions: {
 		save: function () {
 			const _this = this;
-			const serviceRecord = this.get("service");
+			const serviceRecord = this.service;
 
 			serviceRecord
 				.validate()

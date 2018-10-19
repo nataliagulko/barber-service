@@ -7,7 +7,7 @@ export default Component.extend({
 
     actions: {
         removeLastNumber() {
-            var ticketService = this.get('ticketService');
+            var ticketService = this.ticketService;
             ticketService.removeLastNumber();
         }
     }

@@ -9,7 +9,7 @@ export default Component.extend({
 
     actions: {
         saveTicket() {
-            const ticketService = this.get("ticketService");
+            const ticketService = this.ticketService;
             ticketService.saveTicket();
         }
     }

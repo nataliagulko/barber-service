@@ -34,10 +34,10 @@ export default DS.Model.extend(Validations, {
     accountLocked: DS.attr(),
     passwordExpired: DS.attr(),
     fullname: computed('firstname', 'secondname', function() {
-        if (!this.get('secondname')) {
-            return this.get('firstname');  
+        if (!this.secondname) {
+            return this.firstname;  
         }
         
-        return `${this.get('firstname')} ${this.get('secondname')}`;
+        return `${this.firstname} ${this.secondname}`;
     })
 });

@@ -13,7 +13,7 @@ export default DS.JSONAPIAdapter.extend(TokenAuthorizerMixin, {
 	},
 
 	buildURL: function (modelName, id, snapshot, requestType, query) {
-		const host = this.get("host");
+		const host = this.host;
 
 		const type = this.pathForType(modelName);
 		const model = `${type}Ajax`;

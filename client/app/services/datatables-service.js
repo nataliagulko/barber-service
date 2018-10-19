@@ -1,6 +1,6 @@
-import Ember from 'ember';
+import Service from '@ember/service';
 
-export default Ember.Service.extend({
+export default Service.extend({
 
 	tableOptions: null, // main options
 	dataTable: null, // datatable object
@@ -19,8 +19,8 @@ export default Ember.Service.extend({
 		}
 
 		this.set("the", this);
-		var the = this.get("the");
-		var ajaxParams = this.get("ajaxParams");
+		var the = this.the;
+		var ajaxParams = this.ajaxParams;
 
 		// default settings
 		options = $.extend(true, {
@@ -127,7 +127,7 @@ export default Ember.Service.extend({
 				},
 
 				"drawCallback": function() { // run some code on table redraw
-					var tableInitialized = this.get("tableInitialized");
+					var tableInitialized = this.tableInitialized;
 
 					if (tableInitialized === false) { // check if table has been initialized
 						this.set("tableInitialized", true); // set table initialized
@@ -144,14 +144,14 @@ export default Ember.Service.extend({
 		}, options);
 
 		this.set("tableOptions", options);
-		var tableOptions = this.get("tableOptions");
+		var tableOptions = this.tableOptions;
 
 		// create table's jquery object
 		this.set("table", $(options.src));
-		var table = this.get("table");
+		var table = this.table;
 
 		this.set("tableContainer", table.parents(".table-container"));
-		var tableContainer = this.get("tableContainer");
+		var tableContainer = this.tableContainer;
 
 		// apply the special class that used to restyle the default datatable
 		var tmp = $.fn.dataTableExt.oStdClasses;
@@ -170,7 +170,7 @@ export default Ember.Service.extend({
 
 		// get table wrapper
 		this.set("tableWrapper", table.parents('.dataTables_wrapper'));
-		var tableWrapper = this.get("tableWrapper");
+		var tableWrapper = this.tableWrapper;
 
 		// build table group actions panel
 		if ($('.table-actions-wrapper', tableContainer).size() === 1) {
@@ -206,11 +206,11 @@ export default Ember.Service.extend({
 	},
 
 	submitFilter: function() {
-		var dataTable = this.get("dataTable"),
-			table = this.get("table"),
-			the = this.get("the");
+		var dataTable = this.dataTable,
+			table = this.table,
+			the = this.the;
 
-		the.setAjaxParam("action", this.get("tableOptions").filterApplyAction);
+		the.setAjaxParam("action", this.tableOptions.filterApplyAction);
 
 		// get all typeable inputs
 		$('textarea.form-filter, select.form-filter, input.form-filter:not([type="radio"],[type="checkbox"])', table).each(function() {
@@ -231,9 +231,9 @@ export default Ember.Service.extend({
 	},
 
 	resetFilter: function() {
-		var dataTable = this.get("dataTable"),
-			table = this.get("table"),
-			the = this.get("the");
+		var dataTable = this.dataTable,
+			table = this.table,
+			the = this.the;
 
 		$('textarea.form-filter, select.form-filter, input.form-filter', table).each(function() {
 			$(this).val("");
@@ -242,19 +242,19 @@ export default Ember.Service.extend({
 			$(this).attr("checked", false);
 		});
 		the.clearAjaxParams();
-		the.addAjaxParam("action", this.get("tableOptions").filterCancelAction);
+		the.addAjaxParam("action", this.tableOptions.filterCancelAction);
 		dataTable.ajax.reload();
 	},
 
 	getSelectedRowsCount: function() {
-		var table = this.get("table");
+		var table = this.table;
 
 		return $('tbody > tr > td:nth-child(1) input[type="checkbox"]:checked', table).size();
 	},
 
 	getSelectedRows: function() {
 		var rows = [],
-			table = this.get("table");
+			table = this.table;
 		$('tbody > tr > td:nth-child(1) input[type="checkbox"]:checked', table).each(function() {
 			rows.push($(this).val());
 		});
@@ -263,14 +263,14 @@ export default Ember.Service.extend({
 	},
 
 	setAjaxParam: function(name, value) {
-		var ajaxParams = this.get("ajaxParams");
+		var ajaxParams = this.ajaxParams;
 
 		ajaxParams[name] = value;
 		this.set("ajaxParams", ajaxParams);
 	},
 
 	addAjaxParam: function(name, value) {
-		var ajaxParams = this.get("ajaxParams");
+		var ajaxParams = this.ajaxParams;
 		var skip = false;
 
 		if (!ajaxParams[name]) {
@@ -293,25 +293,25 @@ export default Ember.Service.extend({
 	},
 
 	getDataTable: function() {
-		return this.get("dataTable");
+		return this.dataTable;
 	},
 
 	getTableWrapper: function() {
-		return this.get("tableWrapper");
+		return this.tableWrapper;
 	},
 
 	gettableContainer: function() {
-		return this.get("tableContainer");
+		return this.tableContainer;
 	},
 
 	getTable: function() {
-		return this.get("table");
+		return this.table;
 	},
 
 	countSelectedRecords: function() {
-		var tableOptions = this.get("tableOptions"),
-			table = this.get("table"),
-			tableWrapper = this.get("tableWrapper");
+		var tableOptions = this.tableOptions,
+			table = this.table,
+			tableWrapper = this.tableWrapper;
 
 		var selected = $('tbody > tr > td:nth-child(1) input[type="checkbox"]:checked', table).size();
 		var text = tableOptions.dataTable.language.metronicGroupActions;

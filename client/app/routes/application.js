@@ -27,7 +27,7 @@ export default Route.extend(ApplicationRouteMixin, {
 	},
 
 	_invalidate() {
-		this.get('session').invalidate();
+		this.session.invalidate();
 	},
 
 	init() {

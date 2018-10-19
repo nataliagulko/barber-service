@@ -14,7 +14,7 @@ export default Component.extend({
 	actions: {
 		saveMaster: function (business) {
 			const _this = this;
-			const masterRecord = this.get("master");
+			const masterRecord = this.master;
 			
 			masterRecord.set("business", business);
 			masterRecord.set("enabled", true);
@@ -31,8 +31,8 @@ export default Component.extend({
 
 		saveBusiness: function () {
 			const _this = this;
-			const businessRecord = this.get("business");
-			const masterRecord = this.get("master");
+			const businessRecord = this.business;
+			const masterRecord = this.master;
 
 			// validate business
 			businessRecord

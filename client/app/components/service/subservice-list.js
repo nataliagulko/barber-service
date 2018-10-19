@@ -9,42 +9,42 @@ export default Component.extend({
 	isRowAddingDisabled: readOnly('serviceToGroupService.isRowAddingDisabled'),
 
 	didInsertElement: function () {
-		const serviceToGroupService = this.get("serviceToGroupService");
-		const serviceGroup = this.get("serviceGroup");
+		const serviceToGroupService = this.serviceToGroupService;
+		const serviceGroup = this.serviceGroup;
 
 		serviceToGroupService.showSubservices(serviceGroup, this);
 	},
 
 	actions: {
 		addServiceToGroup: function () {
-			var serviceToGroupService = this.get("serviceToGroupService");
+			var serviceToGroupService = this.serviceToGroupService;
 
 			serviceToGroupService.addServiceToGroup();
 		},
 
 		removeServiceToGroup: function (subservice) {
-			var serviceToGroupService = this.get("serviceToGroupService");
-			var serviceGroup = this.get("serviceGroup");
+			var serviceToGroupService = this.serviceToGroupService;
+			var serviceGroup = this.serviceGroup;
 
 			serviceToGroupService.removeServiceToGroup(subservice, serviceGroup);
 		},
 
 		reorderSubservices: function (groupModel) {
-			var serviceToGroupService = this.get("serviceToGroupService");
+			var serviceToGroupService = this.serviceToGroupService;
 
 			serviceToGroupService.reorderSubservices(groupModel);
 		},
 
 		inputServiceToGroupTimeout: function () {
-			var serviceToGroupService = this.get("serviceToGroupService");
-			var serviceGroup = this.get("serviceGroup");
+			var serviceToGroupService = this.serviceToGroupService;
+			var serviceGroup = this.serviceGroup;
 
 			serviceToGroupService.inputServiceToGroupTimeout(serviceGroup);
 		},
 
 		selectSubservice: function (serviceToGroup, subservice) {
-			var serviceToGroupService = this.get("serviceToGroupService"),
-				serviceGroup = this.get("serviceGroup");
+			var serviceToGroupService = this.serviceToGroupService,
+				serviceGroup = this.serviceGroup;
 
 			serviceToGroupService.selectSubservice(serviceToGroup, subservice, serviceGroup);
 		}

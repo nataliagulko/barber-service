@@ -11,15 +11,15 @@ export default Component.extend({
 	notification: inject("notification-service"),
 
 	click() {
-		const act = this.get("act");
-		const event = this.get("event");
+		const act = this.act;
+		const event = this.event;
 
 		this.send(act, event);
 	},
 
 	updateTicketStatus: function (event, status) {
-		const store = this.get("store");
-		const notification = this.get("notification");
+		const store = this.store;
+		const notification = this.notification;
 
 		store.findRecord("ticket", event.id)
 			.then((ticket) => {
@@ -47,10 +47,10 @@ export default Component.extend({
 
 	actions: {
 		remove: function (event) {
-			const store = this.get("store");
+			const store = this.store;
 
 			this.set("modal", false);
-			this.get("bootbox").confirmDelete(store, "ticket", event.id);
+			this.bootbox.confirmDelete(store, "ticket", event.id);
 		},
 
 		reject: function (event) {

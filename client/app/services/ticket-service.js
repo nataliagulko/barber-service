@@ -29,7 +29,7 @@ export default Service.extend({
 	},
 
 	toggleMaster(master, event) {
-		const ticket = this.get("ticket");
+		const ticket = this.ticket;
 
 		let selectedItem = $(event.target).closest('.tile');
 		let selectedMaster = ticket.get("master");
@@ -57,8 +57,8 @@ export default Service.extend({
 
 	getServicesByMaster() {
 		const _this = this;
-		const store = this.get("store");
-		const ticket = this.get("ticket");
+		const store = this.store;
+		const ticket = this.ticket;
 		const master = ticket.get("master");
 
 		let services = store.query("service", {
@@ -71,7 +71,7 @@ export default Service.extend({
 	},
 
 	toggleServiceItem(service, event) {
-		const ticket = this.get("ticket");
+		const ticket = this.ticket;
 		const selectedItem = $(event.target).closest('.tile');
 		let selectedServices = ticket.get("services");
 		const isServiceIncluded = selectedServices.includes(service);
@@ -103,10 +103,10 @@ export default Service.extend({
 
 	getHolidays() {
 		const _this = this;
-		const store = this.get("store");
-		const pickadateService = this.get("pickadateService");
+		const store = this.store;
+		const pickadateService = this.pickadateService;
 
-		const ticket = this.get("ticket");
+		const ticket = this.ticket;
 		const master = ticket.get("master");
 		const duration = ticket.get("duration");
 
@@ -153,10 +153,10 @@ export default Service.extend({
 
 	getTimeSlots() {
 		const _this = this;
-		const store = this.get("store");
-		const pickatimeService = this.get("pickatimeService");
+		const store = this.store;
+		const pickatimeService = this.pickatimeService;
 
-		const ticket = this.get("ticket");
+		const ticket = this.ticket;
 		const duration = ticket.get("duration");
 		const date = ticket.get("ticketDate");
 		const master = ticket.get("master");
@@ -213,10 +213,10 @@ export default Service.extend({
 	},
 
 	inputPhone(value) {
-		const constants = this.get("constants");
+		const constants = this.constants;
 		const phoneLength = constants.PHONE_LENGTH;
 
-		let phone = this.get("phone");
+		let phone = this.phone;
 
 		//todo подумать как сделать без двух if
 		if (phone.length < phoneLength) {
@@ -254,7 +254,7 @@ export default Service.extend({
 	},
 
 	removeLastNumber() {
-		let phone = this.get("phone");
+		let phone = this.phone;
 		phone = this._clearPhoneMask(phone);
 
 		phone = phone.slice(0, -1);
@@ -275,7 +275,7 @@ export default Service.extend({
 	},
 
 	_getClient(phone) {
-		const store = this.get("store"),
+		const store = this.store,
 			_this = this;
 
 		let client = store.queryRecord("client", {
@@ -292,12 +292,12 @@ export default Service.extend({
 	},
 
 	saveClient(name) {
-		const store = this.get("store"),
+		const store = this.store,
 			_this = this;
 
 		let client = store.createRecord("client", {
 			firstname: name,
-			phone: this.get("phone"),
+			phone: this.phone,
 			enabled: false
 		});
 
@@ -314,7 +314,7 @@ export default Service.extend({
 	},
 
 	_setTicketProperty(prop, value) {
-		let ticket = this.get("ticket");
+		let ticket = this.ticket;
 		ticket.set(prop, value);
 		this.set("ticket", ticket);
 		this._validateTicketProperty(ticket, prop);
@@ -341,7 +341,7 @@ export default Service.extend({
 	},
 
 	saveTicket() {
-		const ticket = this.get("ticket"),
+		const ticket = this.ticket,
 			_this = this;
 
 		ticket

@@ -9,18 +9,18 @@ export default Route.extend(RollbackAttributesMixin, {
 	ticket: alias("ticketService.ticket"),
 
     model() {
-		const ticket = this.get('store').createRecord('ticket');
+		const ticket = this.store.createRecord('ticket');
 		this.set("ticket", ticket);
 
         return hash({
-            masters: this.get('store').findAll('master')
+            masters: this.store.findAll('master')
         });
     },
 
 	deactivate() {
 		this._super(...arguments);
 
-		this.rollback(this.get("ticket"));
-		this.get("ticketService").changeStep("", "#master-step");
+		this.rollback(this.ticket);
+		this.ticketService.changeStep("", "#master-step");
 	}
 });

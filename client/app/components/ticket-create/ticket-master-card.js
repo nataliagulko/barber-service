@@ -7,7 +7,7 @@ export default Component.extend({
 
     actions: {
         toggleMaster(master, event){
-            var ticketService = this.get('ticketService');
+            var ticketService = this.ticketService;
             ticketService.toggleMaster(master, event);
         }
     }

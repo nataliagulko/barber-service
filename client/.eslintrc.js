@@ -9,6 +9,32 @@ module.exports = {
     'plugin:ember/recommended' // or 'plugin:ember/base'
   ],
   rules: {
+<<<<<<< HEAD
     // override rules' settings here
   }
 }
+=======
+  },
+  overrides: [
+    // node files
+    {
+      files: [
+        '.template-lintrc.js',
+        'ember-cli-build.js',
+        'testem.js',
+        'blueprints/*/index.js',
+        'config/**/*.js',
+        'lib/*/index.js'
+      ],
+      parserOptions: {
+        sourceType: 'script',
+        ecmaVersion: 2015
+      },
+      env: {
+        browser: false,
+        node: true
+      }
+    }
+  ]
+};
+>>>>>>> dacf787... message

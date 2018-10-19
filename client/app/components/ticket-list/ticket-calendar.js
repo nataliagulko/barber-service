@@ -61,7 +61,7 @@ export default Component.extend({
 	getTicketList: function (start, end) {
 		const dateFormat = 'DD.MM.YYYY';
 
-		const ticketList = this.get('store').query('ticket', {
+		const ticketList = this.store.query('ticket', {
 			onlyHead: true,
 			ticketDateFrom: start.format(dateFormat),
 			ticketDateTo: end.format(dateFormat),
@@ -71,7 +71,7 @@ export default Component.extend({
 	},
 
 	getClientNameOrPhone: function (clientId) {
-		let client = this.get("store").findRecord("client", clientId);
+		let client = this.store.findRecord("client", clientId);
 		client.then((c) => {
 			return c.get("fullname") !== "null null" ? c.get("fullname") : c.get("phone");
 		});

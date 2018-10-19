@@ -6,7 +6,7 @@ export default Component.extend({
     store: inject(),
 
     didInsertElement() {
-        const workTimes = this.get("workTimes").toArray();
+        const workTimes = this.workTimes.toArray();
         let jointWorkTimes = [];
 
         const workingDays = this._buildWordingDays(workTimes);
@@ -79,8 +79,8 @@ export default Component.extend({
     },
 
     _removeWorkTimes: function (item, needTransition = false) {
-        const router = this.get("router");
-        const store = this.get("store");
+        const router = this.router;
+        const store = this.store;
 
         item.ids.forEach(id => {
             store.findRecord("workTime", id, { backgroundReload: false })
@@ -94,9 +94,9 @@ export default Component.extend({
     },
 
     _saveTwoWorkTimes: function (item) {
-        const router = this.get("router");
-        const store = this.get("store");
-        const master = this.get("master");
+        const router = this.router;
+        const store = this.store;
+        const master = this.master;
 
         const record1 = store.createRecord("workTime", {
             timeFrom: item.start,
@@ -138,9 +138,9 @@ export default Component.extend({
     },
 
     _saveOneWorkTime: function (item) {
-        const router = this.get("router");
-        const store = this.get("store");
-        const master = this.get("master");
+        const router = this.router;
+        const store = this.store;
+        const master = this.master;
 
         const record = store.createRecord("workTime", {
             timeFrom: item.start,
@@ -190,13 +190,13 @@ export default Component.extend({
 
     actions: {
         saveWorkTimes: function () {
-            const jointWorkTimes = this.get("jointWorkTimes");
+            const jointWorkTimes = this.jointWorkTimes;
             const changedWorkTimes = _.filter(jointWorkTimes, { "wasChanged": true });
 
             if (changedWorkTimes.length) {
                 this._saveChangedWorkTimes(changedWorkTimes);
             } else {
-                this.get("router").transitionTo("auth.master");
+                this.router.transitionTo("auth.master");
             }
         }
     }

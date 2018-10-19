@@ -10,8 +10,8 @@ export default Component.extend({
 	actions: {
 		save: function () {
 			const _this = this;
-			const masterRecord = this.get("master");
-			const business = this.get("currentUser").get("business");
+			const masterRecord = this.master;
+			const business = this.currentUser.get("business");
 
 			masterRecord.set("enabled", false);
 			masterRecord.set("business", business);

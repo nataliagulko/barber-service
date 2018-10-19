@@ -56,6 +56,6 @@ export default DS.Model.extend(Validations, {
     role: DS.hasMany('role', { async: true }),
     business: DS.belongsTo('business', { async: true }),
     fullname: computed('firstname', 'secondname', function () {
-        return `${this.get('firstname')} ${this.get('secondname')}`;
+        return `${this.firstname} ${this.secondname}`;
 	}),
 });

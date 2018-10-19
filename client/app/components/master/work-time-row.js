@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import {inject} from '@ember/service';
+import { inject } from '@ember/service';
 import { readOnly } from '@ember/object/computed';
 
 export default Component.extend({
@@ -8,7 +8,7 @@ export default Component.extend({
 	timeMask: readOnly("constants.TIME_MASK"),
 
     change() {
-        const item = this.get("workTime");
+        const item = this.workTime;
         item.wasChanged = true;
     }
 });

@@ -13,14 +13,14 @@ export default Component.extend({
 
     actions: {
         getHolidays: function () {
-            const ticketService = this.get('ticketService');
+            const ticketService = this.ticketService;
             ticketService.getHolidays();
             ticketService.changeStep("#services-step", "#date-step");
         },
 
         filterServices: function () {
-            const filter = this.get("filter");
-            const servicesByMaster = this.get("servicesByMaster");
+            const filter = this.filter;
+            const servicesByMaster = this.servicesByMaster;
 
             if (filter && filter.length > 2) {
                 const fs = servicesByMaster.filter(function (item) {

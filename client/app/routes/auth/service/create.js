@@ -4,7 +4,7 @@ import { hash } from 'rsvp';
 
 export default Route.extend(RollbackAttributesMixin, {
 	model() {
-		const store = this.get('store');
+		const store = this.store;
 
 		return hash({
 			service: store.createRecord('service'),

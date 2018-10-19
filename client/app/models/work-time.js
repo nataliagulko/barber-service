@@ -32,6 +32,6 @@ export default DS.Model.extend(Validations, {
 	dateTo: DS.attr(),
 	master: DS.belongsTo('master'),
 	timeRange: computed('timeFrom', 'timeTo', function () {
-		return `${this.get('timeFrom')}—${this.get('timeTo')}`;
+		return `${this.timeFrom}—${this.timeTo}`;
 	})
 });

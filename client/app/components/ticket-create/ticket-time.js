@@ -9,7 +9,7 @@ export default Component.extend({
 
 	actions: {
 		onTicketTimeChange: function (selectedTime) {
-			let ticketService = this.get("ticketService");
+			let ticketService = this.ticketService;
 			ticketService.onTicketTimeChange(selectedTime);
 		}
 	}

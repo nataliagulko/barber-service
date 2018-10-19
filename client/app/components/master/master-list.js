@@ -1,8 +1,9 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 
-export default Ember.Component.extend({
-	store: Ember.inject.service("store"),
-	bootbox: Ember.inject.service("bootbox-service"),
+export default Component.extend({
+	store: service("store"),
+	bootbox: service("bootbox-service"),
 
 	didInsertElement: function() {
 		var $table = $("#master-list");
@@ -11,9 +12,9 @@ export default Ember.Component.extend({
 
 	actions: {
 		delete: function(id) {
-			var store = this.get("store");
+			var store = this.store;
 
-			this.get("bootbox").confirmDelete(store, "master", id, "мастера");
+			this.bootbox.confirmDelete(store, "master", id, "мастера");
 		}
 	}
 });

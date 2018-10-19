@@ -6,8 +6,8 @@ export default Component.extend({
 
 	actions: {
 		addHoliday: function () {
-			const holidayRecord = this.get("store").createRecord("holiday", {
-				master: this.get("master")
+			const holidayRecord = this.store.createRecord("holiday", {
+				master: this.master
 			});
 			this.set("newHoliday", holidayRecord);
 		}

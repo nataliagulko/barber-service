@@ -1,6 +1,7 @@
-import Ember from 'ember';
+import $ from 'jquery';
+import Component from '@ember/component';
 
-export default Ember.Component.extend({
+export default Component.extend({
     ticketStatuses: [
         {
             alias: "new",
@@ -41,8 +42,8 @@ export default Ember.Component.extend({
 
     actions: {
         filterEventsByStatus: function (status) {
-            const $calendar = Ember.$(".full-calendar"),
-                allEvents = this.get("allEvents");
+            const $calendar = $(".full-calendar"),
+                allEvents = this.allEvents;
 
             let renderedEvents = [];
 

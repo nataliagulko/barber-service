@@ -1,24 +1,26 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render, find } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('ticket-modal/ticket-modal-footer-btn', 'Integration | Component | ticket modal/ticket modal footer btn', {
-  integration: true
-});
+module('Integration | Component | ticket modal/ticket modal footer btn', function(hooks) {
+  setupRenderingTest(hooks);
 
-test('it renders', function(assert) {
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
+  test('it renders', async function(assert) {
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
 
-  this.render(hbs`{{ticket-modal/ticket-modal-footer-btn}}`);
+    await render(hbs`{{ticket-modal/ticket-modal-footer-btn}}`);
 
-  assert.equal(this.$().text().trim(), '');
+    assert.dom('*').hasText('');
 
-  // Template block usage:
-  this.render(hbs`
-    {{#ticket-modal/ticket-modal-footer-btn}}
-      template block text
-    {{/ticket-modal/ticket-modal-footer-btn}}
-  `);
+    // Template block usage:
+    await render(hbs`
+      {{#ticket-modal/ticket-modal-footer-btn}}
+        template block text
+      {{/ticket-modal/ticket-modal-footer-btn}}
+    `);
 
-  assert.equal(this.$().text().trim(), 'template block text');
+    assert.dom('*').hasText('template block text');
+  });
 });

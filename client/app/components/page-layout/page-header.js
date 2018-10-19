@@ -9,7 +9,7 @@ export default Component.extend(ApplicationRouteMixin, {
 
     actions: {
         invalidateSession: function() {
-            this.get('session').invalidate();
+            this.session.invalidate();
         }
     }
 });

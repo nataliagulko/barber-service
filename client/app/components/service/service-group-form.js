@@ -10,8 +10,8 @@ export default Component.extend({
 	actions: {
 		save: function () {
 			const _this = this;
-			const serviceGroupRecord = this.get("serviceGroup");
-			const servicesToGroup = this.get("servicesToGroup");
+			const serviceGroupRecord = this.serviceGroup;
+			const servicesToGroup = this.servicesToGroup;
 
 			serviceGroupRecord
 				.validate()

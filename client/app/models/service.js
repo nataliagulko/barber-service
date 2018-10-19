@@ -26,7 +26,7 @@ export default DS.Model.extend(Validations, {
 	partOfList: DS.attr('boolean'),
 	extension: DS.attr('string'),
 	extensionShort: computed('extension', function () {
-		const ext = this.get('extension').split(".");
+		const ext = this.extension.split(".");
 
 		return ext[ext.length - 1];
 	}),

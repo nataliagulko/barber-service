@@ -1,24 +1,26 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render, find } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('ticket-modal/ticket-modal', 'Integration | Component | ticket modal/ticket modal', {
-  integration: true
-});
+module('Integration | Component | ticket modal/ticket modal', function(hooks) {
+  setupRenderingTest(hooks);
 
-test('it renders', function(assert) {
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
+  test('it renders', async function(assert) {
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
 
-  this.render(hbs`{{ticket-modal/ticket-modal}}`);
+    await render(hbs`{{ticket-modal/ticket-modal}}`);
 
-  assert.equal(this.$().text().trim(), '');
+    assert.dom('*').hasText('');
 
-  // Template block usage:
-  this.render(hbs`
-    {{#ticket-modal/ticket-modal}}
-      template block text
-    {{/ticket-modal/ticket-modal}}
-  `);
+    // Template block usage:
+    await render(hbs`
+      {{#ticket-modal/ticket-modal}}
+        template block text
+      {{/ticket-modal/ticket-modal}}
+    `);
 
-  assert.equal(this.$().text().trim(), 'template block text');
+    assert.dom('*').hasText('template block text');
+  });
 });

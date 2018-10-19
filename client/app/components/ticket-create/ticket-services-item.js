@@ -7,7 +7,7 @@ export default Component.extend({
 
     actions: {
         toggleServiceItem(service, event){
-            var ticketService = this.get('ticketService');
+            var ticketService = this.ticketService;
             ticketService.toggleServiceItem(service, event);
         }
     }

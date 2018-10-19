@@ -40,7 +40,7 @@ export default Component.extend(Validations, {
 	isFormInvalid: alias('validations.isInvalid'),
 
 	submit() {
-		const isCodeSent = this.get("isCodeSent");
+		const isCodeSent = this.isCodeSent;
 
 		if (isCodeSent) {
 			this.send("checkCode");
@@ -55,10 +55,10 @@ export default Component.extend(Validations, {
 		},
 
 		sumbitCode: function () {
-			const notification = this.get('notification');
+			const notification = this.notification;
 			const params = {
-				phone: this.get("phone"),
-				pass: this.get("pass")
+				phone: this.phone,
+				pass: this.pass
 			};
 
 			$.post({
@@ -77,12 +77,12 @@ export default Component.extend(Validations, {
 		},
 
 		checkCode: function () {
-			const notification = this.get('notification');
-			const i18n = this.get('i18n');
+			const notification = this.notification;
+			const i18n = this.i18n;
 			const params = {
-				phone: this.get("phone"),
-				requestId: this.get("requestId"),
-				code: this.get("code")
+				phone: this.phone,
+				requestId: this.requestId,
+				code: this.code
 			};
 
 			$.post({
