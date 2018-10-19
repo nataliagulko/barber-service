@@ -1,15 +1,12 @@
 {{ticket-create/ticket-steps class=""}}
 <div class="grid">
-    <div class="row">
-        <div class="col-md-5">
-            {{ticket-create/ticket-info}}
-        </div>
-        <div class="col-md-7">
-            {{ticket-create/ticket-master masters=model.masters}}
-            {{ticket-create/ticket-services}}
-            {{ticket-create/ticket-date}}
-            {{ticket-create/ticket-time}}
-            {{ticket-create/ticket-client}}
-        </div>
-    </div>
+	<div class="row">
+		<div class="col-md-5">
+			{{ticket-create/ticket-info}}
+		</div>
+		<div class="col-md-7">
+			{{ticket-create/ticket-master masters=model.masters}} {{ticket-create/ticket-services}} {{ticket-create/ticket-date}} {{ticket-create/ticket-time}}
+			{{ticket-create/ticket-client}}
+		</div>
+	</div>
 </div>

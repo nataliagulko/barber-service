@@ -1,27 +1,25 @@
 <div class="row">
-    <div class="col-md-2">
-        <div class="form-group">
-            <label class="mt-checkbox">
-                {{moment-format workTime.dayOfWeek "ddd" "d"}} {{input type="checkbox" checked=workTime.checked}}
-                <span></span>
-            </label>
-        </div>
-    </div>
-    <div class="col-md-10">
-        {{#if workTime.checked}}
-        <div class="form-group work-time-row__group">
-			{{masked-input class="form-control work-time-row__input" mask=timeMask placeholder="10:00" value=workTime.start}} —
-			{{masked-input class="form-control work-time-row__input" mask=timeMask placeholder="19:00" value=workTime.end}}
-        </div>
-        <div class="form-group work-time-row__group">
-            {{t "workTime.rest.label"}}
-			{{masked-input class="form-control work-time-row__input" mask=timeMask placeholder="13:00" value=workTime.lunchStart}} —
-			{{masked-input class="form-control work-time-row__input" mask=timeMask placeholder="14:00" value=workTime.lunchEnd}}
-        </div>
-        {{else}}
-        <div class="form-group work-time-row__group">
-            <label class="form-control-static">выходной</label>
-        </div>
-        {{/if}}
-    </div>
+	<div class="col-md-2">
+		<div class="form-group">
+			<label class="mt-checkbox">
+				{{moment-format workTime.dayOfWeek "ddd" "d"}} {{input type="checkbox" checked=workTime.checked}}
+				<span></span>
+			</label>
+		</div>
+	</div>
+	<div class="col-md-10">
+		{{#if workTime.checked}}
+			<div class="form-group work-time-row__group">
+				{{masked-input class="form-control work-time-row__input" mask=timeMask placeholder="10:00" value=workTime.start}} — {{masked-input class="form-control work-time-row__input" mask=timeMask placeholder="19:00" value=workTime.end}}
+			</div>
+			<div class="form-group work-time-row__group">
+				{{t "workTime.rest.label"}} {{masked-input class="form-control work-time-row__input" mask=timeMask placeholder="13:00" value=workTime.lunchStart}}
+				— {{masked-input class="form-control work-time-row__input" mask=timeMask placeholder="14:00" value=workTime.lunchEnd}}
+			</div>
+		{{else}}
+			<div class="form-group work-time-row__group">
+				<label class="form-control-static">{{t "worktime.weekend"}}</label>
+			</div>
+		{{/if}}
+	</div>
 </div>

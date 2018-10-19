@@ -1,8 +1,7 @@
 {{#bs-form model=master formLayout="horizontal" novalidate=true onSubmit=(action "save") as |form|}}
 	<div class="form-body">
-		{{form.element controlType="text" label=(t "user.firstname.label")  property="firstname" useIcons=false}}
-		{{form.element controlType="text" label=(t "user.secondname.label")  property="secondname" useIcons=false}}
-		{{#form.element controlType="tel" label=(t "user.phone.label")  property="phone" useIcons=false as |el|}}
+		{{form.element controlType="text" label=(t "user.firstname.label")  property="firstname" useIcons=false}} {{form.element controlType="text" label=(t "user.secondname.label")  property="secondname" useIcons=false}}
+		{{#form.element controlType="tel" label=(t "user.phone.label") property="phone" useIcons=false as |el|}}
 			{{masked-input class="form-control" mask=phoneMask value=el.value}}
 		{{/form.element}}
 	</div>

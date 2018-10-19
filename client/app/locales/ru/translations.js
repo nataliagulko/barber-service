@@ -83,8 +83,10 @@ export default {
 	"springSecurity.oauth.registration.back": "Вернуться на форму входа",
 	"service": {
 		"label": "услуга",
-		"list.label": "Список услуг",
+		"list.label": "Услуги",
 		"new.label": "Новая услуга",
+		"simple.label": "Простая",
+		"group.label": "Составная",
 		"create.label": "Создать услугу",
 		"edit.label": "Редактировать услугу",
 		"show.label": "Показать услугу",
@@ -127,7 +129,7 @@ export default {
 	"serviceToGroup.serviceTimeout.label": "Перерыв",
 	"ticket": {
 		"label": "Запись",
-		"list.label": "Список записей",
+		"list.label": "Записи",
 		"new.label": "Новая запись",
 		"create.label": "Создать запись",
 		"edit.label": "Редактировать запись",
@@ -234,6 +236,10 @@ export default {
 		"business.not.found": "Для пользователя {{phone}} не указана организация",
 		"registration.input.data": "Введите личные данные",
 	},
+	master: {
+		"list.label": "Мастера",
+		"new.label": "Новый мастер"
+	},
 	"find.value.null": "Не передан параметр поиска",
 	"auth.sms.code.send.label": "Получить код в смс",
 	"auth.sms.code.set.label": "Введите код из смс",
@@ -287,5 +293,9 @@ export default {
 		"masters": "Мастера",
 		"settings": "Настройки",
 	},
-	
+	"dashboard": {
+		"label": "Dashboard",
+		"average": "Средний чек",
+		"summary": "Выручка за месяц"
+	},
 };

@@ -1,23 +1,19 @@
 {{!-- Business form --}}
-{{#bs-form model=business formLayout="horizontal" classNames="register-form" novalidate=true
-as |form|}}
-    <h3 class="font-green">{{t "auth.login.register"}}</h3>
-    <p class="hint">{{t "business.registration.input.data"}}:</p>
-    {{form.element controlType="text" label="Название"  property="name" useIcons=false}}
-    {{form.element controlType="textarea" label="Адрес" property="address" rows="2"}}
+{{#bs-form model=business formLayout="horizontal" classNames="register-form" novalidate=true as |form|}}
+	<h3 class="font-green">{{t "auth.login.register"}}</h3>
+	<p class="hint">{{t "business.registration.input.data"}}:</p>
+	{{form.element controlType="text" label="Название"  property="name" useIcons=false}} {{form.element controlType="textarea" label="Адрес" property="address" rows="2"}}
 {{/bs-form}}
 
 {{!-- Master form --}}
-{{#bs-form model=master formLayout="horizontal" classNames="register-form" novalidate=true
-as |form|}}
-    <p class="hint">{{t "user.registration.input.data"}}:</p>
-    {{form.element controlType="text" label="Имя"  property="firstname" useIcons=false}}
-    {{form.element controlType="text" label="Фамилия"  property="secondname" useIcons=false}}
-    {{#form.element controlType="tel" label="Телефон"  property="phone" useIcons=false as |el|}}
-        {{masked-input class="form-control" mask=phoneMask value=el.value}}
-    {{/form.element}}
-    {{form.element controlType="password" label="Пароль"  property="password" useIcons=false}}
-    <div class="form-actions text-center">
-        {{bs-button defaultText="Зарегистрировать" type="success" buttonType="submit" classNames="uppercase"}}
-    </div>
+{{#bs-form model=master formLayout="horizontal" classNames="register-form" novalidate=true as |form|}}
+	<p class="hint">{{t "user.registration.input.data"}}:</p>
+	{{form.element controlType="text" label="Имя"  property="firstname" useIcons=false}} {{form.element controlType="text" label="Фамилия"  property="secondname" useIcons=false}}
+	{{#form.element controlType="tel" label="Телефон" property="phone" useIcons=false as |el|}}
+		{{masked-input class="form-control" mask=phoneMask value=el.value}}
+	{{/form.element}}
+	{{form.element controlType="password" label="Пароль"  property="password" useIcons=false}}
+	<div class="form-actions text-center">
+		{{bs-button defaultText="Зарегистрировать" type="success" buttonType="submit" classNames="uppercase"}}
+	</div>
 {{/bs-form}}

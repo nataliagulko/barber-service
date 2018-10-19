@@ -1,11 +1,11 @@
 <div class="logo">
-    <img src="/img/nova-logo-light.svg" alt="" />
+	<img src="/img/nova-logo-light.svg" alt="">
 </div>
 <div class="content">
-    {{#if isLoginShown}}
-        {{login/login-form isLoginShown=isLoginShown}}
-    {{else}}
-        {{login/forget-form isLoginShown=isLoginShown}}
-    {{/if}}
+	{{#if isLoginShown}}
+		{{login/login-form isLoginShown=isLoginShown}}
+	{{else}}
+		{{login/forget-form isLoginShown=isLoginShown}}
+	{{/if}}
 </div>
-<div class="copyright"> {{moment-format now 'YYYY'}} © Nova </div>
+<div class="copyright"> {{moment-format now "YYYY"}} {{t "nova.name"}} </div>

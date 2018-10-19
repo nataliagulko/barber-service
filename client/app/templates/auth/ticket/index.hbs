@@ -1,13 +1,13 @@
 {{ticket-list/calendar-filters allEvents=model.allEvents}}
 
 <div class="portlet light portlet-fit bordered calendar">
-    <div class="portlet-title">
-        <div class="caption">
-            <i class=" icon-layers font-green"></i>
-            <span class="caption-subject font-green sbold uppercase">Записи</span>
-        </div>
-    </div>
-    <div class="portlet-body">
-        {{ticket-list/ticket-calendar allEvents=model.allEvents}}
-    </div>
+	<div class="portlet-title">
+		<div class="caption">
+			<i class=" icon-layers font-green"></i>
+			<span class="caption-subject font-green sbold uppercase">{{t "ticket.list.label"}}</span>
+		</div>
+	</div>
+	<div class="portlet-body">
+		{{ticket-list/ticket-calendar allEvents=model.allEvents}}
+	</div>
 </div>

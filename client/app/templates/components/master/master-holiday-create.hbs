@@ -15,8 +15,7 @@
 			<div class="form-actions">
 				{{#form.group}}
 					<div class="col-md-offset-4 col-md-8">
-						{{bs-button defaultText=(t "button.save") type="success" buttonType="submit"}}
-						{{bs-button defaultText=(t "button.cancel") buttonType="button" onClick=(action "removeHoliday" newHoliday)}}
+						{{bs-button defaultText=(t "button.save") type="success" buttonType="submit"}} {{bs-button defaultText=(t "button.cancel") buttonType="button" onClick=(action "removeHoliday" newHoliday)}}
 					</div>
 				{{/form.group}}
 			</div>

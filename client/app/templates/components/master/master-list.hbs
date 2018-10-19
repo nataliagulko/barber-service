@@ -1,9 +1,9 @@
 <table id="master-list" class="table table-hover dataTables">
 	<thead>
 		<tr>
-			<th>Имя</th>
-			<th>Телефон</th>
-			<th>E-mail</th>
+			<th>{{t "user.firstname.label"}}</th>
+			<th>{{t "user.phone.label"}}</th>
+			<th>{{t "user.email.label"}}</th>
 			<th class="text-right"></th>
 		</tr>
 	</thead>
@@ -14,13 +14,13 @@
 				<td>{{master.phone}}</td>
 				<td>{{master.email}}</td>
 				<td class="text-right">
-					{{#link-to "auth.master.work-time" master.id class="btn btn-default"}}
+					{{#link-to "auth.master.work-time" master.id class="btn btn-default" }}
 						<i class="fa fa-clock-o"></i>
 					{{/link-to}}
-					{{#link-to "auth.master.edit" master.id class="btn btn-default"}}
+					{{#link-to "auth.master.edit" master.id class="btn btn-default" }}
 						<i class="fa fa-pencil"></i>
 					{{/link-to}}
-					 <button type="button" class="btn btn-danger" {{action 'delete' master.id}}>
+					<button type="button" class="btn btn-danger" {{action "delete" master.id}}>
 						<i class="fa fa-trash"></i>
 					</button>
 				</td>

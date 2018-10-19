@@ -1,11 +1,12 @@
-{{#bs-form model=this onSubmit=(action "authenticate") formLayout="vertical" classNames="login-form" autocomplete="off" novalidate=true as |form|}}
-    <h3 class="form-title font-green">{{t "auth.login.label"}}</h3>
-    {{#form.element controlType="tel" label="" property="username" useIcons=false as |el|}}
-        {{masked-input class="form-control" mask=phoneMask placeholder=(t "auth.login.phone")  value=el.value}}
-    {{/form.element}}
-    {{form.element controlType="password" label="" placeholder=(t "auth.login.password") property="password"}}
-    <div class="form-actions">
-        {{bs-button defaultText=(t "auth.login.label") type="success" buttonType="submit" classNames="uppercase"}}
-        <a href="#" class="forget-password" {{action 'showForgetPassword'}}>{{t "auth.login.password.change"}}</a>
-    </div>
+{{#bs-form model=this onSubmit=(action "authenticate") formLayout="vertical" classNames="login-form" autocomplete="off" novalidate=true
+ as |form|}}
+	<h3 class="form-title font-green">{{t "auth.login.label"}}</h3>
+	{{#form.element controlType="tel" label="" property="username" useIcons=false as |el|}}
+		{{masked-input class="form-control" mask=phoneMask placeholder=(t "auth.login.phone")  value=el.value}}
+	{{/form.element}}
+	{{form.element controlType="password" label="" placeholder=(t "auth.login.password") property="password"}}
+	<div class="form-actions">
+		{{bs-button defaultText=(t "auth.login.label") type="success" buttonType="submit" classNames="uppercase"}}
+		<a href="#" class="forget-password" {{action "showForgetPassword"}}>{{t "auth.login.password.change"}}</a>
+	</div>
 {{/bs-form}}

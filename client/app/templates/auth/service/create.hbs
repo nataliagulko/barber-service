@@ -5,14 +5,14 @@
 				<div class="portlet-title tabbable-line">
 					<div class="caption font-dark">
 						<i class="icon-bag font-green-sharp "></i>
-						<span class="caption-subject bold uppercase">Новая услуга</span>
+						<span class="caption-subject bold uppercase">{{t "service.new.label"}}</span>
 					</div>
 					{{#bs-nav type="tabs" as |nav|}}
 						{{#nav.item active=(bs-eq tab.activeId "service")}}
-							<a href="#service" class="" role="tab" {{action tab.select "service"}}>Простая</a>
+							<a href="#service" class="" role="tab" {{action tab.select "service"}}>{{t "service.simple.label"}}</a>
 						{{/nav.item}}
 						{{#nav.item active=(bs-eq tab.activeId "service-group")}}
-							<a href="#service-group" class="" role="tab" {{action tab.select "service-group"}}>Составная</a>
+							<a href="#service-group" class="" role="tab" {{action tab.select "service-group"}}>{{t "service.group.label"}}</a>
 						{{/nav.item}}
 					{{/bs-nav}}
 				</div>
