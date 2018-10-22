@@ -366,25 +366,26 @@ export default Service.extend({
 			_this = this;
 
 		ticket
-			.validate()
-			.then(({ validations }) => {
-				if (validations.get('isValid')) {
-					ticket
-						.save()
-						.then(() => {
-							const ticketDate = moment(ticket.get("ticketDate")).format("Do MMMM");
-							let message = `Запись ${ticketDate} ${ticket.get("time")} создана`;
+			// валидация ломает создание записи
+			// .validate()
+			// .then(({ validations }) => {
+			// if (validations.get('isValid')) {
+			// ticket
+			.save()
+			.then(() => {
+				const ticketDate = moment(ticket.get("ticketDate")).format("Do MMMM");
+				let message = `Запись ${ticketDate} ${ticket.get("time")} создана`;
 
-							_this.resetProperties();
-							_this.get("routing").transitionTo('auth.ticket');
-							_this.get("notification").showInfoMessage(message);
-						},
-							() => {
-								_this.get("notification").showInfoMessage("Произошла ошибка");
+				_this.resetProperties();
+				_this.get("routing").transitionTo('auth.ticket');
+				_this.get("notification").showInfoMessage(message);
+			},
+				() => {
+					_this.get("notification").showInfoMessage("Произошла ошибка");
 
-							});
-				}
-			}, () => {
-			});
+				});
+		// }
+		// }, () => {
+		// });
 	}
 });
