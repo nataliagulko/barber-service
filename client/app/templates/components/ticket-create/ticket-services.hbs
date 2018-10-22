@@ -3,22 +3,20 @@
 		<div class="caption">
 			<span class="caption-subject font-red-sunglo">{{t "ticket.services.choose"}}</span>
 		</div>
-		{{#if ticket.services}}
-			<div class="actions">
-				<button class="btn green" {{action "getHolidays"}}>{{t "select.label"}}</button>
+		<div class="actions">
+			<div class="portlet-input input-inline">
+				<div class="input-icon right">
+					<i class="icon-magnifier"></i>
+					{{input class="form-control" placeholder=(t "search.label") key-up=(action "filterServices") value=filter}}
+				</div>
 			</div>
-		{{/if}}
+			{{#if ticket.services}}
+				<button class="btn green" {{action "getHolidays"}}>{{t "select.label"}}</button>
+			{{/if}}
+		</div>
 	</div>
 	<div class="portlet-body ticket-portlet-body">
 		{{#if ticket.master}}
-			<div class="ticket-portlet-search">
-				<div class="input-group">
-					{{input class="form-control" placeholder=(t "search.label") key-up=(action "filterServices") value=filter}}
-					<span class="input-group-btn">
-						<button class="btn btn-default" type="submit">{{t "search.find.label"}}</button>
-					</span>
-				</div>
-			</div>
 			<div class="tiles">
 				{{#if filteredServices}}
 					{{#each filteredServices as |service|}}
