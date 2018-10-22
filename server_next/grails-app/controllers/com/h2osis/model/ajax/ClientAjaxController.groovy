@@ -24,7 +24,7 @@ class ClientAjaxController {
         def attrs = data.attributes
         def errors = []
         if (attrs.phone && attrs.firstname) {
-                def result = usersService.createUser(attrs)
+                def result = usersService.createUser(attrs, null)
                 if (result instanceof User) {
                     //result.setPassword(null)
                     Role role = Role.findByAuthority(AuthKeys.CLIENT)
