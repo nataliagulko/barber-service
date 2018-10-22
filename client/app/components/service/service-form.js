@@ -9,16 +9,16 @@ export default Component.extend({
 			const serviceRecord = this.service;
 
 			serviceRecord
-				.validate()
-				.then(({ validations }) => {
-					if (validations.get('isValid')) {
-						serviceRecord
-							.save()
-							.then(() => {
-								_this.get("router").transitionTo('auth.service');
-							});
-					}
+				// .validate()
+				// .then(({ validations }) => {
+				// if (validations.get('isValid')) {
+				// serviceRecord
+				.save()
+				.then(() => {
+					_this.get("router").transitionTo('auth.service');
 				});
+			// }
+			// });
 
 		}
 	}

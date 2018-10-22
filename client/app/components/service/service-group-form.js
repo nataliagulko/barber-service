@@ -14,21 +14,21 @@ export default Component.extend({
 			const servicesToGroup = this.servicesToGroup;
 
 			serviceGroupRecord
-				.validate()
-				.then(({ validations }) => {
-					if (validations.get('isValid')) {
-						serviceGroupRecord
-							.save()
-							.then(function (record) {
-								servicesToGroup.forEach(function (item, ind) {
-									item.set("serviceGroup", record);
-									item.set("serviceOrder", ind);
-									item.save();
-								});
-								_this.get("router").transitionTo('auth.service');
-							});
-					}
+				// .validate()
+				// .then(({ validations }) => {
+				// if (validations.get('isValid')) {
+				// serviceGroupRecord
+				.save()
+				.then(function (record) {
+					servicesToGroup.forEach(function (item, ind) {
+						item.set("serviceGroup", record);
+						item.set("serviceOrder", ind);
+						item.save();
+					});
+					_this.get("router").transitionTo('auth.service');
 				});
+			// }
+			// });
 		}
 	}
 });

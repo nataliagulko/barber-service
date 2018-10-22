@@ -1,28 +1,3 @@
-{{!-- {{dashboard/child-dashboard cost=costAvg}} --}}
-<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-	<a class="dashboard-stat dashboard-stat-v2 blue" href="#">
-		<div class="visual">
-			<i class="fa fa-comments"></i>
-		</div>
-		<div class="details">
-			<div class="number">
-				<span data-counter="counterup" data-value="12314">{{costAvg}} {{t "currency.sign"}}</span>
-			</div>
-			<div class="desc">{{t "dashboard.average"}}</div>
-		</div>
-	</a>
-</div>
-
-<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-	<a class="dashboard-stat dashboard-stat-v2 red" href="#">
-		<div class="visual">
-			<i class="fa fa-bar-chart-o"></i>
-		</div>
-		<div class="details">
-			<div class="number">
-				<span data-counter="counterup" data-value="12,5">{{costSUMM}} {{t "currency.sign"}}</span>
-			</div>
-			<div class="desc">{{t "dashboard.summary"}}</div>
-		</div>
-	</a>
-</div>
+{{dashboard/dashboard-stat color="blue" icon="fa fa-rouble" stat=costAvg desc=(t "dashboard.average")}}
+{{dashboard/dashboard-stat color="red" icon="fa fa-bar-chart-o" stat=costSUMM desc=(t "dashboard.summary")}}
+{{dashboard/dashboard-stat color="green" icon="fa fa-user" stat=clientCount desc=(t "dashboard.client.count")}}

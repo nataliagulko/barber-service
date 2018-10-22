@@ -16,16 +16,16 @@ export default Component.extend({
 			masterRecord.set("enabled", false);
 			masterRecord.set("business", business);
 			masterRecord
-				.validate()
-				.then(({ validations }) => {
-					if (validations.get('isValid')) {
-						masterRecord
-							.save()
-							.then(() => {
-								_this.get("router").transitionTo('auth.master');
-							});
-					}
+				// .validate()
+				// .then(({ validations }) => {
+				// if (validations.get('isValid')) {
+				// masterRecord
+				.save()
+				.then(() => {
+					_this.get("router").transitionTo('auth.master');
 				});
+			// }
+			// });
 
 		}
 	}

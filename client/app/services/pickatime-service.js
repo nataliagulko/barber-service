@@ -3,6 +3,7 @@ import Service from '@ember/service';
 export default Service.extend({
 
 	init() {
+		this._super(...arguments);
 		var $input = $('.timepicker').pickatime({
 			clear: "Очистить",
 			closeOnSelect: false,

@@ -303,6 +303,7 @@ export default {
 	"dashboard": {
 		"label": "Dashboard",
 		"average": "Средний чек",
-		"summary": "Выручка за месяц"
+		"summary": "Выручка за месяц",
+		"client.count": "Всего клиентов"
 	},
 };

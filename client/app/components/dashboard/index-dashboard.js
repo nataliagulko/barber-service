@@ -15,12 +15,17 @@ export default Component.extend(TokenAuthorizerMixin, {
 	},
 
 	getAuthorizedStatistic: function (query, methodName) {
+		const token = this.session.data.authenticated.access_token;
+
 		return new RSVP.Promise(function (resolve, reject) {
 			$.post({
 				url: `${config.host}/${methodName}`,
 				data: JSON.stringify(query),
 				contentType: 'application/json; charset=utf-8',
 				mimeType: 'application/json',
+				headers: {
+					"Authorization": "Bearer " + token
+				},
 			}).then(function (data) {
 				resolve(data);
 			}, function (jqXHR) {
@@ -47,9 +52,10 @@ export default Component.extend(TokenAuthorizerMixin, {
 					this.set("costAvg", data.costAVG || 0);
 					this.set("costSUMM", data.costSUMM || 0);
 				});
+
 			this.getAuthorizedStatistic(query, 'masterAjax/clientStatistic')
-				.then((/* data */) => {
-					// this.set("cost", data.costAVG);                    
+				.then((data) => {
+					this.set("clientCount", data.cnt);                    
 				});
 		}
 	}
