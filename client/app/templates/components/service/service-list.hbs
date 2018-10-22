@@ -18,9 +18,9 @@
 					{{/if}}
 				</td>
 				<td class="text-right">
-					{{service.time}}&nbsp;<i class="fa fa-ruble"></i>
+					{{service.time}}&nbsp;{{t "service.time.minutes.label"}}
 				</td>
-				<td class="text-right">{{service.cost}}&nbsp;{{t "service.time.minutes.label"}}</td>
+				<td class="text-right">{{service.cost}}&nbsp;{{t "currency.sign"}}</td>
 				<td class="text-right">
 					{{#each service.masters as |master|}}
 						<span class="service-list__master">{{master.fullname}}</span>

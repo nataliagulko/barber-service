@@ -170,7 +170,7 @@ class TicketAjaxController {
                 if (ticket) {
                     try {
                         ticketsService.destroyTicket(ticket)
-                        render([erorrs: 0] as JSON)
+                        render([errors: []] as JSON)
                     }catch(Exception e){
                         errors.add([
                                 "status": 422,

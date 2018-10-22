@@ -24,11 +24,5 @@ export default DS.Model.extend(Validations, {
 		defaultValue() { return 0; }
 	}),
 	partOfList: DS.attr('boolean'),
-	extension: DS.attr('string'),
-	extensionShort: computed('extension', function () {
-		const ext = this.extension.split(".");
-
-		return ext[ext.length - 1];
-	}),
 	masters: DS.hasMany('master'),
 });

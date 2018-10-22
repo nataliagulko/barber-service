@@ -41,12 +41,12 @@ export default Component.extend({
     ],
 
     actions: {
-        filterEventsByStatus: function (status) {
+        filterEventsByStatus: function (status, ev) {
             const $calendar = $(".full-calendar"),
                 allEvents = this.allEvents;
 
-            let renderedEvents = [];
-
+			let renderedEvents = [];
+			
             if (status === "all") {
                 renderedEvents = allEvents;
             } else {

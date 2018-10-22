@@ -13,12 +13,12 @@
 					<div class="col-md-10">
 						<div class="btn-group" data-toggle="buttons">
 							<label class="btn btn-default active" onclick= {{action "filterEventsByStatus" "all"}}>
-								<input class="toggle" type="radio">{{t "all"}}
+								<input name="statuses" class="toggle" type="radio">{{t "all"}}
 							</label>
 							{{#each ticketStatuses as |status|}}
 								<label class="btn btn-default" onclick= {{action "filterEventsByStatus" status.alias}}>
 									<i class="fa fa-circle {{status.fontClass}}"></i>
-									<input class="toggle" type="radio">{{status.text}}
+									<input name="statuses" class="toggle" type="radio">{{status.text}}
 								</label>
 							{{/each}}
 						</div>
