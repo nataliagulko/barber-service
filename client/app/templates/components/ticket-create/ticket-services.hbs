@@ -10,24 +10,28 @@
 		{{/if}}
 	</div>
 	<div class="portlet-body ticket-portlet-body">
-		<div class="ticket-portlet-search">
-			<div class="input-group">
-				{{input class="form-control" placeholder=(t "search.label") key-up=(action "filterServices") value=filter}}
-				<span class="input-group-btn">
-					<button class="btn btn-default" type="submit">{{t "search.find.label"}}</button>
-				</span>
+		{{#if ticket.master}}
+			<div class="ticket-portlet-search">
+				<div class="input-group">
+					{{input class="form-control" placeholder=(t "search.label") key-up=(action "filterServices") value=filter}}
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="submit">{{t "search.find.label"}}</button>
+					</span>
+				</div>
 			</div>
-		</div>
-		<div class="tiles">
-			{{#if filteredServices}}
-				{{#each filteredServices as |service|}}
-					{{ticket-create/ticket-services-item service=service}}
-				{{/each}}
-			{{else}}
-				{{#each servicesByMaster as |service|}}
-					{{ticket-create/ticket-services-item service=service}}
-				{{/each}}
-			{{/if}}
-		</div>
+			<div class="tiles">
+				{{#if filteredServices}}
+					{{#each filteredServices as |service|}}
+						{{ticket-create/ticket-services-item service=service}}
+					{{/each}}
+				{{else}}
+					{{#each servicesByMaster as |service|}}
+						{{ticket-create/ticket-services-item service=service}}
+					{{/each}}
+				{{/if}}
+			</div>
+		{{else}}
+			{{ticket-create/ticket-hint hint=hint}}
+		{{/if}}
 	</div>
 </div>

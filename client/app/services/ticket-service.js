@@ -7,6 +7,7 @@ export default Service.extend({
 	store: inject("store"),
 	routing: inject('-routing'),
 	constants: inject("constants-service"),
+	i18n: inject("i18n"),
 	pickadateService: inject("pickadate-service"),
 	pickatimeService: inject("pickatime-service"),
 	notification: inject("notification-service"),
@@ -17,6 +18,7 @@ export default Service.extend({
 	isNewClient: false,
 	activeStep: '#master-step',
 	validationMessage: null,
+	hint: null,
 
 	changeStep(prevStep, nextStep) {
 		this.set("activeStep", nextStep);
@@ -61,13 +63,18 @@ export default Service.extend({
 		const ticket = this.ticket;
 		const master = ticket.get("master");
 
-		let services = store.query("service", {
-			masterId: master.get("id")
-		});
+		if (master.get("id")) {
+			let services = store.query("service", {
+				masterId: master.get("id")
+			});
 
-		services.then(function () {
-			_this.set("servicesByMaster", services);
-		});
+			services.then(function () {
+				_this.set("servicesByMaster", services);
+			});
+		} else {
+			const message = _this.get("i18n").t("ticket.hint.master.is.empty");
+			_this._showHint(message);
+		}
 	},
 
 	toggleServiceItem(service, event) {
@@ -317,7 +324,7 @@ export default Service.extend({
 		let ticket = this.ticket;
 		ticket.set(prop, value);
 		this.set("ticket", ticket);
-		this._validateTicketProperty(ticket, prop);
+		// this._validateTicketProperty(ticket, prop);
 	},
 
 	_validateTicketProperty(ticket, prop) {
@@ -331,6 +338,10 @@ export default Service.extend({
 			text = `${prop}: ${message}`;
 			this.set("validationMessage", text);
 		}
+	},
+
+	_showHint(message) {
+		this.set("hint", message);
 	},
 
 	resetProperties() {

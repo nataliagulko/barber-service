@@ -8,6 +8,7 @@ export default Component.extend({
     ticket: readOnly("ticketService.ticket"),
     servicesByMaster: readOnly("ticketService.servicesByMaster"),
     activeStep: readOnly("ticketService.activeStep"),
+	hint: readOnly("ticketService.hint"),
     filter: null,
     filteredServices: null,
 

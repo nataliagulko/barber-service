@@ -174,7 +174,13 @@ export default {
 		"fio.empty": "Для пользователя не указаны фамилия и имя",
 		"info.label": "Информация о записи",
 		"action.label": "Записать",
-		"client.number.phone": "Номер и имя клиента"
+		"client.number.phone": "Номер и имя клиента",
+		"hint": {
+			"master.is.empty": "Выберите мастера",
+			"services.is.empty": "Выберите мастера и услуги",
+			"date.is.empty": "Выберите мастера и услуги",
+			"time.is.empty": "Выберите мастера, услуги и дату",
+		}
 	},
 	"business": {
 		"label": "организация",
