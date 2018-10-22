@@ -1,20 +1,18 @@
 <div id="ticket-services" class="portlet light bordered right-panel ticket-portlet {{if (not-eq activeStep "#services-step") "hidden"}}">
 	<div class="portlet-title">
 		<div class="caption">
-			<span class="caption-subject font-red-sunglo">{{t "ticket.services.choose"}}</span>
-		</div>
-		<div class="actions">
 			<div class="portlet-input input-inline">
 				<div class="input-icon right">
 					<i class="icon-magnifier"></i>
-					{{input class="form-control" placeholder=(t "search.label") key-up=(action "filterServices") value=filter}}
+					{{input class="form-control" placeholder=(t "search.by.service.label") key-up=(action "filterServices") value=filter}}
 				</div>
 			</div>
-			{{#if ticket.services}}
-				<button class="btn green" {{action "getHolidays"}}>{{t "select.label"}}</button>
-			{{/if}}
+		</div>
+		<div class="actions">
+			<button class="btn green" {{action "getHolidays"}} disabled= {{servicesNotSelected}}>{{t "select.label"}}</button>
 		</div>
 	</div>
+	{{log servicesNotSelected}}
 	<div class="portlet-body ticket-portlet-body">
 		{{#if ticket.master}}
 			<div class="tiles">

@@ -277,6 +277,7 @@ export default {
 	"search.find.label": "Найти",
 	"search.clear.label": "Очистить",
 	"search.label": "Поиск",
+	"search.by.service.label": "Поиск по услугам",
 	"currency.sign": "₽",
 	"nova": {
 		"name": "© Nova"
