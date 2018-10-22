@@ -6,6 +6,7 @@ export default Component.extend({
 	tagName: '',
 	ticketService: inject("ticket-service"),
 	activeStep: readOnly("ticketService.activeStep"),
+	hint: readOnly("ticketService.hint"),
 
 	actions: {
 		onTicketTimeChange: function (selectedTime) {

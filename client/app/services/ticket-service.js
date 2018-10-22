@@ -72,8 +72,7 @@ export default Service.extend({
 				_this.set("servicesByMaster", services);
 			});
 		} else {
-			const message = _this.get("i18n").t("ticket.hint.master.is.empty");
-			_this._showHint(message);
+			_this._showHint("ticket.hint.master.is.empty");
 		}
 	},
 
@@ -111,26 +110,31 @@ export default Service.extend({
 	getHolidays() {
 		const _this = this;
 		const store = this.store;
-		const pickadateService = this.pickadateService;
 
 		const ticket = this.ticket;
 		const master = ticket.get("master");
 		const duration = ticket.get("duration");
 
-		let holidays = store.query("holiday", {
-			masterId: master.get("id"),
-			time: duration
-		});
+		if (master.get("id") && duration) {
+			const pickadateService = this.pickadateService;
 
-		holidays.then(function () {
-			holidays = holidays.toArray();
-			const disableDates = _this._parseHolidays(holidays);
-			const yesterday = moment().subtract(1, 'days');
+			let holidays = store.query("holiday", {
+				masterId: master.get("id"),
+				time: duration
+			});
 
-			pickadateService.set("#ticket-date-picker", "disable", false);
-			pickadateService.set("#ticket-date-picker", "min", yesterday);
-			pickadateService.set("#ticket-date-picker", "disable", disableDates);
-		});
+			holidays.then(function () {
+				holidays = holidays.toArray();
+				const disableDates = _this._parseHolidays(holidays);
+				const yesterday = moment().subtract(1, 'days');
+
+				pickadateService.set("#ticket-date-picker", "disable", false);
+				pickadateService.set("#ticket-date-picker", "min", yesterday);
+				pickadateService.set("#ticket-date-picker", "disable", disableDates);
+			});
+		} else {
+			_this._showHint("ticket.hint.services.is.empty");
+		}
 	},
 
 	_parseHolidays(holidays) {
@@ -161,30 +165,35 @@ export default Service.extend({
 	getTimeSlots() {
 		const _this = this;
 		const store = this.store;
-		const pickatimeService = this.pickatimeService;
 
 		const ticket = this.ticket;
 		const duration = ticket.get("duration");
 		const date = ticket.get("ticketDate");
 		const master = ticket.get("master");
 
-		let slots = store.query("slot", {
-			masterId: master.get("id"),
-			time: duration,
-			slotDate: date
-		});
+		if (master.get("id") && duration) {
+			const pickatimeService = this.pickatimeService;
 
-		slots.then((timeSlots) => {
-			timeSlots = timeSlots.toArray();
-			if (timeSlots.length === 0) { return; }
+			let slots = store.query("slot", {
+				masterId: master.get("id"),
+				time: duration,
+				slotDate: date
+			});
 
-			const parsedSlots = _this._parsedSlots(timeSlots);
+			slots.then((timeSlots) => {
+				timeSlots = timeSlots.toArray();
+				if (timeSlots.length === 0) { return; }
 
-			pickatimeService.set("#ticket-time-picker", "disable", false);
-			pickatimeService.set("#ticket-time-picker", "min", parsedSlots.disabledMinTime);
-			pickatimeService.set("#ticket-time-picker", "max", parsedSlots.disabledMaxTime);
-			pickatimeService.set("#ticket-time-picker", "disable", parsedSlots.disabledTimeSlots);
-		});
+				const parsedSlots = _this._parsedSlots(timeSlots);
+
+				pickatimeService.set("#ticket-time-picker", "disable", false);
+				pickatimeService.set("#ticket-time-picker", "min", parsedSlots.disabledMinTime);
+				pickatimeService.set("#ticket-time-picker", "max", parsedSlots.disabledMaxTime);
+				pickatimeService.set("#ticket-time-picker", "disable", parsedSlots.disabledTimeSlots);
+			});
+		} else {
+			_this._showHint("ticket.hint.date.is.empty");
+		}
 	},
 
 	_parsedSlots(timeSlots) {
@@ -340,7 +349,8 @@ export default Service.extend({
 		}
 	},
 
-	_showHint(message) {
+	_showHint(translationCode) {
+		const message = this.get("i18n").t(translationCode);
 		this.set("hint", message);
 	},
 

@@ -5,6 +5,10 @@
 		</div>
 	</div>
 	<div class="portlet-body ticket-portlet-body">
-		<input id="ticket-time-picker" class="timepicker" onchange= {{action "onTicketTimeChange" value="target.value"}}>
+		{{#if ticket.master}}
+			<input id="ticket-time-picker" class="timepicker" onchange= {{action "onTicketTimeChange" value="target.value"}}>
+		{{else}}
+			{{ticket-create/ticket-hint hint=hint}}
+		{{/if}}
 	</div>
 </div>
