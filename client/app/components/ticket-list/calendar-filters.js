@@ -41,7 +41,7 @@ export default Component.extend({
     ],
 
     actions: {
-        filterEventsByStatus: function (status, ev) {
+        filterEventsByStatus: function (status) {
             const $calendar = $(".full-calendar"),
                 allEvents = this.allEvents;
 
