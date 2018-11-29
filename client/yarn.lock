@@ -2043,7 +2043,7 @@ babel-plugin-transform-exponentiation-operator@^6.22.0:
     babel-plugin-syntax-exponentiation-operator "^6.8.0"
     babel-runtime "^6.22.0"
 
-babel-plugin-transform-object-rest-spread@^6.26.0:
+babel-plugin-transform-object-rest-spread@^6.19.0, babel-plugin-transform-object-rest-spread@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-object-rest-spread/-/babel-plugin-transform-object-rest-spread-6.26.0.tgz#0f36692d50fef6b7e2d4b3ac1478137a963b7b06"
   integrity sha1-DzZpLVD+9rfi1LOsFHgTepY7ewY=
@@ -2684,7 +2684,7 @@ broccoli-kitchen-sink-helpers@^0.3.1:
     glob "^5.0.10"
     mkdirp "^0.5.1"
 
-broccoli-merge-trees@^1.0.0, broccoli-merge-trees@^1.1.0, broccoli-merge-trees@^1.1.1:
+broccoli-merge-trees@^1.0.0, broccoli-merge-trees@^1.1.0, broccoli-merge-trees@^1.1.1, broccoli-merge-trees@^1.1.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/broccoli-merge-trees/-/broccoli-merge-trees-1.2.4.tgz#a001519bb5067f06589d91afa2942445a2d0fdb5"
   integrity sha1-oAFRm7UGfwZYnZGvopQkRaLQ/bU=
@@ -2896,7 +2896,7 @@ broccoli-stew@^2.0.0:
     symlink-or-copy "^1.2.0"
     walk-sync "^0.3.3"
 
-broccoli-string-replace@^0.1.1:
+broccoli-string-replace@^0.1.1, broccoli-string-replace@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/broccoli-string-replace/-/broccoli-string-replace-0.1.2.tgz#1ed92f85680af8d503023925e754e4e33676b91f"
   integrity sha1-HtkvhWgK+NUDAjkl51Tk4zZ2uR8=
@@ -4108,7 +4108,7 @@ ember-cli-babel@^5.0.0, ember-cli-babel@^5.1.10, ember-cli-babel@^5.1.3, ember-c
     ember-cli-version-checker "^1.0.2"
     resolve "^1.1.2"
 
-ember-cli-babel@^6.0.0, ember-cli-babel@^6.0.0-beta.4, ember-cli-babel@^6.10.0, ember-cli-babel@^6.11.0, ember-cli-babel@^6.12.0, ember-cli-babel@^6.16.0, ember-cli-babel@^6.17.0, ember-cli-babel@^6.3.0, ember-cli-babel@^6.6.0, ember-cli-babel@^6.7.2, ember-cli-babel@^6.8.1, ember-cli-babel@^6.8.2, ember-cli-babel@^6.9.0, ember-cli-babel@^6.9.2:
+ember-cli-babel@^6.0.0, ember-cli-babel@^6.0.0-beta.4, ember-cli-babel@^6.1.0, ember-cli-babel@^6.10.0, ember-cli-babel@^6.11.0, ember-cli-babel@^6.12.0, ember-cli-babel@^6.16.0, ember-cli-babel@^6.17.0, ember-cli-babel@^6.3.0, ember-cli-babel@^6.6.0, ember-cli-babel@^6.7.2, ember-cli-babel@^6.8.1, ember-cli-babel@^6.8.2, ember-cli-babel@^6.9.0, ember-cli-babel@^6.9.2:
   version "6.17.2"
   resolved "https://registry.yarnpkg.com/ember-cli-babel/-/ember-cli-babel-6.17.2.tgz#f0d53d2fb95e70c15d8db84760d045f88f458f69"
   integrity sha512-9KcCvF1PcelEFTSiJ/Ld20tfuW9acMkwHC/xINLsmwqJVDbm3oEqWtiFDZ5ebaC278O5I0GqNJWJLYNoWMNZ8g==
@@ -4948,6 +4948,31 @@ ember-raf-scheduler@^0.1.0:
   dependencies:
     ember-cli-babel "^6.6.0"
 
+ember-redux-shim@^4.0.0:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/ember-redux-shim/-/ember-redux-shim-4.0.1.tgz#8177e65a5f9578468c4303cabf17ca10aa6ab5a7"
+  integrity sha512-+MQV0A2DljPwwBZ82Xw9FaGXYc4qOpcH9e8IqpHrLzMFmVNPraxVzfXXEX8PvZmQ3WkFS0TQRNWJKIDFKLjXBQ==
+  dependencies:
+    babel-plugin-transform-object-rest-spread "^6.19.0"
+    broccoli-merge-trees "^1.1.4"
+    broccoli-string-replace "^0.1.2"
+    ember-cli-babel "^6.8.2"
+
+ember-redux-thunk-shim@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/ember-redux-thunk-shim/-/ember-redux-thunk-shim-2.5.0.tgz#9ef58eeb9704a9fb1f39267d023ef9baf143dd93"
+  integrity sha512-Ch+dgX3lMCWWSMHy9qmjzRCwv+CDyj+tWa0pc42vMCHj8cZ54l4fqSQEC0zASIUpAiGsybqUAJ3PhVq7znPBKA==
+  dependencies:
+    broccoli-merge-trees "^1.1.4"
+    ember-cli-babel "^6.8.2"
+
+ember-redux@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/ember-redux/-/ember-redux-4.0.0.tgz#e98b394b7ac18483a434184e160bff21f8061772"
+  integrity sha512-73BT9camDxiJQEC55+lazid/u20pc/JsvFD7q6O2i3VuC2v6qbSyCCVIFD/UcOexvEDT++did4IMvVGqT34d3Q==
+  dependencies:
+    ember-cli-babel "^6.8.2"
+
 ember-require-module@0.1.3, ember-require-module@^0.1.2:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/ember-require-module/-/ember-require-module-0.1.3.tgz#f82f60552142179152d28ec97ebd75d967cae1dc"
@@ -5048,6 +5073,16 @@ ember-string-ishtmlsafe-polyfill@^2.0.0:
   integrity sha512-C6i9H4NFw6nzYG+hxSrJyl5XA2xkGdWlJdN5otr0wl9k1IHCQe8n1PQr4vIpJsWcz5EYQC2+I/dPWZzOHIh1Mw==
   dependencies:
     ember-cli-version-checker "^2.1.0"
+
+ember-symbol-observable@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/ember-symbol-observable/-/ember-symbol-observable-1.0.2.tgz#1bc4febad8cb4e367eaee434ccb2f939f75bc201"
+  integrity sha512-/+398g5Lraod/vk/e6Mzjj5PDnSFgQ7zgu+PsJO6v4U5PspQM/hAI5eoXQGqAKFWhvXqYNgVEWTRXzLYK+q16g==
+  dependencies:
+    broccoli-merge-trees "^2.0.0"
+    broccoli-string-replace "^0.1.2"
+    ember-cli-babel "^6.1.0"
+    symbol-observable "^1.0.4"
 
 ember-template-lint@^1.0.0-beta.5:
   version "1.0.0-beta.6"
@@ -7954,7 +7989,7 @@ longest@^1.0.1:
   resolved "https://registry.yarnpkg.com/longest/-/longest-1.0.1.tgz#30a0b2da38f73770e8294a0d22e6625ed77d0097"
   integrity sha1-MKCy2jj3N3DoKUoNIuZiXtd9AJc=
 
-loose-envify@^1.0.0:
+loose-envify@^1.0.0, loose-envify@^1.1.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.4.0.tgz#71ee51fa7be4caec1a63839f7e682d8132d30caf"
   integrity sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==
@@ -9456,6 +9491,19 @@ redeyed@~1.0.0:
   dependencies:
     esprima "~3.0.0"
 
+redux-thunk@2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.3.0.tgz#51c2c19a185ed5187aaa9a2d08b666d0d6467622"
+  integrity sha512-km6dclyFnmcvxhAcrQV2AkZmPQjzPDjgVlQtR0EQjxZPyJ0BnMf3in1ryuR8A2qU0HldVRfxYXbFSKlI3N7Slw==
+
+redux@4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/redux/-/redux-4.0.0.tgz#aa698a92b729315d22b34a0553d7e6533555cc03"
+  integrity sha512-NnnHF0h0WVE/hXyrB6OlX67LYRuaf/rJcbWvnHHEPCF/Xa/AZpwhs/20WyqzQae5x4SD2F9nPObgBh2rxAgLiA==
+  dependencies:
+    loose-envify "^1.1.0"
+    symbol-observable "^1.2.0"
+
 regenerate-unicode-properties@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/regenerate-unicode-properties/-/regenerate-unicode-properties-7.0.0.tgz#107405afcc4a190ec5ed450ecaa00ed0cafa7a4c"
@@ -10604,6 +10652,11 @@ supports-color@^5.3.0, supports-color@^5.4.0:
   integrity sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==
   dependencies:
     has-flag "^3.0.0"
+
+symbol-observable@^1.0.4, symbol-observable@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.2.0.tgz#c22688aed4eab3cdc2dfeacbb561660560a00804"
+  integrity sha512-e900nM8RRtGhlV36KGEU9k65K3mPb1WV70OdjfxlG2EAuM1noi/E/BaW/uMhL7bPEssK8QV57vN3esixjUvcXQ==
 
 symlink-or-copy@^1.0.0, symlink-or-copy@^1.0.1, symlink-or-copy@^1.1.8, symlink-or-copy@^1.2.0:
   version "1.2.0"
