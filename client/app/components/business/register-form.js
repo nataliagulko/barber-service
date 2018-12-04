@@ -6,6 +6,7 @@ export default Component.extend({
 	notification: inject("notification-service"),
 	constants: inject("constants-service"),
 	phoneMask: readOnly("constants.PHONE_MASK"),
+	intl: inject(),
 
 	submit() {
 		this.send("saveBusiness");
@@ -20,7 +21,7 @@ export default Component.extend({
 			masterRecord.set("enabled", true);
 			masterRecord.save()
 				.then((master) => {
-					const message = _this.get("i18n").t("business.registration.success", {
+					const message = _this.get("intl").t("business.registration.success", {
 						name: business.get("name"),
 						master: master.get("firstname")
 					});

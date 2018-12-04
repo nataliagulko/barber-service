@@ -38,6 +38,7 @@ export default Component.extend(Validations, {
 	constants: inject("constants-service"),
 	phoneMask: readOnly("constants.PHONE_MASK"),
 	isFormInvalid: alias('validations.isInvalid'),
+	intl: inject(),
 
 	submit() {
 		const isCodeSent = this.isCodeSent;
@@ -78,7 +79,7 @@ export default Component.extend(Validations, {
 
 		checkCode: function () {
 			const notification = this.notification;
-			const i18n = this.i18n;
+			const intl = this.intl;
 			const params = {
 				phone: this.phone,
 				requestId: this.requestId,
@@ -91,7 +92,7 @@ export default Component.extend(Validations, {
 			}).then((response) => {
 				if (!response.error) {
 					this.set('isLoginShown', true);
-					notification.showInfoMessage(i18n.t("auth.login.access.restore"));
+					notification.showInfoMessage(intl.t("auth.login.access.restore"));
 				} else {
 					notification.showErrorMessage(response.error);
 				}

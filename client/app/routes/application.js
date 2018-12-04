@@ -6,6 +6,7 @@ import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mi
 export default Route.extend(ApplicationRouteMixin, {
 	currentUserService: inject('current-user-service'),
 	notification: inject("notification-service"),
+	intl: inject(),
 
 	_loadCurrentUser() {
 		const _this = this;
@@ -42,17 +43,12 @@ export default Route.extend(ApplicationRouteMixin, {
 	},
 
 	beforeModel() {
+		this.intl.setLocale('ru');
 		return this._loadCurrentUser();
 	},
 
 	sessionAuthenticated() {
 		this._super(...arguments);
 		this._loadCurrentUser();
-	},
-
-	actions: {
-		error(error) {
-			// console.log(error);
-		}
 	}
 });

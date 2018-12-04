@@ -4,23 +4,22 @@ import Service from '@ember/service';
 import { inject } from '@ember/service';
 
 export default Service.extend({
-	store: inject("store"),
-	routing: inject('-routing'),
-	constants: inject("constants-service"),
-	i18n: inject("i18n"),
-	pickadateService: inject("pickadate-service"),
-	pickatimeService: inject("pickatime-service"),
-	notification: inject("notification-service"),
+    store: inject("store"),
+    routing: inject('-routing'),
+    constants: inject("constants-service"),
+    intl: inject('intl'),
+    pickadateService: inject("pickadate-service"),
+    pickatimeService: inject("pickatime-service"),
+    notification: inject("notification-service"),
+    ticket: null,
+    servicesByMaster: [],
+    phone: "",
+    isNewClient: false,
+    activeStep: '#master-step',
+    validationMessage: null,
+    hint: null,
 
-	ticket: null,
-	servicesByMaster: [],
-	phone: "",
-	isNewClient: false,
-	activeStep: '#master-step',
-	validationMessage: null,
-	hint: null,
-
-	changeStep(prevStep, nextStep) {
+    changeStep(prevStep, nextStep) {
 		this.set("activeStep", nextStep);
 
 		$('.mt-step-col').removeClass('active');
@@ -30,7 +29,7 @@ export default Service.extend({
 			.addClass('active');
 	},
 
-	toggleMaster(master, event) {
+    toggleMaster(master, event) {
 		const ticket = this.ticket;
 
 		let selectedItem = $(event.target).closest('.tile');
@@ -57,7 +56,7 @@ export default Service.extend({
 		this.getServicesByMaster();
 	},
 
-	getServicesByMaster() {
+    getServicesByMaster() {
 		const _this = this;
 		const store = this.store;
 		const ticket = this.ticket;
@@ -76,7 +75,7 @@ export default Service.extend({
 		}
 	},
 
-	toggleServiceItem(service, event) {
+    toggleServiceItem(service, event) {
 		const ticket = this.ticket;
 		const selectedItem = $(event.target).closest('.tile');
 		let selectedServices = ticket.get("services");
@@ -94,7 +93,7 @@ export default Service.extend({
 		$(selectedItem).toggleClass('selected');
 	},
 
-	_calculateDurationAndCost(selectedServices) {
+    _calculateDurationAndCost(selectedServices) {
 		let totalCost = 0;
 		let totalDuration = 0;
 
@@ -107,7 +106,7 @@ export default Service.extend({
 		this._setTicketProperty("duration", totalDuration);
 	},
 
-	getHolidays() {
+    getHolidays() {
 		const _this = this;
 		const store = this.store;
 
@@ -137,7 +136,7 @@ export default Service.extend({
 		}
 	},
 
-	_parseHolidays(holidays) {
+    _parseHolidays(holidays) {
 		let datesArr = [];
 
 		holidays.forEach(function (item) {
@@ -155,14 +154,14 @@ export default Service.extend({
 		return datesArr;
 	},
 
-	onTicketDateChange(selectedDate) {
+    onTicketDateChange(selectedDate) {
 		const date = selectedDate;
 		this._setTicketProperty("ticketDate", date);
 		this.changeStep("#date-step", "#time-step");
 		this.getTimeSlots();
 	},
 
-	getTimeSlots() {
+    getTimeSlots() {
 		const _this = this;
 		const store = this.store;
 
@@ -196,7 +195,7 @@ export default Service.extend({
 		}
 	},
 
-	_parsedSlots(timeSlots) {
+    _parsedSlots(timeSlots) {
 		let timesArr = [];
 		let minTime = 0;
 		let maxTime = 0;
@@ -223,12 +222,12 @@ export default Service.extend({
 		};
 	},
 
-	onTicketTimeChange(selectedTime) {
+    onTicketTimeChange(selectedTime) {
 		this._setTicketProperty("time", selectedTime);
 		this.changeStep("#time-step", "#client-step");
 	},
 
-	inputPhone(value) {
+    inputPhone(value) {
 		const constants = this.constants;
 		const phoneLength = constants.PHONE_LENGTH;
 
@@ -246,7 +245,7 @@ export default Service.extend({
 		}
 	},
 
-	_formatPhone(phone) {
+    _formatPhone(phone) {
 		phone = this._clearPhoneMask(phone);
 
 		phone = phone
@@ -259,7 +258,7 @@ export default Service.extend({
 		return phone;
 	},
 
-	_clearPhoneMask(phone) {
+    _clearPhoneMask(phone) {
 		phone = phone
 			.replace(/\+/, '')
 			.replace(/-/g, '')
@@ -269,7 +268,7 @@ export default Service.extend({
 		return phone;
 	},
 
-	removeLastNumber() {
+    removeLastNumber() {
 		let phone = this.phone;
 		phone = this._clearPhoneMask(phone);
 
@@ -280,17 +279,17 @@ export default Service.extend({
 		this._resetClient();
 	},
 
-	clearPhoneNumber() {
+    clearPhoneNumber() {
 		this.set("phone", "");
 		this._resetClient();
 	},
 
-	_resetClient() {
+    _resetClient() {
 		this._setTicketProperty("client", null);
 		this.set("isNewClient", false);
 	},
 
-	_getClient(phone) {
+    _getClient(phone) {
 		const store = this.store,
 			_this = this;
 
@@ -307,7 +306,7 @@ export default Service.extend({
 			});
 	},
 
-	saveClient(name) {
+    saveClient(name) {
 		const store = this.store,
 			_this = this;
 
@@ -324,19 +323,19 @@ export default Service.extend({
 			});
 	},
 
-	_setClient(client, isNew) {
+    _setClient(client, isNew) {
 		this.set("isNewClient", isNew);
 		this._setTicketProperty("client", client);
 	},
 
-	_setTicketProperty(prop, value) {
+    _setTicketProperty(prop, value) {
 		let ticket = this.ticket;
 		ticket.set(prop, value);
 		this.set("ticket", ticket);
 		// this._validateTicketProperty(ticket, prop);
 	},
 
-	_validateTicketProperty(ticket, prop) {
+    _validateTicketProperty(ticket, prop) {
 		const isPropInvalid = ticket.get(`validations.attrs.${prop}.isInvalid`);
 		let message, text;
 
@@ -349,19 +348,19 @@ export default Service.extend({
 		}
 	},
 
-	_showHint(translationCode) {
-		const message = this.get("i18n").t(translationCode);
+    _showHint(translationCode) {
+		const message = this.get('intl').t(translationCode);
 		this.set("hint", message);
 	},
 
-	resetProperties() {
+    resetProperties() {
 		this.set("servicesByMaster", null);
 		this.set("phone", null);
 		this.set("isNewClient", false);
 		this.set("activeStep", '#master-step');
 	},
 
-	saveTicket() {
+    saveTicket() {
 		const ticket = this.ticket,
 			_this = this;
 

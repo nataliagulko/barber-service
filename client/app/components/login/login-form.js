@@ -7,6 +7,7 @@ export default Component.extend({
     notification: inject("notification-service"),
     constants: inject("constants-service"),
     phoneMask: readOnly("constants.PHONE_MASK"),
+	intl: inject(),
 
     actions: {
         authenticate: function () {
@@ -17,7 +18,7 @@ export default Component.extend({
             this.session.authenticate(authenticator, credentials)
                 .then(() => { },
                     () => {
-                        const message = _this.get("i18n").t("auth.login.bad.credentials");
+                        const message = _this.get("intl").t("auth.login.bad.credentials");
                         _this.get("notification").showErrorMessage(message);
                     });
         },

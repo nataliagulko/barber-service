@@ -68,10 +68,6 @@ module.exports = function (environment) {
 		includeLocales: ['ru']
 	};
 
-	ENV['i18n'] = {
-		defaultLocale: 'ru'
-	};
-
 	if (environment === 'development') {
 		// ENV.APP.LOG_RESOLVER = true;
 		// ENV.APP.LOG_ACTIVE_GENERATION = true;
