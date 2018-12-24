@@ -16,6 +16,7 @@
     "test": "ember test"
   },
   "devDependencies": {
+    "@ember-decorators/babel-transforms": "^3.1.0",
     "@ember/jquery": "^0.5.2",
     "@ember/optional-features": "^0.6.3",
     "@types/ember": "^2.8.33",
@@ -26,6 +27,7 @@
     "@types/ember__test-helpers": "^0.7.6",
     "@types/qunit": "^2.5.3",
     "@types/rsvp": "^4.0.2",
+    "babel-eslint": "^8.0.0",
     "bootstrap-sass": "^3.3.7",
     "broccoli-asset-rev": "^2.7.0",
     "ember-ajax": "^3.1.0",
@@ -53,6 +55,7 @@
     "ember-cli-uuid": "^0.5.0",
     "ember-cp-validations": "^3.5.4",
     "ember-data": "~3.5.0",
+    "ember-decorators": "^3.1.5",
     "ember-export-application-global": "^1.0.5",
     "ember-font-awesome": "^4.0.0-rc.4",
     "ember-fullcalendar": "^1.8.0",
