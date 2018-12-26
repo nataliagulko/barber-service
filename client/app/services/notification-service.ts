@@ -1,30 +1,30 @@
-import Service from '@ember/service';
-import { info, error, success, warning, remove } from 'toastr';
+import { service } from "@ember-decorators/service";
+import Service from "@ember/service";
+import FlashMessageService from "ember-cli-flash/services/flash-messages";
 
 export default class NotificationService extends Service {
-	public showInfoMessage(message: string, title = '', options = {}) {
-		info(message, title, options);
+	@service
+	public flash!: FlashMessageService;
+
+	public showInfoMessage(message: string) {
+		this.get("flash").info(message);
 	}
 
-	public showErrorMessage(message: string, title = '', options = {}) {
-		error(message, title, options);
+	public showErrorMessage(message: string) {
+		this.get("flash").danger(message);
 	}
 
-	public showSuccessMessage(message: string, title = '', options = {}) {
-		success(message, title, options);
+	public showSuccessMessage(message: string) {
+		this.get("flash").success(message);
 	}
 
-	public showWarningMessage(message: string, title = '', options = {}) {
-		warning(message, title, options);
-	}
-
-	public removeAllToasts() {
-		remove();
+	public showWarningMessage(message: string) {
+		this.get("flash").warning(message);
 	}
 }
 
-declare module '@ember/service' {
+declare module "@ember/service" {
 	interface Registry {
-		'notification-service': NotificationService;
+		"notification-service": NotificationService;
 	}
 }

@@ -2,9 +2,9 @@ import { action } from "@ember-decorators/object";
 import { reads } from "@ember-decorators/object/computed";
 import { service } from "@ember-decorators/service";
 import Component from "@ember/component";
+import { t } from "ember-intl";
 import ConstantsService from "nova/services/constants-service";
 import NotificationService from "nova/services/notification-service";
-import { t } from "ember-intl";
 
 export default class LoginForm extends Component {
 	public username: string = "";
@@ -12,16 +12,18 @@ export default class LoginForm extends Component {
 	public isLoginShown: boolean = true;
 
 	@service
+	public constants!: ConstantsService;
+
+	@service
 	public notification!: NotificationService;
 
 	@service
-	public constants!: ConstantsService;
+	public session!: any;
 
 	@reads("constants.PHONE_MASK") public phoneMask: Array<RegExp | string> = [];
 
 	@action
 	public authenticate(this: LoginForm) {
-		const _this = this;
 		const credentials = this.getProperties("username", "password");
 		const authenticator = "authenticator:token";
 
@@ -29,7 +31,8 @@ export default class LoginForm extends Component {
 			.then(() => { },
 				() => {
 					const message = t("auth.login.bad.credentials");
-					_this.get("notification").showErrorMessage(message);
+					// console.log(message);
+					this.get("notification").showErrorMessage(message);
 				});
 	}
 

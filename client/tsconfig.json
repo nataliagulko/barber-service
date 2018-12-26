@@ -36,5 +36,8 @@
     "app/**/*",
     "tests/**/*",
     "types/**/*"
+  ],
+  "exclude": [
+	  "node_modules"
   ]
 }

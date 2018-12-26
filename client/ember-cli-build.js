@@ -63,10 +63,6 @@ module.exports = function(defaults) {
 
   // Pages JS
 
-  // Bower libs
-  app.import("bower_components/jquery-validation/dist/jquery.validate.js");
-  app.import("bower_components/jquery-validation/src/localization/messages_ru.js");
-
   // If you need to use different assets in different
   // environments, specify an object as the first parameter. That
   // object's keys should be the environment name and the values
