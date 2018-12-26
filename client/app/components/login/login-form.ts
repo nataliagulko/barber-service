@@ -1,44 +1,40 @@
-import Component from '@ember/component';
-import { reads } from '@ember-decorators/object/computed';
-import { service } from '@ember-decorators/service';
-import NotificationService from 'nova/services/notification-service';
-import ConstantsService from 'nova/services/constants-service';
-import { action } from '@ember-decorators/object';
-import IntlService from 'types/nova/intl/services/intl';
+import { action } from "@ember-decorators/object";
+import { reads } from "@ember-decorators/object/computed";
+import { service } from "@ember-decorators/service";
+import Component from "@ember/component";
+import ConstantsService from "nova/services/constants-service";
+import NotificationService from "nova/services/notification-service";
+import { t } from "ember-intl";
 
 export default class LoginForm extends Component {
-	username: string = ''
-	password: string = ''
-
-	// session: inject(),
-	// intl: inject()
-	@service
-	intl!: IntlService;
+	public username: string = "";
+	public password: string = "";
+	public isLoginShown: boolean = true;
 
 	@service
-	notification!: NotificationService;
+	public notification!: NotificationService;
 
 	@service
-	constants!: ConstantsService;
+	public constants!: ConstantsService;
 
-	@reads('constants.PHONE_MASK') phoneMask: (RegExp | string)[] = []
+	@reads("constants.PHONE_MASK") public phoneMask: Array<RegExp | string> = [];
 
 	@action
-	authenticate() {
+	public authenticate(this: LoginForm) {
 		const _this = this;
-		const credentials = this.getProperties('username', 'password');
-		const authenticator = 'authenticator:token';
+		const credentials = this.getProperties("username", "password");
+		const authenticator = "authenticator:token";
 
 		this.session.authenticate(authenticator, credentials)
 			.then(() => { },
 				() => {
-					const message = _this.get("intl").t("auth.login.bad.credentials");
+					const message = t("auth.login.bad.credentials");
 					_this.get("notification").showErrorMessage(message);
 				});
 	}
 
 	@action
-	showForgetPassword() {
+	public showForgetPassword(this: LoginForm) {
 		this.set("isLoginShown", false);
 	}
 

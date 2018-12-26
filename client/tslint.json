@@ -1,0 +1,29 @@
+{
+	"defaultSeverity": "error",
+	"extends": [
+		"tslint:recommended"
+	],
+	"jsRules": {},
+	"rules": {
+		"indent": [
+			true,
+			"tabs",
+			4
+		],
+		"member-ordering": [
+			true,
+			{
+				"order": [
+					"static-field",
+					"instance-field",
+					"constructor",
+					"private-instance-method",
+					"protected-instance-method"
+				]
+			}
+		],
+		"max-line-length": false,
+		"no-duplicate-imports": true,
+	},
+	"rulesDirectory": []
+}

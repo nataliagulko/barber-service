@@ -1,29 +1,25 @@
 import Service from '@ember/service';
-import { service } from '@ember-decorators/service';
-import ToastrService from 'nova/toastr/services/toastr';
+import { info, error, success, warning, remove } from 'toastr';
 
 export default class NotificationService extends Service {
-	@service
-	toast: ToastrService
-
 	public showInfoMessage(message: string, title = '', options = {}) {
-		this.toast.info(message, title, options);
+		info(message, title, options);
 	}
 
 	public showErrorMessage(message: string, title = '', options = {}) {
-		this.toast.error(message, title, options);
+		error(message, title, options);
 	}
 
 	public showSuccessMessage(message: string, title = '', options = {}) {
-		this.toast.success(message, title, options);
+		success(message, title, options);
 	}
 
 	public showWarningMessage(message: string, title = '', options = {}) {
-		this.toast.warning(message, title, options);
+		warning(message, title, options);
 	}
 
 	public removeAllToasts() {
-		this.toast.remove();
+		remove();
 	}
 }
 
