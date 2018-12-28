@@ -25,7 +25,7 @@ export default Component.extend({
 						name: business.get("name"),
 						master: master.get("firstname")
 					});
-					_this.get("notification").showInfoMessage(message);
+					_this.get("notification").info(message);
 					_this.get("router").transitionTo("login");
 				});
 		},

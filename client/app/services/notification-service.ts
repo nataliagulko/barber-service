@@ -1,25 +1,27 @@
-import { service } from "@ember-decorators/service";
-import Service from "@ember/service";
-import FlashMessageService from "ember-cli-flash/services/flash-messages";
+import { get } from "@ember/object";
+import Service, { inject as service } from "@ember/service";
 
 export default class NotificationService extends Service {
-	@service
-	public flash!: FlashMessageService;
+	flash = service("flash");
 
-	public showInfoMessage(message: string) {
-		this.get("flash").info(message);
+	info(this: NotificationService, message: string) {
+		alert(message);
+		// get(this, "flash").info(message);
 	}
 
-	public showErrorMessage(message: string) {
-		this.get("flash").danger(message);
+	error(this: NotificationService, message: string) {
+		alert(message);
+		// get(this, "flash").danger(message);
 	}
 
-	public showSuccessMessage(message: string) {
-		this.get("flash").success(message);
+	success(this: NotificationService, message: string) {
+		alert(message);
+		// get(this, "flash").success(message);
 	}
 
-	public showWarningMessage(message: string) {
-		this.get("flash").warning(message);
+	warning(this: NotificationService, message: string) {
+		alert(message);
+		// get(this, "flash").warning(message);
 	}
 }
 

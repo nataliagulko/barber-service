@@ -1,7 +1,7 @@
 import { reads } from "@ember-decorators/object/computed";
 import { t } from "@ember-intl/decorators";
 import Component from "@ember/component";
-import { set } from "@ember/object";
+import { get, set } from "@ember/object";
 import { inject as service } from "@ember/service";
 
 export default class LoginForm extends Component {
@@ -24,10 +24,10 @@ export default class LoginForm extends Component {
 			const loginForm = this;
 			const credentials = loginForm.getProperties("username", "password");
 
-			loginForm.session.authenticate("authenticator:token", credentials)
+			get(loginForm, "session").authenticate("authenticator:token", credentials)
 				.then(() => { },
 					() => {
-						loginForm.get("notification").showErrorMessage(this.message);
+						get(loginForm, "notification").error(loginForm.message);
 					});
 		},
 

@@ -377,10 +377,10 @@ export default Service.extend({
 
 				_this.resetProperties();
 				_this.get("routing").transitionTo('auth.ticket');
-				_this.get("notification").showInfoMessage(message);
+				_this.get("notification").info(message);
 			},
 				() => {
-					_this.get("notification").showInfoMessage("Произошла ошибка");
+					_this.get("notification").info("Произошла ошибка");
 
 				});
 		// }

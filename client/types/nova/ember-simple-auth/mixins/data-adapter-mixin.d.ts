@@ -7,8 +7,8 @@ declare module 'ember-simple-auth/mixins/data-adapter-mixin' {
 
         ajaxOptions(...args: any[]): object;
         ensureResponseAuthorized(status: number, headers?: object, payload?: any, requestData?: object): void;
-        handleResponse(status: number, headers: object, payload: any, requestData: object);
-        headersForRequest();
+        handleResponse(status: number, headers: object, payload: any, requestData: object): void;
+        headersForRequest(): void;
     }
 
     const DataAdapterMixin: Mixin<DataAdapter>;

@@ -8,7 +8,7 @@ interface Data {
     };
 }
 
-declare class Session extends Service.extend(Evented) {
+export default class Session extends Service.extend(Evented) {
     /**
      * Triggered whenever the session is successfully authenticated. This happens
      * when the session gets authenticated via
