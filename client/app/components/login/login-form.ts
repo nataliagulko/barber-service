@@ -1,44 +1,37 @@
-import { action } from "@ember-decorators/object";
 import { reads } from "@ember-decorators/object/computed";
-import { service } from "@ember-decorators/service";
 import Component from "@ember/component";
-import { t } from "ember-intl";
-import ConstantsService from "nova/services/constants-service";
-import NotificationService from "nova/services/notification-service";
+import { set } from "@ember/object";
+import { inject as service } from "@ember/service";
 
 export default class LoginForm extends Component {
-	public username: string = "";
-	public password: string = "";
+	public username!: string;
+	public password!: string;
 	public isLoginShown: boolean = true;
 
-	@service
-	public constants!: ConstantsService;
+	public session = service();
+	public notification = service("notification-service");
+	public constants = service("constants-service");
+	public intl = service();
 
-	@service
-	public notification!: NotificationService;
+	@reads("constants.PHONE_MASK")
+	public phoneMask!: Array<RegExp | string>;
 
-	@service
-	public session!: any;
+	public actions = {
+		authenticate(this: LoginForm) {
+			const loginForm = this;
+			const credentials = loginForm.getProperties("username", "password");
+			const authenticator = "authenticator:token";
 
-	@reads("constants.PHONE_MASK") public phoneMask: Array<RegExp | string> = [];
+			loginForm.session.authenticate(authenticator, credentials)
+				.then(() => { },
+					() => {
+						const message = loginForm.get("intl").t("auth.login.bad.credentials");
+						loginForm.get("notification").showErrorMessage(message);
+					});
+		},
 
-	@action
-	public authenticate(this: LoginForm) {
-		const credentials = this.getProperties("username", "password");
-		const authenticator = "authenticator:token";
-
-		this.session.authenticate(authenticator, credentials)
-			.then(() => { },
-				() => {
-					const message = t("auth.login.bad.credentials");
-					// console.log(message);
-					this.get("notification").showErrorMessage(message);
-				});
-	}
-
-	@action
-	public showForgetPassword(this: LoginForm) {
-		this.set("isLoginShown", false);
-	}
-
+		showForgetPassword(this: LoginForm) {
+			set(this, "isLoginShown", false);
+		},
+	};
 }
