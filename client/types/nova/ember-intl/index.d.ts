@@ -20,3 +20,7 @@ declare module "ember-intl" {
 
 	export function localeWithDefault(localeName?: string): string[];
 }
+
+declare module '@ember-intl/decorators' {
+	export function t(key: string, options?: object): any;
+}
