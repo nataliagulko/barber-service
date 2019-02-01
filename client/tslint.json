@@ -5,7 +5,8 @@
 	],
 	"linterOptions": {
 		"exclude": [
-			"node_modules/**"
+			"node_modules/**",
+			"test/**"
 		]
 	},
 	"jsRules": {},
@@ -15,6 +16,7 @@
 			"tabs",
 			4
 		],
+		"semicolon": false,
 		"member-ordering": [
 			true,
 			{
