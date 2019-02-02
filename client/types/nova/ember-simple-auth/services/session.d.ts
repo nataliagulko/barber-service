@@ -5,6 +5,7 @@ import RSVP from 'rsvp';
 interface Data {
     authenticated: {
         id: string;
+        access_token: string;
     };
 }
 

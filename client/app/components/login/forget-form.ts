@@ -112,5 +112,5 @@ export default class ForgetForm extends Component.extend(Validations) {
 				}
 			});
 		},
-	},
+	};
 };

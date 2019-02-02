@@ -1,4 +1,3 @@
-import { get } from "@ember/object";
 import Service, { inject as service } from "@ember/service";
 
 export default class NotificationService extends Service {
