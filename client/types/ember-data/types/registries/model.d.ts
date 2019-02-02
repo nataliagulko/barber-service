@@ -1,6 +1,6 @@
 /**
  * Catch-all for ember-data.
  */
-export interface ModelRegistry {
+export default interface ModelRegistry {
   [key: string]: any;
 }
