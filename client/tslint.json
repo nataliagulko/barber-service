@@ -33,7 +33,8 @@
 		"no-duplicate-imports": true,
 		"no-empty": false,
 		"interface-name": false,
-		"member-access": false
+		"member-access": false,
+		"object-literal-sort-keys": false
 	},
 	"rulesDirectory": []
 }
