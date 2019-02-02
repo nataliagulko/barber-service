@@ -1,26 +1,23 @@
+import { get } from "@ember/object";
 import Service, { inject as service } from "@ember/service";
 
 export default class NotificationService extends Service {
-	flash = service("flash");
+	toast = service("toast");
 
 	info(this: NotificationService, message: string) {
-		alert(message);
-		// get(this, "flash").info(message);
+		get(this, "toast").info(message);
 	}
 
 	error(this: NotificationService, message: string) {
-		alert(message);
-		// get(this, "flash").danger(message);
+		get(this, "toast").error(message);
 	}
 
 	success(this: NotificationService, message: string) {
-		alert(message);
-		// get(this, "flash").success(message);
+		get(this, "toast").success(message);
 	}
 
 	warning(this: NotificationService, message: string) {
-		alert(message);
-		// get(this, "flash").warning(message);
+		get(this, "toast").warning(message);
 	}
 }
 

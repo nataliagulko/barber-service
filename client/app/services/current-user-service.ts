@@ -12,10 +12,11 @@ export default class CurrentUserService extends Service {
 
 	load(this: CurrentUserService) {
 		const s = this
+		const store = get(s, "store")
 		const phone = get(s, "session.data.authenticated.username");
 
 		if (!isEmpty(phone)) {
-			return this.store.queryRecord("master", { phone }).then((master: any) => {
+			return store.queryRecord("master", { phone }).then((master: any) => {
 				set(s, "master", master);
 				set(s, "business", master.get("business"));
 			});

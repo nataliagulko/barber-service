@@ -5175,15 +5175,6 @@ ember-cli-dependency-checker@^3.0.0:
     resolve "^1.5.0"
     semver "^5.3.0"
 
-ember-cli-flash@^1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/ember-cli-flash/-/ember-cli-flash-1.7.0.tgz#95764a23c43b32e3c258cb4b05cc439eaf684b93"
-  integrity sha512-AlgqF6brdeeJSkUWcBFd1oy4aZ8jF5LO1xye+Ucdk0VmwHdXwGYh9N3DI1GLAeHZLq4vgdrRFqigkRYC+NR2Kg==
-  dependencies:
-    ember-cli-babel "^6.10.0"
-    ember-cli-htmlbars "^2.0.1"
-    ember-runtime-enumerable-includes-polyfill "^2.0.0"
-
 ember-cli-get-component-path-option@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/ember-cli-get-component-path-option/-/ember-cli-get-component-path-option-1.0.0.tgz#0d7b595559e2f9050abed804f1d8eff1b08bc771"
@@ -6205,6 +6196,15 @@ ember-text-measurer@^0.4.0:
   integrity sha512-fwRoaGF0pemMyJ5S/j5FYt7PZva8MyZA33DwkL1LLAR9T5hQyatSbZaLl4D1a5Kv8kDXX0tTFZT9xCPPKahYTg==
   dependencies:
     ember-cli-babel "^6.8.2"
+
+ember-toastr@^1.7.2:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/ember-toastr/-/ember-toastr-1.7.2.tgz#8b060b01821dd4e94b9da3aa5eab5375753ceba4"
+  integrity sha512-xV/grsMPiXE55FHegeUDp00s748N88/EGdHn7SAQUuHgUamaiWQqQpmV68OYmln20ZTV9HQ7iQTuhNWk+OOj4g==
+  dependencies:
+    broccoli-funnel "^2.0.1"
+    broccoli-merge-trees "^2.0.0"
+    ember-cli-babel "^6.11.0"
 
 ember-truth-helpers@^2.0.0, ember-truth-helpers@^2.1.0:
   version "2.1.0"
@@ -8466,7 +8466,7 @@ jquery-deferred@^0.3.0:
   resolved "https://registry.yarnpkg.com/jquery-deferred/-/jquery-deferred-0.3.1.tgz#596eca1caaff54f61b110962b23cafea74c35355"
   integrity sha1-WW7KHKr/VPYbEQlisjyv6nTDU1U=
 
-"jquery@2 - 3", jquery@^3.3.1:
+"jquery@2 - 3", jquery@>=1.12.0, jquery@^3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
   integrity sha512-Ubldcmxp5np52/ENotGxlLe6aGMvmF4R8S6tZjsP6Knsaxd/xp3Zrh50cG93lR6nPXyUFwzN3ZSOQI0wRJNdGg==
@@ -12469,6 +12469,13 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     extend-shallow "^3.0.2"
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
+
+toastr@^2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/toastr/-/toastr-2.1.4.tgz#8b43be64fb9d0c414871446f2db8e8ca4e95f181"
+  integrity sha1-i0O+ZPudDEFIcURvLbjoyk6V8YE=
+  dependencies:
+    jquery ">=1.12.0"
 
 tough-cookie@~2.2.0:
   version "2.2.2"
