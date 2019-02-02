@@ -6,6 +6,7 @@ interface Data {
     authenticated: {
         id: string;
         access_token: string;
+        username: string;
     };
 }
 

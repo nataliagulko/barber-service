@@ -3,10 +3,13 @@ import { t } from "@ember-intl/decorators";
 import Component from "@ember/component";
 import { get, set } from "@ember/object";
 import { inject as service } from "@ember/service";
+import { Validations } from "ember-cp-validations";
+import Business from "nova/models/business";
+import Master from "nova/models/master";
 
 export default class RegisterForm extends Component {
-	master: any;
-	business: any;
+	master!: Master;
+	business!: Business;
 
 	notification = service("notification-service");
 	constants = service("constants-service");
@@ -15,7 +18,7 @@ export default class RegisterForm extends Component {
 	@reads("constants.PHONE_MASK")
 	phoneMask!: Array<RegExp | string>;
 
-	@t("business.registration.success"/*, {name, master}*/)
+	@t("business.registration.success", { name: "business.name", master: "master.firstname" })
 	message!: string;
 
 	submit() {
@@ -23,14 +26,14 @@ export default class RegisterForm extends Component {
 	}
 
 	actions = {
-		saveMaster(this: RegisterForm, business: any) {
+		saveMaster(this: RegisterForm, business: Business) {
 			const registerForm = this;
 			const masterRecord = this.master;
 
-			masterRecord.set("business", business);
-			masterRecord.set("enabled", true);
+			set(masterRecord, "business", business);
+			set(masterRecord, "enabled", true);
 			masterRecord.save()
-				.then((master: any) => {
+				.then(() => {
 					get(registerForm, "notification").error(registerForm.message);
 					get(registerForm, "router").transitionTo("login");
 				});
@@ -42,23 +45,23 @@ export default class RegisterForm extends Component {
 			const masterRecord = this.master;
 
 			// validate business
-			// businessRecord
-			// 	.validate()
-			// 	.then(({ validations }) => {
-			// 		if (validations.get("isValid")) {
-			// 			// then validate master
-			// 			masterRecord.validate()
-			// 				.then(({ validations }) => {
-			// 					if (validations.get("isValid")) {
-			// 						// and after save business
-			// 						businessRecord.save()
-			// 							.then((business) => {
-			// 								registerForm.send("saveMaster", business);
-			// 							});
-			// 					}
-			// 				});
-			// 		}
-			// 	});
+			businessRecord
+				.validate()
+				.then(({ validations: bValidations }: Validations) => {
+					if (get(bValidations, "isValid")) {
+						// then validate master
+						masterRecord.validate()
+							.then(({ validations: mValidations }: Validations) => {
+								if (get(mValidations, "isValid")) {
+									// and after save business
+									businessRecord.save()
+										.then((business) => {
+											registerForm.send("saveMaster", business);
+										});
+								}
+							});
+					}
+				});
 		},
 	}
 }

@@ -13,7 +13,8 @@ export default class CurrentUserService extends Service {
 	load(this: CurrentUserService) {
 		const s = this
 		const store = get(s, "store")
-		const phone = get(s, "session.data.authenticated.username");
+		const data = get(s, "session").data
+		const phone = data ? data.authenticated.username : null
 
 		if (!isEmpty(phone)) {
 			return store.queryRecord("master", { phone }).then((master: any) => {

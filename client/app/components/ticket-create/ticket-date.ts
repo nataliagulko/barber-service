@@ -1,4 +1,4 @@
-import { tagName } from "@ember-decorators/component/published-types";
+import { tagName } from "@ember-decorators/component";
 import { reads } from "@ember-decorators/object/computed";
 import Component from "@ember/component";
 import { get } from "@ember/object";

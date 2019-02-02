@@ -35,8 +35,9 @@ export default class IndexDashboard extends Component.extend(TokenAuthorizerMixi
 		this.send("getStatistic");
 	}
 
-	getAuthorizedStatistic(query: IQuery, methodName: string) {
-		const token = this.session.data.authenticated.access_token;
+	getAuthorizedStatistic(this: IndexDashboard, query: IQuery, methodName: string) {
+		const data = get(this, "session").data
+		const token = data ? data.authenticated.access_token : null
 
 		return new RSVP.Promise((resolve, reject) => {
 			$.post({
@@ -47,8 +48,8 @@ export default class IndexDashboard extends Component.extend(TokenAuthorizerMixi
 				},
 				mimeType: "application/json",
 				url: `${config.host}/${methodName}`,
-			}).then((data) => {
-				resolve(data);
+			}).then((d) => {
+				resolve(d);
 			}, (jqXHR) => {
 				reject(jqXHR);
 			});

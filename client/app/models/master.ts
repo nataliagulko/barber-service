@@ -1,4 +1,4 @@
-import { attr, hasMany, belongsTo } from "@ember-decorators/data";
+import { attr, belongsTo, hasMany } from "@ember-decorators/data";
 import { computed } from "@ember-decorators/object";
 import { buildValidations, validator } from "ember-cp-validations";
 import DS from "ember-data";
@@ -44,33 +44,33 @@ const Validations = buildValidations({
 });
 
 export default class Master extends DS.Model.extend(Validations) {
-	@attr("string") username!: string;
-	@attr("string") password!: string;
-	@attr("string") rpassword!: string;
-	@attr("string") email!: string;
-	@attr("string") firstname!: string;
-	@attr("string") secondname!: string;
-	@attr("string") phone!: string;
-	@attr("string") masterTZ!: string;
-	@attr("boolean") enabled!: boolean;
-	@attr("boolean") accountExpired!: boolean;
-	@attr("boolean") accountLocked!: boolean;
-	@attr("boolean") passwordExpired!: boolean;
+	@attr("string") username!: string
+	@attr("string") password!: string
+	@attr("string") rpassword!: string
+	@attr("string") email!: string
+	@attr("string") firstname!: string
+	@attr("string") secondname!: string
+	@attr("string") phone!: string
+	@attr("string") masterTZ!: string
+	@attr("boolean") enabled!: boolean
+	@attr("boolean") accountExpired!: boolean
+	@attr("boolean") accountLocked!: boolean
+	@attr("boolean") passwordExpired!: boolean
 	@hasMany("role", { async: true }) roles!: Role[]
 	@belongsTo("business", { async: true }) business!: Business
 
 	@computed("fullname")
 	get getFullName(): string {
 		if (!this.secondname) {
-			return this.firstname;
+			return this.firstname
 		}
 
-		return `${this.firstname} ${this.secondname}`;
+		return `${this.firstname} ${this.secondname}`
 	}
 }
 
 declare module "ember-data/types/registries/model" {
 	interface ModelRegistry {
-		"master": Master;
+		"master": Master
 	}
 }
