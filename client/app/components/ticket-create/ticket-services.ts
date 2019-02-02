@@ -1,6 +1,5 @@
 import { tagName } from "@ember-decorators/component";
-import { reads } from "@ember-decorators/object/computed";
-import { not } from "@ember-decorators/object/computed";
+import { not, reads } from "@ember-decorators/object/computed";
 import Component from "@ember/component";
 import { get } from "@ember/object";
 import { inject as service } from "@ember/service";
