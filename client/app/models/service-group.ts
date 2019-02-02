@@ -10,7 +10,7 @@ export default class ServiceGroup extends Service.extend(Validations) {
 	@hasMany("serviceToGroup") servicesToGroup!: DS.PromiseManyArray<ServiceToGroup>
 }
 
-declare module "ember-data" {
+declare module "ember-data/types/registries/model" {
 	interface ModelRegistry {
 		"service-group": ServiceGroup;
 	}

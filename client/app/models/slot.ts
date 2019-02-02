@@ -20,7 +20,7 @@ export default class Slot extends DS.Model.extend(Validations) {
 	@belongsTo("master") master!: DS.PromiseObject<Master>
 }
 
-declare module "ember-data" {
+declare module "ember-data/types/registries/model" {
 	interface ModelRegistry {
 		"slot": Slot;
 	}

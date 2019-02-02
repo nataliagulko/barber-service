@@ -15,7 +15,7 @@ export default class ServiceToGroup extends DS.Model.extend(Validations) {
 	@belongsTo("service") service!: DS.PromiseObject<Service>
 }
 
-declare module "ember-data" {
+declare module "ember-data/types/registries/model" {
 	interface ModelRegistry {
 		"service-to-group": ServiceToGroup;
 	}

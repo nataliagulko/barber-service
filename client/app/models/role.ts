@@ -12,7 +12,7 @@ export default class Role extends DS.Model.extend(Validations) {
 	@attr("string") description!: string
 }
 
-declare module "ember-data" {
+declare module "ember-data/types/registries/model" {
 	interface ModelRegistry {
 		"role": Role;
 	}

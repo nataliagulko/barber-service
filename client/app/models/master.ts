@@ -68,7 +68,7 @@ export default class Master extends DS.Model.extend(Validations) {
 	}
 }
 
-declare module "ember-data" {
+declare module "ember-data/types/registries/model" {
 	interface ModelRegistry {
 		"master": Master;
 	}

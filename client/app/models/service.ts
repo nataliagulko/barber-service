@@ -24,7 +24,7 @@ export default class Service extends DS.Model.extend(Validations) {
 	@hasMany("master") masters!: DS.PromiseManyArray<Master>
 }
 
-declare module "ember-data" {
+declare module "ember-data/types/registries/model" {
 	interface ModelRegistry {
 		"service": Service;
 	}

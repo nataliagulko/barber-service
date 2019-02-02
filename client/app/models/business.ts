@@ -2,6 +2,7 @@ import { attr, hasMany } from "@ember-decorators/data";
 import { buildValidations, validator } from "ember-cp-validations";
 import DS from "ember-data";
 import Client from "./client";
+import Master from "./master";
 
 const Validations = buildValidations({
 	name: validator("presence", true),
@@ -37,7 +38,7 @@ export default class Business extends DS.Model.extend(Validations) {
 	@hasMany("client") clients!: DS.PromiseManyArray<Client>;
 }
 
-declare module "ember-data" {
+declare module "ember-data/types/registries/model" {
 	interface ModelRegistry {
 		"business": Business;
 	}
