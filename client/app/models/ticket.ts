@@ -1,6 +1,6 @@
 import { attr, belongsTo, hasMany } from "@ember-decorators/data";
 import { buildValidations, validator } from "ember-cp-validations";
-import Model from "ember-data";
+import DS from "ember-data";
 import moment from "moment";
 import Client from "./client";
 import Master from "./master";
@@ -43,7 +43,7 @@ const Validations = buildValidations({
 	],
 });
 
-export default class Ticket extends Model.extend(Validations) {
+export default class Ticket extends DS.Model.extend(Validations) {
 	@attr("string") ticketDate!: string
 	@attr("string") time!: string
 	@attr("string") status!: string
@@ -52,9 +52,9 @@ export default class Ticket extends Model.extend(Validations) {
 	@attr("string") type!: string
 	@attr("string") cost!: string
 	@attr("string") duration!: string
-	@belongsTo("client", { async: true }) client!: PromiseObject<Client>
-	@belongsTo("master", { async: true }) master!: PromiseObject<Master>
-	@hasMany("service", { async: true }) services!: PromiseManyArray<Service>
+	@belongsTo("client", { async: true }) client!: DS.PromiseObject<Client>
+	@belongsTo("master", { async: true }) master!: DS.PromiseObject<Master>
+	@hasMany("service", { async: true }) services!: DS.PromiseManyArray<Service>
 }
 
 declare module "ember-data" {

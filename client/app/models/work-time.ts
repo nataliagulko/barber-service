@@ -1,7 +1,7 @@
 import { attr, belongsTo } from "@ember-decorators/data";
 import { computed } from "@ember-decorators/object";
 import { buildValidations, validator } from "ember-cp-validations";
-import Model from "ember-data";
+import DS from "ember-data";
 import Master from "./master";
 
 const Validations = buildValidations({
@@ -26,13 +26,13 @@ const Validations = buildValidations({
 	master: validator("belongs-to", true),
 });
 
-export default class WorkTime extends Model.extend(Validations) {
+export default class WorkTime extends DS.Model.extend(Validations) {
 	@attr("string") timeFrom!: string
 	@attr("string") timeTo!: string
 	@attr("string") dayOfWeek!: string
 	@attr("string") dateFrom!: string
 	@attr("string") dateTo!: string
-	@belongsTo("master") master!: PromiseObject<Master>
+	@belongsTo("master") master!: DS.PromiseObject<Master>
 
 	@computed("timeRange")
 	get getTimeRange(): string {

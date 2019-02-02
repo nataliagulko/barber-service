@@ -1,13 +1,13 @@
 import { attr } from "@ember-decorators/data";
 import { buildValidations, validator } from "ember-cp-validations";
-import Model from "ember-data";
+import DS from "ember-data";
 
 const Validations = buildValidations({
 	authority: validator("presence", true),
 	description: validator("presence", true),
 });
 
-export default class Role extends Model.extend(Validations) {
+export default class Role extends DS.Model.extend(Validations) {
 	@attr("string") authority!: string
 	@attr("string") description!: string
 }

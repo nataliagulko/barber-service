@@ -7,7 +7,7 @@ const Validations = buildValidations({
 });
 
 export default class ServiceGroup extends Service.extend(Validations) {
-	@hasMany("serviceToGroup") servicesToGroup!: PromiseManyArray<ServiceToGroup>
+	@hasMany("serviceToGroup") servicesToGroup!: DS.PromiseManyArray<ServiceToGroup>
 }
 
 declare module "ember-data" {

@@ -1,6 +1,6 @@
 import { attr, hasMany } from "@ember-decorators/data";
 import { buildValidations, validator } from "ember-cp-validations";
-import Model from "ember-data";
+import DS from "ember-data";
 import Client from "./client";
 
 const Validations = buildValidations({
@@ -22,7 +22,7 @@ const Validations = buildValidations({
 	clients: validator("has-many", true),
 });
 
-export default class Business extends Model.extend(Validations) {
+export default class Business extends DS.Model.extend(Validations) {
 	@attr("string") name!: string;
 	@attr("string") inn!: string;
 	@attr("string") phone!: string;
@@ -33,8 +33,8 @@ export default class Business extends Model.extend(Validations) {
 	@attr("string") smsCentrPass!: string;
 	@attr("string") guid!: string;
 	@attr("string") code!: string;
-	@hasMany("master") masters!: PromiseManyArray<Master>;
-	@hasMany("client") clients!: PromiseManyArray<Client>;
+	@hasMany("master") masters!: DS.PromiseManyArray<Master>;
+	@hasMany("client") clients!: DS.PromiseManyArray<Client>;
 }
 
 declare module "ember-data" {

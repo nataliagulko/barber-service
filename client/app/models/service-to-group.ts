@@ -1,6 +1,6 @@
 import { attr, belongsTo } from "@ember-decorators/data";
 import { buildValidations, validator } from "ember-cp-validations";
-import Model from "ember-data";
+import DS from "ember-data";
 import ServiceGroup from "./service-group";
 
 const Validations = buildValidations({
@@ -8,11 +8,11 @@ const Validations = buildValidations({
 	service: validator("belongs-to", true),
 });
 
-export default class ServiceToGroup extends Model.extend(Validations) {
+export default class ServiceToGroup extends DS.Model.extend(Validations) {
 	@attr("number") serviceOrder!: number
 	@attr("number", { defaultValue: 0 }) serviceTimeout!: number
-	@belongsTo("serviceGroup") serviceGroup!: PromiseObject<ServiceGroup>
-	@belongsTo("service") service!: PromiseObject<Service>
+	@belongsTo("serviceGroup") serviceGroup!: DS.PromiseObject<ServiceGroup>
+	@belongsTo("service") service!: DS.PromiseObject<Service>
 }
 
 declare module "ember-data" {

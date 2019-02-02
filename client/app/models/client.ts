@@ -1,7 +1,7 @@
 import { attr } from "@ember-decorators/data";
 import { computed } from "@ember-decorators/object";
 import { buildValidations, validator } from "ember-cp-validations";
-import Model from "ember-data";
+import DS from "ember-data";
 
 const Validations = buildValidations({
 	email: [
@@ -21,7 +21,7 @@ const Validations = buildValidations({
 	],
 });
 
-export default class Client extends Model.extend(Validations) {
+export default class Client extends DS.Model.extend(Validations) {
 	@attr("string") username!: string
 	@attr("string") password!: string
 	@attr("string") rpassword!: string

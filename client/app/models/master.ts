@@ -1,7 +1,7 @@
 import { attr, hasMany, belongsTo } from "@ember-decorators/data";
 import { computed } from "@ember-decorators/object";
 import { buildValidations, validator } from "ember-cp-validations";
-import Model from "ember-data";
+import DS from "ember-data";
 import Business from "./business";
 
 const Validations = buildValidations({
@@ -42,7 +42,7 @@ const Validations = buildValidations({
 	business: validator("belongs-to", true),
 });
 
-export default class Master extends Model.extend(Validations) {
+export default class Master extends DS.Model.extend(Validations) {
 	@attr("string") username!: string;
 	@attr("string") password!: string;
 	@attr("string") rpassword!: string;
@@ -55,8 +55,8 @@ export default class Master extends Model.extend(Validations) {
 	@attr("boolean") accountExpired!: boolean;
 	@attr("boolean") accountLocked!: boolean;
 	@attr("boolean") passwordExpired!: boolean;
-	@hasMany("role", { async: true }) roles!: PromiseManyArray<Role>
-	@belongsTo("business", { async: true }) business!: PromiseObject<Business>
+	@hasMany("role", { async: true }) roles!: DS.PromiseManyArray<Role>
+	@belongsTo("business", { async: true }) business!: DS.PromiseObject<Business>
 
 	@computed("fullname")
 	get getFullName(): string {

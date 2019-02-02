@@ -1,6 +1,6 @@
 import { attr, belongsTo } from "@ember-decorators/data";
 import { buildValidations, validator } from "ember-cp-validations";
-import Model from "ember-data";
+import DS from "ember-data";
 
 const Validations = buildValidations({
 	dateFrom: [
@@ -20,11 +20,11 @@ const Validations = buildValidations({
 	master: validator("belongs-to", true),
 });
 
-export default class Holiday extends Model.extend(Validations) {
+export default class Holiday extends DS.Model.extend(Validations) {
 	@attr("string") dateFrom!: string
 	@attr("string") dateTo!: string
 	@attr("string") comment!: string
-	@belongsTo("master") master: PromiseObject<Master>;
+	@belongsTo("master") master: DS.PromiseObject<Master>;
 }
 
 declare module "ember-data" {
