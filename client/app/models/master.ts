@@ -3,6 +3,7 @@ import { computed } from "@ember-decorators/object";
 import { buildValidations, validator } from "ember-cp-validations";
 import DS from "ember-data";
 import Business from "./business";
+import Role from "./role";
 
 const Validations = buildValidations({
 	firstname: validator("presence", true),
@@ -55,8 +56,8 @@ export default class Master extends DS.Model.extend(Validations) {
 	@attr("boolean") accountExpired!: boolean;
 	@attr("boolean") accountLocked!: boolean;
 	@attr("boolean") passwordExpired!: boolean;
-	@hasMany("role", { async: true }) roles!: DS.PromiseManyArray<Role>
-	@belongsTo("business", { async: true }) business!: DS.PromiseObject<Business>
+	@hasMany("role", { async: true }) roles!: Role[]
+	@belongsTo("business", { async: true }) business!: Business
 
 	@computed("fullname")
 	get getFullName(): string {

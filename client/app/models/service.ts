@@ -21,7 +21,7 @@ export default class Service extends DS.Model.extend(Validations) {
 	@attr("number", { defaultValue: 0 }) cost!: number
 	@attr("number", { defaultValue: 0 }) time!: number
 	@attr("boolean") partOfList!: boolean
-	@hasMany("master") masters!: DS.PromiseManyArray<Master>
+	@hasMany("master") masters!: Master[]
 }
 
 declare module "ember-data/types/registries/model" {
