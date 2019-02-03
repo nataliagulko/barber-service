@@ -1,7 +1,7 @@
 import Service from "@ember/service";
 
 export default class BootboxService extends Service {
-	confirmDelete(store: any, type: string, id: number) {
+	confirmDelete(store: any, type: string, id: string) {
 		store.findRecord(type, id, { backgroundReload: false }).then((item: any) => {
 			item.destroyRecord();
 		});
