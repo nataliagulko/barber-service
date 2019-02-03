@@ -17,7 +17,7 @@ export default class Slot extends DS.Model.extend(Validations) {
 	@attr("string") start!: string
 	@attr("string") end!: string
 	@attr("string") slotDate!: string
-	@belongsTo("master") master!: Master
+	@belongsTo master!: Master
 }
 
 declare module "ember-data/types/registries/model" {

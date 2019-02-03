@@ -12,8 +12,8 @@ const Validations = buildValidations({
 export default class ServiceToGroup extends DS.Model.extend(Validations) {
 	@attr("number") serviceOrder!: number
 	@attr("number", { defaultValue: 0 }) serviceTimeout!: number
-	@belongsTo("serviceGroup") serviceGroup!: ServiceGroup
-	@belongsTo("service") service!: Service
+	@belongsTo serviceGroup!: ServiceGroup
+	@belongsTo service!: Service
 }
 
 declare module "ember-data/types/registries/model" {

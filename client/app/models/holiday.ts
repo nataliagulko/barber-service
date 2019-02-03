@@ -25,7 +25,7 @@ export default class Holiday extends DS.Model.extend(Validations) {
 	@attr("string") dateFrom!: string
 	@attr("string") dateTo!: string
 	@attr("string") comment!: string
-	@belongsTo("master") master!: Master
+	@belongsTo master!: Master
 }
 
 declare module "ember-data/types/registries/model" {

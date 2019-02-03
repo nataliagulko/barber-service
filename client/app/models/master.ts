@@ -56,8 +56,8 @@ export default class Master extends DS.Model.extend(Validations) {
 	@attr("boolean") accountExpired!: boolean
 	@attr("boolean") accountLocked!: boolean
 	@attr("boolean") passwordExpired!: boolean
-	@hasMany("role", { async: true }) roles!: Role[]
-	@belongsTo("business", { async: true }) business!: Business
+	@hasMany roles!: Role[]
+	@belongsTo business!: Business
 
 	@computed("fullname")
 	get getFullName(): string {

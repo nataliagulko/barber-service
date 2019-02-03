@@ -32,7 +32,7 @@ export default class WorkTime extends DS.Model.extend(Validations) {
 	@attr("string") dayOfWeek!: string
 	@attr("string") dateFrom!: string
 	@attr("string") dateTo!: string
-	@belongsTo("master") master!: Master
+	@belongsTo master!: Master
 
 	@computed("timeRange")
 	get getTimeRange(): string {

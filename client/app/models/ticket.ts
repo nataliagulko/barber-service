@@ -52,9 +52,9 @@ export default class Ticket extends DS.Model.extend(Validations) {
 	@attr("string") type!: string
 	@attr("string") cost!: string
 	@attr("string") duration!: string
-	@belongsTo("client", { async: true }) client!: Client
-	@belongsTo("master", { async: true }) master!: Master
-	@hasMany("service", { async: true }) services!: Service[]
+	@belongsTo client!: Client
+	@belongsTo master!: Master
+	@hasMany services!: Service[]
 }
 
 declare module "ember-data/types/registries/model" {
