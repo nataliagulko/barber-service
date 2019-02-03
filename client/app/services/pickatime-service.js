@@ -20,7 +20,7 @@ export default Service.extend({
 		picker.$root.attr('aria-hidden', 'false');
 	},
 
-	set(selector, func, params) {
+	setFunc(selector, func, params) {
 		var picker = $(selector).pickatime('picker');
 		picker.set(func, params);
 	},

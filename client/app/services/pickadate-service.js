@@ -18,7 +18,7 @@ export default Service.extend({
 		picker.$root.attr('aria-hidden', 'false');
 	},
 
-	set(selector, method, params) {
+	setFunc(selector, method, params) {
 		var picker = $(selector).pickadate('picker');
 		picker.set(method, params);
 	},
