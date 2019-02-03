@@ -37,5 +37,5 @@ export default class MasterForm extends Component {
 				});
 
 		},
-	},
+	}
 }
