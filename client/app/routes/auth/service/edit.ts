@@ -3,8 +3,8 @@ import Route from "@ember/routing/route";
 import RollbackAttributesMixin from "nova/mixins/rollback-attributes-mixin";
 import { hash } from "rsvp";
 
-export default class EditRoute extends Route.extend(RollbackAttributesMixin) {
-	model(this: EditRoute, params: any) {
+export default class AuthServiceEditRoute extends Route.extend(RollbackAttributesMixin) {
+	model(this: AuthServiceEditRoute, params: any) {
 		const store = get(this, "store")
 		return hash({
 			service: store.findRecord("service", params.id),
@@ -12,7 +12,7 @@ export default class EditRoute extends Route.extend(RollbackAttributesMixin) {
 		});
 	}
 
-	deactivate(this: EditRoute) {
+	deactivate(this: AuthServiceEditRoute) {
 		this._super(...arguments);
 
 		const model = this.modelFor(this.routeName);
