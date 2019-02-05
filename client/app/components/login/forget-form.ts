@@ -43,7 +43,7 @@ export default class ForgetForm extends Component.extend(Validations) {
 	phone!: string
 	pass!: string
 
-	session = service("session");
+	sessionService = service("session");
 	notification = service("notification-service");
 
 	@reads("constants.PHONE_MASK")

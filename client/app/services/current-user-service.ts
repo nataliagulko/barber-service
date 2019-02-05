@@ -7,13 +7,13 @@ export default class CurrentUserService extends Service {
 	master!: any;
 	business!: any;
 
-	session = service("session");
+	sessionService = service("session");
 	store = service("store");
 
 	load(this: CurrentUserService) {
 		const s = this
 		const store = get(s, "store")
-		const data = get(s, "session").data
+		const data = get(s, "sessionService").data
 		const phone = data ? data.authenticated.username : null
 
 		if (!isEmpty(phone)) {

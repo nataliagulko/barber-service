@@ -6,12 +6,12 @@ import ApplicationRouteMixin from "ember-simple-auth/mixins/application-route-mi
 
 @classNames("page-header", "navbar", "navbar-fixed-top")
 export default class PageHeader extends Component.extend(ApplicationRouteMixin) {
-	session = service("session")
+	sessionService = service("session")
 	currentUser = service("current-user-service")
 
 	actions = {
 		invalidateSession(this: PageHeader) {
-			get(this, "session").invalidate()
+			get(this, "sessionService").invalidate()
 		},
 	}
 };

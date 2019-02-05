@@ -56,7 +56,7 @@ export default class Master extends DS.Model.extend(Validations) {
 	@attr("boolean") accountExpired!: boolean
 	@attr("boolean") accountLocked!: boolean
 	@attr("boolean") passwordExpired!: boolean
-	@hasMany roles!: Role[]
+	@hasMany role!: Role[]
 	@belongsTo business!: Business
 
 	@computed("fullname")

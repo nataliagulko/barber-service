@@ -34,8 +34,8 @@ export default class Business extends DS.Model.extend(Validations) {
 	@attr("string") smsCentrPass!: string;
 	@attr("string") guid!: string;
 	@attr("string") code!: string;
-	@hasMany masters!: Master[]
-	@hasMany clients!: Client[]
+	@hasMany master!: Master[]
+	@hasMany client!: Client[]
 }
 
 declare module "ember-data/types/registries/model" {

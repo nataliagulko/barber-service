@@ -29,14 +29,14 @@ export default class IndexDashboard extends Component.extend(TokenAuthorizerMixi
 	costSUMM!: number
 	clientCount!: number
 
-	session = service("session");
+	sessionService = service("session");
 
 	didInsertElement() {
 		this.send("getStatistic");
 	}
 
 	getAuthorizedStatistic(this: IndexDashboard, query: IQuery, methodName: string) {
-		const data = get(this, "session").data
+		const data = get(this, "sessionService").data
 		const token = data ? data.authenticated.access_token : null
 
 		return new RSVP.Promise((resolve, reject) => {

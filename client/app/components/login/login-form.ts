@@ -9,7 +9,7 @@ export default class LoginForm extends Component {
 	password!: string;
 	isLoginShown: boolean = true;
 
-	session = service("session");
+	sessionService = service("session");
 	notification = service("notification-service");
 	constants = service("constants-service");
 
@@ -24,7 +24,7 @@ export default class LoginForm extends Component {
 			const loginForm = this;
 			const credentials = loginForm.getProperties("username", "password");
 
-			get(loginForm, "session").authenticate("authenticator:token", credentials)
+			get(loginForm, "sessionService").authenticate("authenticator:token", credentials)
 				.then(() => { },
 					() => {
 						get(loginForm, "notification").error(loginForm.message);
