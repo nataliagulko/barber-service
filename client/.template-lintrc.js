@@ -5,6 +5,7 @@ module.exports = {
 	rules: {
 		'no-bare-strings': true,
 		'block-indentation': "tab",
-		'attribute-indentation': false
+		'attribute-indentation': false,
+		'no-invalid-interactive': false
 	}
 };
