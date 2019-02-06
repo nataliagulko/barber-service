@@ -32,6 +32,7 @@ class MasterAjaxController {
         def relationships = data.relationships
         if (attrs.phone && ((attrs.password && attrs.rpassword) || (attrs.password && !attrs.rpassword) || (!attrs.password && !attrs.rpassword))) {
             if (attrs.password.equals(attrs.rpassword) || (attrs.password && !attrs.rpassword) || (!attrs.password && !attrs.rpassword)) {
+                attrs.type = "master"
                 def result = usersService.createUser(attrs, relationships)
                 if (result instanceof User) {
                     //result.setPassword(null)

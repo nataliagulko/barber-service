@@ -44,6 +44,7 @@ class UsersService {
                 }
             }
             String authority = params.type == "master" ? AuthKeys.MASTER : (params.type == "client"  ? AuthKeys.CLIENT : null)
+            authority = authority == null ? AuthKeys.CLIENT : authority
             if (authority) {
                 Role role = Role.findByAuthority(authority)
                 new UserRole(user: user, role: role).save(flush: true);
