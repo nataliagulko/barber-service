@@ -8,11 +8,11 @@ const Validations = buildValidations({
 });
 
 export default class ServiceGroup extends Service.extend(Validations) {
-	@hasMany serviceToGroup!: ServiceToGroup[]
+	@hasMany("service-to-group") serviceToGroups!: ServiceToGroup[]
 }
 
 declare module "ember-data/types/registries/model" {
-	interface ModelRegistry {
+	export default interface ModelRegistry {
 		"service-group": ServiceGroup;
 	}
 }

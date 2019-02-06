@@ -52,13 +52,13 @@ export default class Ticket extends DS.Model.extend(Validations) {
 	@attr("string") type!: string
 	@attr("string") cost!: string
 	@attr("string") duration!: string
-	@belongsTo client!: Client
-	@belongsTo master!: Master
-	@hasMany service!: Service[]
+	@belongsTo("client") client!: Client
+	@belongsTo("master") master!: Master
+	@hasMany("service") services!: Service[]
 }
 
 declare module "ember-data/types/registries/model" {
-	interface ModelRegistry {
+	export default interface ModelRegistry {
 		"ticket": Ticket;
 	}
 }

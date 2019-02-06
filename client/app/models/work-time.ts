@@ -32,16 +32,21 @@ export default class WorkTime extends DS.Model.extend(Validations) {
 	@attr("string") dayOfWeek!: string
 	@attr("string") dateFrom!: string
 	@attr("string") dateTo!: string
-	@belongsTo master!: Master
+	@belongsTo("master") master!: Master
 
-	@computed("timeRange")
-	get getTimeRange(): string {
+	@computed("timeFrom", "timeTo")
+	get timeRange(): string {
 		return `${this.timeFrom}—${this.timeTo}`;
+	}
+
+	set timeRange(value: string) {
+		const [timeFrom, timeTo] = value.split("—")
+		this.setProperties({ timeFrom, timeTo })
 	}
 }
 
 declare module "ember-data/types/registries/model" {
-	interface ModelRegistry {
+	export default interface ModelRegistry {
 		"work-time": WorkTime;
 	}
 }

@@ -35,18 +35,23 @@ export default class Client extends DS.Model.extend(Validations) {
 	@attr("string") accountLocked!: string
 	@attr("string") passwordExpired!: string
 
-	@computed("fullname")
-	get getFullName(): string {
+	@computed("firstname", "secondname")
+	get fullname(): string {
 		if (!this.secondname) {
-			return this.firstname;
+			return this.firstname
 		}
 
-		return `${this.firstname} ${this.secondname}`;
+		return `${this.firstname} ${this.secondname}`
+	}
+
+	set fullname(value: string) {
+		const [firstname, secondname] = value.split(" ")
+		this.setProperties({ firstname, secondname })
 	}
 }
 
 declare module "ember-data/types/registries/model" {
-	interface ModelRegistry {
+	export default interface ModelRegistry {
 		"client": Client;
 	}
 }

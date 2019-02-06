@@ -34,12 +34,12 @@ export default class Business extends DS.Model.extend(Validations) {
 	@attr("string") smsCentrPass!: string;
 	@attr("string") guid!: string;
 	@attr("string") code!: string;
-	@hasMany master!: Master[]
-	@hasMany client!: Client[]
+	@hasMany("master") masters!: Master[]
+	@hasMany("client") clients!: Client[]
 }
 
 declare module "ember-data/types/registries/model" {
-	interface ModelRegistry {
+	export default interface ModelRegistry {
 		"business": Business;
 	}
 }

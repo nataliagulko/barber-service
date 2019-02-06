@@ -56,21 +56,26 @@ export default class Master extends DS.Model.extend(Validations) {
 	@attr("boolean") accountExpired!: boolean
 	@attr("boolean") accountLocked!: boolean
 	@attr("boolean") passwordExpired!: boolean
-	@hasMany role!: Role[]
-	@belongsTo business!: Business
+	@hasMany("role") roles!: Role[]
+	@belongsTo("business") business!: Business
 
-	@computed("fullname")
-	get getFullName(): string {
+	@computed("firstname", "secondname")
+	get fullname(): string {
 		if (!this.secondname) {
 			return this.firstname
 		}
 
 		return `${this.firstname} ${this.secondname}`
 	}
+
+	set fullname(value: string) {
+		const [firstname, secondname] = value.split(" ")
+		this.setProperties({ firstname, secondname })
+	}
 }
 
 declare module "ember-data/types/registries/model" {
-	interface ModelRegistry {
+	export default interface ModelRegistry {
 		"master": Master
 	}
 }
