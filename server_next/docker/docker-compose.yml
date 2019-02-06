@@ -1,0 +1,29 @@
+---
+version: '3'
+services:
+  barber-db:
+    image: mysql:latest
+    volumes:
+      - ..\docker\novaDB\db\:/var/lib/mysql
+      - ..\docker\novaDB\init\:/docker-entrypoint-initdb.d
+    restart: always
+    ports:
+      - "3307:3306" #порт для бд наружу (слева наружу, справа от контейнера)
+    environment:
+      MYSQL_ROOT_PASSWORD: repgate
+      #MYSQL_DATABASE: nova
+      MYSQL_USER: barber
+      MYSQL_PASSWORD: repgate
+  barber:
+    depends_on:
+      - barber-db
+    image: novaservice/barber-service:latest
+    ports:
+      - "8082:8080" #порт сервака, слева наружу, справа от контейнера
+    restart: always
+    environment:
+      DB_URL: barber-db:3306/nova?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Europe/Moscow&useSSL=false&allowPublicKeyRetrieval=true
+      DB_USER: root
+      DB_PASS: repgate
+volumes:
+  dbdata:
