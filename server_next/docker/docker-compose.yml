@@ -1,6 +1,8 @@
 ---
 version: '3'
 services:
+  gui:
+    image: novaservice/barber-service:gui
   barber-db:
     image: mysql:latest
     volumes:

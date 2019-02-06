@@ -1,5 +1,9 @@
 version: '2'
 services:
+  gui:
+    image: novaservice/barber-service:gui
+    ports:
+      - "80:80"
   barber-db:
     image: mysql:latest
     volumes:
