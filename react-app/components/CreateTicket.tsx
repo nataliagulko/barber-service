@@ -32,6 +32,10 @@ export const CreateTicket: FC<Props> = ({ services }) => {
 				<ServiceList services={services} getServiceTime={getServiceTime} getServiceCost={getServiceCost} />
 			),
 		},
+		{
+			title: 'Дата',
+			content: <div />,
+		},
 	]
 
 	return (

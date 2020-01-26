@@ -57,4 +57,12 @@ describe('Create ticket page', () => {
 
 		expect(servicesStep).not.toBeNull()
 	})
+
+	it('should render date step title', () => {
+		const { queryByText } = renderPage()
+
+		const dateStep = queryByText('Дата')
+
+		expect(dateStep).not.toBeNull()
+	})
 })
