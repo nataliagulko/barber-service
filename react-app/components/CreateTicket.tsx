@@ -23,11 +23,7 @@ interface Step {
 }
 
 export const CreateTicket: FC<Props> = ({ services }) => {
-	const [duration, setDuration] = useState(0)
-	const [cost, setCost] = useState(0)
-
-	const getServiceTime = (t: number) => setDuration(duration + t)
-	const getServiceCost = (c: number) => setCost(cost + c)
+	const { duration, cost, getServiceTime, getServiceCost } = useCreateTicket()
 
 	const steps: Step[] = [
 		{
