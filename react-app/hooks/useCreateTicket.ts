@@ -21,3 +21,5 @@ export const useCreateTicket = () => {
 		goToPrevStep,
 	}
 }
+
+export type UseCreateTicket = typeof useCreateTicket
