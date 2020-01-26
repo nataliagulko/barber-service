@@ -101,6 +101,21 @@ describe('Create ticket page', () => {
 			expect(ticketDurationValue).toHaveTextContent('130')
 		})
 
+		it('duration when service was unselected', () => {
+			const { getByTestId, getAllByTestId } = renderPage()
+
+			const serviceCheckbox = getAllByTestId('service-checkbox')[0]
+			act(() => {
+				fireEvent.click(serviceCheckbox)
+			})
+			act(() => {
+				fireEvent.click(serviceCheckbox)
+			})
+
+			const ticketDurationValue = getByTestId('ticket-duration')
+			expect(ticketDurationValue).toHaveTextContent('0')
+		})
+
 		it('cost when service was selected', () => {
 			const { getByTestId, getAllByTestId } = renderPage()
 
@@ -111,6 +126,21 @@ describe('Create ticket page', () => {
 
 			const ticketDurationValue = getByTestId('ticket-cost')
 			expect(ticketDurationValue).toHaveTextContent('100')
+		})
+
+		it('cost when service was unselected', () => {
+			const { getByTestId, getAllByTestId } = renderPage()
+
+			const serviceCheckbox = getAllByTestId('service-checkbox')[0]
+			act(() => {
+				fireEvent.click(serviceCheckbox)
+			})
+			act(() => {
+				fireEvent.click(serviceCheckbox)
+			})
+
+			const ticketDurationValue = getByTestId('ticket-cost')
+			expect(ticketDurationValue).toHaveTextContent('0')
 		})
 
 		it('cost when several services were selected', () => {
