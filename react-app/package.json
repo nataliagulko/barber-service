@@ -1,0 +1,54 @@
+{
+	"name": "barber-site",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.ts",
+	"scripts": {
+		"dev": "next",
+		"build": "next build",
+		"start": "next start",
+		"test": "jest",
+		"server": "json-server --watch api/db.json"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+ssh://git@github.com/natalyna/barber-site.git"
+	},
+	"author": "",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/natalyna/barber-site/issues"
+	},
+	"homepage": "https://github.com/natalyna/barber-site#readme",
+	"devDependencies": {
+		"@babel/core": "^7.7.4",
+		"@babel/preset-env": "^7.7.4",
+		"@babel/preset-react": "^7.7.4",
+		"@babel/preset-typescript": "^7.7.4",
+		"@testing-library/jest-dom": "^4.2.4",
+		"@testing-library/react": "^9.3.2",
+		"@testing-library/react-hooks": "^3.2.1",
+		"@types/antd": "^1.0.0",
+		"@types/jest": "^24.0.23",
+		"@types/moment": "^2.13.0",
+		"@types/node": "^12.12.14",
+		"@types/react": "^16.9.14",
+		"@zeit/next-css": "^1.0.1",
+		"babel-jest": "^24.9.0",
+		"babel-plugin-import": "^1.13.0",
+		"isomorphic-unfetch": "^3.0.0",
+		"jest": "^24.9.0",
+		"json-server": "^0.15.1",
+		"moment": "^2.24.0",
+		"next": "^9.1.4",
+		"null-loader": "^3.0.0",
+		"react": "^16.12.0",
+		"react-dom": "^16.12.0",
+		"react-test-renderer": "16.12.0",
+		"ts-jest": "^24.2.0",
+		"typescript": "^3.7.2"
+	},
+	"dependencies": {
+		"antd": "^3.26.0"
+	}
+}

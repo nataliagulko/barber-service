@@ -1,0 +1,98 @@
+{
+	"services": [
+		{
+			"id": 1,
+			"name": "Racing car sprays burning fuel into crowd.",
+			"cost": 100,
+			"time": 60,
+			"partOfList": false,
+			"masters": [{ "master": { "id": 1 } }]
+		},
+		{
+			"id": 2,
+			"name": "Japanese princess to wed commoner.",
+			"cost": 150,
+			"time": 120,
+			"partOfList": false,
+			"masters": [{ "master": { "id": 1 } }]
+		},
+		{
+			"id": 3,
+			"name": "Australian walks 100km after outback crash.",
+			"cost": 200,
+			"time": 90,
+			"partOfList": false,
+			"masters": [{ "master": { "id": 1 } }]
+		},
+		{
+			"id": 4,
+			"name": "Man charged over missing wedding girl.",
+			"cost": 250,
+			"time": 30,
+			"partOfList": false,
+			"masters": [{ "master": { "id": 0 } }]
+		},
+		{
+			"id": 5,
+			"name": "Los Angeles battles huge wildfires.",
+			"cost": 300,
+			"time": 10,
+			"partOfList": false,
+			"masters": [{ "master": { "id": 0 } }]
+		}
+	],
+	"users": [
+		{
+			"id": 1,
+			"username": "nataly",
+			"password": "",
+			"email": "",
+			"firstname": "Наталья",
+			"secondname": "Гулько",
+			"phone": "+7(904)238-79-70",
+			"masterTZ": "",
+
+			"enabled": true,
+			"accountExpired": false,
+			"accountLocked": false,
+			"passwordExpired": false
+		}
+	],
+	"holidays": [
+		{
+			"id": 1,
+			"dateFrom": "2019-12-10T21:00:00Z",
+			"dateTo": "2019-12-14T20:59:59Z",
+			"master": {
+				"id": 1
+			},
+			"comment": "",
+			"maxTime": 0
+		},
+		{
+			"id": 2,
+			"dateFrom": "2019-12-14T21:00:00Z",
+			"dateTo": "2019-12-15T20:59:59Z",
+			"master": {
+				"id": 1
+			},
+			"comment": "",
+			"maxTime": 0
+		},
+		{
+			"id": 3,
+			"dateFrom": "2019-12-18T21:00:00Z",
+			"dateTo": "2019-12-19T20:59:59Z",
+			"master": {
+				"id": 1
+			},
+			"comment": "",
+			"maxTime": 0
+		}
+	],
+	"nonWorkDays": [0, 1],
+	"slots": [
+		{ "start": "2020-01-23 00:00:00", "end": "2020-01-23 09:25:00" },
+		{ "start": "2020-01-23 18:36:00", "end": "2020-01-23 23:59:00" }
+	]
+}
