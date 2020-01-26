@@ -9,7 +9,7 @@ export const useCreateTicket = () => {
 	const getServiceCost = (c: number) => setCost(cost + c)
 
 	const goToNextStep = () => setCurrentStep(c => c + 1)
-	// const prev = () => setCurrentStep(c => c - 1)
+	const goToPrevStep = () => setCurrentStep(c => c - 1)
 
 	return {
 		duration,
@@ -18,5 +18,6 @@ export const useCreateTicket = () => {
 		getServiceTime,
 		getServiceCost,
 		goToNextStep,
+		goToPrevStep,
 	}
 }

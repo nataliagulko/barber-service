@@ -81,13 +81,25 @@ describe('useCreateTicket', () => {
 		})
 	})
 
-	it('should change current step when goToNextStep was called', () => {
-		const { result } = renderCustomHook()
+	describe('should change current step', () => {
+		it('when goToNextStep was called', () => {
+			const { result } = renderCustomHook()
 
-		act(() => {
-			result.current.goToNextStep()
+			act(() => {
+				result.current.goToNextStep()
+			})
+
+			expect(result.current.currentStep).toBe(1)
 		})
 
-		expect(result.current.currentStep).toBe(1)
+		it('when goToPrevStep was called', () => {
+			const { result } = renderCustomHook()
+
+			act(() => {
+				result.current.goToPrevStep()
+			})
+
+			expect(result.current.currentStep).toBe(-1)
+		})
 	})
 })
