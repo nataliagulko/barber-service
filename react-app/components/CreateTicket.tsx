@@ -24,7 +24,7 @@ interface Step {
 }
 
 export const CreateTicket: FC<Props> = ({ services, master, holidays, nonWorkDays }) => {
-	const { duration, cost, current, getServiceTime, getServiceCost, next } = useCreateTicket()
+	const { duration, cost, currentStep, getServiceTime, getServiceCost, goToNextStep } = useCreateTicket()
 
 	const setSlots = () => {
 		return
@@ -53,12 +53,12 @@ export const CreateTicket: FC<Props> = ({ services, master, holidays, nonWorkDay
 
 	return (
 		<>
-			<Steps current={current}>
+			<Steps current={currentStep}>
 				{steps.map(item => (
 					<Steps.Step key={item.title} title={item.title} />
 				))}
 			</Steps>
-			<div className="steps-content">{steps[current].content}</div>
+			<div className="steps-content">{steps[currentStep].content}</div>
 			<Row>
 				<Col span={12}>
 					<Text strong>Продолжительность</Text>
@@ -75,7 +75,7 @@ export const CreateTicket: FC<Props> = ({ services, master, holidays, nonWorkDay
 					<span data-testid="ticket-cost">{cost}</span>
 				</Col>
 			</Row>
-			<Button type="primary" onClick={next}>
+			<Button type="primary" onClick={goToNextStep}>
 				Дальше
 			</Button>
 		</>

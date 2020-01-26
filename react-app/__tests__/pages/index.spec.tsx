@@ -68,9 +68,9 @@ describe('Create ticket page', () => {
 
 	it('should show date when "Дальше" button clicked', () => {
 		const { queryByTestId, getByText } = renderPage()
-		const next = getByText('Дальше')
 
 		act(() => {
+			const next = getByText('Дальше')
 			fireEvent.click(next)
 		})
 
