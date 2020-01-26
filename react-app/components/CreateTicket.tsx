@@ -24,7 +24,15 @@ interface Step {
 }
 
 export const CreateTicket: FC<Props> = ({ services, master, holidays, nonWorkDays }) => {
-	const { duration, cost, currentStep, getServiceTime, getServiceCost, goToNextStep } = useCreateTicket()
+	const {
+		duration,
+		cost,
+		currentStep,
+		getServiceTime,
+		getServiceCost,
+		goToNextStep,
+		goToPrevStep,
+	} = useCreateTicket()
 
 	const setSlots = () => {
 		return
@@ -75,6 +83,7 @@ export const CreateTicket: FC<Props> = ({ services, master, holidays, nonWorkDay
 					<span data-testid="ticket-cost">{cost}</span>
 				</Col>
 			</Row>
+			{currentStep > 0 && <Button onClick={goToPrevStep}>Назад</Button>}
 			<Button type="primary" onClick={goToNextStep}>
 				Дальше
 			</Button>

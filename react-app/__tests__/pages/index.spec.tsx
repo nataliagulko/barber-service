@@ -77,4 +77,28 @@ describe('Create ticket page', () => {
 		const date = queryByTestId('ticket-date')
 		expect(date).not.toBeNull()
 	})
+
+	it('should show button "Назад" when next page was selected', () => {
+		const { getByText, queryByText } = renderPage()
+
+		act(() => {
+			const next = getByText('Дальше')
+			fireEvent.click(next)
+		})
+
+		const previousButton = queryByText('Назад')
+		expect(previousButton).not.toBeNull()
+	})
+
+	it.skip('should show date when "Назад" button clicked', () => {
+		const { queryByTestId, getByText } = renderPage()
+
+		act(() => {
+			const previos = getByText('Назад')
+			fireEvent.click(previos)
+		})
+
+		const date = queryByTestId('ticket-date')
+		expect(date).not.toBeNull()
+	})
 })
