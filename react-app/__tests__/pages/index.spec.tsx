@@ -53,9 +53,9 @@ describe('Create ticket page', () => {
 	it('should render service list', () => {
 		const { queryByTestId } = renderPage()
 
-		const servicesStep = queryByTestId('service-list')
+		const servicesList = queryByTestId('service-list')
 
-		expect(servicesStep).not.toBeNull()
+		expect(servicesList).not.toBeNull()
 	})
 
 	it('should render date step title', () => {
@@ -64,5 +64,17 @@ describe('Create ticket page', () => {
 		const dateStep = queryByText('Дата')
 
 		expect(dateStep).not.toBeNull()
+	})
+
+	it('should show date when "Дальше" button clicked', () => {
+		const { queryByTestId, getByText } = renderPage()
+		const next = getByText('Дальше')
+
+		act(() => {
+			fireEvent.click(next)
+		})
+
+		const date = queryByTestId('ticket-date')
+		expect(date).not.toBeNull()
 	})
 })
