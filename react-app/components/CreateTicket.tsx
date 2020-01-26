@@ -1,11 +1,12 @@
-import { FC, ReactElement } from 'react'
+import { Col, Row, Steps, Typography } from 'antd'
+import { FC, ReactElement, useState } from 'react'
 
 import Holiday from '../models/Holiday'
 import Service from '../models/Service'
 import { ServiceList } from './ServiceList'
-import { ServiceStepContent } from './ServiceStepContent'
-import { Steps } from 'antd'
 import User from '../models/User'
+
+const { Text } = Typography
 
 interface Props {
 	services: Service[]
@@ -21,10 +22,13 @@ interface Step {
 }
 
 export const CreateTicket: FC<Props> = ({ services }) => {
+	const [duration, setDuration] = useState(0)
+	const [cost, setCost] = useState(0)
+
 	const steps: Step[] = [
 		{
 			title: 'Услуги',
-			content: <ServiceList services={services} />,
+			content: <ServiceList services={services} getServiceTime={setDuration} getServiceCost={setCost} />,
 		},
 	]
 
@@ -36,6 +40,24 @@ export const CreateTicket: FC<Props> = ({ services }) => {
 				))}
 			</Steps>
 			<div className="steps-content">{steps[0].content}</div>
+			<div>
+				<Row>
+					<Col span={12}>
+						<Text strong>Продолжительность</Text>
+					</Col>
+					<Col span={12}>
+						<span data-testid="ticket-duration">{duration}</span>
+					</Col>
+				</Row>
+				<Row>
+					<Col span={12}>
+						<Text strong>Стоимость</Text>
+					</Col>
+					<Col span={12}>
+						<span data-testid="ticket-cost">{cost}</span>
+					</Col>
+				</Row>
+			</div>
 		</>
 	)
 }

@@ -1,8 +1,9 @@
+import { act, fireEvent, render } from '@testing-library/react'
+
 import Home from '../../pages'
 import React from 'react'
 import Service from '../../models/Service'
 import { given } from '../../test/dsl/index'
-import { render } from '@testing-library/react'
 
 const master = given
 	.user()
@@ -55,5 +56,43 @@ describe('Create ticket page', () => {
 		const servicesStep = queryByTestId('service-list')
 
 		expect(servicesStep).not.toBeNull()
+	})
+
+	it('should render ticket duration and cost', () => {
+		const { queryByText, queryByTestId } = renderPage()
+
+		const ticketDuration = queryByText('Продолжительность')
+		const ticketDurationValue = queryByTestId('ticket-duration')
+		const ticketCost = queryByText('Стоимость')
+		const ticketCostValue = queryByTestId('ticket-cost')
+
+		expect(ticketDuration).not.toBeNull()
+		expect(ticketDurationValue).not.toBeNull()
+		expect(ticketCost).not.toBeNull()
+		expect(ticketCostValue).not.toBeNull()
+	})
+
+	it('should calculate ticket duration on service item click', () => {
+		const { getByTestId, getAllByTestId } = renderPage()
+
+		const serviceCheckbox = getAllByTestId('service-checkbox')[0]
+		act(() => {
+			fireEvent.click(serviceCheckbox)
+		})
+
+		const ticketDurationValue = getByTestId('ticket-duration')
+		expect(ticketDurationValue).toHaveTextContent('60')
+	})
+
+	it('should calculate ticket cost on service item click', () => {
+		const { getByTestId, getAllByTestId } = renderPage()
+
+		const serviceCheckbox = getAllByTestId('service-checkbox')[0]
+		act(() => {
+			fireEvent.click(serviceCheckbox)
+		})
+
+		const ticketDurationValue = getByTestId('ticket-cost')
+		expect(ticketDurationValue).toHaveTextContent('100')
 	})
 })
