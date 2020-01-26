@@ -42,4 +42,42 @@ describe('useCreateTicket', () => {
 			expect(result.current.duration).toBe(0)
 		})
 	})
+
+	describe('should calculate ticket cost', () => {
+		it('when service was selected', () => {
+			const { result } = renderCustomHook()
+
+			act(() => {
+				result.current.getServiceCost(200)
+			})
+
+			expect(result.current.cost).toBe(200)
+		})
+
+		it('when several services were selected', () => {
+			const { result } = renderCustomHook()
+
+			act(() => {
+				result.current.getServiceCost(200)
+			})
+			act(() => {
+				result.current.getServiceCost(400)
+			})
+
+			expect(result.current.cost).toBe(600)
+		})
+
+		it('when service was unselected', () => {
+			const { result } = renderCustomHook()
+
+			act(() => {
+				result.current.getServiceCost(200)
+			})
+			act(() => {
+				result.current.getServiceCost(-200)
+			})
+
+			expect(result.current.cost).toBe(0)
+		})
+	})
 })
