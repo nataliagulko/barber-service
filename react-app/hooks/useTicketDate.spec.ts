@@ -1,5 +1,6 @@
 import { act, renderHook } from '@testing-library/react-hooks'
 
+import DATE_FORMAT from '../constants/DATE_FORMAT'
 import { given } from '../test/dsl'
 import moment from 'moment'
 import { slotsApi } from '../api/slots'
@@ -120,4 +121,21 @@ describe('useTicketDate', () => {
 
 		expect(slotsApi.get).toHaveBeenCalled()
 	})
+
+	it.each`
+		firstDay                             | expected
+		${moment()}                          | ${moment()}
+		${moment('23.01.2020', DATE_FORMAT)} | ${moment('23.01.2020', DATE_FORMAT)}
+	`(
+		'should return three dates from $firstDay',
+		({ firstDay, expected }: { firstDay: moment.Moment; expected: moment.Moment }) => {
+			const { result } = renderHook(() => useTicketDate(setSlots, [], [], 0, undefined, firstDay))
+
+			const dates = result.current.dates
+			const [dayFrom, _, dayTo] = dates
+			expect(dates).toHaveLength(3)
+			expect(dayFrom.format(DATE_FORMAT)).toStrictEqual(expected.format(DATE_FORMAT))
+			expect(dayTo.format(DATE_FORMAT)).toStrictEqual(expected.add(2, 'd').format(DATE_FORMAT))
+		},
+	)
 })

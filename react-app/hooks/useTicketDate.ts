@@ -1,4 +1,5 @@
 import DATE_FORMAT, { FORMAT_WITHOUT_TIMEZONE } from '../constants/DATE_FORMAT'
+import { useEffect, useState } from 'react'
 
 import Holiday from '../models/Holiday'
 import Slot from '../models/Slot'
@@ -18,7 +19,14 @@ export function useTicketDate(
 	nonWorkDays: number[] = [],
 	duration: number = 0,
 	master?: User,
+	firstDay: moment.Moment = moment(),
 ) {
+	const [dates, setDates] = useState<moment.Moment[]>([])
+
+	useEffect(() => {
+		getDates(firstDay)
+	}, [])
+
 	function isDisabledDate(currentDate: moment.Moment | undefined): boolean {
 		if (currentDate) {
 			const isNonWorkDay = nonWorkDays.includes(currentDate.day())
@@ -55,9 +63,14 @@ export function useTicketDate(
 		}
 	}
 
+	const getDates = (firstDay: moment.Moment, countOfDays = 3) =>
+		setDates(Array.apply(null, Array(countOfDays)).map((_, index) => moment(firstDay).add(index, 'd')))
+
 	return {
 		isDisabledDate,
 		handleDateChange,
 		isInputDisabled,
+		dates,
+		getDates,
 	}
 }

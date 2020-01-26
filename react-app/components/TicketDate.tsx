@@ -1,5 +1,6 @@
+import { Button, DatePicker } from 'antd'
+
 import DATE_FORMAT from '../constants/DATE_FORMAT'
-import { DatePicker } from 'antd'
 import { FC } from 'react'
 import Holiday from '../models/Holiday'
 import Slot from '../models/Slot'
@@ -16,7 +17,7 @@ interface Props {
 }
 
 export const TicketDate: FC<Props> = ({ holidays, nonWorkDays, duration, master, setSlots }) => {
-	const { isInputDisabled, isDisabledDate, handleDateChange } = useTicketDate(
+	const { isInputDisabled, isDisabledDate, handleDateChange, dates, getDates } = useTicketDate(
 		setSlots,
 		holidays,
 		nonWorkDays,
@@ -30,14 +31,24 @@ export const TicketDate: FC<Props> = ({ holidays, nonWorkDays, duration, master,
 	const handleChange = (value: moment.Moment | null) => handleDateChange(value)
 
 	return (
-		<DatePicker
-			id="ticket-date"
-			data-testid="ticket-date"
-			showToday={false}
-			format={DATE_FORMAT}
-			disabled={isDisabled}
-			disabledDate={handleDisabledDate}
-			onChange={handleChange}
-		/>
+		<>
+			<DatePicker
+				id="ticket-date"
+				data-testid="ticket-date"
+				showToday={false}
+				format={DATE_FORMAT}
+				disabled={isDisabled}
+				disabledDate={handleDisabledDate}
+				onChange={handleChange}
+			/>
+
+			<div>
+				{dates.map(d => (
+					<Button key={d.toString()} size="large">
+						{d.format(DATE_FORMAT)}
+					</Button>
+				))}
+			</div>
+		</>
 	)
 }
