@@ -72,59 +72,61 @@ describe('Create ticket page', () => {
 		expect(ticketCostValue).not.toBeNull()
 	})
 
-	it('should calculate ticket duration when service was selected', () => {
-		const { getByTestId, getAllByTestId } = renderPage()
+	describe('should calculate ticket', () => {
+		it('duration when service was selected', () => {
+			const { getByTestId, getAllByTestId } = renderPage()
 
-		const serviceCheckbox = getAllByTestId('service-checkbox')[0]
-		act(() => {
-			fireEvent.click(serviceCheckbox)
+			act(() => {
+				const serviceCheckbox = getAllByTestId('service-checkbox')[0]
+				fireEvent.click(serviceCheckbox)
+			})
+
+			const ticketDurationValue = getByTestId('ticket-duration')
+			expect(ticketDurationValue).toHaveTextContent('60')
 		})
 
-		const ticketDurationValue = getByTestId('ticket-duration')
-		expect(ticketDurationValue).toHaveTextContent('60')
-	})
+		it('duration when several services were selected', () => {
+			const { getByTestId, getAllByTestId } = renderPage()
 
-	it('should calculate ticket duration when several services were selected', () => {
-		const { getByTestId, getAllByTestId } = renderPage()
+			act(() => {
+				const serviceCheckbox = getAllByTestId('service-checkbox')[0]
+				fireEvent.click(serviceCheckbox)
+			})
+			act(() => {
+				const serviceCheckbox1 = getAllByTestId('service-checkbox')[1]
+				fireEvent.click(serviceCheckbox1)
+			})
 
-		act(() => {
-			const serviceCheckbox = getAllByTestId('service-checkbox')[0]
-			fireEvent.click(serviceCheckbox)
-		})
-		act(() => {
-			const serviceCheckbox1 = getAllByTestId('service-checkbox')[1]
-			fireEvent.click(serviceCheckbox1)
-		})
-
-		const ticketDurationValue = getByTestId('ticket-duration')
-		expect(ticketDurationValue).toHaveTextContent('130')
-	})
-
-	it('should calculate ticket cost when service was selected', () => {
-		const { getByTestId, getAllByTestId } = renderPage()
-
-		const serviceCheckbox = getAllByTestId('service-checkbox')[0]
-		act(() => {
-			fireEvent.click(serviceCheckbox)
+			const ticketDurationValue = getByTestId('ticket-duration')
+			expect(ticketDurationValue).toHaveTextContent('130')
 		})
 
-		const ticketDurationValue = getByTestId('ticket-cost')
-		expect(ticketDurationValue).toHaveTextContent('100')
-	})
+		it('cost when service was selected', () => {
+			const { getByTestId, getAllByTestId } = renderPage()
 
-	it('should calculate ticket cost when several services were selected', () => {
-		const { getByTestId, getAllByTestId } = renderPage()
+			act(() => {
+				const serviceCheckbox = getAllByTestId('service-checkbox')[0]
+				fireEvent.click(serviceCheckbox)
+			})
 
-		act(() => {
-			const serviceCheckbox = getAllByTestId('service-checkbox')[0]
-			fireEvent.click(serviceCheckbox)
-		})
-		act(() => {
-			const serviceCheckbox1 = getAllByTestId('service-checkbox')[1]
-			fireEvent.click(serviceCheckbox1)
+			const ticketDurationValue = getByTestId('ticket-cost')
+			expect(ticketDurationValue).toHaveTextContent('100')
 		})
 
-		const ticketDurationValue = getByTestId('ticket-cost')
-		expect(ticketDurationValue).toHaveTextContent('250')
+		it('cost when several services were selected', () => {
+			const { getByTestId, getAllByTestId } = renderPage()
+
+			act(() => {
+				const serviceCheckbox = getAllByTestId('service-checkbox')[0]
+				fireEvent.click(serviceCheckbox)
+			})
+			act(() => {
+				const serviceCheckbox1 = getAllByTestId('service-checkbox')[1]
+				fireEvent.click(serviceCheckbox1)
+			})
+
+			const ticketDurationValue = getByTestId('ticket-cost')
+			expect(ticketDurationValue).toHaveTextContent('250')
+		})
 	})
 })
