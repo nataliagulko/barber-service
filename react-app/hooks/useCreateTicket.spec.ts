@@ -80,4 +80,14 @@ describe('useCreateTicket', () => {
 			expect(result.current.cost).toBe(0)
 		})
 	})
+
+	it('should change current step when nextStep was called', () => {
+		const { result } = renderCustomHook()
+
+		act(() => {
+			result.current.next()
+		})
+
+		expect(result.current.current).toBe(1)
+	})
 })
