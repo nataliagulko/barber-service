@@ -8,6 +8,7 @@ export const serviceApi: ServiceApi = {
 			cost: 100,
 			time: 60,
 			partOfList: false,
+			masters: [],
 		},
 		{
 			id: 2,
@@ -15,6 +16,7 @@ export const serviceApi: ServiceApi = {
 			cost: 150,
 			time: 70,
 			partOfList: false,
+			masters: [],
 		},
 		{
 			id: 3,
@@ -22,6 +24,7 @@ export const serviceApi: ServiceApi = {
 			cost: 200,
 			time: 80,
 			partOfList: false,
+			masters: [],
 		},
 	]),
 }

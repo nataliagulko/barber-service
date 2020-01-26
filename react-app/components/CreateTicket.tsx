@@ -1,16 +1,11 @@
-import { Col, Form, Input, Row, TimePicker } from 'antd'
-import { FC, useEffect, useState } from 'react'
-import moment, { Moment } from 'moment'
+import { FC, ReactElement } from 'react'
 
 import Holiday from '../models/Holiday'
-import { Money } from './Money'
 import Service from '../models/Service'
 import { ServiceList } from './ServiceList'
-import Slot from '../models/Slot'
-import { TicketDate } from './TicketDate'
-import { TicketTime } from './TicketTime'
+import { ServiceStepContent } from './ServiceStepContent'
+import { Steps } from 'antd'
 import User from '../models/User'
-import { slotsApi } from '../api/slots'
 
 interface Props {
 	services: Service[]
@@ -20,64 +15,27 @@ interface Props {
 	nonWorkDays: number[]
 }
 
-export const CreateTicket: FC<Props> = ({ services, client, master, holidays, nonWorkDays }) => {
-	const [duration, setDuration] = useState(0)
-	const [cost, setCost] = useState(0)
-	const [slots, setSlots] = useState<Slot[]>([])
+interface Step {
+	title: string
+	content: ReactElement
+}
 
-	const getServiceTime = (t: number) => setDuration(duration + t)
-	const getServiceCost = (c: number) => setCost(cost + c)
-	// const getSlots = async () => await slotsApi.get(date, duration, master.id).then(res => {
-	// 	setSlots(res)
-	// })
+export const CreateTicket: FC<Props> = ({ services }) => {
+	const steps: Step[] = [
+		{
+			title: 'Услуги',
+			content: <ServiceList services={services} />,
+		},
+	]
 
 	return (
-		<Row>
-			<Col xs={{ span: 24 }}>
-				<Form layout="horizontal">
-					<Form.Item label="Имя">
-						<span className="ant-form-text" role="first-name">
-							{client.firstname}
-						</span>
-					</Form.Item>
-					<Form.Item label="Фамилия">
-						<span className="ant-form-text" role="second-name">
-							{client.secondname}
-						</span>
-					</Form.Item>
-					<Input hidden value={master.id} data-testid="master-id" />
-					<Form.Item label="Услуги">
-						<ServiceList
-							services={services}
-							getServiceTime={getServiceTime}
-							getServiceCost={getServiceCost}
-						/>
-					</Form.Item>
-					<Form.Item label="Дата" htmlFor="ticket-date">
-						<TicketDate
-							holidays={holidays}
-							nonWorkDays={nonWorkDays}
-							duration={duration}
-							master={master}
-							setSlots={setSlots}
-						/>
-					</Form.Item>
-					<Form.Item label="Время" htmlFor="ticket-time">
-						<TicketTime slots={slots} />
-					</Form.Item>
-					<Form.Item label="Комментарий" htmlFor="ticket-comment">
-						<Input.TextArea id="ticket-comment" />
-					</Form.Item>
-					<Form.Item label="Продолжительность">
-						<span className="ant-form-text">
-							<span role="duration">{duration}</span> мин
-						</span>
-					</Form.Item>
-					<Form.Item label="Стоимость">
-						<Money sum={cost} role="cost" />
-					</Form.Item>
-				</Form>
-			</Col>
-		</Row>
+		<>
+			<Steps current={0}>
+				{steps.map(item => (
+					<Steps.Step key={item.title} title={item.title} />
+				))}
+			</Steps>
+			<div className="steps-content">{steps[0].content}</div>
+		</>
 	)
 }
