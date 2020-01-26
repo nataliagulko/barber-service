@@ -25,10 +25,15 @@ export const CreateTicket: FC<Props> = ({ services }) => {
 	const [duration, setDuration] = useState(0)
 	const [cost, setCost] = useState(0)
 
+	const getServiceTime = (t: number) => setDuration(duration + t)
+	const getServiceCost = (c: number) => setCost(cost + c)
+
 	const steps: Step[] = [
 		{
 			title: 'Услуги',
-			content: <ServiceList services={services} getServiceTime={setDuration} getServiceCost={setCost} />,
+			content: (
+				<ServiceList services={services} getServiceTime={getServiceTime} getServiceCost={getServiceCost} />
+			),
 		},
 	]
 
