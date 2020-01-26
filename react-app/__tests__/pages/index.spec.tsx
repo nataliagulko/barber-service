@@ -82,23 +82,30 @@ describe('Create ticket page', () => {
 		const { getByText, queryByText } = renderPage()
 
 		act(() => {
-			const next = getByText('Дальше')
-			fireEvent.click(next)
+			const nextButton = getByText('Дальше')
+			fireEvent.click(nextButton)
 		})
 
 		const previousButton = queryByText('Назад')
 		expect(previousButton).not.toBeNull()
 	})
 
-	it.skip('should show date when "Назад" button clicked', () => {
+	it('should show date when "Назад" button clicked', () => {
 		const { queryByTestId, getByText } = renderPage()
 
 		act(() => {
-			const previos = getByText('Назад')
-			fireEvent.click(previos)
+			const nextButton = getByText('Дальше')
+			fireEvent.click(nextButton)
 		})
-
 		const date = queryByTestId('ticket-date')
 		expect(date).not.toBeNull()
+
+		act(() => {
+			const previousButton = getByText('Назад')
+			fireEvent.click(previousButton)
+		})
+
+		const serviceList = queryByTestId('service-list')
+		expect(serviceList).not.toBeNull()
 	})
 })
