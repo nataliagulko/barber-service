@@ -108,21 +108,36 @@ const slots: Slot[] = [
 ]
 
 describe('parseSlotToAvailableTime', () => {
-	it('should return first slot start time as first available time', () => {
+	it('should return first slot.start time as first available time', () => {
 		const availableTime = parseSlotsToAvailableTime(slots)
 
 		expect(availableTime[0]).toEqual('09:00')
 	})
 
-	it('should return first slot end time as last available time', () => {
+	it('should return last slot.end time as last available time', () => {
 		const availableTime = parseSlotsToAvailableTime(slots)
 
-		expect(availableTime.slice(-1)[0]).toEqual('09:15')
+		expect(availableTime.slice(-1)[0]).toEqual('14:20')
 	})
 
-	it('should return first slot as range of time from slot.start to slot.end', () => {
+	it('should return range of time from first slot.start to last slot.end', () => {
 		const availableTime = parseSlotsToAvailableTime(slots)
 
-		expect(availableTime).toEqual(['09:00', '09:05', '09:10', '09:15'])
+		expect(availableTime).toEqual([
+			'09:00',
+			'09:05',
+			'09:10',
+			'09:15',
+			'10:50',
+			'10:55',
+			'11:00',
+			'11:05',
+			'11:10',
+			'14:00',
+			'14:05',
+			'14:10',
+			'14:15',
+			'14:20',
+		])
 	})
 })

@@ -16,20 +16,20 @@ const range = (start: number, stop: number, step = 1) =>
 export const parseSlotsToAvailableTime = (slots: Slot[]): string[] => {
 	let availableTime: string[] = []
 
-	// slots.forEach(slot => {
-	const start = moment(slots[0].start)
-	const end = moment(slots[0].end)
+	slots.forEach(slot => {
+		const start = moment(slot.start)
+		const end = moment(slot.end)
 
-	availableTime.push(start.format(TIME_FORMAT))
+		availableTime.push(start.format(TIME_FORMAT))
 
-	let b: moment.Moment = moment(slots[0].start).add(5, 'm')
-	while (b.isBetween(start, end)) {
-		availableTime.push(b.format(TIME_FORMAT))
-		b = b.add(5, 'm')
-	}
+		let timeRange = moment(slot.start).add(5, 'm')
+		while (timeRange.isBetween(start, end)) {
+			availableTime.push(timeRange.format(TIME_FORMAT))
+			timeRange = timeRange.add(5, 'm')
+		}
 
-	availableTime.push(end.format(TIME_FORMAT))
-	// })
+		availableTime.push(end.format(TIME_FORMAT))
+	})
 
 	return availableTime
 }
