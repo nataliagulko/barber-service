@@ -20,6 +20,7 @@ interface Props {
 
 interface Step {
 	title: string
+	disabled: boolean
 	content: ReactElement
 }
 
@@ -41,12 +42,14 @@ export const CreateTicket: FC<Props> = ({ services, master, holidays, nonWorkDay
 	const steps: Step[] = [
 		{
 			title: 'Услуги',
+			disabled: master && duration > 0 ? false : true,
 			content: (
 				<ServiceList services={services} getServiceTime={getServiceTime} getServiceCost={getServiceCost} />
 			),
 		},
 		{
 			title: 'Дата',
+			disabled: false,
 			content: (
 				<TicketDate
 					holidays={holidays}
@@ -84,7 +87,7 @@ export const CreateTicket: FC<Props> = ({ services, master, holidays, nonWorkDay
 				</Col>
 			</Row>
 			{currentStep > 0 && <Button onClick={goToPrevStep}>Назад</Button>}
-			<Button type="primary" onClick={goToNextStep}>
+			<Button type="primary" onClick={goToNextStep} disabled={steps[currentStep].disabled}>
 				Дальше
 			</Button>
 		</>

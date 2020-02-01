@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Holiday from '../models/Holiday'
 import Slot from '../models/Slot'
 import User from '../test/dsl/User'
+import { getDatesArray } from '../utils/getDatesArray'
 import moment from 'moment'
 import { slotsApi } from '../api/slots'
 
@@ -19,23 +20,19 @@ export function useTicketDate(
 	nonWorkDays: number[] = [],
 	duration: number = 0,
 	master?: User,
-	firstDay: moment.Moment = moment(),
 ) {
 	const [dates, setDates] = useState<moment.Moment[]>([])
 
 	useEffect(() => {
-		getDates(firstDay)
+		const getDates = () => setDates(getDatesArray(moment(), 30))
+
+		getDates()
 	}, [])
 
-	function isDisabledDate(currentDate: moment.Moment | undefined): boolean {
+	const isDisabled = () => (currentDate: moment.Moment): boolean => {
+		console.log(currentDate)
 		if (currentDate) {
 			const isNonWorkDay = nonWorkDays.includes(currentDate.day())
-
-			const today = moment()
-			const isPastDay = currentDate.isBefore(today)
-
-			const threeMonthLater = today.add(3, 'month')
-			const isMoreThanThreeMonth = currentDate.isSameOrAfter(threeMonthLater, 'day')
 
 			let isHoliday = false
 
@@ -47,30 +44,22 @@ export function useTicketDate(
 				}
 			}
 
-			return isNonWorkDay || isPastDay || isMoreThanThreeMonth || isHoliday
+			return isNonWorkDay || isHoliday
 		}
+
 		return false
 	}
 
-	function isInputDisabled(): boolean {
-		return master && duration > 0 ? false : true
-	}
-
-	async function handleDateChange(value: moment.Moment | null) {
+	const handleClick = () => async (value: moment.Moment | null) => {
 		if (value && master && duration > 0) {
 			const slots = await slotsApi.get(value.format(DATE_FORMAT), duration, master.id)
 			setSlots(slots)
 		}
 	}
 
-	const getDates = (firstDay: moment.Moment, countOfDays = 3) =>
-		setDates(Array.apply(null, Array(countOfDays)).map((_, index) => moment(firstDay).add(index, 'd')))
-
 	return {
-		isDisabledDate,
-		handleDateChange,
-		isInputDisabled,
 		dates,
-		getDates,
+		handleClick,
+		isDisabled,
 	}
 }

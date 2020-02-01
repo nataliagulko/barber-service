@@ -8,8 +8,8 @@ export const useCreateTicket = () => {
 	const getServiceTime = (t: number) => setDuration(duration + t)
 	const getServiceCost = (c: number) => setCost(cost + c)
 
-	const goToNextStep = () => setCurrentStep(c => c + 1)
-	const goToPrevStep = () => setCurrentStep(c => c - 1)
+	const goToNextStep = () => setCurrentStep(currentStep + 1)
+	const goToPrevStep = () => setCurrentStep(currentStep - 1)
 
 	return {
 		duration,
