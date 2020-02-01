@@ -27,7 +27,7 @@ interface Step {
 }
 
 export const CreateTicket: FC<Props> = ({ services, master, holidays, nonWorkDays }) => {
-	const [slots, setSlots] = useState<Slot[]>([])
+	const [invertedSlots, setInvertedSlots] = useState<Slot[]>([])
 	const {
 		duration,
 		cost,
@@ -48,21 +48,21 @@ export const CreateTicket: FC<Props> = ({ services, master, holidays, nonWorkDay
 		},
 		{
 			title: 'Дата',
-			disabled: !(slots && slots.length),
+			disabled: !(invertedSlots && invertedSlots.length),
 			content: (
 				<TicketDate
 					holidays={holidays}
 					nonWorkDays={nonWorkDays}
 					duration={duration}
 					master={master}
-					setSlots={setSlots}
+					setInvertedSlots={setInvertedSlots}
 				/>
 			),
 		},
 		{
 			title: 'Время',
 			disabled: false,
-			content: <TicketTime slots={slots} />,
+			content: <TicketTime invertedSlots={invertedSlots} />,
 		},
 	]
 

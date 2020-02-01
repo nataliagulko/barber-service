@@ -12,11 +12,17 @@ interface Props {
 	nonWorkDays: number[]
 	duration: number
 	master: User
-	setSlots: (slots: Slot[]) => void
+	setInvertedSlots: (slots: Slot[]) => void
 }
 
-export const TicketDate: FC<Props> = ({ holidays, nonWorkDays, duration, master, setSlots }) => {
-	const { isDisabledDate, handleDateChange } = useTicketDate(setSlots, holidays, nonWorkDays, duration, master)
+export const TicketDate: FC<Props> = ({ holidays, nonWorkDays, duration, master, setInvertedSlots }) => {
+	const { isDisabledDate, handleDateChange } = useTicketDate(
+		setInvertedSlots,
+		holidays,
+		nonWorkDays,
+		duration,
+		master,
+	)
 
 	const handleDisabledDate = (currentDate: moment.Moment | undefined) => isDisabledDate(currentDate)
 	const handleChange = (value: moment.Moment | undefined) => handleDateChange(value)

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import MINUTE_STEP from '../constants/MINUTE_STEP'
 import Slot from '../models/Slot'
+import { TIME_FORMAT } from '../constants/DATE_FORMAT'
 import moment from 'moment'
 
 interface DisabledTime {
@@ -12,23 +13,44 @@ interface DisabledTime {
 const range = (start: number, stop: number, step = 1) =>
 	Array.from({ length: (stop - start) / step + 1 }, (_, i) => start + i * step)
 
-export function useTicketTime(slots: Slot[] = []) {
+export const parseSlotsToAvailableTime = (slots: Slot[]): string[] => {
+	let availableTime: string[] = []
+
+	// slots.forEach(slot => {
+	const start = moment(slots[0].start)
+	const end = moment(slots[0].end)
+
+	availableTime.push(start.format(TIME_FORMAT))
+
+	let b: moment.Moment = moment(slots[0].start).add(5, 'm')
+	while (b.isBetween(start, end)) {
+		availableTime.push(b.format(TIME_FORMAT))
+		b = b.add(5, 'm')
+	}
+
+	availableTime.push(end.format(TIME_FORMAT))
+	// })
+
+	return availableTime
+}
+
+export function useTicketTime(invertedSlots: Slot[] = []) {
 	const [hours, setHours] = useState<number[]>([])
 	const [time, setTime] = useState<DisabledTime[]>([])
 
 	useEffect(() => {
 		parseSlotsToTime()
-	}, [slots.length])
+	}, [invertedSlots.length])
 
 	function isInputDisabled(): boolean {
-		return slots && slots.length > 0 ? false : true
+		return invertedSlots && invertedSlots.length > 0 ? false : true
 	}
 
 	function parseSlotsToTime() {
 		let disabledMinutesByHour: DisabledTime[] = []
 		let disabledHours: number[] = []
 
-		slots.forEach(s => {
+		invertedSlots.forEach(s => {
 			const startHour = moment(s.start).hour()
 			const endHour = moment(s.end).hour()
 			const hourRange = range(startHour, endHour)

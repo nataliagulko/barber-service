@@ -1,11 +1,11 @@
 import { act, renderHook } from '@testing-library/react-hooks'
+import { parseSlotsToAvailableTime, useTicketTime } from './useTicketTime'
 
 import Slot from '../models/Slot'
 import { given } from '../test/dsl/index'
 import moment from 'moment'
-import { useTicketTime } from './useTicketTime'
 
-const slots: Slot[] = [
+const invertedSlots: Slot[] = [
 	given
 		.slot()
 		.withStart('2020-01-23 00:45:00')
@@ -31,7 +31,7 @@ describe('useTicketTime', () => {
 	})
 
 	it('should not be disabled when slots were passed', () => {
-		const { result } = renderHook(() => useTicketTime(slots))
+		const { result } = renderHook(() => useTicketTime(invertedSlots))
 		let isInputDisabled = true
 
 		act(() => {
@@ -42,7 +42,7 @@ describe('useTicketTime', () => {
 	})
 
 	it('should disable hours based on slots', () => {
-		const { result } = renderHook(() => useTicketTime(slots))
+		const { result } = renderHook(() => useTicketTime(invertedSlots))
 		let disabledHours: number[] = []
 
 		act(() => {
@@ -53,7 +53,7 @@ describe('useTicketTime', () => {
 	})
 
 	it.skip('should disable hours and minutes in past', () => {
-		const { result } = renderHook(() => useTicketTime(slots))
+		const { result } = renderHook(() => useTicketTime(invertedSlots))
 		let disabledHours: number[] = []
 		const now = moment().hour()
 
@@ -72,7 +72,7 @@ describe('useTicketTime', () => {
 		${3}  | ${[0, 5, 10]}
 		${11} | ${[0, 5, 10, 15, 20]}
 	`('should disable $expectedMinutes minutes for $hour hour', ({ hour, expectedMinutes }) => {
-		const { result } = renderHook(() => useTicketTime(slots))
+		const { result } = renderHook(() => useTicketTime(invertedSlots))
 		let disabledMinutes: number[] = []
 		act(() => {
 			result.current.setDisabledHours()
@@ -87,4 +87,42 @@ describe('useTicketTime', () => {
 
 	// не давать выбирать прошедшие часы
 	// час должен быть доступен, если есть доступные для записи минуты
+})
+
+const slots: Slot[] = [
+	given
+		.slot()
+		.withStart('2020-01-23 09:00:00')
+		.withEnd('2020-01-23 09:15:00')
+		.build(),
+	given
+		.slot()
+		.withStart('2020-01-23 10:50:00')
+		.withEnd('2020-01-23 11:10:00')
+		.build(),
+	given
+		.slot()
+		.withStart('2020-01-23 14:00:00')
+		.withEnd('2020-01-23 14:20:00')
+		.build(),
+]
+
+describe('parseSlotToAvailableTime', () => {
+	it('should return first slot start time as first available time', () => {
+		const availableTime = parseSlotsToAvailableTime(slots)
+
+		expect(availableTime[0]).toEqual('09:00')
+	})
+
+	it('should return first slot end time as last available time', () => {
+		const availableTime = parseSlotsToAvailableTime(slots)
+
+		expect(availableTime.slice(-1)[0]).toEqual('09:15')
+	})
+
+	it('should return first slot as range of time from slot.start to slot.end', () => {
+		const availableTime = parseSlotsToAvailableTime(slots)
+
+		expect(availableTime).toEqual(['09:00', '09:05', '09:10', '09:15'])
+	})
 })
