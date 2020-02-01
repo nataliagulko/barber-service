@@ -13,29 +13,14 @@ interface Props {
 }
 
 export const TicketTime: FC<Props> = ({ invertedSlots }) => {
-	const { isInputDisabled, setDisabledHours, setDisabledMinutesBy } = useTicketTime(invertedSlots)
-
-	const isDisabled = isInputDisabled()
-
-	const handleDisabledHours = () => setDisabledHours()
-	const handleDisabledMinutes = (hour: number) => setDisabledMinutesBy(hour)
-	const handleChange = () => {}
+	const { time } = useTicketTime(invertedSlots)
 
 	return (
 		<>
-			<TimePicker
-				data-testid="ticket-time"
-				defaultValue={moment(new Date(), TIME_FORMAT)}
-				format={TIME_FORMAT}
-				disabled={isDisabled}
-				// hideDisabledOptions
-				disabledHours={handleDisabledHours}
-				disabledMinutes={handleDisabledMinutes}
-				minuteStep={MINUTE_STEP}
-			/>
-
-			{invertedSlots.map(slot => (
-				<Button size="large">{slot.start}</Button>
+			{time.map(t => (
+				<Button key={t} size="large" style={{ marginBottom: '8px', marginRight: '6px' }}>
+					{t}
+				</Button>
 			))}
 		</>
 	)

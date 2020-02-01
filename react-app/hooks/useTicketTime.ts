@@ -13,6 +13,8 @@ interface DisabledTime {
 const range = (start: number, stop: number, step = 1) =>
 	Array.from({ length: (stop - start) / step + 1 }, (_, i) => start + i * step)
 
+const minuteStep = 5
+
 export const parseSlotsToAvailableTime = (slots: Slot[]): string[] => {
 	let availableTime: string[] = []
 
@@ -22,10 +24,10 @@ export const parseSlotsToAvailableTime = (slots: Slot[]): string[] => {
 
 		availableTime.push(start.format(TIME_FORMAT))
 
-		let timeRange = moment(slot.start).add(5, 'm')
+		let timeRange = moment(slot.start).add(minuteStep, 'm')
 		while (timeRange.isBetween(start, end)) {
 			availableTime.push(timeRange.format(TIME_FORMAT))
-			timeRange = timeRange.add(5, 'm')
+			timeRange = timeRange.add(minuteStep, 'm')
 		}
 
 		availableTime.push(end.format(TIME_FORMAT))
@@ -35,55 +37,11 @@ export const parseSlotsToAvailableTime = (slots: Slot[]): string[] => {
 }
 
 export function useTicketTime(invertedSlots: Slot[] = []) {
-	const [hours, setHours] = useState<number[]>([])
-	const [time, setTime] = useState<DisabledTime[]>([])
+	const [time, setTime] = useState<string[]>([])
 
 	useEffect(() => {
-		parseSlotsToTime()
+		setTime(parseSlotsToAvailableTime(invertedSlots))
 	}, [invertedSlots.length])
 
-	function isInputDisabled(): boolean {
-		return invertedSlots && invertedSlots.length > 0 ? false : true
-	}
-
-	function parseSlotsToTime() {
-		let disabledMinutesByHour: DisabledTime[] = []
-		let disabledHours: number[] = []
-
-		invertedSlots.forEach(s => {
-			const startHour = moment(s.start).hour()
-			const endHour = moment(s.end).hour()
-			const hourRange = range(startHour, endHour)
-
-			disabledHours = [...disabledHours, ...hourRange]
-
-			const startMinutes = moment(s.start).minute()
-			const endMinutes = moment(s.end).minute()
-
-			disabledMinutesByHour = [
-				...disabledMinutesByHour,
-				{ hour: startHour, minutes: range(startMinutes, 55, MINUTE_STEP) },
-				{ hour: endHour, minutes: range(0, endMinutes, MINUTE_STEP) },
-			]
-		})
-
-		setHours(disabledHours)
-		setTime(disabledMinutesByHour)
-	}
-
-	function setDisabledHours(): number[] {
-		return hours
-	}
-
-	function setDisabledMinutesBy(hour: number): number[] {
-		const disabledTimeByHour = time.filter(dt => dt.hour === hour)
-		const [minutes] = disabledTimeByHour.map(({ minutes }) => minutes)
-		return minutes
-	}
-
-	return {
-		setDisabledHours,
-		setDisabledMinutesBy,
-		isInputDisabled,
-	}
+	return { time }
 }
