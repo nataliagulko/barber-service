@@ -7,7 +7,7 @@ import moment from 'moment'
 import { slotsApi } from '../api/slots'
 import { useState } from 'react'
 
-function disableDateByHoliday(holiday: Holiday, currentDate: moment.Moment) {
+const disableDateByHoliday = (holiday: Holiday, currentDate: moment.Moment) => {
 	const dateFrom = moment(holiday.dateFrom, FORMAT_WITHOUT_TIMEZONE)
 	const dateTo = moment(holiday.dateTo, FORMAT_WITHOUT_TIMEZONE)
 	return currentDate.isBetween(dateFrom, dateTo, 'day', '[]')
@@ -46,7 +46,6 @@ export function useTicketDate(
 	}
 
 	async function handleDateChange(value: moment.Moment | undefined) {
-		console.log(value)
 		if (value && master && duration > 0) {
 			const slots = await slotsApi.get(value.format(DATE_FORMAT), duration, master.id)
 			setSlots(slots)

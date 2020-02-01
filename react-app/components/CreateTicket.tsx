@@ -4,7 +4,9 @@ import { FC, ReactElement, useState } from 'react'
 import Holiday from '../models/Holiday'
 import Service from '../models/Service'
 import { ServiceList } from './ServiceList'
+import Slot from '../models/Slot'
 import { TicketDate } from './TicketDate'
+import { TicketTime } from './TicketTime'
 import User from '../models/User'
 import { useCreateTicket } from '../hooks/useCreateTicket'
 
@@ -25,6 +27,7 @@ interface Step {
 }
 
 export const CreateTicket: FC<Props> = ({ services, master, holidays, nonWorkDays }) => {
+	const [slots, setSlots] = useState<Slot[]>([])
 	const {
 		duration,
 		cost,
@@ -34,10 +37,6 @@ export const CreateTicket: FC<Props> = ({ services, master, holidays, nonWorkDay
 		goToNextStep,
 		goToPrevStep,
 	} = useCreateTicket()
-
-	const setSlots = () => {
-		return
-	}
 
 	const steps: Step[] = [
 		{
@@ -49,7 +48,7 @@ export const CreateTicket: FC<Props> = ({ services, master, holidays, nonWorkDay
 		},
 		{
 			title: 'Дата',
-			disabled: false,
+			disabled: !(slots && slots.length),
 			content: (
 				<TicketDate
 					holidays={holidays}
@@ -59,6 +58,11 @@ export const CreateTicket: FC<Props> = ({ services, master, holidays, nonWorkDay
 					setSlots={setSlots}
 				/>
 			),
+		},
+		{
+			title: 'Время',
+			disabled: false,
+			content: <TicketTime slots={slots} />,
 		},
 	]
 
@@ -87,9 +91,11 @@ export const CreateTicket: FC<Props> = ({ services, master, holidays, nonWorkDay
 				</Col>
 			</Row>
 			{currentStep > 0 && <Button onClick={goToPrevStep}>Назад</Button>}
-			<Button type="primary" onClick={goToNextStep} disabled={steps[currentStep].disabled}>
-				Дальше
-			</Button>
+			{currentStep < steps.length - 1 && (
+				<Button type="primary" onClick={goToNextStep} disabled={steps[currentStep].disabled}>
+					Дальше
+				</Button>
+			)}
 		</>
 	)
 }
