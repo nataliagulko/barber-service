@@ -66,7 +66,7 @@ describe('Create ticket page', () => {
 		expect(dateStep).not.toBeNull()
 	})
 
-	it('should show date when "Дальше" button clicked', () => {
+	it.skip('should show date when "Дальше" button clicked', () => {
 		const { queryByTestId, getByText } = renderPage()
 
 		act(() => {
@@ -78,7 +78,7 @@ describe('Create ticket page', () => {
 		expect(date).not.toBeNull()
 	})
 
-	it('should show button "Назад" when next page was selected', () => {
+	it.skip('should show button "Назад" when next page was selected', () => {
 		const { getByText, queryByText } = renderPage()
 
 		act(() => {
@@ -90,7 +90,7 @@ describe('Create ticket page', () => {
 		expect(previousButton).not.toBeNull()
 	})
 
-	it('should show date when "Назад" button clicked', () => {
+	it.skip('should show date when "Назад" button clicked', () => {
 		const { queryByTestId, getByText } = renderPage()
 
 		act(() => {
