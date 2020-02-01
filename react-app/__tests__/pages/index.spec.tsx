@@ -1,5 +1,4 @@
-import { UseCreateTicket, useCreateTicket } from '../../hooks/useCreateTicket'
-import { act, fireEvent, render, waitForElement } from '@testing-library/react'
+import { act, fireEvent, render } from '@testing-library/react'
 
 import Home from '../../pages'
 import React from 'react'
@@ -67,9 +66,46 @@ describe('Create ticket page', () => {
 		expect(dateStep).not.toBeNull()
 	})
 
-	it('should disable button "Дальше" if services are not chosen', () => {
-		const { getByText } = renderPage()
+	it('should show date when "Дальше" button clicked', () => {
+		const { queryByTestId, getByText } = renderPage()
 
-		expect(getByText('Дальше')).toBeDisabled()
+		act(() => {
+			const next = getByText('Дальше')
+			fireEvent.click(next)
+		})
+
+		const date = queryByTestId('ticket-date')
+		expect(date).not.toBeNull()
+	})
+
+	it('should show button "Назад" when next page was selected', () => {
+		const { getByText, queryByText } = renderPage()
+
+		act(() => {
+			const nextButton = getByText('Дальше')
+			fireEvent.click(nextButton)
+		})
+
+		const previousButton = queryByText('Назад')
+		expect(previousButton).not.toBeNull()
+	})
+
+	it('should show date when "Назад" button clicked', () => {
+		const { queryByTestId, getByText } = renderPage()
+
+		act(() => {
+			const nextButton = getByText('Дальше')
+			fireEvent.click(nextButton)
+		})
+		const date = queryByTestId('ticket-date')
+		expect(date).not.toBeNull()
+
+		act(() => {
+			const previousButton = getByText('Назад')
+			fireEvent.click(previousButton)
+		})
+
+		const serviceList = queryByTestId('service-list')
+		expect(serviceList).not.toBeNull()
 	})
 })
