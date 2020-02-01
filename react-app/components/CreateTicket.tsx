@@ -38,6 +38,7 @@ export const CreateTicket: FC<Props> = ({ services, master, holidays, nonWorkDay
 		goToPrevStep,
 	} = useCreateTicket()
 
+	// TODO: Comment step and finish btn
 	const steps: Step[] = [
 		{
 			title: 'Услуги',
