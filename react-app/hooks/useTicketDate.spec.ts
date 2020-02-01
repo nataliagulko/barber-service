@@ -1,6 +1,5 @@
 import { act, renderHook } from '@testing-library/react-hooks'
 
-import DATE_FORMAT from '../constants/DATE_FORMAT'
 import { given } from '../test/dsl'
 import moment from 'moment'
 import { slotsApi } from '../api/slots'
@@ -87,28 +86,6 @@ describe('useTicketDate', () => {
 		})
 
 		expect(isDateDisabled).toBeFalsy()
-	})
-
-	it('should be disabled if duration and masterId were not passed', () => {
-		const { result } = renderHook(() => useTicketDate(setSlots))
-		let isInputDisabled = false
-
-		act(() => {
-			isInputDisabled = result.current.isInputDisabled()
-		})
-
-		expect(isInputDisabled).toBeTruthy()
-	})
-
-	it('should not be disabled if duration and masterId were passed', () => {
-		const { result } = renderHook(() => useTicketDate(setSlots, [], [], duration, master))
-		let isInputDisabled = true
-
-		act(() => {
-			isInputDisabled = result.current.isInputDisabled()
-		})
-
-		expect(isInputDisabled).toBeFalsy()
 	})
 
 	it('should call slotsApi.get() on date change', () => {
