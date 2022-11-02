@@ -29,7 +29,7 @@
     "ember-bootstrap": "^1.2.2",
     "ember-bootstrap-cp-validations": "^1.0.0",
     "ember-bootstrap-power-select": "^1.0.0-rc.1",
-    "ember-cli": "^2.18.1",
+    "ember-cli": "^4.8.0",
     "ember-cli-app-version": "^2.0.0",
     "ember-cli-babel": "^6.11.0",
     "ember-cli-code-coverage": "^0.4.2",
