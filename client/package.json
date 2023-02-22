@@ -23,7 +23,7 @@
     "@types/ember__test-helpers": "^0.7.0",
     "@types/qunit": "^2.5.2",
     "@types/rsvp": "^4.0.2",
-    "bootstrap-sass": "^3.3.7",
+    "bootstrap-sass": "^3.4.1",
     "broccoli-asset-rev": "^2.4.5",
     "ember-ajax": "^2.4.1",
     "ember-bootstrap": "^1.2.2",
